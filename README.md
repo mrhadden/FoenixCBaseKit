@@ -2,30 +2,30 @@
 
 ## A base WDC Project to get started with the C256 Foenix RevB or C
 
-Prerequisites:
-1) WDC development tools installed on your (Windows) computer. 
+### Prerequisites:
+* WDC development tools installed on your (Windows) computer. 
 	http://westerndesigncenter.com/wdc/tools.cfm
-2) srec_cat.exe
+* srec_cat.exe
 	http://sourceforge.net/projects/srecord/files/srecord-win32/1.64/srecord-1.63-win32.zip 
-3) Java 1.8 - Needed to upload the code.  The C256 IDE won't load the image at the time of this writing.
+* Java 1.8 - Needed to upload the code.  The C256 IDE won't load the image at the time of this writing.
 
-4) ONE TIME SETUP: Update the cmake.bat with the locations for your dev environment.
+* ONE TIME SETUP: Update the cmake.bat with the locations for your dev environment.
 
 
 **You will need to attach the USB cable between the development computer to the C256**
 
 
-To make the project:
-From the source directory type: cmake
+### To make the project:
+*From the source directory type: cmake*
 
-To make the project and push the code to the C256
-From the source directory type: cmake -t (t = transfer)
+### To make the project and push the code to the C256
+*From the source directory type: cmake -t (t = transfer)*
 
-To NOT make the project and push the code to the C256
-From the source directory type: cmake -n -t (t = transfer/-n no build)
+### To NOT make the project and push the code to the C256
+*From the source directory type: cmake -n -t (t = transfer/-n no build)*
 
 
-Build Output:
+**Build Output: **
 
 ```
 G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src>cmake -t
@@ -99,7 +99,7 @@ boot.bin
 Transferring Kernel: boot
 ```
 
-Build with transfer:
+**Build with transfer: **
 
 ```
 G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src>cmake -t
