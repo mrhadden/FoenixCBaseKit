@@ -25,7 +25,7 @@
 *From the source directory type: cmake -n -t (t = transfer/-n no build)*
 
 
-**Build Output: **
+** Build Output: **
 
 ```
 G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src>cmake -t
@@ -99,7 +99,7 @@ boot.bin
 Transferring Kernel: boot
 ```
 
-**Build with transfer: **
+** Build with transfer: **
 
 ```
 G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src>cmake -t
