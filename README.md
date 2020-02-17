@@ -1,5 +1,6 @@
 # FoenixCBaseKit
-A base WDC Project to get started with the C256 Foenix RevB or C
+
+**A base WDC Project to get started with the C256 Foenix RevB or C**
 
 Prerequisites:
 1) WDC development tools installed on your (Windows) computer. 
@@ -11,7 +12,7 @@ Prerequisites:
 4) ONE TIME SETUP: Update the cmake.bat with the locations for your dev environment.
 
 
-You will need to attach the USB cable between the development computer to the C256
+**You will need to attach the USB cable between the development computer to the C256**
 
 
 To make the project:
