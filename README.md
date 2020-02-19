@@ -12,6 +12,9 @@
 * ONE TIME SETUP: Update the cmake.bat with the locations for your dev environment.
 
 
+### Be sure to define USE_FX256_FMX if using the FMX board.  The default is the B2 board.
+
+
 **You will need to attach the USB cable between the development computer to the C256**
 
 
