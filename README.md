@@ -1,6 +1,7 @@
 # FoenixCBaseKit
 
 ## A base WDC Project to get started with the C256 Foenix RevB or C
+### Warning: The code is very beta and dripping wet, so changes daily based on understanding and hardware changes.
 
 ### Prerequisites:
 * WDC development tools installed on your (Windows) computer. 
