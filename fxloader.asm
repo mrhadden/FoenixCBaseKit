@@ -331,6 +331,20 @@ ENABLE_IRQS
 		AND #$EF ;~FNX1_INT04_COM1
 		STA >INT_MASK_REG1
 
+		LDA >INT_PENDING_REG1
+		AND #FNX1_INT07_SDCARD
+		STA >INT_PENDING_REG1  ; Writing it back will clear the Active Bit
+		LDA >INT_MASK_REG1
+		AND #$7F ;~FNX1_INT07_SDCARD
+		STA >INT_MASK_REG1
+
+		;LDA >INT_PENDING_REG2
+		;AND #FNX2_INT07_SDCARD
+		;STA >INT_PENDING_REG2  ; Writing it back will clear the Active Bit
+		;LDA >INT_MASK_REG2
+		;AND #$7F ;~FNX2_INT07_SDCARD
+		;STA >INT_MASK_REG2
+
 		LDA >INT_MASK_REG0
 		AND #%00000000
 		STA >INT_MASK_REG0
@@ -540,6 +554,10 @@ COP:
 		;Example of needing to read/write to data in another data bank
 
 		phb		; save Data Bank
+
+		;phk
+		;plb
+
 		phd		; save Direct Page Register
 		pha
 		phx
@@ -757,8 +775,8 @@ passAAtest      LDA #'A'
 				;LDX #<>pass_tst0xAAmsg
                 ;JSL IPRINT      ; print Message
 ;; Test AB
-				        LDA #$AB			;Send test Interface command
-				        STA >KBD_CMD_BUF
+				LDA #$AB			;Send test Interface command
+				STA >KBD_CMD_BUF
 
                 JSR Poll_Outbuf ;
 

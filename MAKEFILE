@@ -1,0 +1,7 @@
+.asm.obj:
+	wdc816as -o $*.obj $*.asm
+
+all: c0c.obj c0l.obj c0m.obj c0s.obj
+
+clean:
+	del *.obj

@@ -1,0 +1,1503 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\PARA_HW.C",0
+     7                        ;
+     8                        ;#include	"HAL.H"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL.H",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\CH376INC.H",0
+    11                        	.stag	_FAT_DIR_INFO,256,1
+    12                        	.member	DIR_Name,0,110,8,0,11
+    13                        	.member	DIR_Attr,88,14,8,8
+    14                        	.member	DIR_NTRes,96,14,8,8
+    15                        	.member	DIR_CrtTimeTenth,104,14,8,8
+    16                        	.member	DIR_CrtTime,112,15,8,16
+    17                        	.member	DIR_CrtDate,128,15,8,16
+    18                        	.member	DIR_LstAccDate,144,15,8,16
+    19                        	.member	DIR_FstClusHI,160,15,8,16
+    20                        	.member	DIR_WrtTime,176,15,8,16
+    21                        	.member	DIR_WrtDate,192,15,8,16
+    22                        	.member	DIR_FstClusLO,208,15,8,16
+    23                        	.member	DIR_FileSize,224,18,8,32
+    24                        	.eos
+    25                        	.stag	_BULK_ONLY_CBW,248,2
+    26                        	.member	CBW_Sig,0,18,8,32
+    27                        	.member	CBW_Tag,32,18,8,32
+    28                        	.member	CBW_DataLen0,64,14,8,8
+    29                        	.member	CBW_DataLen1,72,14,8,8
+    30                        	.member	CBW_DataLen2,80,15,8,16
+    31                        	.member	CBW_Flag,96,14,8,8
+    32                        	.member	CBW_LUN,104,14,8,8
+    33                        	.member	CBW_CB_Len,112,14,8,8
+    34                        	.member	CBW_CB_Buf,120,110,8,0,16
+    35                        	.eos
+    36                        	.stag	_INQUIRY_DATA,288,3
+    37                        	.member	DeviceType,0,14,8,8
+    38                        	.member	RemovableMedia,8,14,8,8
+    39                        	.member	Versions,16,14,8,8
+    40                        	.member	DataFormatAndEtc,24,14,8,8
+    41                        	.member	AdditionalLength,32,14,8,8
+    42                        	.member	Reserved1,40,14,8,8
+    43                        	.member	Reserved2,48,14,8,8
+    44                        	.member	MiscFlag,56,14,8,8
+    45                        	.member	VendorIdStr,64,110,8,0,8
+    46                        	.member	ProductIdStr,128,110,8,0,16
+    47                        	.member	ProductRevStr,256,110,8,0,4
+    48                        	.eos
+    49                        	.stag	_SENSE_DATA,144,4
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    50                        	.member	ErrorCode,0,14,8,8
+    51                        	.member	SegmentNumber,8,14,8,8
+    52                        	.member	SenseKeyAndEtc,16,14,8,8
+    53                        	.member	Information0,24,14,8,8
+    54                        	.member	Information1,32,14,8,8
+    55                        	.member	Information2,40,14,8,8
+    56                        	.member	Information3,48,14,8,8
+    57                        	.member	AdditSenseLen,56,14,8,8
+    58                        	.member	CmdSpecInfo,64,110,8,0,4
+    59                        	.member	AdditSenseCode,96,14,8,8
+    60                        	.member	AddSenCodeQual,104,14,8,8
+    61                        	.member	FieldReplaUnit,112,14,8,8
+    62                        	.member	SenseKeySpec,120,110,8,0,3
+    63                        	.eos
+    64                        	.stag	fake5_,112,5
+    65                        	.member	mBuffer,0,110,8,0,14
+    66                        	.eos
+    67                        	.stag	fake6_,8,6
+    68                        	.member	mUpdateFileSz,0,14,8,8
+    69                        	.eos
+    70                        	.stag	fake7_,8,7
+    71                        	.member	mDirInfoIndex,0,14,8,8
+    72                        	.eos
+    73                        	.utag	fake8_,32,8
+    74                        	.member	mByteOffset,0,18,11,32
+    75                        	.member	mSectorLba,0,18,11,32
+    76                        	.eos
+    77                        	.stag	fake9_,16,9
+    78                        	.member	mByteCount,0,15,8,16
+    79                        	.eos
+    80                        	.stag	fake10_,16,10
+    81                        	.member	mByteCount,0,15,8,16
+    82                        	.eos
+    83                        	.utag	fake11_,32,11
+    84                        	.member	mSectorOffset,0,18,11,32
+    85                        	.member	mSectorLba,0,18,11,32
+    86                        	.eos
+    87                        	.stag	fake12_,64,12
+    88                        	.member	mSectorCount,0,14,8,8
+    89                        	.member	mReserved1,8,14,8,8
+    90                        	.member	mReserved2,16,14,8,8
+    91                        	.member	mReserved3,24,14,8,8
+    92                        	.member	mStartSector,32,18,8,32
+    93                        	.eos
+    94                        	.stag	fake13_,64,13
+    95                        	.member	mSectorCount,0,14,8,8
+    96                        	.member	mReserved1,8,14,8,8
+    97                        	.member	mReserved2,16,14,8,8
+    98                        	.member	mReserved3,24,14,8,8
+    99                        	.member	mStartSector,32,18,8,32
+   100                        	.eos
+   101                        	.stag	fake14_,32,14
+   102                        	.member	mDiskSizeSec,0,18,8,32
+   103                        	.eos
+   104                        	.stag	fake15_,72,15
+   105                        	.member	mTotalSector,0,18,8,32
+   106                        	.member	mFreeSector,32,18,8,32
+   107                        	.member	mDiskFat,64,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+   108                        	.eos
+   109                        	.stag	fake16_,8,16
+   110                        	.member	mMaxLogicUnit,0,14,8,8
+   111                        	.eos
+   112                        	.stag	fake17_,32,17
+   113                        	.member	mDiskSizeSec,0,18,8,32
+   114                        	.eos
+   115                        	.stag	fake18_,40,18
+   116                        	.member	mStartSector,0,18,8,32
+   117                        	.member	mSectorCount,32,14,8,8
+   118                        	.eos
+   119                        	.stag	fake19_,40,19
+   120                        	.member	mStartSector,0,18,8,32
+   121                        	.member	mSectorCount,32,14,8,8
+   122                        	.eos
+   123                        	.utag	_CH376_CMD_DATA,288,20
+   124                        	.member	Default,0,10,11,112,5
+   125                        	.member	DiskMountInq,0,10,11,288,3
+   126                        	.member	OpenDirInfo,0,10,11,256,1
+   127                        	.member	EnumDirInfo,0,10,11,256,1
+   128                        	.member	FileCLose,0,10,11,8,6
+   129                        	.member	DirInfoRead,0,10,11,8,7
+   130                        	.member	ByteLocate,0,11,11,32,8
+   131                        	.member	ByteRead,0,10,11,16,9
+   132                        	.member	ByteWrite,0,10,11,16,10
+   133                        	.member	SectorLocate,0,11,11,32,11
+   134                        	.member	SectorRead,0,10,11,64,12
+   135                        	.member	SectorWrite,0,10,11,64,13
+   136                        	.member	DiskCapacity,0,10,11,32,14
+   137                        	.member	DiskQuery,0,10,11,72,15
+   138                        	.member	DiskBocCbw,0,10,11,248,2
+   139                        	.member	DiskMaxLun,0,10,11,8,16
+   140                        	.member	DiskInitInq,0,10,11,288,3
+   141                        	.member	DiskInqData,0,10,11,288,3
+   142                        	.member	ReqSenseData,0,10,11,144,4
+   143                        	.member	DiskSize,0,10,11,32,17
+   144                        	.member	DiskRead,0,10,11,40,18
+   145                        	.member	DiskWrite,0,10,11,40,19
+   146                        	.eos
+   147                        	.line	586
+   148                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL.H",4
+   149                        	.line	42
+   150                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\PARA_HW.C",2
+   151                        ;#include	"fxtypes.h"
+   152                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   153                        	.stag	_fx_bytebits,8,21
+   154                        	.member	b7,0,14,17,1
+   155                        	.member	b6,1,14,17,1
+   156                        	.member	b5,2,14,17,1
+   157                        	.member	b4,3,14,17,1
+   158                        	.member	b3,4,14,17,1
+   159                        	.member	b2,5,14,17,1
+   160                        	.member	b1,6,14,17,1
+   161                        	.member	b0,7,14,17,1
+   162                        	.eos
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   163                        	.stag	_fx_node,384,22
+   164                        	.member	type,0,14,8,8
+   165                        	.member	Reserved0,8,14,8,8
+   166                        	.member	data,16,129,8,32
+   167                        	.member	last,48,138,8,32,22
+   168                        	.member	next,80,138,8,32,22
+   169                        	.member	name,112,110,8,0,32
+   170                        	.member	Reserved1,368,16,8,16
+   171                        	.eos
+   172                        	.stag	_fx_nodelist,96,23
+   173                        	.member	listhead,0,138,8,32,22
+   174                        	.member	listData,32,129,8,32
+   175                        	.member	deallocator,64,641,8,32
+   176                        	.eos
+   177                        	.stag	_fx_queue,80,24
+   178                        	.member	count,0,5,8,16
+   179                        	.member	front,16,138,8,32,22
+   180                        	.member	rear,48,138,8,32,22
+   181                        	.eos
+   182                        	.stag	fake25_,32,25
+   183                        	.member	subsystem,0,14,8,8
+   184                        	.member	level,8,14,8,8
+   185                        	.member	error,16,16,8,16
+   186                        	.eos
+   187                        	.stag	_fx_process_signal,16,26
+   188                        	.member	cbSize,0,16,8,16
+   189                        	.eos
+   190                        	.stag	_fx_semaphore,16,27
+   191                        	.member	reserved,0,5,8,16
+   192                        	.eos
+   193                        	.stag	_fx_fileBlock,552,28
+   194                        	.member	openCount,0,16,8,16
+   195                        	.member	lockCount,16,16,8,16
+   196                        	.member	dirty,32,14,8,8
+   197                        	.member	fileBuffer,40,110,8,0,64
+   198                        	.eos
+   199                        	.stag	_fx_irq_data,48,29
+   200                        	.member	line,0,5,8,16
+   201                        	.member	keycode,16,142,8,32
+   202                        	.eos
+   203                        	.stag	_task,48,30
+   204                        	.member	SPL,0,14,8,8
+   205                        	.member	SPH,8,14,8,8
+   206                        	.member	pstack,16,142,8,32
+   207                        	.eos
+   208                        	.stag	_task_stack,32,31
+   209                        	.member	SS,0,142,8,32
+   210                        	.eos
+   211                        	.stag	int_regs,104,32
+   212                        	.member	PB,0,14,8,8
+   213                        	.member	PH,8,14,8,8
+   214                        	.member	PL,16,14,8,8
+   215                        	.member	PP,24,14,8,8
+   216                        	.member	DB,32,14,8,8
+   217                        	.member	DH,40,14,8,8
+   218                        	.member	DL,48,14,8,8
+   219                        	.member	AH,56,14,8,8
+   220                        	.member	AL,64,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   221                        	.member	XH,72,14,8,8
+   222                        	.member	XL,80,14,8,8
+   223                        	.member	YH,88,14,8,8
+   224                        	.member	YL,96,14,8,8
+   225                        	.eos
+   226                        	.stag	_fx_eventMessage,304,33
+   227                        	.member	src,0,18,8,32
+   228                        	.member	dest,32,18,8,32
+   229                        	.member	type,64,16,8,16
+   230                        	.member	hwnd,80,129,8,32
+   231                        	.member	pheap,112,129,8,32
+   232                        	.member	msgTime,144,18,8,32
+   233                        	.member	data,176,110,8,0,16
+   234                        	.eos
+   235                        	.stag	_fx_cmdMessage,304,34
+   236                        	.member	src,0,18,8,32
+   237                        	.member	dest,32,18,8,32
+   238                        	.member	type,64,16,8,16
+   239                        	.member	hwnd,80,129,8,32
+   240                        	.member	pheap,112,129,8,32
+   241                        	.member	msgTime,144,18,8,32
+   242                        	.member	cmdCId,176,16,8,16
+   243                        	.member	cmdMId,192,16,8,16
+   244                        	.member	parameter1,208,18,8,32
+   245                        	.member	parameter2,240,18,8,32
+   246                        	.member	parameter3,272,18,8,32
+   247                        	.eos
+   248                        	.stag	_fx_console_ctl,448,35
+   249                        	.member	maxCols,0,5,8,16
+   250                        	.member	maxRows,16,5,8,16
+   251                        	.member	curX,32,5,8,16
+   252                        	.member	curY,48,5,8,16
+   253                        	.member	fgColor,64,5,8,16
+   254                        	.member	bgColor,80,5,8,16
+   255                        	.member	mode,96,14,8,8
+   256                        	.member	kbBuffer,104,101,8,0,16
+   257                        	.member	screenBuffer,360,142,8,32
+   258                        	.member	desktopMode,392,14,8,8
+   259                        	.member	lastMouseButton,400,5,8,16
+   260                        	.member	lastMouseX,416,5,8,16
+   261                        	.member	lastMouseY,432,5,8,16
+   262                        	.eos
+   263                        	.stag	_fx_desktop_ctl,392,36
+   264                        	.member	desktopMode,0,14,8,8
+   265                        	.member	cursorCtl,8,5,8,16
+   266                        	.member	cursorState,24,5,8,16
+   267                        	.member	backgroundColor,40,5,8,16
+   268                        	.member	foregroundColor,56,5,8,16
+   269                        	.member	menuMode,72,5,8,16
+   270                        	.member	lastMouseButton,88,5,8,16
+   271                        	.member	lastMouseX,104,5,8,16
+   272                        	.member	lastMouseY,120,5,8,16
+   273                        	.member	currentDiskName,136,142,8,32
+   274                        	.member	diskNodes,168,129,8,32
+   275                        	.member	titleNodes,200,129,8,32
+   276                        	.member	menuNodes,232,129,8,32
+   277                        	.member	iconNodes,264,129,8,32
+   278                        	.member	windowNodes,296,129,8,32
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   279                        	.member	fontNodes,328,129,8,32
+   280                        	.member	wndProc,360,138,8,32,23
+   281                        	.eos
+   282                        	.stag	_fx_process,800,37
+   283                        	.member	cbSize,0,5,8,16
+   284                        	.member	procId,16,18,8,32
+   285                        	.member	parentId,48,18,8,32
+   286                        	.member	ctx,80,129,8,32
+   287                        	.member	userId,112,16,8,16
+   288                        	.member	status,128,16,8,16
+   289                        	.member	foregroundActive,144,14,8,8
+   290                        	.member	tls,152,1121,8,32,8
+   291                        	.member	commandLine,408,142,8,32
+   292                        	.member	semaphores,440,138,8,32,23
+   293                        	.member	fileHandles,472,138,8,32,23
+   294                        	.member	pathList,504,138,8,32,23
+   295                        	.member	resources,536,138,8,32,23
+   296                        	.member	timerAware,568,14,8,8
+   297                        	.member	timerTicks,576,112,8,0,2
+   298                        	.member	timerTickCount,608,112,8,0,2
+   299                        	.member	kernelError,640,10,8,32,25
+   300                        	.member	consoleCtl,672,138,8,32,35
+   301                        	.member	desktopCtl,704,138,8,32,36
+   302                        	.member	execProc,736,641,8,32
+   303                        	.member	startupArgs,768,129,8,32
+   304                        	.eos
+   305                        	.stag	_fxProcessMessage,112,38
+   306                        	.member	src,0,18,8,32
+   307                        	.member	dest,32,18,8,32
+   308                        	.member	type,64,16,8,16
+   309                        	.member	processInfo,80,138,8,32,37
+   310                        	.eos
+   311                        	.stag	_fx_property,384,39
+   312                        	.member	name,0,110,8,0,16
+   313                        	.member	value,128,110,8,0,32
+   314                        	.eos
+   315                        	.utag	_24bitPointer,32,40
+   316                        	.member	address,0,142,11,32
+   317                        	.member	bytes,0,110,11,0,4
+   318                        	.eos
+   319                        	.stag	_PointStruct,32,41
+   320                        	.member	x,0,5,8,16
+   321                        	.member	y,16,5,8,16
+   322                        	.eos
+   323                        	.stag	_RectStruct,64,42
+   324                        	.member	x,0,5,8,16
+   325                        	.member	y,16,5,8,16
+   326                        	.member	width,32,5,8,16
+   327                        	.member	height,48,5,8,16
+   328                        	.eos
+   329                        	.stag	_k_WindowClass,256,43
+   330                        	.member	cbSize,0,16,8,16
+   331                        	.member	style,16,16,8,16
+   332                        	.member	pWndProc,32,654,8,32
+   333                        	.member	hInstance,64,129,8,32
+   334                        	.member	hIcon,96,129,8,32
+   335                        	.member	hCursor,128,129,8,32
+   336                        	.member	hbrBackground,160,129,8,32
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   337                        	.member	lpszMenuName,192,142,8,32
+   338                        	.member	lpszClassName,224,142,8,32
+   339                        	.eos
+   340                        	.stag	_ClickableRect,88,44
+   341                        	.member	area,0,10,8,64,42
+   342                        	.member	z,64,5,8,16
+   343                        	.member	enabled,80,14,8,8
+   344                        	.eos
+   345                        	.stag	_NCClickableRect,88,45
+   346                        	.member	area,0,10,8,64,42
+   347                        	.member	msgType,64,16,8,16
+   348                        	.member	enabled,80,14,8,8
+   349                        	.eos
+   350                        	.stag	_DragData,136,46
+   351                        	.member	area,0,10,8,64,42
+   352                        	.member	xoffset,64,5,8,16
+   353                        	.member	yoffset,80,5,8,16
+   354                        	.member	msgType,96,16,8,16
+   355                        	.member	isDrag,112,14,8,8
+   356                        	.member	canDrag,120,14,8,8
+   357                        	.member	canDrop,128,14,8,8
+   358                        	.eos
+   359                        	.stag	_k_WindowStruct,2808,47
+   360                        	.member	cbSize,0,16,8,16
+   361                        	.member	style,16,18,8,32
+   362                        	.member	win_id,48,5,8,16
+   363                        	.member	win_x,64,5,8,16
+   364                        	.member	win_y,80,5,8,16
+   365                        	.member	win_width,96,5,8,16
+   366                        	.member	win_height,112,5,8,16
+   367                        	.member	wndRect,128,10,8,64,42
+   368                        	.member	clientRect,192,10,8,64,42
+   369                        	.member	nonclientGadgets,256,106,8,0,45,16
+   370                        	.member	clickable,1664,129,8,32
+   371                        	.member	win_title,1696,110,8,0,32
+   372                        	.member	Reserved0,1952,16,8,16
+   373                        	.member	win_class,1968,110,8,0,16
+   374                        	.member	win_class_name,2096,110,8,0,32
+   375                        	.member	nBitmapLayer,2352,16,8,16
+   376                        	.member	procid,2368,18,8,32
+   377                        	.member	pWndClass,2400,138,8,32,43
+   378                        	.member	pParentWindow,2432,129,8,32
+   379                        	.member	hMenu,2464,129,8,32
+   380                        	.member	pChildWindows,2496,138,8,32,23
+   381                        	.member	pChildHitList,2528,138,8,32,23
+   382                        	.member	isVisible,2560,14,8,8
+   383                        	.member	windowData,2568,129,8,32
+   384                        	.member	clientData,2600,1121,8,32,6
+   385                        	.member	isClosed,2792,14,8,8
+   386                        	.member	isClosing,2800,14,8,8
+   387                        	.eos
+   388                        	.stag	_k_WindowStructEx,2704,48
+   389                        	.member	cbSize,0,16,8,16
+   390                        	.member	style,16,18,8,32
+   391                        	.member	win_id,48,5,8,16
+   392                        	.member	win_x,64,5,8,16
+   393                        	.member	win_y,80,5,8,16
+   394                        	.member	win_width,96,5,8,16
+  Thu Dec  3 2020 22:25                                                Page 8
+
+
+   395                        	.member	win_height,112,5,8,16
+   396                        	.member	wndRect,128,10,8,64,42
+   397                        	.member	clientRect,192,10,8,64,42
+   398                        	.member	nonclientGadgets,256,106,8,0,45,16
+   399                        	.member	clickable,1664,129,8,32
+   400                        	.member	win_title,1696,110,8,0,32
+   401                        	.member	Reserved0,1952,16,8,16
+   402                        	.member	win_class,1968,110,8,0,16
+   403                        	.member	nBitmapLayer,2096,16,8,16
+   404                        	.member	procid,2112,18,8,32
+   405                        	.member	pWndClass,2144,138,8,32,43
+   406                        	.member	pParentWindow,2176,129,8,32
+   407                        	.member	hMenu,2208,129,8,32
+   408                        	.member	pChildWindows,2240,138,8,32,23
+   409                        	.member	pChildHitList,2272,138,8,32,23
+   410                        	.member	isVisible,2304,14,8,8
+   411                        	.member	windowData,2312,129,8,32
+   412                        	.member	clientData,2344,1121,8,32,4
+   413                        	.member	isClosed,2472,14,8,8
+   414                        	.member	hWnd,2480,129,8,32
+   415                        	.member	localRect,2512,10,8,64,42
+   416                        	.member	globalRect,2576,10,8,64,42
+   417                        	.member	clientOffsetRect,2640,10,8,64,42
+   418                        	.eos
+   419                        	.stag	_FontMetric,32,49
+   420                        	.member	width,0,5,8,16
+   421                        	.member	height,16,5,8,16
+   422                        	.eos
+   423                        	.stag	_ctl_Textbox,112,50
+   424                        	.member	win_id,0,5,8,16
+   425                        	.member	win_x,16,5,8,16
+   426                        	.member	win_y,32,5,8,16
+   427                        	.member	win_width,48,5,8,16
+   428                        	.member	win_height,64,5,8,16
+   429                        	.member	content,80,1166,8,32
+   430                        	.eos
+   431                        	.stag	_MenuStruct,248,51
+   432                        	.member	cx,0,5,8,16
+   433                        	.member	cy,16,5,8,16
+   434                        	.member	width,32,5,8,16
+   435                        	.member	height,48,5,8,16
+   436                        	.member	fcolor,64,14,8,8
+   437                        	.member	bcolor,72,14,8,8
+   438                        	.member	chromeLeft,80,14,8,8
+   439                        	.member	chromeRight1,88,14,8,8
+   440                        	.member	chromeRight2,96,14,8,8
+   441                        	.member	itemId,104,16,8,16
+   442                        	.member	pCaption,120,142,8,32
+   443                        	.member	subMenus,152,138,8,32,23
+   444                        	.member	pBackground,184,129,8,32
+   445                        	.member	hWndOwner,216,129,8,32
+   446                        	.eos
+   447                        	.stag	fake52_,112,52
+   448                        	.member	menuId,0,16,8,16
+   449                        	.member	caption,16,142,8,32
+   450                        	.member	rect,48,10,8,64,42
+   451                        	.eos
+   452                        	.stag	fake53_,3568,53
+  Thu Dec  3 2020 22:25                                                Page 9
+
+
+   453                        	.member	pParent,0,138,8,32,47
+   454                        	.member	rect,32,10,8,64,42
+   455                        	.member	captions,96,1134,8,32,24
+   456                        	.member	chrome,864,110,8,0,24
+   457                        	.member	ids,1056,112,8,0,24
+   458                        	.member	clickable,1440,106,8,0,44,24
+   459                        	.member	selected,3552,16,8,16
+   460                        	.eos
+   461                        	.stag	_fx_button_t,80,54
+   462                        	.member	pCaption,0,142,8,32
+   463                        	.member	data,32,129,8,32
+   464                        	.member	captionPixelWidth,64,16,8,16
+   465                        	.eos
+   466                        	.stag	_fx_scrollbar_t,192,55
+   467                        	.member	min,0,16,8,16
+   468                        	.member	max,16,16,8,16
+   469                        	.member	increment,32,16,8,16
+   470                        	.member	stopsize,48,16,8,16
+   471                        	.member	location,64,5,8,16
+   472                        	.member	state,80,5,8,16
+   473                        	.member	rectThumb,96,10,8,64,42
+   474                        	.member	data,160,129,8,32
+   475                        	.eos
+   476                        	.stag	_fx_listbox_t,240,56
+   477                        	.member	pos,0,5,8,16
+   478                        	.member	selected,16,16,8,16
+   479                        	.member	offsetX,32,5,8,16
+   480                        	.member	offsetY,48,5,8,16
+   481                        	.member	inc,64,5,8,16
+   482                        	.member	direction,80,5,8,16
+   483                        	.member	top,96,5,8,16
+   484                        	.member	bottom,112,5,8,16
+   485                        	.member	indexTop,128,5,8,16
+   486                        	.member	indexBottom,144,5,8,16
+   487                        	.member	maxItems,160,16,8,16
+   488                        	.member	fontSet,176,142,8,32
+   489                        	.member	data,208,129,8,32
+   490                        	.eos
+   491                        	.stag	_fx_textbox_t,144,57
+   492                        	.member	pos,0,5,8,16
+   493                        	.member	selected,16,16,8,16
+   494                        	.member	offsetX,32,5,8,16
+   495                        	.member	offsetY,48,5,8,16
+   496                        	.member	isShifted,64,14,8,8
+   497                        	.member	cursorState,72,14,8,8
+   498                        	.member	fontSet,80,142,8,32
+   499                        	.member	data,112,129,8,32
+   500                        	.eos
+   501                        	.stag	_fx_menuAnchor_t,144,58
+   502                        	.member	pCaption,0,142,8,32
+   503                        	.member	renderLayoutX,32,16,8,16
+   504                        	.member	renderLayoutY,48,16,8,16
+   505                        	.member	captionPixelWidth,64,16,8,16
+   506                        	.member	data,80,129,8,32
+   507                        	.member	droppedWindow,112,138,8,32,47
+   508                        	.eos
+   509                        	.stag	_SubMenuStruct,64,59
+   510                        	.member	caption,0,142,8,32
+  Thu Dec  3 2020 22:25                                                Page 10
+
+
+   511                        	.member	action,32,641,8,32
+   512                        	.eos
+   513                        	.stag	_SubMenuListStruct,40,60
+   514                        	.member	cMenus,0,14,8,8
+   515                        	.member	psubmenus,8,9354,8,32,59
+   516                        	.eos
+   517                        	.stag	_fx_ComBuffer,2080,61
+   518                        	.member	cbSize,0,16,8,16
+   519                        	.member	cbBuffer,16,16,8,16
+   520                        	.member	buffer,32,110,8,0,256
+   521                        	.eos
+   522                        	.line	708
+   523                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\PARA_HW.C",3
+   524                        ;//#include "fxkernel.h"
+   525                        ;
+   526                        ;//void k_debug_integer(char FAR* debugString, UIN
+                    T n);
+   527                        ;
+   528                        ;#define CH376_CMD_PORT	((unsigned char FAR *)0x
+                    AFE809)
+   529                        ;#define CH376_DAT_PORT	((unsigned char FAR *)0x
+                    AFE808)
+   530                        ;
+   531                        ;
+   532                        ;
+   533                        ;void CH376_PORT_INIT( void )
+   534                        ;{
+   535                        	.line	13
+   536                        	.line	14
+   537                        	code
+   538                        	xdef	~~CH376_PORT_INIT
+   539                        	func
+   540                        	.function	14
+   541                        ~~CH376_PORT_INIT:
+   542                        	longa	on
+   543                        	longi	on
+   544 00:0000: 3B           	tsc
+   545 00:0001: 38           	sec
+   546 00:0002: E9 00 00     	sbc	#L2
+   547 00:0005: 1B           	tcs
+   548 00:0006: 0B           	phd
+   549 00:0007: 5B           	tcd
+   550                        	.block	14
+   551                        ;}
+   552                        	.line	15
+   553                        L5:
+   554 00:0008: 2B           	pld
+   555 00:0009: 3B           	tsc
+   556 00:000A: 18           	clc
+   557 00:000B: 69 00 00     	adc	#L2
+   558 00:000E: 1B           	tcs
+   559 00:000F: 6B           	rtl
+   560                        	.endblock	15
+   561             00000000   L2	equ	0
+   562             00000001   L3	equ	1
+   563                        	ends
+   564                        	efunc
+  Thu Dec  3 2020 22:25                                                Page 11
+
+
+   565                        	.endfunc	15,1,0
+   566                        	.line	15
+   567                        ;
+   568                        ;//void	mDelay0_5uS( void )
+   569                        ;//{
+   570                        ;//}
+   571                        ;
+   572                        ;void xEndCH376Cmd(void)
+   573                        ;{
+   574                        	.line	21
+   575                        	.line	22
+   576                        	code
+   577                        	xdef	~~xEndCH376Cmd
+   578                        	func
+   579                        	.function	22
+   580                        ~~xEndCH376Cmd:
+   581                        	longa	on
+   582                        	longi	on
+   583 00:0010: 3B           	tsc
+   584 00:0011: 38           	sec
+   585 00:0012: E9 00 00     	sbc	#L6
+   586 00:0015: 1B           	tcs
+   587 00:0016: 0B           	phd
+   588 00:0017: 5B           	tcd
+   589                        	.block	22
+   590                        ;	return;
+   591                        	.line	23
+   592                        L9:
+   593 00:0018: 2B           	pld
+   594 00:0019: 3B           	tsc
+   595 00:001A: 18           	clc
+   596 00:001B: 69 00 00     	adc	#L6
+   597 00:001E: 1B           	tcs
+   598 00:001F: 6B           	rtl
+   599                        ;}
+   600                        	.line	24
+   601                        	.endblock	24
+   602             00000000   L6	equ	0
+   603             00000001   L7	equ	1
+   604                        	ends
+   605                        	efunc
+   606                        	.endfunc	24,1,0
+   607                        	.line	24
+   608                        ;
+   609                        ;UINT8 xReadCH376Status(void)
+   610                        ;{
+   611                        	.line	26
+   612                        	.line	27
+   613                        	code
+   614                        	xdef	~~xReadCH376Status
+   615                        	func
+   616                        	.function	27
+   617                        ~~xReadCH376Status:
+   618                        	longa	on
+   619                        	longi	on
+   620 00:0020: 3B           	tsc
+   621 00:0021: 38           	sec
+   622 00:0022: E9 01 00     	sbc	#L10
+  Thu Dec  3 2020 22:25                                                Page 12
+
+
+   623 00:0025: 1B           	tcs
+   624 00:0026: 0B           	phd
+   625 00:0027: 5B           	tcd
+   626                        	.block	27
+   627                        ;	UINT8 b = 0;
+   628                        ;
+   629                        ;	k_debug_integer("xReadCH376Status1:",0);
+   630             00000000   b_1	set	0
+   631                        	.sym	b,0,14,1,8
+   632 00:0028: E2 20        	sep	#$20
+   633                        	longa	off
+   634 00:002A: 64 01        	stz	<L11+b_1
+   635 00:002C: C2 20        	rep	#$20
+   636                        	longa	on
+   637                        	.line	30
+   638 00:002E: F4 00 00     	pea	#<$0
+   639 00:0031: F4 xx xx     	pea	#^L1
+   640 00:0034: F4 xx xx     	pea	#<L1
+   641 00:0037: 22 xx xx xx  	jsl	~~k_debug_integer
+   642                        ;
+   643                        ;	b = CH376_CMD_PORT[0];
+   644                        	.line	32
+   645 00:003B: E2 20        	sep	#$20
+   646                        	longa	off
+   647 00:003D: AF 09 E8 AF  	lda	>11528201
+   648 00:0041: 85 01        	sta	<L11+b_1
+   649 00:0043: C2 20        	rep	#$20
+   650                        	longa	on
+   651                        ;
+   652                        ;	k_debug_integer("xReadCH376Status2:",0);
+   653                        	.line	34
+   654 00:0045: F4 00 00     	pea	#<$0
+   655 00:0048: F4 xx xx     	pea	#^L1+19
+   656 00:004B: F4 xx xx     	pea	#<L1+19
+   657 00:004E: 22 xx xx xx  	jsl	~~k_debug_integer
+   658                        ;
+   659                        ;
+   660                        ;	return b;
+   661                        	.line	37
+   662 00:0052: A5 01        	lda	<L11+b_1
+   663 00:0054: 29 FF 00     	and	#$ff
+   664                        L13:
+   665 00:0057: A8           	tay
+   666 00:0058: 2B           	pld
+   667 00:0059: 3B           	tsc
+   668 00:005A: 18           	clc
+   669 00:005B: 69 01 00     	adc	#L10
+   670 00:005E: 1B           	tcs
+   671 00:005F: 98           	tya
+   672 00:0060: 6B           	rtl
+   673                        ;}
+   674                        	.line	38
+   675                        	.endblock	38
+   676             00000001   L10	equ	1
+   677             00000001   L11	equ	1
+   678                        	ends
+   679                        	efunc
+   680                        	.endfunc	38,1,1
+  Thu Dec  3 2020 22:25                                                Page 13
+
+
+   681                        	.line	38
+   682                        	data
+   683                        L1:
+   684 00:0000: 78 52 65 61  	db	$78,$52,$65,$61,$64,$43,$48,$33,$37,$36,
+                    $53,$74,$61,$74,$75
+       00:0004: 64 43 48 33 
+       00:0008: 37 36 53 74 
+       00:000C: 61 74 75 
+   685 00:000F: 73 31 3A 00  	db	$73,$31,$3A,$00,$78,$52,$65,$61,$64,$43,
+                    $48,$33,$37,$36,$53
+       00:0013: 78 52 65 61 
+       00:0017: 64 43 48 33 
+       00:001B: 37 36 53 
+   686 00:001E: 74 61 74 75  	db	$74,$61,$74,$75,$73,$32,$3A,$00
+       00:0022: 73 32 3A 00 
+   687 00:0026:              	ends
+   688                        ;
+   689                        ;void xWriteCH376Cmd( UINT8 mCmd )
+   690                        ;{
+   691                        	.line	40
+   692                        	.line	41
+   693                        	code
+   694                        	xdef	~~xWriteCH376Cmd
+   695                        	func
+   696                        	.function	41
+   697                        ~~xWriteCH376Cmd:
+   698                        	longa	on
+   699                        	longi	on
+   700 00:0061: 3B           	tsc
+   701 00:0062: 38           	sec
+   702 00:0063: E9 01 00     	sbc	#L15
+   703 00:0066: 1B           	tcs
+   704 00:0067: 0B           	phd
+   705 00:0068: 5B           	tcd
+   706             00000004   mCmd_0	set	4
+   707                        	.block	41
+   708                        ;	UINT8	i;
+   709                        ;
+   710                        ;
+   711                        ;
+   712                        ;	CH376_CMD_PORT[0] = mCmd;
+   713             00000000   i_1	set	0
+   714                        	.sym	i,0,14,1,8
+   715                        	.sym	mCmd,4,14,6,8
+   716                        	.line	46
+   717 00:0069: E2 20        	sep	#$20
+   718                        	longa	off
+   719 00:006B: A5 05        	lda	<L15+mCmd_0
+   720 00:006D: 8F 09 E8 AF  	sta	>11528201
+   721 00:0071: C2 20        	rep	#$20
+   722                        	longa	on
+   723                        ;	/*	mDelay0_5uS( ); mDelay0_5uS( ); mDelay0_
+                    5uS( );*/
+   724                        ;
+   725                        ;	k_debug_integer("xWriteCH376Cmd1:",mCmd);
+   726                        	.line	49
+   727 00:0073: A5 05        	lda	<L15+mCmd_0
+   728 00:0075: 29 FF 00     	and	#$ff
+  Thu Dec  3 2020 22:25                                                Page 14
+
+
+   729 00:0078: 48           	pha
+   730 00:0079: F4 xx xx     	pea	#^L14
+   731 00:007C: F4 xx xx     	pea	#<L14
+   732 00:007F: 22 xx xx xx  	jsl	~~k_debug_integer
+   733                        ;
+   734                        ;	mDelaymS(1);
+   735                        	.line	51
+   736 00:0083: F4 01 00     	pea	#<$1
+   737 00:0086: 22 xx xx xx  	jsl	~~mDelaymS
+   738                        ;
+   739                        ;	k_debug_integer("xWriteCH376Cmd2:",mCmd);
+   740                        	.line	53
+   741 00:008A: A5 05        	lda	<L15+mCmd_0
+   742 00:008C: 29 FF 00     	and	#$ff
+   743 00:008F: 48           	pha
+   744 00:0090: F4 xx xx     	pea	#^L14+17
+   745 00:0093: F4 xx xx     	pea	#<L14+17
+   746 00:0096: 22 xx xx xx  	jsl	~~k_debug_integer
+   747                        ;
+   748                        ;	for ( i = 10; i != 0; -- i )
+   749                        	.line	55
+   750 00:009A: E2 20        	sep	#$20
+   751                        	longa	off
+   752 00:009C: A9 0A        	lda	#$a
+   753 00:009E: 85 01        	sta	<L16+i_1
+   754 00:00A0: C2 20        	rep	#$20
+   755                        	longa	on
+   756 00:00A2: 82 15 00     	brl	L10004
+   757                        L10003:
+   758                        ;	{
+   759                        	.line	56
+   760                        ;		if ( ( xReadCH376Status( ) & PARA_STATE_
+                    BUSY ) == 0 )
+   761                        	.line	57
+   762                        ;			break;
+   763 00:00A5: 22 xx xx xx  	jsl	~~xReadCH376Status
+   764 00:00A9: E2 20        	sep	#$20
+   765                        	longa	off
+   766 00:00AB: 29 10        	and	#<$10
+   767 00:00AD: C2 20        	rep	#$20
+   768                        	longa	on
+   769 00:00AF: D0 03        	bne	L18
+   770 00:00B1: 82 10 00     	brl	L10002
+   771                        L18:
+   772                        ;	}
+   773                        	.line	59
+   774                        L10001:
+   775 00:00B4: E2 20        	sep	#$20
+   776                        	longa	off
+   777 00:00B6: C6 01        	dec	<L16+i_1
+   778 00:00B8: C2 20        	rep	#$20
+   779                        	longa	on
+   780                        L10004:
+   781 00:00BA: A5 01        	lda	<L16+i_1
+   782 00:00BC: 29 FF 00     	and	#$ff
+   783 00:00BF: F0 03        	beq	L19
+   784 00:00C1: 82 E1 FF     	brl	L10003
+   785                        L19:
+  Thu Dec  3 2020 22:25                                                Page 15
+
+
+   786                        L10002:
+   787                        ;}
+   788                        	.line	60
+   789                        L20:
+   790 00:00C4: A5 03        	lda	<L15+2
+   791 00:00C6: 85 05        	sta	<L15+2+2
+   792 00:00C8: A5 02        	lda	<L15+1
+   793 00:00CA: 85 04        	sta	<L15+1+2
+   794 00:00CC: 2B           	pld
+   795 00:00CD: 3B           	tsc
+   796 00:00CE: 18           	clc
+   797 00:00CF: 69 03 00     	adc	#L15+2
+   798 00:00D2: 1B           	tcs
+   799 00:00D3: 6B           	rtl
+   800                        	.endblock	60
+   801             00000001   L15	equ	1
+   802             00000001   L16	equ	1
+   803                        	ends
+   804                        	efunc
+   805                        	.endfunc	60,1,1
+   806                        	.line	60
+   807                        	data
+   808                        L14:
+   809 00:0026: 78 57 72 69  	db	$78,$57,$72,$69,$74,$65,$43,$48,$33,$37,
+                    $36,$43,$6D,$64,$31
+       00:002A: 74 65 43 48 
+       00:002E: 33 37 36 43 
+       00:0032: 6D 64 31 
+   810 00:0035: 3A 00 78 57  	db	$3A,$00,$78,$57,$72,$69,$74,$65,$43,$48,
+                    $33,$37,$36,$43,$6D
+       00:0039: 72 69 74 65 
+       00:003D: 43 48 33 37 
+       00:0041: 36 43 6D 
+   811 00:0044: 64 32 3A 00  	db	$64,$32,$3A,$00
+   812 00:0048:              	ends
+   813                        ;
+   814                        ;
+   815                        ;void	xWriteCH376Data( UINT8 mData )
+   816                        ;{
+   817                        	.line	63
+   818                        	.line	64
+   819                        	code
+   820                        	xdef	~~xWriteCH376Data
+   821                        	func
+   822                        	.function	64
+   823                        ~~xWriteCH376Data:
+   824                        	longa	on
+   825                        	longi	on
+   826 00:00D4: 3B           	tsc
+   827 00:00D5: 38           	sec
+   828 00:00D6: E9 00 00     	sbc	#L22
+   829 00:00D9: 1B           	tcs
+   830 00:00DA: 0B           	phd
+   831 00:00DB: 5B           	tcd
+   832             00000004   mData_0	set	4
+   833                        	.block	64
+   834                        ;	CH376_DAT_PORT[0] = mData;
+   835                        	.sym	mData,4,14,6,8
+  Thu Dec  3 2020 22:25                                                Page 16
+
+
+   836                        	.line	65
+   837 00:00DC: E2 20        	sep	#$20
+   838                        	longa	off
+   839 00:00DE: A5 04        	lda	<L22+mData_0
+   840 00:00E0: 8F 08 E8 AF  	sta	>11528200
+   841 00:00E4: C2 20        	rep	#$20
+   842                        	longa	on
+   843                        ;	mDelaymS(1);
+   844                        	.line	66
+   845 00:00E6: F4 01 00     	pea	#<$1
+   846 00:00E9: 22 xx xx xx  	jsl	~~mDelaymS
+   847                        ;//	mDelay0_5uS( );
+   848                        ;}
+   849                        	.line	68
+   850                        L25:
+   851 00:00ED: A5 02        	lda	<L22+2
+   852 00:00EF: 85 04        	sta	<L22+2+2
+   853 00:00F1: A5 01        	lda	<L22+1
+   854 00:00F3: 85 03        	sta	<L22+1+2
+   855 00:00F5: 2B           	pld
+   856 00:00F6: 3B           	tsc
+   857 00:00F7: 18           	clc
+   858 00:00F8: 69 02 00     	adc	#L22+2
+   859 00:00FB: 1B           	tcs
+   860 00:00FC: 6B           	rtl
+   861                        	.endblock	68
+   862             00000000   L22	equ	0
+   863             00000001   L23	equ	1
+   864                        	ends
+   865                        	efunc
+   866                        	.endfunc	68,1,0
+   867                        	.line	68
+   868                        ;UINT8	xReadCH376Data( void )
+   869                        ;{
+   870                        	.line	69
+   871                        	.line	70
+   872                        	code
+   873                        	xdef	~~xReadCH376Data
+   874                        	func
+   875                        	.function	70
+   876                        ~~xReadCH376Data:
+   877                        	longa	on
+   878                        	longi	on
+   879 00:00FD: 3B           	tsc
+   880 00:00FE: 38           	sec
+   881 00:00FF: E9 01 00     	sbc	#L26
+   882 00:0102: 1B           	tcs
+   883 00:0103: 0B           	phd
+   884 00:0104: 5B           	tcd
+   885                        	.block	70
+   886                        ;	UINT8 b = 0;
+   887                        ;
+   888                        ;//	mDelay0_5uS( );
+   889                        ;	mDelaymS(1);
+   890             00000000   b_1	set	0
+   891                        	.sym	b,0,14,1,8
+   892 00:0105: E2 20        	sep	#$20
+   893                        	longa	off
+  Thu Dec  3 2020 22:25                                                Page 17
+
+
+   894 00:0107: 64 01        	stz	<L27+b_1
+   895 00:0109: C2 20        	rep	#$20
+   896                        	longa	on
+   897                        	.line	74
+   898 00:010B: F4 01 00     	pea	#<$1
+   899 00:010E: 22 xx xx xx  	jsl	~~mDelaymS
+   900                        ;
+   901                        ;	b = CH376_DAT_PORT[0];
+   902                        	.line	76
+   903 00:0112: E2 20        	sep	#$20
+   904                        	longa	off
+   905 00:0114: AF 08 E8 AF  	lda	>11528200
+   906 00:0118: 85 01        	sta	<L27+b_1
+   907 00:011A: C2 20        	rep	#$20
+   908                        	longa	on
+   909                        ;
+   910                        ;	return b;
+   911                        	.line	78
+   912 00:011C: A5 01        	lda	<L27+b_1
+   913 00:011E: 29 FF 00     	and	#$ff
+   914                        L29:
+   915 00:0121: A8           	tay
+   916 00:0122: 2B           	pld
+   917 00:0123: 3B           	tsc
+   918 00:0124: 18           	clc
+   919 00:0125: 69 01 00     	adc	#L26
+   920 00:0128: 1B           	tcs
+   921 00:0129: 98           	tya
+   922 00:012A: 6B           	rtl
+   923                        ;}
+   924                        	.line	79
+   925                        	.endblock	79
+   926             00000001   L26	equ	1
+   927             00000001   L27	equ	1
+   928                        	ends
+   929                        	efunc
+   930                        	.endfunc	79,1,1
+   931                        	.line	79
+   932                        ;
+   933                        ;
+   934                        ;
+   935                        ;UINT8 Query376Interrupt( void )
+   936                        ;{
+   937                        	.line	83
+   938                        	.line	84
+   939                        	code
+   940                        	xdef	~~Query376Interrupt
+   941                        	func
+   942                        	.function	84
+   943                        ~~Query376Interrupt:
+   944                        	longa	on
+   945                        	longi	on
+   946 00:012B: 3B           	tsc
+   947 00:012C: 38           	sec
+   948 00:012D: E9 01 00     	sbc	#L30
+   949 00:0130: 1B           	tcs
+   950 00:0131: 0B           	phd
+   951 00:0132: 5B           	tcd
+  Thu Dec  3 2020 22:25                                                Page 18
+
+
+   952                        	.block	84
+   953                        ;	//return( xReadCH376Status( ) & PARA_STATE_INTB 
+                    ? FALSE : TRUE );
+   954                        ;
+   955                        ;	UINT8 status = 0x80;
+   956                        ;
+   957                        ;	asm SEI;
+   958             00000000   status_1	set	0
+   959                        	.sym	status,0,14,1,8
+   960 00:0133: E2 20        	sep	#$20
+   961                        	longa	off
+   962 00:0135: A9 80        	lda	#$80
+   963 00:0137: 85 01        	sta	<L31+status_1
+   964 00:0139: C2 20        	rep	#$20
+   965                        	longa	on
+   966                        	.line	89
+   967                        	asmstart
+   968 00:013B: 78           	SEI
+   969                        	asmend
+   970                        ;
+   971                        ;	while(status == 0x80)
+   972                        	.line	91
+   973                        L10005:
+   974 00:013C: E2 20        	sep	#$20
+   975                        	longa	off
+   976 00:013E: A5 01        	lda	<L31+status_1
+   977 00:0140: C9 80        	cmp	#<$80
+   978 00:0142: C2 20        	rep	#$20
+   979                        	longa	on
+   980 00:0144: F0 03        	beq	L33
+   981 00:0146: 82 1D 00     	brl	L10006
+   982                        L33:
+   983                        ;	{
+   984                        	.line	92
+   985                        ;		status = xReadCH376Status();
+   986                        	.line	93
+   987 00:0149: 22 xx xx xx  	jsl	~~xReadCH376Status
+   988 00:014D: E2 20        	sep	#$20
+   989                        	longa	off
+   990 00:014F: 85 01        	sta	<L31+status_1
+   991 00:0151: C2 20        	rep	#$20
+   992                        	longa	on
+   993                        ;	    k_debug_integer("k_sd_waitforirq::wait:",sta
+                    tus);
+   994                        	.line	94
+   995 00:0153: A5 01        	lda	<L31+status_1
+   996 00:0155: 29 FF 00     	and	#$ff
+   997 00:0158: 48           	pha
+   998 00:0159: F4 xx xx     	pea	#^L21
+   999 00:015C: F4 xx xx     	pea	#<L21
+  1000 00:015F: 22 xx xx xx  	jsl	~~k_debug_integer
+  1001                        ;	}
+  1002                        	.line	95
+  1003 00:0163: 82 D6 FF     	brl	L10005
+  1004                        L10006:
+  1005                        ;
+  1006                        ;	mDelayuS(2);
+  1007                        	.line	97
+  Thu Dec  3 2020 22:25                                                Page 19
+
+
+  1008 00:0166: F4 02 00     	pea	#<$2
+  1009 00:0169: 22 xx xx xx  	jsl	~~mDelayuS
+  1010                        ;
+  1011                        ;	xWriteCH376Cmd(CMD01_GET_STATUS);
+  1012                        	.line	99
+  1013 00:016D: F4 22 00     	pea	#<$22
+  1014 00:0170: 22 xx xx xx  	jsl	~~xWriteCH376Cmd
+  1015                        ;
+  1016                        ;	mDelayuS(1);
+  1017                        	.line	101
+  1018 00:0174: F4 01 00     	pea	#<$1
+  1019 00:0177: 22 xx xx xx  	jsl	~~mDelayuS
+  1020                        ;
+  1021                        ;	status = xReadCH376Status();
+  1022                        	.line	103
+  1023 00:017B: 22 xx xx xx  	jsl	~~xReadCH376Status
+  1024 00:017F: E2 20        	sep	#$20
+  1025                        	longa	off
+  1026 00:0181: 85 01        	sta	<L31+status_1
+  1027 00:0183: C2 20        	rep	#$20
+  1028                        	longa	on
+  1029                        ;
+  1030                        ;	k_debug_integer("k_sd_waitforirq::status:",statu
+                    s);
+  1031                        	.line	105
+  1032 00:0185: A5 01        	lda	<L31+status_1
+  1033 00:0187: 29 FF 00     	and	#$ff
+  1034 00:018A: 48           	pha
+  1035 00:018B: F4 xx xx     	pea	#^L21+23
+  1036 00:018E: F4 xx xx     	pea	#<L21+23
+  1037 00:0191: 22 xx xx xx  	jsl	~~k_debug_integer
+  1038                        ;
+  1039                        ;	asm cli;
+  1040                        	.line	107
+  1041                        	asmstart
+  1042 00:0195: 58           	cli
+  1043                        	asmend
+  1044                        ;
+  1045                        ;	return status;
+  1046                        	.line	109
+  1047 00:0196: A5 01        	lda	<L31+status_1
+  1048 00:0198: 29 FF 00     	and	#$ff
+  1049                        L34:
+  1050 00:019B: A8           	tay
+  1051 00:019C: 2B           	pld
+  1052 00:019D: 3B           	tsc
+  1053 00:019E: 18           	clc
+  1054 00:019F: 69 01 00     	adc	#L30
+  1055 00:01A2: 1B           	tcs
+  1056 00:01A3: 98           	tya
+  1057 00:01A4: 6B           	rtl
+  1058                        ;
+  1059                        ;
+  1060                        ;}
+  1061                        	.line	112
+  1062                        	.endblock	112
+  1063             00000001   L30	equ	1
+  1064             00000001   L31	equ	1
+  Thu Dec  3 2020 22:25                                                Page 20
+
+
+  1065                        	ends
+  1066                        	efunc
+  1067                        	.endfunc	112,1,1
+  1068                        	.line	112
+  1069                        	data
+  1070                        L21:
+  1071 00:0048: 6B 5F 73 64  	db	$6B,$5F,$73,$64,$5F,$77,$61,$69,$74,$66,
+                    $6F,$72,$69,$72,$71
+       00:004C: 5F 77 61 69 
+       00:0050: 74 66 6F 72 
+       00:0054: 69 72 71 
+  1072 00:0057: 3A 3A 77 61  	db	$3A,$3A,$77,$61,$69,$74,$3A,$00,$6B,$5F,
+                    $73,$64,$5F,$77,$61
+       00:005B: 69 74 3A 00 
+       00:005F: 6B 5F 73 64 
+       00:0063: 5F 77 61 
+  1073 00:0066: 69 74 66 6F  	db	$69,$74,$66,$6F,$72,$69,$72,$71,$3A,$3A,
+                    $73,$74,$61,$74,$75
+       00:006A: 72 69 72 71 
+       00:006E: 3A 3A 73 74 
+       00:0072: 61 74 75 
+  1074 00:0075: 73 3A 00     	db	$73,$3A,$00
+  1075 00:0078:              	ends
+  1076                        ;
+  1077                        ;UINT8	mInitCH376Host( void )
+  1078                        ;{
+  1079                        	.line	114
+  1080                        	.line	115
+  1081                        	code
+  1082                        	xdef	~~mInitCH376Host
+  1083                        	func
+  1084                        	.function	115
+  1085                        ~~mInitCH376Host:
+  1086                        	longa	on
+  1087                        	longi	on
+  1088 00:01A5: 3B           	tsc
+  1089 00:01A6: 38           	sec
+  1090 00:01A7: E9 01 00     	sbc	#L36
+  1091 00:01AA: 1B           	tcs
+  1092 00:01AB: 0B           	phd
+  1093 00:01AC: 5B           	tcd
+  1094                        	.block	115
+  1095                        ;	UINT8	res;
+  1096                        ;	CH376_PORT_INIT( );
+  1097             00000000   res_1	set	0
+  1098                        	.sym	res,0,14,1,8
+  1099                        	.line	117
+  1100 00:01AD: 22 xx xx xx  	jsl	~~CH376_PORT_INIT
+  1101                        ;	xWriteCH376Cmd( CMD11_CHECK_EXIST );
+  1102                        	.line	118
+  1103 00:01B1: F4 06 00     	pea	#<$6
+  1104 00:01B4: 22 xx xx xx  	jsl	~~xWriteCH376Cmd
+  1105                        ;	xWriteCH376Data( 0x65 );
+  1106                        	.line	119
+  1107 00:01B8: F4 65 00     	pea	#<$65
+  1108 00:01BB: 22 xx xx xx  	jsl	~~xWriteCH376Data
+  1109                        ;	res = xReadCH376Data( );
+  1110                        	.line	120
+  Thu Dec  3 2020 22:25                                                Page 21
+
+
+  1111 00:01BF: 22 xx xx xx  	jsl	~~xReadCH376Data
+  1112 00:01C3: E2 20        	sep	#$20
+  1113                        	longa	off
+  1114 00:01C5: 85 01        	sta	<L37+res_1
+  1115 00:01C7: C2 20        	rep	#$20
+  1116                        	longa	on
+  1117                        ;//	xEndCH376Cmd( );
+  1118                        ;	if ( res != 0x9A ) return( ERR_USB_UNKNOWN );
+  1119                        	.line	122
+  1120 00:01C9: E2 20        	sep	#$20
+  1121                        	longa	off
+  1122 00:01CB: A5 01        	lda	<L37+res_1
+  1123 00:01CD: C9 9A        	cmp	#<$9a
+  1124 00:01CF: C2 20        	rep	#$20
+  1125                        	longa	on
+  1126 00:01D1: D0 03        	bne	L39
+  1127 00:01D3: 82 0D 00     	brl	L10007
+  1128                        L39:
+  1129                        	.line	122
+  1130 00:01D6: A9 FA 00     	lda	#$fa
+  1131                        L40:
+  1132 00:01D9: A8           	tay
+  1133 00:01DA: 2B           	pld
+  1134 00:01DB: 3B           	tsc
+  1135 00:01DC: 18           	clc
+  1136 00:01DD: 69 01 00     	adc	#L36
+  1137 00:01E0: 1B           	tcs
+  1138 00:01E1: 98           	tya
+  1139 00:01E2: 6B           	rtl
+  1140                        ;	xWriteCH376Cmd( CMD11_SET_USB_MODE );
+  1141                        L10007:
+  1142                        	.line	123
+  1143 00:01E3: F4 15 00     	pea	#<$15
+  1144 00:01E6: 22 xx xx xx  	jsl	~~xWriteCH376Cmd
+  1145                        ;	xWriteCH376Data( 0x03 );
+  1146                        	.line	124
+  1147 00:01EA: F4 03 00     	pea	#<$3
+  1148 00:01ED: 22 xx xx xx  	jsl	~~xWriteCH376Data
+  1149                        ;	mDelayuS( 20 );
+  1150                        	.line	125
+  1151 00:01F1: F4 14 00     	pea	#<$14
+  1152 00:01F4: 22 xx xx xx  	jsl	~~mDelayuS
+  1153                        ;	res = xReadCH376Data( );
+  1154                        	.line	126
+  1155 00:01F8: 22 xx xx xx  	jsl	~~xReadCH376Data
+  1156 00:01FC: E2 20        	sep	#$20
+  1157                        	longa	off
+  1158 00:01FE: 85 01        	sta	<L37+res_1
+  1159 00:0200: C2 20        	rep	#$20
+  1160                        	longa	on
+  1161                        ;//	xEndCH376Cmd( );
+  1162                        ;	if ( res == CMD_RET_SUCCESS ) return( USB_INT_SU
+                    CCESS );
+  1163                        	.line	128
+  1164 00:0202: E2 20        	sep	#$20
+  1165                        	longa	off
+  1166 00:0204: A5 01        	lda	<L37+res_1
+  1167 00:0206: C9 51        	cmp	#<$51
+  Thu Dec  3 2020 22:25                                                Page 22
+
+
+  1168 00:0208: C2 20        	rep	#$20
+  1169                        	longa	on
+  1170 00:020A: F0 03        	beq	L41
+  1171 00:020C: 82 06 00     	brl	L10008
+  1172                        L41:
+  1173                        	.line	128
+  1174 00:020F: A9 14 00     	lda	#$14
+  1175 00:0212: 82 C4 FF     	brl	L40
+  1176                        ;	else return( ERR_USB_UNKNOWN );
+  1177                        L10008:
+  1178                        	.line	129
+  1179 00:0215: A9 FA 00     	lda	#$fa
+  1180 00:0218: 82 BE FF     	brl	L40
+  1181                        ;}
+  1182                        	.line	130
+  1183                        	.endblock	130
+  1184             00000001   L36	equ	1
+  1185             00000001   L37	equ	1
+  1186                        	ends
+  1187                        	efunc
+  1188                        	.endfunc	130,1,1
+  1189                        	.line	130
+  1190                        ;
+  1191                        	.line	130
+  1192                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\PARA_HW.C",114
+  1193                        	xref	~~k_debug_integer
+  1194                        	xref	~~mDelaymS
+  1195                        	xref	~~mDelayuS
+  1196                        	.sym	~~k_debug_integer,~~k_debug_integer,69,1
+                    8,0
+  1197                        	.sym	~~xReadCH376Status,~~xReadCH376Status,78
+                    ,2,0
+  1198                        	.sym	PFXCOMBUFFER,0,138,14,32,61
+  1199                        	.sym	FXCOMBUFFER,0,10,14,2080,61
+  1200                        	.sym	PSUBMENULIST,0,138,14,32,60
+  1201                        	.sym	SUBMENULIST,0,10,14,40,60
+  1202                        	.sym	HSUBMENU,0,7,14,32
+  1203                        	.sym	PSUBMENU,0,138,14,32,59
+  1204                        	.sym	SUBMENU,0,10,14,64,59
+  1205                        	.sym	MenuAction,0,641,14,32
+  1206                        	.sym	PMENUANCHOR,0,138,14,32,58
+  1207                        	.sym	MENUANCHOR,0,10,14,144,58
+  1208                        	.sym	PTEXTBOX,0,138,14,32,57
+  1209                        	.sym	TEXTBOX,0,10,14,144,57
+  1210                        	.sym	PLISTBOX,0,138,14,32,56
+  1211                        	.sym	LISTBOX,0,10,14,240,56
+  1212                        	.sym	PSCROLLBAR,0,138,14,32,55
+  1213                        	.sym	SCROLLBAR,0,10,14,192,55
+  1214                        	.sym	PBUTTON,0,138,14,32,54
+  1215                        	.sym	BUTTON,0,10,14,80,54
+  1216                        	.sym	PMENUDROPDOWNDATA,0,138,14,32,53
+  1217                        	.sym	MENUDROPDOWNDATA,0,10,14,3568,53
+  1218                        	.sym	PMENUTAG,0,138,14,32,52
+  1219                        	.sym	MENUTAG,0,10,14,112,52
+  1220                        	.sym	PMENU,0,138,14,32,51
+  1221                        	.sym	MENU,0,10,14,248,51
+  1222                        	.sym	HMENURESOURCE,0,129,14,32
+  Thu Dec  3 2020 22:25                                                Page 23
+
+
+  1223                        	.sym	HTEXTBOX,0,7,14,32
+  1224                        	.sym	PTEXTBOXX,0,138,14,32,50
+  1225                        	.sym	TEXTBOXX,0,10,14,112,50
+  1226                        	.sym	FONTMETRIC,0,10,14,32,49
+  1227                        	.sym	TITLE,0,142,14,32
+  1228                        	.sym	PHANDLE,0,1153,14,32
+  1229                        	.sym	HANDLE,0,129,14,32
+  1230                        	.sym	PWINDOWEX,0,138,14,32,48
+  1231                        	.sym	WINDOWEX,0,10,14,2704,48
+  1232                        	.sym	PWINDOW,0,138,14,32,47
+  1233                        	.sym	WINDOW,0,10,14,2808,47
+  1234                        	.sym	PDRAGDATA,0,138,14,32,46
+  1235                        	.sym	DRAGDATA,0,10,14,136,46
+  1236                        	.sym	PNCCLICKABLE,0,138,14,32,45
+  1237                        	.sym	NCCLICKABLE,0,10,14,88,45
+  1238                        	.sym	HCLICKABLE,0,7,14,32
+  1239                        	.sym	PCLICKABLE,0,138,14,32,44
+  1240                        	.sym	CLICKABLE,0,10,14,88,44
+  1241                        	.sym	PWNDCLASS,0,138,14,32,43
+  1242                        	.sym	WNDCLASS,0,10,14,256,43
+  1243                        	.sym	HBRUSH,0,129,14,32
+  1244                        	.sym	HCURSOR,0,129,14,32
+  1245                        	.sym	HICON,0,129,14,32
+  1246                        	.sym	HINSTANCE,0,129,14,32
+  1247                        	.sym	FXWndProc,0,654,14,32
+  1248                        	.sym	PRECT,0,138,14,32,42
+  1249                        	.sym	RECT,0,10,14,64,42
+  1250                        	.sym	PPOINT,0,138,14,32,41
+  1251                        	.sym	POINT,0,10,14,32,41
+  1252                        	.sym	PFXPROPERTY,0,138,14,32,39
+  1253                        	.sym	FXPROPERTY,0,10,14,384,39
+  1254                        	.sym	SCANCODE,0,14,14,8
+  1255                        	.sym	KEYCODE,0,14,14,8
+  1256                        	.sym	PFXPROCESSMESSAGE,0,138,14,32,38
+  1257                        	.sym	FXPROCESSMESSAGE,0,10,14,112,38
+  1258                        	.sym	PFXPROCESS,0,138,14,32,37
+  1259                        	.sym	FXPROCESS,0,10,14,800,37
+  1260                        	.sym	PDESKTOP_CONTROL,0,138,14,32,36
+  1261                        	.sym	DESKTOP_CONTROL,0,10,14,392,36
+  1262                        	.sym	PCONSOLE_CONTROL,0,138,14,32,35
+  1263                        	.sym	CONSOLE_CONTROL,0,10,14,448,35
+  1264                        	.sym	FXProcessProc,0,641,14,32
+  1265                        	.sym	PFXCMDMESSAGE,0,138,14,32,34
+  1266                        	.sym	FXCMDMESSAGE,0,10,14,304,34
+  1267                        	.sym	PFXOSMESSAGE,0,138,14,32,33
+  1268                        	.sym	FXOSMESSAGE,0,10,14,304,33
+  1269                        	.sym	PINT_REGS,0,138,14,32,32
+  1270                        	.sym	INT_REGS,0,10,14,104,32
+  1271                        	.sym	TASK_STACK,0,10,14,32,31
+  1272                        	.sym	TASK,0,10,14,48,30
+  1273                        	.sym	PIRQDATA,0,138,14,32,29
+  1274                        	.sym	IRQDATA,0,10,14,48,29
+  1275                        	.sym	HMENU,0,129,14,32
+  1276                        	.sym	HWND,0,129,14,32
+  1277                        	.sym	MSGDATA,0,14,14,8
+  1278                        	.sym	MSGDEST,0,18,14,32
+  1279                        	.sym	MSGSRC,0,18,14,32
+  1280                        	.sym	MSGTYPE,0,16,14,16
+  Thu Dec  3 2020 22:25                                                Page 24
+
+
+  1281                        	.sym	PROCESS_RESOURCE_LIST,0,138,14,32,23
+  1282                        	.sym	PROCESS_TLS_LIST,0,138,14,32,23
+  1283                        	.sym	SEMAPHORE_LIST,0,138,14,32,23
+  1284                        	.sym	FILE_BLOCK_LIST,0,138,14,32,23
+  1285                        	.sym	FILE_PATH_LIST,0,138,14,32,23
+  1286                        	.sym	PROCEDURE_LIST,0,138,14,32,23
+  1287                        	.sym	FILE_HANDLE,0,138,14,32,28
+  1288                        	.sym	FILE_BLOCK,0,10,14,552,28
+  1289                        	.sym	SEMAPHORE,0,10,14,16,27
+  1290                        	.sym	PPROCESS_SIGNAL,0,138,14,32,26
+  1291                        	.sym	PROCESS_SIGNAL,0,10,14,16,26
+  1292                        	.sym	KRESULT,0,18,14,32
+  1293                        	.sym	PKERNEL_ERROR,0,138,14,32,25
+  1294                        	.sym	KERNEL_ERROR,0,10,14,32,25
+  1295                        	.sym	PROCESS_STATUS,0,16,14,16
+  1296                        	.sym	FILE_PATH_NAME,0,142,14,32
+  1297                        	.sym	PROCESS_RESOURCE,0,129,14,32
+  1298                        	.sym	PROCESS_TLS,0,129,14,32
+  1299                        	.sym	PROCESS_CTX,0,129,14,32
+  1300                        	.sym	USERID,0,16,14,16
+  1301                        	.sym	PROCESS_ID,0,18,14,32
+  1302                        	.sym	PROCESS_BANK,0,14,14,8
+  1303                        	.sym	PFXQUEUE,0,138,14,32,24
+  1304                        	.sym	FXQUEUE,0,10,14,80,24
+  1305                        	.sym	PFXNODELIST,0,138,14,32,23
+  1306                        	.sym	FXNODELIST,0,10,14,96,23
+  1307                        	.sym	NodeListDeallocator,0,641,14,32
+  1308                        	.sym	PFXNODE,0,138,14,32,22
+  1309                        	.sym	FXNODE,0,10,14,384,22
+  1310                        	.sym	PBYTEBITS,0,138,14,32,21
+  1311                        	.sym	BYTEBITS,0,10,14,8,21
+  1312                        	.sym	HCOLOR,0,129,14,32
+  1313                        	.sym	HFONT,0,129,14,32
+  1314                        	.sym	HDC,0,129,14,32
+  1315                        	.sym	HPOINTER,0,129,14,32
+  1316                        	.sym	uint32_t,0,18,14,32
+  1317                        	.sym	uint8_t,0,14,14,8
+  1318                        	.sym	PFAR,0,142,14,32
+  1319                        	.sym	LPBOOL,0,142,14,32
+  1320                        	.sym	BOOL,0,14,14,8
+  1321                        	.sym	DWORD,0,18,14,32
+  1322                        	.sym	ULONG,0,18,14,32
+  1323                        	.sym	LPLONG,0,135,14,32
+  1324                        	.sym	LONG,0,7,14,32
+  1325                        	.sym	PUINT,0,144,14,32
+  1326                        	.sym	USHORT,0,16,14,16
+  1327                        	.sym	UINT,0,16,14,16
+  1328                        	.sym	INT,0,5,14,16
+  1329                        	.sym	WORD,0,5,14,16
+  1330                        	.sym	PBYTE,0,142,14,32
+  1331                        	.sym	BYTE,0,14,14,8
+  1332                        	.sym	UCHAR,0,14,14,8
+  1333                        	.sym	LPWCSTR,0,142,14,32
+  1334                        	.sym	LPCSTR,0,142,14,32
+  1335                        	.sym	LPSTR,0,142,14,32
+  1336                        	.sym	LPCHAR,0,142,14,32
+  1337                        	.sym	CHAR,0,14,14,8
+  1338                        	.sym	LPVOID,0,129,14,32
+  Thu Dec  3 2020 22:25                                                Page 25
+
+
+  1339                        	.sym	VOID,0,1,14,32
+  1340                        	.sym	~~mInitCH376Host,~~mInitCH376Host,78,2,0
+  1341                        	.sym	~~Query376Interrupt,~~Query376Interrupt,
+                    78,2,0
+  1342                        	.sym	~~xReadCH376Data,~~xReadCH376Data,78,2,0
+  1343                        	.sym	~~xWriteCH376Data,~~xWriteCH376Data,65,2
+                    ,0
+  1344                        	.sym	~~xWriteCH376Cmd,~~xWriteCH376Cmd,65,2,0
+  1345                        	.sym	~~xEndCH376Cmd,~~xEndCH376Cmd,65,2,0
+  1346                        	.sym	~~CH376_PORT_INIT,~~CH376_PORT_INIT,65,2
+                    ,0
+  1347                        	.sym	~~mDelaymS,~~mDelaymS,65,18,0
+  1348                        	.sym	~~mDelayuS,~~mDelayuS,65,18,0
+  1349                        	.sym	P_CH376_CMD_DATA,0,139,14,32,20
+  1350                        	.sym	CH376_CMD_DATA,0,11,14,288,20
+  1351                        	.sym	P_SENSE_DATA,0,138,14,32,4
+  1352                        	.sym	SENSE_DATA,0,10,14,144,4
+  1353                        	.sym	P_INQUIRY_DATA,0,138,14,32,3
+  1354                        	.sym	INQUIRY_DATA,0,10,14,288,3
+  1355                        	.sym	P_BULK_ONLY_CBW,0,138,14,32,2
+  1356                        	.sym	BULK_ONLY_CBW,0,10,14,248,2
+  1357                        	.sym	P_FAT_DIR_INFO,0,138,14,32,1
+  1358                        	.sym	FAT_DIR_INFO,0,10,14,256,1
+  1359                        	.sym	PUINT8V,0,142,14,32
+  1360                        	.sym	UINT8V,0,14,14,8
+  1361                        	.sym	PUINT32,0,146,14,32
+  1362                        	.sym	PUINT16,0,143,14,32
+  1363                        	.sym	PUINT8,0,142,14,32
+  1364                        	.sym	UINT32,0,18,14,32
+  1365                        	.sym	UINT16,0,15,14,16
+  1366                        	.sym	UINT8,0,14,14,8
+  1367                        	end
+
+
+      Lines assembled: 1367
+      Errors: 0

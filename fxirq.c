@@ -1,4 +1,7 @@
 
+//#include "fxos.h"
+//#include "fxstartup.h"
+//#include "fxeventmanager.h"
 
 #ifdef USE_FX256_FMX
 #include "fxc256fmx.h"
@@ -8,6 +11,8 @@
 
 #include "fxtypes.h"
 #include "fxkernel.h"
+#include "fxfloppy.h"
+#include "flpydsk.h"
 
 static int  		 _irq_keyboardBuffer[21] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 static char 		 _irq_keyboardBufferIndex = 0;
@@ -15,24 +20,34 @@ static unsigned char _irq_currentKeyPress = 0;
 static int			 _irq_keyboardTimeout = 0;
 static unsigned char _irq_statusReg 	  = 0x00;
 
-static unsigned char  floppyBuffer[512];
+//static unsigned char  floppyBuffer[512];
+extern UINT  floppybufferIndex;
+extern UCHAR floppybuffer[512];
+
 
 static LONG 		 _irq_ktick = 0;
 static UCHAR		 _k_last_scancode = 0;
+
+//static int  scirq0 = 0;
+//static char irqspinner[] = {'|','/','-','\\'};
 
 char boxtop[]    = {0xD6, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4,0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xB7, 0x00};
 char boxbottom[] = {0xD3, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4,0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xC4, 0xBD, 0x00};
 char boxside[]    = {0xBA, 0x00};
 
-#define KEYBOARD_TIMEOUT (5)
+//#define KEYBOARD_TIMEOUT (5)
+#define KEYBOARD_TIMEOUT (50)
+
 #define KTICK_MAX		 (1)
 
 static BOOL _k_extendedKeyMode 	= FALSE;
 static BOOL _k_shiftKeyMode 	= FALSE;
 
-ULONG _k_exec_context;      //
-ULONG _k_exec_error;  		// ALL MOVED TO EXEC IN REAL CODE
-UCHAR _k_exec_message[64];  //
+extern BOOL irq_signaled;
+
+extern ULONG _k_exec_context;
+extern ULONG _k_exec_error;
+extern UCHAR _k_exec_message[64];
 
 //static ULONG _pseudo_timer = -1;
 ULONG _pseudo_timer = -1;
@@ -51,10 +66,16 @@ void BRKHandler(void)
 
 	k_debug_string("BRK Exception...\r\n");
 
-	asm SEI;
 
+
+
+	asm SEI;
+	//k_put_char(9,irqCOPPos - 1,irqspinner[scbrk++],15,0);
+	//if(scbrk>3) scbrk = 0;
+	////asm sei;
 	k_enable_text_mode();
 	k_enable_text_cursor(1);
+	//k_disable_text_cursor();
 	k_enable_border();
 	k_clear_screen(0);
 	k_set_border_color(255,0,0);
@@ -119,9 +140,27 @@ void BRKHandler(void)
 
 void COPHandler(void)
 {
+	KERNELTRAPCALL fktCall = NULL;
 	//k_put_char(9,irqCOPPos,irqspinner[sccop++],15,0);
 	//if(sccop>3) sccop = 0;
 	////asm sei;
+	PFXZERPOPAGE zp = k_getZeroPage();
+
+	k_debug_integer("COPHandler:Id:",zp->kernelFunctionCallId);
+
+	fktCall = k_getKernelTrapTable()[zp->kernelFunctionCallId];
+	if(fktCall)
+	{
+		k_debug_pointer("COPHandler:BEFORE fktCall:",fktCall);
+
+		fktCall();
+
+		k_debug_pointer("COPHandler:AFTER fktCall:",fktCall);
+	}
+	else
+	{
+		asm brk;
+	}
 }
 
 void IRQHandler(void)
@@ -186,7 +225,7 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 			_irq_ktick--;
 
 		//k_tickManagement(&_irq_ktick);
-		//k_signal_sol_event(&_irq_ktick);
+		k_signal_sol_event(&_irq_ktick);
 		
 
 		INT_PENDING_REG0[0] &= FNX0_INT01_SOL;
@@ -209,16 +248,50 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 			//k_debug_hex("FNX0_INT02_TMR0::STATUS_PORT:",STATUS_PORT[0]);
 			//k_debug_hex("FNX0_INT02_TMR0::MOUSE_PTR:",MOUSE_PTR[0]);
 			//k_debug_hex("FNX0_INT02_TMR0::MOUSE_PTR_BYTE0:",MOUSE_PTR_BYTE0[0]);
-			
-			
-			MOUSE_PTR[0] = 0;
-			_irq_keyboardTimeout = 0;
+			//k_irq_device_event(IRQE_CTLR_RESET,STATUS_PORT[0],&_irq_ktick);
+			//k_irq_device_event(IRQE_CTLR_RESET,MOUSE_PTR[0],&_irq_ktick);
 
-			k_init_keyboard();			
+			k_irq_device_event(IRQE_CTLR_RESET,mptr,&_irq_ktick);
+
+			/*
+			_irq_keyboardTimeout = 1000;
+			
+			while(STATUS_PORT[0] & 0x01)
+			{
+				_irq_keyboardTimeout--;
+
+				kbd  = KBD_INPT_BUF[0];
+				//k_irq_device_event(IRQE_CTLR_RESET,_irq_keyboardTimeout,&_irq_ktick);
+				//k_irq_device_event(IRQE_CTLR_RESET,STATUS_PORT[0],&_irq_ktick);
+				if(_irq_keyboardTimeout < 0)
+					break;
+			}
+			*/
+			MOUSE_PTR[0] = 0;
+
+
+
+			/*
+			if(_irq_keyboardTimeout < 0)
+			{
+				k_irq_device_event(IRQE_CTLR_RESET,-1,&_irq_ktick);
+				k_init_keyboard();
+				if(STATUS_PORT[0] & 0x01)
+				{
+					k_init_keyboard();
+				}
+			}
+			*/
+			k_init_keyboard();
 			if(STATUS_PORT[0] & 0x01)
 			{
 				k_init_keyboard();
 			}
+
+			_irq_keyboardTimeout = 0;
+
+			spc  = 0;
+			mptr = 0;
 
 		}
 		else if(_irq_keyboardTimeout > KEYBOARD_TIMEOUT)
@@ -226,7 +299,7 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 			_irq_keyboardTimeout = 0;
 		}
 
-		//k_irq_device_event(IRQE_SOL_TIMER,_pseudo_timer,&_irq_ktick);
+		k_irq_device_event(IRQE_SOL_TIMER,_pseudo_timer,&_irq_ktick);
 		//k_put_string(0,26,k_inttodec(_irq_keyboardTimeout,irq0buffer),15,0);
 		
 		//floppy_timer();
@@ -275,22 +348,28 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 		//k_put_char(16,line,irqspinner[scirq06++],15,0);
 		//if(scirq06>3) scirq06 = 0;
 
+		/*
+		floppybuffer[floppybufferIndex] = (((LPCHAR)0xaf13f5)[0]);
+		if(floppybufferIndex > 511)
+			floppybufferIndex = 0;
 
+		floppybufferIndex++;
+		*/
 		/*
 		for (i = 0; i < 512; i++)
 		{
-			floppyBuffer[i] = getbyte();
+			floppybuffer[i] =  (((LPCHAR)0xAF13f5)[0]);
 		}
-		*/
+		 */
 
-		//k_irq_device_event(IRQE_FLOPPY,_pseudo_timer,floppyBuffer);
+		k_irq_device_event(IRQE_FLOPPY,_pseudo_timer,floppybuffer);
 
 
 		//irq_signaled = _FloppyDiskIRQ = TRUE;
 		//floppy_isr();
 
 		// REENABLE FOR FLOPPY
-		//irq_signaled =  TRUE;
+		irq_signaled =  TRUE;
 
 		//k_irq_device_event(IRQE_FLOPPY,_pseudo_timer,floppyBuffer);
 
@@ -314,6 +393,7 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 		
 		//k_put_char(1,40,'B',15,0);
 		while((STATUS_PORT[0] & 0x01) && spc < 4)
+		//while((STATUS_PORT[0] & 0x01))
 		{
 			mptr = MOUSE_PTR[0];
 			kbd  = KBD_INPT_BUF[0];
@@ -334,6 +414,10 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 				FXOS_MOUSE_BYTE_Y_H = MOUSE_PTR_Y_POS_H[0];
 
 				//k_irq_device_event(IRQE_MOUSE,_pseudo_timer,&FXOS_MOUSE_BYTE_T);
+				k_irq_device_event(IRQE_MOUSE,_pseudo_timer,&FXOS_MOUSE_BYTE_T);
+
+				spc  = 0;
+				mptr = 0;
 			}
 			else
 			{
@@ -343,6 +427,8 @@ void k_dispatch_reg0(PIRQDATA pIRQx)
 			spc++;
 		}
 		
+		while(STATUS_PORT[0] & 0x01);
+
 		//if(spc > 3)
 		//	k_put_char(1,40,'C',15,0);
 
@@ -405,8 +491,8 @@ void k_dispatch_reg1(PIRQDATA pIRQx)
 
 			if(_irq_currentKeyPress == 0xE0)
 				_k_extendedKeyMode = TRUE;
-			//else
-			//	k_irq_device_event(IRQE_KEYBOARD,_pseudo_timer,&_irq_keyboardBuffer[_irq_keyboardBufferIndex]);
+			else
+				k_irq_device_event(IRQE_KEYBOARD,_pseudo_timer,&_irq_keyboardBuffer[_irq_keyboardBufferIndex]);
 
 			_irq_keyboardBufferIndex++;
 			if(_irq_keyboardBufferIndex > 19)
@@ -438,7 +524,7 @@ void k_dispatch_reg1(PIRQDATA pIRQx)
 
 			_irq_keyboardBuffer[_irq_keyboardBufferIndex] = (_irq_currentKeyPress | 0xE000);
 
-			//k_irq_device_event(IRQE_KEYBOARD,_pseudo_timer,&_irq_keyboardBuffer[_irq_keyboardBufferIndex]);
+			k_irq_device_event(IRQE_KEYBOARD,_pseudo_timer,&_irq_keyboardBuffer[_irq_keyboardBufferIndex]);
 
 			_irq_keyboardBufferIndex++;
 			if(_irq_keyboardBufferIndex > 19)
@@ -510,7 +596,7 @@ void k_dispatch_reg1(PIRQDATA pIRQx)
 		
 		//k_print_uart_status_com1(29);
 		data = UART1_BASE[0];
-		//k_irq_device_event(IRQE_COM1,_pseudo_timer,&data);
+		k_irq_device_event(IRQE_COM1,_pseudo_timer,&data);
 		//k_put_char(30,1,'*' ,15,0);
 		//if(data)
 		//	k_put_char(30,2,data,15,0);
@@ -552,6 +638,7 @@ void k_dispatch_reg1(PIRQDATA pIRQx)
 		//k_put_char(17,line,irqspinner[scirq17++],15,0);
 		//if(scirq17>3)scirq17 = 0;
 
+		k_irq_device_event(IRQE_SDCARD,_pseudo_timer,NULL);
 
 		//k_put_char(7,1,' ',15,0);
 		//k_put_char(7,1,'7',15,0);
@@ -625,7 +712,29 @@ void k_dispatch_reg2(PIRQDATA pIRQx)
 		//k_put_char(7,2,'6',15,0);
 		INT_PENDING_REG2[0]&=FNX1_INT06_LPT;
 	}
-	
+	/*
+	if(INT_PENDING_REG2[0] & FNX2_INT07_SDCARD_INS)
+		{
+			//k_put_char(16,line,irqspinner[scirq26++],15,0);
+			//if(scirq26>3) scirq26 = 0;
+			//k_put_char(7,2,' ',15,0);
+			//k_put_char(7,2,'6',15,0);
+			INT_PENDING_REG2[0]&=FNX2_INT07_SDCARD_INS;
+		}
+	*/
+	/*
+	if(INT_PENDING_REG2[0] & FNX2_INT07_SDCARD)
+	{
+		//k_put_char(17,line,irqspinner[scirq17++],15,0);
+		//if(scirq17>3)scirq17 = 0;
+
+		k_irq_device_event(IRQE_SDCARD_INS,_pseudo_timer,NULL);
+
+		//k_put_char(7,1,' ',15,0);
+		//k_put_char(7,1,'7',15,0);
+		INT_PENDING_REG2[0]&=FNX2_INT07_SDCARD;
+	}
+	*/
 	INT_PENDING_REG2[0]=0xFF;
 	INT_PENDING_REG2[0]=0x00;
 

@@ -11,6 +11,10 @@
 #define	THROW_EXCEPTION(a,b,c)	{asm BRK;}
 
 
+#ifndef NULL
+#define NULL	((void *)0)
+#endif
+
 #ifndef TRUE
 #define TRUE	(1)
 #endif
@@ -21,7 +25,6 @@
 
 typedef void VOID;
 typedef void FAR *LPVOID;
-typedef unsigned char BYTE;
 //#ifndef UINT8
 //typedef unsigned char UINT8;
 //#define UINT8
@@ -32,10 +35,13 @@ typedef CHAR FAR *LPSTR;
 typedef const CHAR FAR *LPCSTR;
 typedef const CHAR FAR *LPWCSTR;
 typedef unsigned char UCHAR;
+typedef unsigned char BYTE;
+typedef unsigned char *PBYTE;
 typedef int  WORD;
 typedef int  INT;
 typedef unsigned int  UINT;
-typedef unsigned int  FAR *PUINT;
+typedef unsigned int  USHORT;
+typedef unsigned int FAR *PUINT;
 //#ifndef UINT16
 //typedef unsigned int  UINT16;
 //#define UINT16
@@ -55,9 +61,11 @@ typedef UCHAR FAR *PFAR;
 typedef UCHAR uint8_t;
 typedef ULONG uint32_t;
 
+typedef LPVOID HPOINTER;
 typedef LPVOID HDC;
 typedef LPVOID HFONT;
 typedef LPVOID HCOLOR;
+
 
 typedef struct _fx_bytebits
 {
@@ -326,6 +334,7 @@ typedef struct _fx_process
 	PDESKTOP_CONTROL	  	desktopCtl;
 	//PROCEDURE_LIST 		  	execProc;
 	FXProcessProc			execProc;
+	LPVOID					startupArgs;
 }FXPROCESS;
 typedef FXPROCESS FAR *PFXPROCESS;
 
@@ -334,7 +343,7 @@ typedef struct _fxProcessMessage
 	MSGSRC 		src;
 	MSGDEST 	dest;
 	MSGTYPE 	type;
-	PFXPROCESS	processInfo;
+    PFXPROCESS	processInfo;
 }FXPROCESSMESSAGE;
 typedef FXPROCESSMESSAGE FAR*PFXPROCESSMESSAGE;
 
@@ -367,7 +376,8 @@ union _24bitPointer
 #define M24BYTE(a) ((CHAR)(((ULONG)(a) >> 8) & 0xFF))
 #define H24BYTE(a) ((CHAR)(((ULONG)(a) >> 16) & 0xFF))
 
-#define MAKEWORD(low, high) ((WORD)((((WORD)(high)) << 8) | ((BYTE)(low))))
+#define MAKEWORD(low, high) ( (WORD)((((WORD) (high)) << 8 )| ((BYTE)(low))) )
+#define MAKELONG(low, high) ( (LONG)((((LONG) (high)) << 16)| ((WORD)(low))) )
 
 #define INVALID_HANDLE (-1)
 
@@ -411,6 +421,42 @@ typedef struct _k_WindowClass
 } WNDCLASS;
 typedef WNDCLASS FAR *PWNDCLASS;
 
+typedef struct _ClickableRect
+{
+	RECT area;
+	int  z;
+	BOOL enabled;
+} CLICKABLE;
+typedef CLICKABLE FAR* PCLICKABLE;
+typedef long HCLICKABLE;
+
+typedef struct _NCClickableRect
+{
+	RECT area;
+	UINT msgType;
+	BOOL enabled;
+} NCCLICKABLE;
+typedef NCCLICKABLE FAR* PNCCLICKABLE;
+
+#define CLIENTDATA_DEFAULT (0x00)
+#define CLIENTDATA_USERID  (0x01)
+#define CLIENTDATA_USER1   (0x02)
+#define CLIENTDATA_USER2   (0x03)
+#define CLIENTDATA_USER3   (0x04)
+#define CLIENTDATA_USER4   (0x05)
+
+typedef struct _DragData
+{
+	RECT area;
+	INT	 xoffset;
+	INT	 yoffset;
+	UINT msgType;
+	BOOL isDrag;
+	BOOL canDrag;
+	BOOL canDrop;
+} DRAGDATA;
+typedef DRAGDATA FAR* PDRAGDATA;
+
 
 typedef struct _k_WindowStruct
 {
@@ -423,12 +469,13 @@ typedef struct _k_WindowStruct
 	int  		 win_height;
 	RECT 		 wndRect;
 	RECT 		 clientRect;
+	NCCLICKABLE	 nonclientGadgets[16];
 	LPVOID 		 clickable;
 	CHAR 		 win_title[32];
 	UINT		 Reserved0;
 	CHAR 		 win_class[16];
 	CHAR 		 win_class_name[32];
-	UINT		 Reserved2;
+	UINT		 nBitmapLayer;
 	PROCESS_ID 	 procid;
 	PWNDCLASS    pWndClass;
 	HWND		 pParentWindow;
@@ -437,10 +484,10 @@ typedef struct _k_WindowStruct
 	PFXNODELIST	 pChildHitList;
 	BOOL		 isVisible;
 	LPVOID		 windowData;
-	LPVOID 		 clientData[4];
+	LPVOID 		 clientData[6];
 	BOOL 		 isClosed;
-} Window;
-typedef Window WINDOW;
+	BOOL 		 isClosing;
+} WINDOW;
 typedef WINDOW FAR *PWINDOW;
 
 typedef struct _k_WindowStructEx
@@ -454,11 +501,12 @@ typedef struct _k_WindowStructEx
 	int  		 win_height;
 	RECT 		 wndRect;
 	RECT 		 clientRect;
+	NCCLICKABLE	 nonclientGadgets[16];
 	LPVOID 		 clickable;
 	CHAR 		 win_title[32];
 	UINT		 Reserved0;
 	CHAR 		 win_class[16];
-	UINT		 Reserved2;
+	UINT		 nBitmapLayer;
 	PROCESS_ID 	 procid;
 	PWNDCLASS    pWndClass;
 	HWND		 pParentWindow;
@@ -473,8 +521,7 @@ typedef struct _k_WindowStructEx
 	RECT 		 localRect;
 	RECT 		 globalRect;
 	RECT 		 clientOffsetRect;
-} WindowEx;
-typedef WindowEx WINDOWEX;
+} WINDOWEX;
 typedef WINDOWEX FAR *PWINDOWEX;
 
 
@@ -502,15 +549,6 @@ struct _ctl_Textbox
 typedef struct _ctl_Textbox TEXTBOXX;
 typedef TEXTBOXX FAR* PTEXTBOXX;
 typedef long HTEXTBOX;
-
-typedef struct _ClickableRect
-{
-	RECT area;
-	int  z;
-	BOOL enabled;
-} CLICKABLE;
-typedef CLICKABLE FAR* PCLICKABLE;
-typedef long HCLICKABLE;
 
 
 typedef LPVOID HMENURESOURCE;
@@ -546,6 +584,7 @@ typedef struct
 	PWINDOW		pParent;
 	RECT 		rect;
 	LPCSTR		captions[24];
+	CHAR		chrome[24];
 	UINT    	ids[24];
 	CLICKABLE	clickable[24];
 	UINT		selected;

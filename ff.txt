@@ -1,0 +1,81 @@
+WDC Object Viewer  EVALCOPY Jan 19 2006 12:36:01
+
+Module: ff.obj
+
+section DATA     org=$0 size=$1E1
+section UDATA    org=$0 size=$6
+section ffdos    org=$80000 size=$5088
+
+      : 000000 : UND :       : Gdrvpt : ~~~lasl
+      : 000000 : UND :       : Gdrvpt : ~~~asr
+      : 000000 : UND :       : Gdrvpt : ~~~llsr
+      : 000000 : UND :       : Gdrvpt : ~~disk_write
+      : 000000 : UND :       : Gdrvpt : ~~disk_read
+      : 000000 : UND :       : Gdrvpt : ~~disk_ioctl
+      : 000000 : UND :       : Gdrvpt : ~~~lmul
+      : 000000 : UND :       : Gdrvpt : ~~~lsr
+      : 000000 : UND :       : Gdrvpt : ~~~swt
+      : 000000 : UND :       : Gdrvpt : ~~k_debug_string
+      : 000000 : UND :       : Gdrvpt : ~~k_debug_long
+      : 000000 : UND :       : Gdrvpt : ~~k_debug_integer
+      : 000000 : UND :       : Gdrvpt : ~~k_debug_hex
+      : 000000 : UND :       : Gdrvpt : ~~disk_status
+      : 000000 : UND :       : Gdrvpt : ~~disk_initialize
+      : 000000 : UND :       : Gdrvpt : ~~k_debug_pointer
+      : 000000 : UND :       : Gdrvpt : ~~~ludv
+ffdos : 082E80 : ABS :       : GDrvpt : ~~f_mount
+ffdos : 082F3F : ABS :       : GDrvpt : ~~f_open
+ffdos : 0833E1 : ABS :       : GDrvpt : ~~f_read
+      : 000000 : UND :       : Gdrvpt : ~~~asl
+ffdos : 083800 : ABS :       : GDrvpt : ~~f_write
+ffdos : 083D08 : ABS :       : GDrvpt : ~~f_sync
+ffdos : 083EA0 : ABS :       : GDrvpt : ~~f_close
+ffdos : 083EF4 : ABS :       : GDrvpt : ~~f_lseek
+ffdos : 0843D7 : ABS :       : GDrvpt : ~~f_opendir
+ffdos : 0844D6 : ABS :       : GDrvpt : ~~f_closedir
+ffdos : 084519 : ABS :       : GDrvpt : ~~f_readdir
+ffdos : 0845B0 : ABS :       : GDrvpt : ~~f_stat
+ffdos : 084637 : ABS :       : GDrvpt : ~~f_getfree
+ffdos : 08487B : ABS :       : GDrvpt : ~~f_truncate
+ffdos : 084A5C : ABS :       : GDrvpt : ~~f_unlink
+ffdos : 084BCD : ABS :       : GDrvpt : ~~f_mkdir
+ffdos : 084E45 : ABS :       : GDrvpt : ~~f_rename
+ffdos : 082DD2 : ABS :       : gDrvpt : ~~validate
+ffdos : 08264C : ABS :       : gDrvpt : ~~mount_volume
+ffdos : 082339 : ABS :       : gDrvpt : ~~find_volume
+ffdos : 0821C9 : ABS :       : gDrvpt : ~~check_fs
+ffdos : 0820E6 : ABS :       : gDrvpt : ~~get_ldnumber
+ffdos : 081F67 : ABS :       : gDrvpt : ~~follow_path
+ffdos : 081D70 : ABS :       : gDrvpt : ~~create_name
+ffdos : 081C1E : ABS :       : gDrvpt : ~~get_fileinfo
+ffdos : 081BB9 : ABS :       : gDrvpt : ~~dir_remove
+ffdos : 081B1A : ABS :       : gDrvpt : ~~dir_register
+ffdos : 081A12 : ABS :       : gDrvpt : ~~dir_find
+ffdos : 0818F3 : ABS :       : gDrvpt : ~~dir_read
+ffdos : 08188D : ABS :       : gDrvpt : ~~st_clust
+ffdos : 0817FD : ABS :       : gDrvpt : ~~ld_clust
+ffdos : 08173A : ABS :       : gDrvpt : ~~dir_alloc
+ffdos : 081486 : ABS :       : gDrvpt : ~~dir_next
+ffdos : 081247 : ABS :       : gDrvpt : ~~dir_sdi
+ffdos : 081171 : ABS :       : gDrvpt : ~~dir_clear
+ffdos : 080E56 : ABS :       : gDrvpt : ~~create_chain
+ffdos : 080CCD : ABS :       : gDrvpt : ~~remove_chain
+ffdos : 080987 : ABS :       : gDrvpt : ~~put_fat
+ffdos : 080717 : ABS :       : gDrvpt : ~~get_fat
+ffdos : 080688 : ABS :       : gDrvpt : ~~clst2sect
+ffdos : 08050F : ABS :       : gDrvpt : ~~sync_fs
+ffdos : 080484 : ABS :       : gDrvpt : ~~move_window
+ffdos : 08039B : ABS :       : gDrvpt : ~~sync_window
+ffdos : 080318 : ABS :       : gDrvpt : ~~dbc_2nd
+ffdos : 0802B7 : ABS :       : gDrvpt : ~~dbc_1st
+ffdos : 080275 : ABS :       : gDrvpt : ~~chk_chr
+ffdos : 080216 : ABS :       : gDrvpt : ~~mem_cmp
+ffdos : 0801DF : ABS :       : gDrvpt : ~~mem_set
+ffdos : 080193 : ABS :       : gDrvpt : ~~mem_cpy
+ffdos : 080116 : ABS :       : gDrvpt : ~~st_dword
+ffdos : 0800D7 : ABS :       : gDrvpt : ~~st_word
+ffdos : 08003B : ABS :       : gDrvpt : ~~ld_dword
+ffdos : 080000 : ABS :       : gDrvpt : ~~ld_word
+ DATA : 000000 : REL :       : gDrvpt : ~~DbcTbl
+UDATA : 000000 : REL :       : gDrvpt : ~~Fsid
+UDATA : 000002 : REL :       : gDrvpt : ~~FatFs

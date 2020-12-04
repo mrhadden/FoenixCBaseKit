@@ -51,11 +51,13 @@ void k_reverse(char FAR str[], int length);
 char *strupr(char *s);
 char *strlower(char * s);
 
+LPSTR  k_strcat(LPSTR dest,LPCSTR src);
+LPSTR  k_strcpy(LPSTR dest,LPCSTR src);
 LPCHAR k_string_rtrim(LPCHAR lpText);
 LPCHAR k_string_ltrim(LPCHAR lpText);
 LPCHAR k_string_trim(LPCHAR lpText);
 LPCHAR k_string_replace(LPCSTR s, LPCSTR old, LPCSTR new);
-INT    k_string_indexOf(LPCHAR chars,CHAR c);
+INT k_string_indexOf(LPCHAR chars,CHAR c);
 LPCHAR k_string_toString(CHAR c,LPCHAR toBuffer);
 LPCHAR k_string_copy_string(LPCSTR src);
 

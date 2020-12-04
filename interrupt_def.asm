@@ -42,7 +42,8 @@ FNX2_INT03_SDMA   EQU $08  ;System DMA
 FNX2_INT04_VDMA   EQU $10  ;Video DMA
 FNX2_INT05_DACHP  EQU $20  ;DAC Hot Plug
 FNX2_INT06_EXT    EQU $40  ;External Expansion
-FNX2_INT07_ALLONE EQU $80  ; Not Used - Always 1
+;FNX2_INT07_ALLONE EQU $80  ; Not Used - Always 1
+FNX2_INT07_SDCARD EQU $80  ; sdcard insert
 
 TIMER0_CTRL_REG    EQU $000160 ; (Write - Control, Read Status)
 ; Control Register Definitions

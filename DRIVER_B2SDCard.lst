@@ -1,0 +1,3712 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.c",0
+     7                        ;
+     8                        ;#include "DRIVER_B2SDCard.h"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.h",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+    11                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    12                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    13                        	.line	88
+    14                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    15                        	.stag	fake1_,32,1
+    16                        	.member	quot,0,5,8,16
+    17                        	.member	rem,16,5,8,16
+    18                        	.eos
+    19                        	.stag	fake2_,64,2
+    20                        	.member	quot,0,7,8,32
+    21                        	.member	rem,32,7,8,32
+    22                        	.eos
+    23                        	.stag	int_sqrt,32,3
+    24                        	.member	sqrt,0,16,8,16
+    25                        	.member	frac,16,16,8,16
+    26                        	.eos
+    27                        	.line	205
+    28                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",4
+    29                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    30                        	.line	134
+    31                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",5
+    32                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    33                        	.line	103
+    34                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",6
+    35                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+    36                        	.stag	_fx_bytebits,8,4
+    37                        	.member	b7,0,14,17,1
+    38                        	.member	b6,1,14,17,1
+    39                        	.member	b5,2,14,17,1
+    40                        	.member	b4,3,14,17,1
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    41                        	.member	b3,4,14,17,1
+    42                        	.member	b2,5,14,17,1
+    43                        	.member	b1,6,14,17,1
+    44                        	.member	b0,7,14,17,1
+    45                        	.eos
+    46                        	.stag	_fx_node,384,5
+    47                        	.member	type,0,14,8,8
+    48                        	.member	Reserved0,8,14,8,8
+    49                        	.member	data,16,129,8,32
+    50                        	.member	last,48,138,8,32,5
+    51                        	.member	next,80,138,8,32,5
+    52                        	.member	name,112,110,8,0,32
+    53                        	.member	Reserved1,368,16,8,16
+    54                        	.eos
+    55                        	.stag	_fx_nodelist,96,6
+    56                        	.member	listhead,0,138,8,32,5
+    57                        	.member	listData,32,129,8,32
+    58                        	.member	deallocator,64,641,8,32
+    59                        	.eos
+    60                        	.stag	_fx_queue,80,7
+    61                        	.member	count,0,5,8,16
+    62                        	.member	front,16,138,8,32,5
+    63                        	.member	rear,48,138,8,32,5
+    64                        	.eos
+    65                        	.stag	fake8_,32,8
+    66                        	.member	subsystem,0,14,8,8
+    67                        	.member	level,8,14,8,8
+    68                        	.member	error,16,16,8,16
+    69                        	.eos
+    70                        	.stag	_fx_process_signal,16,9
+    71                        	.member	cbSize,0,16,8,16
+    72                        	.eos
+    73                        	.stag	_fx_semaphore,16,10
+    74                        	.member	reserved,0,5,8,16
+    75                        	.eos
+    76                        	.stag	_fx_fileBlock,552,11
+    77                        	.member	openCount,0,16,8,16
+    78                        	.member	lockCount,16,16,8,16
+    79                        	.member	dirty,32,14,8,8
+    80                        	.member	fileBuffer,40,110,8,0,64
+    81                        	.eos
+    82                        	.stag	_fx_irq_data,48,12
+    83                        	.member	line,0,5,8,16
+    84                        	.member	keycode,16,142,8,32
+    85                        	.eos
+    86                        	.stag	_task,48,13
+    87                        	.member	SPL,0,14,8,8
+    88                        	.member	SPH,8,14,8,8
+    89                        	.member	pstack,16,142,8,32
+    90                        	.eos
+    91                        	.stag	_task_stack,32,14
+    92                        	.member	SS,0,142,8,32
+    93                        	.eos
+    94                        	.stag	int_regs,104,15
+    95                        	.member	PB,0,14,8,8
+    96                        	.member	PH,8,14,8,8
+    97                        	.member	PL,16,14,8,8
+    98                        	.member	PP,24,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+    99                        	.member	DB,32,14,8,8
+   100                        	.member	DH,40,14,8,8
+   101                        	.member	DL,48,14,8,8
+   102                        	.member	AH,56,14,8,8
+   103                        	.member	AL,64,14,8,8
+   104                        	.member	XH,72,14,8,8
+   105                        	.member	XL,80,14,8,8
+   106                        	.member	YH,88,14,8,8
+   107                        	.member	YL,96,14,8,8
+   108                        	.eos
+   109                        	.stag	_fx_eventMessage,304,16
+   110                        	.member	src,0,18,8,32
+   111                        	.member	dest,32,18,8,32
+   112                        	.member	type,64,16,8,16
+   113                        	.member	hwnd,80,129,8,32
+   114                        	.member	pheap,112,129,8,32
+   115                        	.member	msgTime,144,18,8,32
+   116                        	.member	data,176,110,8,0,16
+   117                        	.eos
+   118                        	.stag	_fx_cmdMessage,304,17
+   119                        	.member	src,0,18,8,32
+   120                        	.member	dest,32,18,8,32
+   121                        	.member	type,64,16,8,16
+   122                        	.member	hwnd,80,129,8,32
+   123                        	.member	pheap,112,129,8,32
+   124                        	.member	msgTime,144,18,8,32
+   125                        	.member	cmdCId,176,16,8,16
+   126                        	.member	cmdMId,192,16,8,16
+   127                        	.member	parameter1,208,18,8,32
+   128                        	.member	parameter2,240,18,8,32
+   129                        	.member	parameter3,272,18,8,32
+   130                        	.eos
+   131                        	.stag	_fx_console_ctl,448,18
+   132                        	.member	maxCols,0,5,8,16
+   133                        	.member	maxRows,16,5,8,16
+   134                        	.member	curX,32,5,8,16
+   135                        	.member	curY,48,5,8,16
+   136                        	.member	fgColor,64,5,8,16
+   137                        	.member	bgColor,80,5,8,16
+   138                        	.member	mode,96,14,8,8
+   139                        	.member	kbBuffer,104,101,8,0,16
+   140                        	.member	screenBuffer,360,142,8,32
+   141                        	.member	desktopMode,392,14,8,8
+   142                        	.member	lastMouseButton,400,5,8,16
+   143                        	.member	lastMouseX,416,5,8,16
+   144                        	.member	lastMouseY,432,5,8,16
+   145                        	.eos
+   146                        	.stag	_fx_desktop_ctl,392,19
+   147                        	.member	desktopMode,0,14,8,8
+   148                        	.member	cursorCtl,8,5,8,16
+   149                        	.member	cursorState,24,5,8,16
+   150                        	.member	backgroundColor,40,5,8,16
+   151                        	.member	foregroundColor,56,5,8,16
+   152                        	.member	menuMode,72,5,8,16
+   153                        	.member	lastMouseButton,88,5,8,16
+   154                        	.member	lastMouseX,104,5,8,16
+   155                        	.member	lastMouseY,120,5,8,16
+   156                        	.member	currentDiskName,136,142,8,32
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   157                        	.member	diskNodes,168,129,8,32
+   158                        	.member	titleNodes,200,129,8,32
+   159                        	.member	menuNodes,232,129,8,32
+   160                        	.member	iconNodes,264,129,8,32
+   161                        	.member	windowNodes,296,129,8,32
+   162                        	.member	fontNodes,328,129,8,32
+   163                        	.member	wndProc,360,138,8,32,6
+   164                        	.eos
+   165                        	.stag	_fx_process,800,20
+   166                        	.member	cbSize,0,5,8,16
+   167                        	.member	procId,16,18,8,32
+   168                        	.member	parentId,48,18,8,32
+   169                        	.member	ctx,80,129,8,32
+   170                        	.member	userId,112,16,8,16
+   171                        	.member	status,128,16,8,16
+   172                        	.member	foregroundActive,144,14,8,8
+   173                        	.member	tls,152,1121,8,32,8
+   174                        	.member	commandLine,408,142,8,32
+   175                        	.member	semaphores,440,138,8,32,6
+   176                        	.member	fileHandles,472,138,8,32,6
+   177                        	.member	pathList,504,138,8,32,6
+   178                        	.member	resources,536,138,8,32,6
+   179                        	.member	timerAware,568,14,8,8
+   180                        	.member	timerTicks,576,112,8,0,2
+   181                        	.member	timerTickCount,608,112,8,0,2
+   182                        	.member	kernelError,640,10,8,32,8
+   183                        	.member	consoleCtl,672,138,8,32,18
+   184                        	.member	desktopCtl,704,138,8,32,19
+   185                        	.member	execProc,736,641,8,32
+   186                        	.member	startupArgs,768,129,8,32
+   187                        	.eos
+   188                        	.stag	_fxProcessMessage,112,21
+   189                        	.member	src,0,18,8,32
+   190                        	.member	dest,32,18,8,32
+   191                        	.member	type,64,16,8,16
+   192                        	.member	processInfo,80,138,8,32,20
+   193                        	.eos
+   194                        	.stag	_fx_property,384,22
+   195                        	.member	name,0,110,8,0,16
+   196                        	.member	value,128,110,8,0,32
+   197                        	.eos
+   198                        	.utag	_24bitPointer,32,23
+   199                        	.member	address,0,142,11,32
+   200                        	.member	bytes,0,110,11,0,4
+   201                        	.eos
+   202                        	.stag	_PointStruct,32,24
+   203                        	.member	x,0,5,8,16
+   204                        	.member	y,16,5,8,16
+   205                        	.eos
+   206                        	.stag	_RectStruct,64,25
+   207                        	.member	x,0,5,8,16
+   208                        	.member	y,16,5,8,16
+   209                        	.member	width,32,5,8,16
+   210                        	.member	height,48,5,8,16
+   211                        	.eos
+   212                        	.stag	_k_WindowClass,256,26
+   213                        	.member	cbSize,0,16,8,16
+   214                        	.member	style,16,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   215                        	.member	pWndProc,32,654,8,32
+   216                        	.member	hInstance,64,129,8,32
+   217                        	.member	hIcon,96,129,8,32
+   218                        	.member	hCursor,128,129,8,32
+   219                        	.member	hbrBackground,160,129,8,32
+   220                        	.member	lpszMenuName,192,142,8,32
+   221                        	.member	lpszClassName,224,142,8,32
+   222                        	.eos
+   223                        	.stag	_ClickableRect,88,27
+   224                        	.member	area,0,10,8,64,25
+   225                        	.member	z,64,5,8,16
+   226                        	.member	enabled,80,14,8,8
+   227                        	.eos
+   228                        	.stag	_NCClickableRect,88,28
+   229                        	.member	area,0,10,8,64,25
+   230                        	.member	msgType,64,16,8,16
+   231                        	.member	enabled,80,14,8,8
+   232                        	.eos
+   233                        	.stag	_DragData,136,29
+   234                        	.member	area,0,10,8,64,25
+   235                        	.member	xoffset,64,5,8,16
+   236                        	.member	yoffset,80,5,8,16
+   237                        	.member	msgType,96,16,8,16
+   238                        	.member	isDrag,112,14,8,8
+   239                        	.member	canDrag,120,14,8,8
+   240                        	.member	canDrop,128,14,8,8
+   241                        	.eos
+   242                        	.stag	_k_WindowStruct,2808,30
+   243                        	.member	cbSize,0,16,8,16
+   244                        	.member	style,16,18,8,32
+   245                        	.member	win_id,48,5,8,16
+   246                        	.member	win_x,64,5,8,16
+   247                        	.member	win_y,80,5,8,16
+   248                        	.member	win_width,96,5,8,16
+   249                        	.member	win_height,112,5,8,16
+   250                        	.member	wndRect,128,10,8,64,25
+   251                        	.member	clientRect,192,10,8,64,25
+   252                        	.member	nonclientGadgets,256,106,8,0,28,16
+   253                        	.member	clickable,1664,129,8,32
+   254                        	.member	win_title,1696,110,8,0,32
+   255                        	.member	Reserved0,1952,16,8,16
+   256                        	.member	win_class,1968,110,8,0,16
+   257                        	.member	win_class_name,2096,110,8,0,32
+   258                        	.member	nBitmapLayer,2352,16,8,16
+   259                        	.member	procid,2368,18,8,32
+   260                        	.member	pWndClass,2400,138,8,32,26
+   261                        	.member	pParentWindow,2432,129,8,32
+   262                        	.member	hMenu,2464,129,8,32
+   263                        	.member	pChildWindows,2496,138,8,32,6
+   264                        	.member	pChildHitList,2528,138,8,32,6
+   265                        	.member	isVisible,2560,14,8,8
+   266                        	.member	windowData,2568,129,8,32
+   267                        	.member	clientData,2600,1121,8,32,6
+   268                        	.member	isClosed,2792,14,8,8
+   269                        	.member	isClosing,2800,14,8,8
+   270                        	.eos
+   271                        	.stag	_k_WindowStructEx,2704,31
+   272                        	.member	cbSize,0,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   273                        	.member	style,16,18,8,32
+   274                        	.member	win_id,48,5,8,16
+   275                        	.member	win_x,64,5,8,16
+   276                        	.member	win_y,80,5,8,16
+   277                        	.member	win_width,96,5,8,16
+   278                        	.member	win_height,112,5,8,16
+   279                        	.member	wndRect,128,10,8,64,25
+   280                        	.member	clientRect,192,10,8,64,25
+   281                        	.member	nonclientGadgets,256,106,8,0,28,16
+   282                        	.member	clickable,1664,129,8,32
+   283                        	.member	win_title,1696,110,8,0,32
+   284                        	.member	Reserved0,1952,16,8,16
+   285                        	.member	win_class,1968,110,8,0,16
+   286                        	.member	nBitmapLayer,2096,16,8,16
+   287                        	.member	procid,2112,18,8,32
+   288                        	.member	pWndClass,2144,138,8,32,26
+   289                        	.member	pParentWindow,2176,129,8,32
+   290                        	.member	hMenu,2208,129,8,32
+   291                        	.member	pChildWindows,2240,138,8,32,6
+   292                        	.member	pChildHitList,2272,138,8,32,6
+   293                        	.member	isVisible,2304,14,8,8
+   294                        	.member	windowData,2312,129,8,32
+   295                        	.member	clientData,2344,1121,8,32,4
+   296                        	.member	isClosed,2472,14,8,8
+   297                        	.member	hWnd,2480,129,8,32
+   298                        	.member	localRect,2512,10,8,64,25
+   299                        	.member	globalRect,2576,10,8,64,25
+   300                        	.member	clientOffsetRect,2640,10,8,64,25
+   301                        	.eos
+   302                        	.stag	_FontMetric,32,32
+   303                        	.member	width,0,5,8,16
+   304                        	.member	height,16,5,8,16
+   305                        	.eos
+   306                        	.stag	_ctl_Textbox,112,33
+   307                        	.member	win_id,0,5,8,16
+   308                        	.member	win_x,16,5,8,16
+   309                        	.member	win_y,32,5,8,16
+   310                        	.member	win_width,48,5,8,16
+   311                        	.member	win_height,64,5,8,16
+   312                        	.member	content,80,1166,8,32
+   313                        	.eos
+   314                        	.stag	_MenuStruct,248,34
+   315                        	.member	cx,0,5,8,16
+   316                        	.member	cy,16,5,8,16
+   317                        	.member	width,32,5,8,16
+   318                        	.member	height,48,5,8,16
+   319                        	.member	fcolor,64,14,8,8
+   320                        	.member	bcolor,72,14,8,8
+   321                        	.member	chromeLeft,80,14,8,8
+   322                        	.member	chromeRight1,88,14,8,8
+   323                        	.member	chromeRight2,96,14,8,8
+   324                        	.member	itemId,104,16,8,16
+   325                        	.member	pCaption,120,142,8,32
+   326                        	.member	subMenus,152,138,8,32,6
+   327                        	.member	pBackground,184,129,8,32
+   328                        	.member	hWndOwner,216,129,8,32
+   329                        	.eos
+   330                        	.stag	fake35_,112,35
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   331                        	.member	menuId,0,16,8,16
+   332                        	.member	caption,16,142,8,32
+   333                        	.member	rect,48,10,8,64,25
+   334                        	.eos
+   335                        	.stag	fake36_,3568,36
+   336                        	.member	pParent,0,138,8,32,30
+   337                        	.member	rect,32,10,8,64,25
+   338                        	.member	captions,96,1134,8,32,24
+   339                        	.member	chrome,864,110,8,0,24
+   340                        	.member	ids,1056,112,8,0,24
+   341                        	.member	clickable,1440,106,8,0,27,24
+   342                        	.member	selected,3552,16,8,16
+   343                        	.eos
+   344                        	.stag	_fx_button_t,80,37
+   345                        	.member	pCaption,0,142,8,32
+   346                        	.member	data,32,129,8,32
+   347                        	.member	captionPixelWidth,64,16,8,16
+   348                        	.eos
+   349                        	.stag	_fx_scrollbar_t,192,38
+   350                        	.member	min,0,16,8,16
+   351                        	.member	max,16,16,8,16
+   352                        	.member	increment,32,16,8,16
+   353                        	.member	stopsize,48,16,8,16
+   354                        	.member	location,64,5,8,16
+   355                        	.member	state,80,5,8,16
+   356                        	.member	rectThumb,96,10,8,64,25
+   357                        	.member	data,160,129,8,32
+   358                        	.eos
+   359                        	.stag	_fx_listbox_t,240,39
+   360                        	.member	pos,0,5,8,16
+   361                        	.member	selected,16,16,8,16
+   362                        	.member	offsetX,32,5,8,16
+   363                        	.member	offsetY,48,5,8,16
+   364                        	.member	inc,64,5,8,16
+   365                        	.member	direction,80,5,8,16
+   366                        	.member	top,96,5,8,16
+   367                        	.member	bottom,112,5,8,16
+   368                        	.member	indexTop,128,5,8,16
+   369                        	.member	indexBottom,144,5,8,16
+   370                        	.member	maxItems,160,16,8,16
+   371                        	.member	fontSet,176,142,8,32
+   372                        	.member	data,208,129,8,32
+   373                        	.eos
+   374                        	.stag	_fx_textbox_t,144,40
+   375                        	.member	pos,0,5,8,16
+   376                        	.member	selected,16,16,8,16
+   377                        	.member	offsetX,32,5,8,16
+   378                        	.member	offsetY,48,5,8,16
+   379                        	.member	isShifted,64,14,8,8
+   380                        	.member	cursorState,72,14,8,8
+   381                        	.member	fontSet,80,142,8,32
+   382                        	.member	data,112,129,8,32
+   383                        	.eos
+   384                        	.stag	_fx_menuAnchor_t,144,41
+   385                        	.member	pCaption,0,142,8,32
+   386                        	.member	renderLayoutX,32,16,8,16
+   387                        	.member	renderLayoutY,48,16,8,16
+   388                        	.member	captionPixelWidth,64,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 8
+
+
+   389                        	.member	data,80,129,8,32
+   390                        	.member	droppedWindow,112,138,8,32,30
+   391                        	.eos
+   392                        	.stag	_SubMenuStruct,64,42
+   393                        	.member	caption,0,142,8,32
+   394                        	.member	action,32,641,8,32
+   395                        	.eos
+   396                        	.stag	_SubMenuListStruct,40,43
+   397                        	.member	cMenus,0,14,8,8
+   398                        	.member	psubmenus,8,9354,8,32,42
+   399                        	.eos
+   400                        	.stag	_fx_ComBuffer,2080,44
+   401                        	.member	cbSize,0,16,8,16
+   402                        	.member	cbBuffer,16,16,8,16
+   403                        	.member	buffer,32,110,8,0,256
+   404                        	.eos
+   405                        	.line	708
+   406                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",8
+   407                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstringtable.h",0
+   408                        	.line	89
+   409                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",9
+   410                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   411                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   412                        	.line	708
+   413                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",5
+   414                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",0
+   415                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   416                        	.line	708
+   417                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",11
+   418                        	.line	72
+   419                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",6
+   420                        	.line	1325
+   421                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",13
+   422                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+   423                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   424                        	.line	25
+   425                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",5
+   426                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   427                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   428                        	.line	708
+   429                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",5
+  Thu Dec  3 2020 22:25                                                Page 9
+
+
+   430                        	.line	61
+   431                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",6
+   432                        	.stag	_fx_zero_page,448,45
+   433                        	.member	fxos_mouse_byte_0,0,14,8,8
+   434                        	.member	fxos_mouse_byte_1,8,14,8,8
+   435                        	.member	fxos_mouse_byte_2,16,14,8,8
+   436                        	.member	fxos_mouse_byte_t,24,14,8,8
+   437                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+   438                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+   439                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+   440                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+   441                        	.member	fxos_key_byte_0,64,14,8,8
+   442                        	.member	fxos_key_byte_1,72,14,8,8
+   443                        	.member	fxos_key_byte_2,80,14,8,8
+   444                        	.member	fxos_mouse_ctl,88,14,8,8
+   445                        	.member	fxos_mouse_index,96,14,8,8
+   446                        	.member	fxos_mouse_status,104,14,8,8
+   447                        	.member	VersionMajor,112,16,8,16
+   448                        	.member	VersionMinor,128,16,8,16
+   449                        	.member	VersionRelease,144,16,8,16
+   450                        	.member	topMemory,160,18,8,32
+   451                        	.member	bottomMemory,192,18,8,32
+   452                        	.member	availableMemory,224,18,8,32
+   453                        	.member	availableMemoryK,256,18,8,32
+   454                        	.member	availableHeapMemory,288,18,8,32
+   455                        	.member	availableHeapMemoryK,320,18,8,32
+   456                        	.member	kernelFunctionCallId,352,16,8,16
+   457                        	.member	kernelFunctionCallBank,368,14,8,8
+   458                        	.member	kernelFunctionCallReserved,376,14,8,8
+   459                        	.member	kernelFunctionCallParameter,384,129,8,32
+   460                        	.member	kernelFunctionCallReturn,416,129,8,32
+   461                        	.eos
+   462                        	.stag	_fx_environment,96,46
+   463                        	.member	variables,0,142,8,32
+   464                        	.member	reserved1,32,5,8,16
+   465                        	.member	reserved2,48,5,8,16
+   466                        	.member	reserved3,64,5,8,16
+   467                        	.member	reserved4,80,5,8,16
+   468                        	.eos
+   469                        	.stag	_debug_byte_bits,8,47
+   470                        	.member	bit7,0,14,17,1
+   471                        	.member	bit6,1,14,17,1
+   472                        	.member	bit5,2,14,17,1
+   473                        	.member	bit4,3,14,17,1
+   474                        	.member	bit3,4,14,17,1
+   475                        	.member	bit2,5,14,17,1
+   476                        	.member	bit1,6,14,17,1
+   477                        	.member	bit0,7,14,17,1
+   478                        	.eos
+   479                        	.stag	_fx_device_driver,1416,48
+   480                        	.member	name,0,110,8,0,64
+   481                        	.member	version,512,110,8,0,64
+   482                        	.member	hmajor,1024,110,8,0,16
+   483                        	.member	hminor,1152,110,8,0,16
+   484                        	.member	type,1280,14,8,8
+   485                        	.member	f_driver_load,1288,129,8,32
+   486                        	.member	f_driver_read,1320,129,8,32
+  Thu Dec  3 2020 22:25                                                Page 10
+
+
+   487                        	.member	f_driver_write,1352,129,8,32
+   488                        	.member	f_driver_unload,1384,129,8,32
+   489                        	.eos
+   490                        	.stag	_fx_block_device_driver,1448,49
+   491                        	.member	name,0,110,8,0,64
+   492                        	.member	version,512,110,8,0,64
+   493                        	.member	hmajor,1024,110,8,0,16
+   494                        	.member	hminor,1152,110,8,0,16
+   495                        	.member	type,1280,14,8,8
+   496                        	.member	f_driver_load,1288,129,8,32
+   497                        	.member	f_driver_read,1320,129,8,32
+   498                        	.member	f_driver_write,1352,129,8,32
+   499                        	.member	f_driver_unload,1384,129,8,32
+   500                        	.member	f_driver_command,1416,129,8,32
+   501                        	.eos
+   502                        	.line	270
+   503                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",19
+   504                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   505                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   506                        	.line	134
+   507                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",5
+   508                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   509                        	.line	205
+   510                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",6
+   511                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   512                        	.line	708
+   513                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",7
+   514                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   515                        	.line	1325
+   516                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",10
+   517                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   518                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   519                        	.line	205
+   520                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",5
+   521                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   522                        	.line	134
+   523                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",6
+   524                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   525                        	.line	708
+   526                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",7
+   527                        	.stag	_fx_string,64,50
+  Thu Dec  3 2020 22:25                                                Page 11
+
+
+   528                        	.member	size,0,16,8,16
+   529                        	.member	pos,16,5,8,16
+   530                        	.member	buffer,32,142,8,32
+   531                        	.eos
+   532                        	.line	71
+   533                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",15
+   534                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   535                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   536                        	.line	25
+   537                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",5
+   538                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",0
+   539                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   540                        	.line	708
+   541                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",5
+   542                        	.line	52
+   543                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",6
+   544                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   545                        	.line	61
+   546                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",7
+   547                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   548                        	.line	171
+   549                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",8
+   550                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",0
+   551                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   552                        	.line	708
+   553                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",5
+   554                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   555                        	.line	25
+   556                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",6
+   557                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   558                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   559                        	.line	25
+   560                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",5
+   561                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",0
+   562                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_build_parameters.h",0
+   563                        	.line	32
+  Thu Dec  3 2020 22:25                                                Page 12
+
+
+   564                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",8
+   565                        	.stag	UMM_HEAP_INFO_t,256,51
+   566                        	.member	totalEntries,0,18,8,32
+   567                        	.member	usedEntries,32,18,8,32
+   568                        	.member	freeEntries,64,18,8,32
+   569                        	.member	totalBlocks,96,18,8,32
+   570                        	.member	usedBlocks,128,18,8,32
+   571                        	.member	freeBlocks,160,18,8,32
+   572                        	.member	maxFreeContiguousBlocks,192,18,8,32
+   573                        	.member	blockSize,224,18,8,32
+   574                        	.eos
+   575                        	.line	199
+   576                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",6
+   577                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",0
+   578                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   579                        	.line	708
+   580                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",11
+   581                        	.line	24
+   582                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",7
+   583                        	.stag	_fx_memory_map,2072,52
+   584                        	.member	availableMemory,0,18,8,32
+   585                        	.member	valid_segments,32,110,8,0,255
+   586                        	.eos
+   587                        	.line	39
+   588                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",7
+   589                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   590                        	.line	743
+   591                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",8
+   592                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   593                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",0
+   594                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   595                        	.line	708
+   596                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",6
+   597                        	.line	64
+   598                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",4
+   599                        	.stag	_click_detected,64,53
+   600                        	.member	window,0,138,8,32,30
+   601                        	.member	handler,32,641,8,32
+   602                        	.eos
+   603                        	.stag	_current_palette_map,400,54
+   604                        	.member	CUR_DESKTOP,0,5,8,16
+   605                        	.member	CUR_BACKGROUND,16,5,8,16
+   606                        	.member	CUR_FONT,32,5,8,16
+   607                        	.member	CUR_SELECTED_FONT,48,5,8,16
+  Thu Dec  3 2020 22:25                                                Page 13
+
+
+   608                        	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+   609                        	.member	CUR_WINDOWFRAME,80,5,8,16
+   610                        	.member	CUR_WINDOWBORDER,96,5,8,16
+   611                        	.member	CUR_WINDOWSHADOW,112,5,8,16
+   612                        	.member	CUR_MENU,128,5,8,16
+   613                        	.member	CUR_GADGET,144,5,8,16
+   614                        	.member	CUR_COLOR,160,101,8,0,15
+   615                        	.eos
+   616                        	.line	264
+   617                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",9
+   618                        	.stag	_childMessage_t,64,55
+   619                        	.member	msgType,0,16,8,16
+   620                        	.member	msgData,16,129,8,32
+   621                        	.member	dataSize,48,16,8,16
+   622                        	.eos
+   623                        	.line	362
+   624                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",9
+   625                        	.stag	_fx_main_loopvars,16,56
+   626                        	.member	dummy,0,5,8,16
+   627                        	.eos
+   628                        	.stag	_fxMouseMessageData,64,57
+   629                        	.member	button1,0,14,8,8
+   630                        	.member	button2,8,14,8,8
+   631                        	.member	button3,16,14,8,8
+   632                        	.member	button4,24,14,8,8
+   633                        	.member	x,32,16,8,16
+   634                        	.member	y,48,16,8,16
+   635                        	.eos
+   636                        	.stag	_fx_eventProcess,64,58
+   637                        	.member	process,0,138,8,32,20
+   638                        	.member	eventProc,32,641,8,32
+   639                        	.eos
+   640                        	.stag	_mouse_msg_state,184,59
+   641                        	.member	lastEvent,0,18,8,32
+   642                        	.member	buttonLeftDown,32,14,8,8
+   643                        	.member	lastLeftDown,40,18,8,32
+   644                        	.member	buttonRightDown,72,14,8,8
+   645                        	.member	lastRightDown,80,18,8,32
+   646                        	.member	buttonMiddleDown,112,14,8,8
+   647                        	.member	lastMiddleDown,120,18,8,32
+   648                        	.member	lastX,152,16,8,16
+   649                        	.member	lastY,168,16,8,16
+   650                        	.eos
+   651                        	.line	743
+   652                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",16
+   653                        	.stag	_fx_spinner_ctx,48,60
+   654                        	.member	index,0,5,8,16
+   655                        	.member	spinner,16,142,8,32
+   656                        	.eos
+   657                        	.stag	_fx_console_ctx,1144,61
+   658                        	.member	lineBufferIndex,0,5,8,16
+   659                        	.member	lineBuffer,16,110,8,0,128
+   660                        	.member	isShifted,1040,14,8,8
+   661                        	.member	userData,1048,129,8,32
+   662                        	.member	screenBuffer,1080,129,8,32
+  Thu Dec  3 2020 22:25                                                Page 14
+
+
+   663                        	.member	Reserved1,1112,129,8,32
+   664                        	.eos
+   665                        	.stag	_token,64,62
+   666                        	.member	type,0,5,8,16
+   667                        	.member	depth,16,16,8,16
+   668                        	.member	text,32,142,8,32
+   669                        	.eos
+   670                        	.stag	_command_args,64,63
+   671                        	.member	proc,0,656,8,32
+   672                        	.member	tokens,32,138,8,32,5
+   673                        	.eos
+   674                        	.line	171
+   675                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",20
+   676                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   677                        	.line	71
+   678                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",21
+   679                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   680                        	.line	61
+   681                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",22
+   682                        	.line	25
+   683                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.h",5
+   684                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdos.h",0
+   685                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   686                        	.line	708
+   687                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdos.h",5
+   688                        	.stag	_fx_sd_direntry,256,64
+   689                        	.member	filename,0,110,8,0,11
+   690                        	.member	type,88,14,8,8
+   691                        	.member	attrs,96,110,8,0,20
+   692                        	.eos
+   693                        	.stag	_fx_info,416,65
+   694                        	.member	stgName,0,110,8,0,32
+   695                        	.member	Reserved1,256,14,8,8
+   696                        	.member	stgType,264,16,8,16
+   697                        	.member	Reserved2,280,14,8,8
+   698                        	.member	stgReserved,288,110,8,0,16
+   699                        	.eos
+   700                        	.stag	_fx_fileinfo,136,66
+   701                        	.member	type,0,14,8,8
+   702                        	.member	pFilename,8,142,8,32
+   703                        	.member	lSize,40,18,8,32
+   704                        	.member	lcreateDate,72,18,8,32
+   705                        	.member	lchangeDate,104,18,8,32
+   706                        	.eos
+   707                        	.stag	_FX_FAT_DIR_INFO,256,67
+   708                        	.member	DIR_Name,0,110,8,0,11
+   709                        	.member	DIR_Attr,88,14,8,8
+   710                        	.member	DIR_NTRes,96,14,8,8
+   711                        	.member	DIR_CrtTimeTenth,104,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 15
+
+
+   712                        	.member	DIR_CrtTime,112,16,8,16
+   713                        	.member	DIR_CrtDate,128,16,8,16
+   714                        	.member	DIR_LstAccDate,144,16,8,16
+   715                        	.member	DIR_FstClusHI,160,16,8,16
+   716                        	.member	DIR_WrtTime,176,16,8,16
+   717                        	.member	DIR_WrtDate,192,16,8,16
+   718                        	.member	DIR_FstClusLO,208,16,8,16
+   719                        	.member	DIR_FileSize,224,18,8,32
+   720                        	.eos
+   721                        	.stag	fat_extBS_32,416,68
+   722                        	.member	table_size_32,0,18,8,32
+   723                        	.member	extended_flags,32,16,8,16
+   724                        	.member	fat_version,48,16,8,16
+   725                        	.member	root_cluster,64,18,8,32
+   726                        	.member	fat_info,96,16,8,16
+   727                        	.member	backup_BS_sector,112,16,8,16
+   728                        	.member	reserved_0,128,110,8,0,12
+   729                        	.member	drive_number,224,14,8,8
+   730                        	.member	reserved_1,232,14,8,8
+   731                        	.member	boot_signature,240,14,8,8
+   732                        	.member	volume_id,248,16,8,16
+   733                        	.member	volume_label,264,110,8,0,11
+   734                        	.member	fat_type_label,352,110,8,0,8
+   735                        	.eos
+   736                        	.stag	fat_extBS_16,192,69
+   737                        	.member	bios_drive_num,0,14,8,8
+   738                        	.member	reserved1,8,14,8,8
+   739                        	.member	boot_signature,16,14,8,8
+   740                        	.member	volume_id,24,16,8,16
+   741                        	.member	volume_label,40,110,8,0,11
+   742                        	.member	fat_type_label,128,110,8,0,8
+   743                        	.eos
+   744                        	.stag	fat_BS,688,70
+   745                        	.member	bootjmp,0,110,8,0,3
+   746                        	.member	oem_name,24,110,8,0,8
+   747                        	.member	bytes_per_sector,88,16,8,16
+   748                        	.member	sectors_per_cluster,104,14,8,8
+   749                        	.member	reserved_sector_count,112,16,8,16
+   750                        	.member	table_count,128,14,8,8
+   751                        	.member	root_entry_count,136,16,8,16
+   752                        	.member	total_sectors_16,152,16,8,16
+   753                        	.member	media_type,168,14,8,8
+   754                        	.member	table_size_16,176,16,8,16
+   755                        	.member	sectors_per_track,192,16,8,16
+   756                        	.member	head_side_count,208,16,8,16
+   757                        	.member	hidden_sector_count,224,16,8,16
+   758                        	.member	total_sectors_32,240,16,8,16
+   759                        	.member	extended_section,256,110,8,0,54
+   760                        	.eos
+   761                        	.stag	__FATBootSector,928,71
+   762                        	.member	bootjmp,0,110,8,0,3
+   763                        	.member	oem_name,24,110,8,0,8
+   764                        	.member	bytes_per_sector,88,16,8,16
+   765                        	.member	sectors_per_cluster,104,14,8,8
+   766                        	.member	reserved_sector_count,112,16,8,16
+   767                        	.member	fat_table_count,128,14,8,8
+   768                        	.member	root_entry_count,136,16,8,16
+   769                        	.member	total_sectors_16,152,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 16
+
+
+   770                        	.member	media_type,168,14,8,8
+   771                        	.member	sectors_per_fat,176,16,8,16
+   772                        	.member	sectors_per_track,192,16,8,16
+   773                        	.member	head_side_count,208,16,8,16
+   774                        	.member	hidden_sector_count,224,18,8,32
+   775                        	.member	total_sectors_32,256,18,8,32
+   776                        	.member	drive_number,288,14,8,8
+   777                        	.member	reserved1,296,14,8,8
+   778                        	.member	boot_sig,304,14,8,8
+   779                        	.member	vol_id,312,18,8,32
+   780                        	.member	vol_name,344,110,8,0,11
+   781                        	.member	file_system_type,432,110,8,0,8
+   782                        	.member	extended_section,496,110,8,0,54
+   783                        	.eos
+   784                        	.stag	__PARTITIONTABLE,128,72
+   785                        	.member	first_byte,0,14,8,8
+   786                        	.member	start_chs,8,110,8,0,3
+   787                        	.member	partition_type,32,14,8,8
+   788                        	.member	end_chs,40,110,8,0,3
+   789                        	.member	start_sector,64,18,8,32
+   790                        	.member	length_sectors,96,18,8,32
+   791                        	.eos
+   792                        	.stag	fake73_,4096,73
+   793                        	.member	jmp,0,110,8,0,3
+   794                        	.member	oem,24,110,8,0,8
+   795                        	.member	sector_size,88,15,8,16
+   796                        	.member	sectors_per_cluster,104,14,8,8
+   797                        	.member	reserved_sectors,112,15,8,16
+   798                        	.member	number_of_fats,128,14,8,8
+   799                        	.member	root_dir_entries,136,15,8,16
+   800                        	.member	total_sectors_short,152,15,8,16
+   801                        	.member	media_descriptor,168,14,8,8
+   802                        	.member	fat_size_sectors,176,15,8,16
+   803                        	.member	sectors_per_track,192,15,8,16
+   804                        	.member	number_of_heads,208,15,8,16
+   805                        	.member	hidden_sectors,224,18,8,32
+   806                        	.member	total_sectors_long,256,18,8,32
+   807                        	.member	drive_number,288,14,8,8
+   808                        	.member	current_head,296,14,8,8
+   809                        	.member	boot_signature,304,14,8,8
+   810                        	.member	volume_id,312,18,8,32
+   811                        	.member	volume_label,344,110,8,0,11
+   812                        	.member	fs_type,432,110,8,0,8
+   813                        	.member	boot_code,496,110,8,0,448
+   814                        	.member	boot_sector_signature,4080,15,8,16
+   815                        	.eos
+   816                        	.stag	__FAT16ENTRY,256,74
+   817                        	.member	filename,0,110,8,0,8
+   818                        	.member	ext,64,110,8,0,3
+   819                        	.member	attributes,88,14,8,8
+   820                        	.member	reserved,96,110,8,0,10
+   821                        	.member	modify_time,176,16,8,16
+   822                        	.member	modify_date,192,16,8,16
+   823                        	.member	starting_cluster,208,16,8,16
+   824                        	.member	file_size,224,18,8,32
+   825                        	.eos
+   826                        	.stag	__FAT16ENTRYLONG,288,75
+   827                        	.member	filename,0,110,8,0,8
+  Thu Dec  3 2020 22:25                                                Page 17
+
+
+   828                        	.member	ext,64,110,8,0,3
+   829                        	.member	attributes,88,14,8,8
+   830                        	.member	reserved,96,110,8,0,10
+   831                        	.member	modify_time,176,16,8,16
+   832                        	.member	modify_date,192,16,8,16
+   833                        	.member	starting_cluster,208,16,8,16
+   834                        	.member	file_size,224,18,8,32
+   835                        	.member	plongfileName,256,142,8,32
+   836                        	.eos
+   837                        	.stag	_LongFileName,256,76
+   838                        	.member	sequenceNo,0,14,8,8
+   839                        	.member	fileName_Part1,8,110,8,0,10
+   840                        	.member	fileattribute,88,14,8,8
+   841                        	.member	type,96,14,8,8
+   842                        	.member	checksum,104,14,8,8
+   843                        	.member	fileName_Part2,112,110,8,0,12
+   844                        	.member	fstclusLO,208,5,8,16
+   845                        	.member	fileName_Part3,224,110,8,0,4
+   846                        	.eos
+   847                        	.stag	_IDSECTOR,2048,77
+   848                        	.member	wGenConfig,0,16,8,16
+   849                        	.member	wNumCyls,16,16,8,16
+   850                        	.member	wReserved,32,16,8,16
+   851                        	.member	wNumHeads,48,16,8,16
+   852                        	.member	wBytesPerTrack,64,16,8,16
+   853                        	.member	wBytesPerSector,80,16,8,16
+   854                        	.member	wSectorsPerTrack,96,16,8,16
+   855                        	.member	wVendorUnique,112,112,8,0,3
+   856                        	.member	sSerialNumber,160,110,8,0,20
+   857                        	.member	wBufferType,320,16,8,16
+   858                        	.member	wBufferSize,336,16,8,16
+   859                        	.member	wECCSize,352,16,8,16
+   860                        	.member	sFirmwareRev,368,110,8,0,8
+   861                        	.member	sModelNumber,432,110,8,0,40
+   862                        	.member	wMoreVendorUnique,752,16,8,16
+   863                        	.member	wDoubleWordIO,768,16,8,16
+   864                        	.member	wCapabilities,784,16,8,16
+   865                        	.member	wReserved1,800,16,8,16
+   866                        	.member	wPIOTiming,816,16,8,16
+   867                        	.member	wDMATiming,832,16,8,16
+   868                        	.member	wBS,848,16,8,16
+   869                        	.member	wNumCurrentCyls,864,16,8,16
+   870                        	.member	wNumCurrentHeads,880,16,8,16
+   871                        	.member	wNumCurrentSectorsPerTrack,896,16,8,16
+   872                        	.member	ulCurrentSectorCapacity,912,18,8,32
+   873                        	.member	wMultSectorStuff,944,16,8,16
+   874                        	.member	ulTotalAddressableSectors,960,18,8,32
+   875                        	.member	wSingleWordDMA,992,16,8,16
+   876                        	.member	wMultiWordDMA,1008,16,8,16
+   877                        	.member	bReserved,1024,110,8,0,128
+   878                        	.eos
+   879                        	.stag	fake78_,16,78
+   880                        	.member	Reserved1,0,16,17,1
+   881                        	.member	Retired3,1,16,17,1
+   882                        	.member	ResponseIncomplete,2,16,17,1
+   883                        	.member	Retired2,3,16,17,3
+   884                        	.member	FixedDevice,6,16,17,1
+   885                        	.member	RemovableMedia,7,16,17,1
+  Thu Dec  3 2020 22:25                                                Page 18
+
+
+   886                        	.member	Retired1,8,16,17,7
+   887                        	.member	DeviceType,15,16,17,1
+   888                        	.eos
+   889                        	.stag	fake79_,16,79
+   890                        	.member	FeatureSupported,0,16,17,1
+   891                        	.member	Reserved,1,16,17,15
+   892                        	.eos
+   893                        	.stag	fake80_,32,80
+   894                        	.member	CurrentLongPhysicalSectorAlignment,0,14,
+                    17,2
+   895                        	.member	ReservedByte49,2,14,17,6
+   896                        	.member	DmaSupported,8,14,17,1
+   897                        	.member	LbaSupported,9,14,17,1
+   898                        	.member	IordyDisable,10,14,17,1
+   899                        	.member	IordySupported,11,14,17,1
+   900                        	.member	Reserved1,12,14,17,1
+   901                        	.member	StandybyTimerSupport,13,14,17,1
+   902                        	.member	Reserved2,14,14,17,2
+   903                        	.member	ReservedWord50,16,16,8,16
+   904                        	.eos
+   905                        	.stag	fake81_,16,81
+   906                        	.member	ZonedCapabilities,0,16,17,2
+   907                        	.member	NonVolatileWriteCache,2,16,17,1
+   908                        	.member	ExtendedUserAddressableSectorsSupported,
+                    3,16,17,1
+   909                        	.member	DeviceEncryptsAllUserData,4,16,17,1
+   910                        	.member	ReadZeroAfterTrimSupported,5,16,17,1
+   911                        	.member	Optional28BitCommandsSupported,6,16,17,1
+   912                        	.member	IEEE1667,7,16,17,1
+   913                        	.member	DownloadMicrocodeDmaSupported,8,16,17,1
+   914                        	.member	SetMaxSetPasswordUnlockDmaSupported,9,16
+                    ,17,1
+   915                        	.member	WriteBufferDmaSupported,10,16,17,1
+   916                        	.member	ReadBufferDmaSupported,11,16,17,1
+   917                        	.member	DeviceConfigIdentifySetDmaSupported,12,1
+                    6,17,1
+   918                        	.member	LPSAERCSupported,13,16,17,1
+   919                        	.member	DeterministicReadAfterTrimSupported,14,1
+                    6,17,1
+   920                        	.member	CFastSpecSupported,15,16,17,1
+   921                        	.eos
+   922                        	.stag	fake82_,32,82
+   923                        	.member	Reserved0,0,16,17,1
+   924                        	.member	SataGen1,1,16,17,1
+   925                        	.member	SataGen2,2,16,17,1
+   926                        	.member	SataGen3,3,16,17,1
+   927                        	.member	Reserved1,4,16,17,4
+   928                        	.member	NCQ,8,16,17,1
+   929                        	.member	HIPM,9,16,17,1
+   930                        	.member	PhyEvents,10,16,17,1
+   931                        	.member	NcqUnload,11,16,17,1
+   932                        	.member	NcqPriority,12,16,17,1
+   933                        	.member	HostAutoPS,13,16,17,1
+   934                        	.member	DeviceAutoPS,14,16,17,1
+   935                        	.member	ReadLogDMA,15,16,17,1
+   936                        	.member	Reserved2,16,16,17,1
+   937                        	.member	CurrentSpeed,17,16,17,3
+   938                        	.member	NcqStreaming,20,16,17,1
+  Thu Dec  3 2020 22:25                                                Page 19
+
+
+   939                        	.member	NcqQueueMgmt,21,16,17,1
+   940                        	.member	NcqReceiveSend,22,16,17,1
+   941                        	.member	DEVSLPtoReducedPwrState,23,16,17,1
+   942                        	.member	Reserved3,24,16,17,8
+   943                        	.eos
+   944                        	.stag	fake83_,16,83
+   945                        	.member	Reserved0,0,16,17,1
+   946                        	.member	NonZeroOffsets,1,16,17,1
+   947                        	.member	DmaSetupAutoActivate,2,16,17,1
+   948                        	.member	DIPM,3,16,17,1
+   949                        	.member	InOrderData,4,16,17,1
+   950                        	.member	HardwareFeatureControl,5,16,17,1
+   951                        	.member	SoftwareSettingsPreservation,6,16,17,1
+   952                        	.member	NCQAutosense,7,16,17,1
+   953                        	.member	DEVSLP,8,16,17,1
+   954                        	.member	HybridInformation,9,16,17,1
+   955                        	.member	Reserved1,10,16,17,6
+   956                        	.eos
+   957                        	.stag	fake84_,16,84
+   958                        	.member	Reserved0,0,16,17,1
+   959                        	.member	NonZeroOffsets,1,16,17,1
+   960                        	.member	DmaSetupAutoActivate,2,16,17,1
+   961                        	.member	DIPM,3,16,17,1
+   962                        	.member	InOrderData,4,16,17,1
+   963                        	.member	HardwareFeatureControl,5,16,17,1
+   964                        	.member	SoftwareSettingsPreservation,6,16,17,1
+   965                        	.member	DeviceAutoPS,7,16,17,1
+   966                        	.member	DEVSLP,8,16,17,1
+   967                        	.member	HybridInformation,9,16,17,1
+   968                        	.member	Reserved1,10,16,17,6
+   969                        	.eos
+   970                        	.stag	fake85_,48,85
+   971                        	.member	SmartCommands,0,16,17,1
+   972                        	.member	SecurityMode,1,16,17,1
+   973                        	.member	RemovableMediaFeature,2,16,17,1
+   974                        	.member	PowerManagement,3,16,17,1
+   975                        	.member	Reserved1,4,16,17,1
+   976                        	.member	WriteCache,5,16,17,1
+   977                        	.member	LookAhead,6,16,17,1
+   978                        	.member	ReleaseInterrupt,7,16,17,1
+   979                        	.member	ServiceInterrupt,8,16,17,1
+   980                        	.member	DeviceReset,9,16,17,1
+   981                        	.member	HostProtectedArea,10,16,17,1
+   982                        	.member	Obsolete1,11,16,17,1
+   983                        	.member	WriteBuffer,12,16,17,1
+   984                        	.member	ReadBuffer,13,16,17,1
+   985                        	.member	Nop,14,16,17,1
+   986                        	.member	Obsolete2,15,16,17,1
+   987                        	.member	DownloadMicrocode,16,16,17,1
+   988                        	.member	DmaQueued,17,16,17,1
+   989                        	.member	Cfa,18,16,17,1
+   990                        	.member	AdvancedPm,19,16,17,1
+   991                        	.member	Msn,20,16,17,1
+   992                        	.member	PowerUpInStandby,21,16,17,1
+   993                        	.member	ManualPowerUp,22,16,17,1
+   994                        	.member	Reserved2,23,16,17,1
+   995                        	.member	SetMax,24,16,17,1
+   996                        	.member	Acoustics,25,16,17,1
+  Thu Dec  3 2020 22:25                                                Page 20
+
+
+   997                        	.member	BigLba,26,16,17,1
+   998                        	.member	DeviceConfigOverlay,27,16,17,1
+   999                        	.member	FlushCache,28,16,17,1
+  1000                        	.member	FlushCacheExt,29,16,17,1
+  1001                        	.member	WordValid83,30,16,17,2
+  1002                        	.member	SmartErrorLog,32,16,17,1
+  1003                        	.member	SmartSelfTest,33,16,17,1
+  1004                        	.member	MediaSerialNumber,34,16,17,1
+  1005                        	.member	MediaCardPassThrough,35,16,17,1
+  1006                        	.member	StreamingFeature,36,16,17,1
+  1007                        	.member	GpLogging,37,16,17,1
+  1008                        	.member	WriteFua,38,16,17,1
+  1009                        	.member	WriteQueuedFua,39,16,17,1
+  1010                        	.member	WWN64Bit,40,16,17,1
+  1011                        	.member	URGReadStream,41,16,17,1
+  1012                        	.member	URGWriteStream,42,16,17,1
+  1013                        	.member	ReservedForTechReport,43,16,17,2
+  1014                        	.member	IdleWithUnloadFeature,45,16,17,1
+  1015                        	.member	WordValid,46,16,17,2
+  1016                        	.eos
+  1017                        	.stag	fake86_,48,86
+  1018                        	.member	SmartCommands,0,16,17,1
+  1019                        	.member	SecurityMode,1,16,17,1
+  1020                        	.member	RemovableMediaFeature,2,16,17,1
+  1021                        	.member	PowerManagement,3,16,17,1
+  1022                        	.member	Reserved1,4,16,17,1
+  1023                        	.member	WriteCache,5,16,17,1
+  1024                        	.member	LookAhead,6,16,17,1
+  1025                        	.member	ReleaseInterrupt,7,16,17,1
+  1026                        	.member	ServiceInterrupt,8,16,17,1
+  1027                        	.member	DeviceReset,9,16,17,1
+  1028                        	.member	HostProtectedArea,10,16,17,1
+  1029                        	.member	Obsolete1,11,16,17,1
+  1030                        	.member	WriteBuffer,12,16,17,1
+  1031                        	.member	ReadBuffer,13,16,17,1
+  1032                        	.member	Nop,14,16,17,1
+  1033                        	.member	Obsolete2,15,16,17,1
+  1034                        	.member	DownloadMicrocode,16,16,17,1
+  1035                        	.member	DmaQueued,17,16,17,1
+  1036                        	.member	Cfa,18,16,17,1
+  1037                        	.member	AdvancedPm,19,16,17,1
+  1038                        	.member	Msn,20,16,17,1
+  1039                        	.member	PowerUpInStandby,21,16,17,1
+  1040                        	.member	ManualPowerUp,22,16,17,1
+  1041                        	.member	Reserved2,23,16,17,1
+  1042                        	.member	SetMax,24,16,17,1
+  1043                        	.member	Acoustics,25,16,17,1
+  1044                        	.member	BigLba,26,16,17,1
+  1045                        	.member	DeviceConfigOverlay,27,16,17,1
+  1046                        	.member	FlushCache,28,16,17,1
+  1047                        	.member	FlushCacheExt,29,16,17,1
+  1048                        	.member	Resrved3,30,16,17,1
+  1049                        	.member	Words119_120Valid,31,16,17,1
+  1050                        	.member	SmartErrorLog,32,16,17,1
+  1051                        	.member	SmartSelfTest,33,16,17,1
+  1052                        	.member	MediaSerialNumber,34,16,17,1
+  1053                        	.member	MediaCardPassThrough,35,16,17,1
+  1054                        	.member	StreamingFeature,36,16,17,1
+  Thu Dec  3 2020 22:25                                                Page 21
+
+
+  1055                        	.member	GpLogging,37,16,17,1
+  1056                        	.member	WriteFua,38,16,17,1
+  1057                        	.member	WriteQueuedFua,39,16,17,1
+  1058                        	.member	WWN64Bit,40,16,17,1
+  1059                        	.member	URGReadStream,41,16,17,1
+  1060                        	.member	URGWriteStream,42,16,17,1
+  1061                        	.member	ReservedForTechReport,43,16,17,2
+  1062                        	.member	IdleWithUnloadFeature,45,16,17,1
+  1063                        	.member	Reserved4,46,16,17,2
+  1064                        	.eos
+  1065                        	.stag	fake87_,16,87
+  1066                        	.member	TimeRequired,0,16,17,15
+  1067                        	.member	ExtendedTimeReported,15,16,17,1
+  1068                        	.eos
+  1069                        	.stag	fake88_,16,88
+  1070                        	.member	TimeRequired,0,16,17,15
+  1071                        	.member	ExtendedTimeReported,15,16,17,1
+  1072                        	.eos
+  1073                        	.stag	fake89_,16,89
+  1074                        	.member	LogicalSectorsPerPhysicalSector,0,16,17,
+                    4
+  1075                        	.member	Reserved0,4,16,17,8
+  1076                        	.member	LogicalSectorLongerThan256Words,12,16,17
+                    ,1
+  1077                        	.member	MultipleLogicalSectorsPerPhysicalSector,
+                    13,16,17,1
+  1078                        	.member	Reserved1,14,16,17,2
+  1079                        	.eos
+  1080                        	.stag	fake90_,16,90
+  1081                        	.member	ReservedForDrqTechnicalReport,0,16,17,1
+  1082                        	.member	WriteReadVerify,1,16,17,1
+  1083                        	.member	WriteUncorrectableExt,2,16,17,1
+  1084                        	.member	ReadWriteLogDmaExt,3,16,17,1
+  1085                        	.member	DownloadMicrocodeMode3,4,16,17,1
+  1086                        	.member	FreefallControl,5,16,17,1
+  1087                        	.member	SenseDataReporting,6,16,17,1
+  1088                        	.member	ExtendedPowerConditions,7,16,17,1
+  1089                        	.member	Reserved0,8,16,17,6
+  1090                        	.member	WordValid,14,16,17,2
+  1091                        	.eos
+  1092                        	.stag	fake91_,16,91
+  1093                        	.member	ReservedForDrqTechnicalReport,0,16,17,1
+  1094                        	.member	WriteReadVerify,1,16,17,1
+  1095                        	.member	WriteUncorrectableExt,2,16,17,1
+  1096                        	.member	ReadWriteLogDmaExt,3,16,17,1
+  1097                        	.member	DownloadMicrocodeMode3,4,16,17,1
+  1098                        	.member	FreefallControl,5,16,17,1
+  1099                        	.member	SenseDataReporting,6,16,17,1
+  1100                        	.member	ExtendedPowerConditions,7,16,17,1
+  1101                        	.member	Reserved0,8,16,17,6
+  1102                        	.member	Reserved1,14,16,17,2
+  1103                        	.eos
+  1104                        	.stag	fake92_,16,92
+  1105                        	.member	SecuritySupported,0,16,17,1
+  1106                        	.member	SecurityEnabled,1,16,17,1
+  1107                        	.member	SecurityLocked,2,16,17,1
+  1108                        	.member	SecurityFrozen,3,16,17,1
+  1109                        	.member	SecurityCountExpired,4,16,17,1
+  Thu Dec  3 2020 22:25                                                Page 22
+
+
+  1110                        	.member	EnhancedSecurityEraseSupported,5,16,17,1
+  1111                        	.member	Reserved0,6,16,17,2
+  1112                        	.member	SecurityLevel,8,16,17,1
+  1113                        	.member	Reserved1,9,16,17,7
+  1114                        	.eos
+  1115                        	.stag	fake93_,16,93
+  1116                        	.member	MaximumCurrentInMA,0,16,17,12
+  1117                        	.member	CfaPowerMode1Disabled,12,16,17,1
+  1118                        	.member	CfaPowerMode1Required,13,16,17,1
+  1119                        	.member	Reserved0,14,16,17,1
+  1120                        	.member	Word160Supported,15,16,17,1
+  1121                        	.eos
+  1122                        	.stag	fake94_,16,94
+  1123                        	.member	SupportsTrim,0,16,17,1
+  1124                        	.member	Reserved0,1,16,17,15
+  1125                        	.eos
+  1126                        	.stag	fake95_,16,95
+  1127                        	.member	Supported,0,16,17,1
+  1128                        	.member	Reserved0,1,16,17,1
+  1129                        	.member	WriteSameSuported,2,16,17,1
+  1130                        	.member	ErrorRecoveryControlSupported,3,16,17,1
+  1131                        	.member	FeatureControlSuported,4,16,17,1
+  1132                        	.member	DataTablesSuported,5,16,17,1
+  1133                        	.member	Reserved1,6,16,17,6
+  1134                        	.member	VendorSpecific,12,16,17,4
+  1135                        	.eos
+  1136                        	.stag	fake96_,16,96
+  1137                        	.member	AlignmentOfLogicalWithinPhysical,0,16,17
+                    ,14
+  1138                        	.member	Word209Supported,14,16,17,1
+  1139                        	.member	Reserved0,15,16,17,1
+  1140                        	.eos
+  1141                        	.stag	fake97_,16,97
+  1142                        	.member	NVCachePowerModeEnabled,0,16,17,1
+  1143                        	.member	Reserved0,1,16,17,3
+  1144                        	.member	NVCacheFeatureSetEnabled,4,16,17,1
+  1145                        	.member	Reserved1,5,16,17,3
+  1146                        	.member	NVCachePowerModeVersion,8,16,17,4
+  1147                        	.member	NVCacheFeatureSetVersion,12,16,17,4
+  1148                        	.eos
+  1149                        	.stag	fake98_,16,98
+  1150                        	.member	NVCacheEstimatedTimeToSpinUpInSeconds,0,
+                    14,8,8
+  1151                        	.member	Reserved,8,14,8,8
+  1152                        	.eos
+  1153                        	.stag	fake99_,16,99
+  1154                        	.member	MajorVersion,0,16,17,12
+  1155                        	.member	TransportType,12,16,17,4
+  1156                        	.eos
+  1157                        	.stag	_IDENTIFY_DEVICE_DATA,4096,100
+  1158                        	.member	GeneralConfiguration,0,10,8,16,78
+  1159                        	.member	NumCylinders,16,16,8,16
+  1160                        	.member	SpecificConfiguration,32,16,8,16
+  1161                        	.member	NumHeads,48,16,8,16
+  1162                        	.member	Retired1Bytes,64,110,8,0,4
+  1163                        	.member	NumSectorsPerTrack,96,16,8,16
+  1164                        	.member	VendorUnique1Bytes,112,110,8,0,6
+  1165                        	.member	SerialNumber,160,110,8,0,20
+  Thu Dec  3 2020 22:25                                                Page 23
+
+
+  1166                        	.member	Retired2,320,112,8,0,2
+  1167                        	.member	Obsolete1,352,16,8,16
+  1168                        	.member	FirmwareRevision,368,110,8,0,8
+  1169                        	.member	ModelNumber,432,110,8,0,40
+  1170                        	.member	MaximumBlockTransfer,752,14,8,8
+  1171                        	.member	VendorUnique2,760,14,8,8
+  1172                        	.member	TrustedComputing,768,10,8,16,79
+  1173                        	.member	Capabilities,784,10,8,32,80
+  1174                        	.member	ObsoleteWords51,816,112,8,0,2
+  1175                        	.member	TranslationFieldsValid,848,16,17,3
+  1176                        	.member	Reserved3,851,16,17,5
+  1177                        	.member	FreeFallControlSensitivity,856,16,17,8
+  1178                        	.member	NumberOfCurrentCylinders,864,16,8,16
+  1179                        	.member	NumberOfCurrentHeads,880,16,8,16
+  1180                        	.member	CurrentSectorsPerTrack,896,16,8,16
+  1181                        	.member	CurrentSectorCapacity,912,18,8,32
+  1182                        	.member	CurrentMultiSectorSetting,944,14,8,8
+  1183                        	.member	MultiSectorSettingValid,952,14,17,1
+  1184                        	.member	ReservedByte59,953,14,17,3
+  1185                        	.member	SanitizeFeatureSupported,956,14,17,1
+  1186                        	.member	CryptoScrambleExtCommandSupported,957,14
+                    ,17,1
+  1187                        	.member	OverwriteExtCommandSupported,958,14,17,1
+  1188                        	.member	BlockEraseExtCommandSupported,959,14,17,
+                    1
+  1189                        	.member	UserAddressableSectors,960,18,8,32
+  1190                        	.member	ObsoleteWord62,992,16,8,16
+  1191                        	.member	MultiWordDMASupport,1008,16,17,8
+  1192                        	.member	MultiWordDMAActive,1016,16,17,8
+  1193                        	.member	AdvancedPIOModes,1024,16,17,8
+  1194                        	.member	ReservedByte64,1032,16,17,8
+  1195                        	.member	MinimumMWXferCycleTime,1040,16,8,16
+  1196                        	.member	RecommendedMWXferCycleTime,1056,16,8,16
+  1197                        	.member	MinimumPIOCycleTime,1072,16,8,16
+  1198                        	.member	MinimumPIOCycleTimeIORDY,1088,16,8,16
+  1199                        	.member	AdditionalSupported,1104,10,8,16,81
+  1200                        	.member	ReservedWords70,1120,112,8,0,5
+  1201                        	.member	QueueDepth,1200,16,17,5
+  1202                        	.member	ReservedWord75,1205,16,17,11
+  1203                        	.member	SerialAtaCapabilities,1216,10,8,32,82
+  1204                        	.member	SerialAtaFeaturesSupported,1248,10,8,16,
+                    83
+  1205                        	.member	SerialAtaFeaturesEnabled,1264,10,8,16,84
+  1206                        	.member	MajorRevision,1280,16,8,16
+  1207                        	.member	MinorRevision,1296,16,8,16
+  1208                        	.member	CommandSetSupport,1312,10,8,48,85
+  1209                        	.member	CommandSetActive,1360,10,8,48,86
+  1210                        	.member	UltraDMASupport,1408,16,17,8
+  1211                        	.member	UltraDMAActive,1416,16,17,8
+  1212                        	.member	NormalSecurityEraseUnit,1424,10,8,16,87
+  1213                        	.member	EnhancedSecurityEraseUnit,1440,10,8,16,8
+                    8
+  1214                        	.member	CurrentAPMLevel,1456,16,17,8
+  1215                        	.member	ReservedWord91,1464,16,17,8
+  1216                        	.member	MasterPasswordID,1472,16,8,16
+  1217                        	.member	HardwareResetResult,1488,16,8,16
+  1218                        	.member	CurrentAcousticValue,1504,16,17,8
+  1219                        	.member	RecommendedAcousticValue,1512,16,17,8
+  Thu Dec  3 2020 22:25                                                Page 24
+
+
+  1220                        	.member	StreamMinRequestSize,1520,16,8,16
+  1221                        	.member	StreamingTransferTimeDMA,1536,16,8,16
+  1222                        	.member	StreamingAccessLatencyDMAPIO,1552,16,8,1
+                    6
+  1223                        	.member	StreamingPerfGranularity,1568,18,8,32
+  1224                        	.member	Max48BitLBA,1600,114,8,0,2
+  1225                        	.member	StreamingTransferTime,1664,16,8,16
+  1226                        	.member	DsmCap,1680,16,8,16
+  1227                        	.member	PhysicalLogicalSectorSize,1696,10,8,16,8
+                    9
+  1228                        	.member	InterSeekDelay,1712,16,8,16
+  1229                        	.member	WorldWideName,1728,112,8,0,4
+  1230                        	.member	ReservedForWorldWideName128,1792,112,8,0
+                    ,4
+  1231                        	.member	ReservedForTlcTechnicalReport,1856,16,8,
+                    16
+  1232                        	.member	WordsPerLogicalSector,1872,112,8,0,2
+  1233                        	.member	CommandSetSupportExt,1904,10,8,16,90
+  1234                        	.member	CommandSetActiveExt,1920,10,8,16,91
+  1235                        	.member	ReservedForExpandedSupportandActive,1936
+                    ,112,8,0,6
+  1236                        	.member	MsnSupport,2032,16,17,2
+  1237                        	.member	ReservedWord127,2034,16,17,14
+  1238                        	.member	SecurityStatus,2048,10,8,16,92
+  1239                        	.member	ReservedWord129,2064,112,8,0,31
+  1240                        	.member	CfaPowerMode1,2560,10,8,16,93
+  1241                        	.member	ReservedForCfaWord161,2576,112,8,0,7
+  1242                        	.member	NominalFormFactor,2688,16,17,4
+  1243                        	.member	ReservedWord168,2692,16,17,12
+  1244                        	.member	DataSetManagementFeature,2704,10,8,16,94
+  1245                        	.member	AdditionalProductID,2720,112,8,0,4
+  1246                        	.member	ReservedForCfaWord174,2784,112,8,0,2
+  1247                        	.member	CurrentMediaSerialNumber,2816,112,8,0,30
+  1248                        	.member	SCTCommandTransport,3296,10,8,16,95
+  1249                        	.member	ReservedWord207,3312,112,8,0,2
+  1250                        	.member	BlockAlignment,3344,10,8,16,96
+  1251                        	.member	WriteReadVerifySectorCountMode3Only,3360
+                    ,112,8,0,2
+  1252                        	.member	WriteReadVerifySectorCountMode2Only,3392
+                    ,112,8,0,2
+  1253                        	.member	NVCacheCapabilities,3424,10,8,16,97
+  1254                        	.member	NVCacheSizeLSW,3440,16,8,16
+  1255                        	.member	NVCacheSizeMSW,3456,16,8,16
+  1256                        	.member	NominalMediaRotationRate,3472,16,8,16
+  1257                        	.member	ReservedWord218,3488,16,8,16
+  1258                        	.member	NVCacheOptions,3504,10,8,16,98
+  1259                        	.member	WriteReadVerifySectorCountMode,3520,16,1
+                    7,8
+  1260                        	.member	ReservedWord220,3528,16,17,8
+  1261                        	.member	ReservedWord221,3536,16,8,16
+  1262                        	.member	TransportMajorVersion,3552,10,8,16,99
+  1263                        	.member	TransportMinorVersion,3568,16,8,16
+  1264                        	.member	ReservedWord224,3584,112,8,0,6
+  1265                        	.member	ExtendedNumberOfUserAddressableSectors,3
+                    680,114,8,0,2
+  1266                        	.member	MinBlocksPerDownloadMicrocodeMode03,3744
+                    ,16,8,16
+  1267                        	.member	MaxBlocksPerDownloadMicrocodeMode03,3760
+  Thu Dec  3 2020 22:25                                                Page 25
+
+
+                    ,16,8,16
+  1268                        	.member	ReservedWord236,3776,112,8,0,19
+  1269                        	.member	Signature,4080,16,17,8
+  1270                        	.member	CheckSum,4088,16,17,8
+  1271                        	.eos
+  1272                        	.stag	_FXDosDevice,5648,101
+  1273                        	.member	type,0,14,8,8
+  1274                        	.member	initialized,8,14,8,8
+  1275                        	.member	devdata,16,129,8,32
+  1276                        	.member	devstatus,48,14,8,8
+  1277                        	.member	bootSector,56,10,8,928,71
+  1278                        	.member	partitionTable,984,10,8,128,72
+  1279                        	.member	fileAllocationTable,1112,110,8,0,512
+  1280                        	.member	bsOffset,5208,18,8,32
+  1281                        	.member	rootDirSectors,5240,18,8,32
+  1282                        	.member	root_entry_count,5272,5,8,16
+  1283                        	.member	rootEntriesPerPage,5288,5,8,16
+  1284                        	.member	sectors_per_cluster,5304,5,8,16
+  1285                        	.member	fatTableOffset,5320,18,8,32
+  1286                        	.member	volume_name,5352,110,8,0,12
+  1287                        	.member	root_volume_name,5448,110,8,0,12
+  1288                        	.member	errorCode,5544,14,8,8
+  1289                        	.member	pfInit,5552,641,8,32
+  1290                        	.member	pfReader,5584,654,8,32
+  1291                        	.member	pfWriter,5616,654,8,32
+  1292                        	.eos
+  1293                        	.line	705
+  1294                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.h",6
+  1295                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+  1296                        	.line	39
+  1297                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.h",7
+  1298                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\CH376INC.H",0
+  1299                        	.stag	_FAT_DIR_INFO,256,102
+  1300                        	.member	DIR_Name,0,110,8,0,11
+  1301                        	.member	DIR_Attr,88,14,8,8
+  1302                        	.member	DIR_NTRes,96,14,8,8
+  1303                        	.member	DIR_CrtTimeTenth,104,14,8,8
+  1304                        	.member	DIR_CrtTime,112,15,8,16
+  1305                        	.member	DIR_CrtDate,128,15,8,16
+  1306                        	.member	DIR_LstAccDate,144,15,8,16
+  1307                        	.member	DIR_FstClusHI,160,15,8,16
+  1308                        	.member	DIR_WrtTime,176,15,8,16
+  1309                        	.member	DIR_WrtDate,192,15,8,16
+  1310                        	.member	DIR_FstClusLO,208,15,8,16
+  1311                        	.member	DIR_FileSize,224,18,8,32
+  1312                        	.eos
+  1313                        	.stag	_BULK_ONLY_CBW,248,103
+  1314                        	.member	CBW_Sig,0,18,8,32
+  1315                        	.member	CBW_Tag,32,18,8,32
+  1316                        	.member	CBW_DataLen0,64,14,8,8
+  1317                        	.member	CBW_DataLen1,72,14,8,8
+  1318                        	.member	CBW_DataLen2,80,15,8,16
+  1319                        	.member	CBW_Flag,96,14,8,8
+  1320                        	.member	CBW_LUN,104,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 26
+
+
+  1321                        	.member	CBW_CB_Len,112,14,8,8
+  1322                        	.member	CBW_CB_Buf,120,110,8,0,16
+  1323                        	.eos
+  1324                        	.stag	_INQUIRY_DATA,288,104
+  1325                        	.member	DeviceType,0,14,8,8
+  1326                        	.member	RemovableMedia,8,14,8,8
+  1327                        	.member	Versions,16,14,8,8
+  1328                        	.member	DataFormatAndEtc,24,14,8,8
+  1329                        	.member	AdditionalLength,32,14,8,8
+  1330                        	.member	Reserved1,40,14,8,8
+  1331                        	.member	Reserved2,48,14,8,8
+  1332                        	.member	MiscFlag,56,14,8,8
+  1333                        	.member	VendorIdStr,64,110,8,0,8
+  1334                        	.member	ProductIdStr,128,110,8,0,16
+  1335                        	.member	ProductRevStr,256,110,8,0,4
+  1336                        	.eos
+  1337                        	.stag	_SENSE_DATA,144,105
+  1338                        	.member	ErrorCode,0,14,8,8
+  1339                        	.member	SegmentNumber,8,14,8,8
+  1340                        	.member	SenseKeyAndEtc,16,14,8,8
+  1341                        	.member	Information0,24,14,8,8
+  1342                        	.member	Information1,32,14,8,8
+  1343                        	.member	Information2,40,14,8,8
+  1344                        	.member	Information3,48,14,8,8
+  1345                        	.member	AdditSenseLen,56,14,8,8
+  1346                        	.member	CmdSpecInfo,64,110,8,0,4
+  1347                        	.member	AdditSenseCode,96,14,8,8
+  1348                        	.member	AddSenCodeQual,104,14,8,8
+  1349                        	.member	FieldReplaUnit,112,14,8,8
+  1350                        	.member	SenseKeySpec,120,110,8,0,3
+  1351                        	.eos
+  1352                        	.stag	fake106_,112,106
+  1353                        	.member	mBuffer,0,110,8,0,14
+  1354                        	.eos
+  1355                        	.stag	fake107_,8,107
+  1356                        	.member	mUpdateFileSz,0,14,8,8
+  1357                        	.eos
+  1358                        	.stag	fake108_,8,108
+  1359                        	.member	mDirInfoIndex,0,14,8,8
+  1360                        	.eos
+  1361                        	.utag	fake109_,32,109
+  1362                        	.member	mByteOffset,0,18,11,32
+  1363                        	.member	mSectorLba,0,18,11,32
+  1364                        	.eos
+  1365                        	.stag	fake110_,16,110
+  1366                        	.member	mByteCount,0,15,8,16
+  1367                        	.eos
+  1368                        	.stag	fake111_,16,111
+  1369                        	.member	mByteCount,0,15,8,16
+  1370                        	.eos
+  1371                        	.utag	fake112_,32,112
+  1372                        	.member	mSectorOffset,0,18,11,32
+  1373                        	.member	mSectorLba,0,18,11,32
+  1374                        	.eos
+  1375                        	.stag	fake113_,64,113
+  1376                        	.member	mSectorCount,0,14,8,8
+  1377                        	.member	mReserved1,8,14,8,8
+  1378                        	.member	mReserved2,16,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 27
+
+
+  1379                        	.member	mReserved3,24,14,8,8
+  1380                        	.member	mStartSector,32,18,8,32
+  1381                        	.eos
+  1382                        	.stag	fake114_,64,114
+  1383                        	.member	mSectorCount,0,14,8,8
+  1384                        	.member	mReserved1,8,14,8,8
+  1385                        	.member	mReserved2,16,14,8,8
+  1386                        	.member	mReserved3,24,14,8,8
+  1387                        	.member	mStartSector,32,18,8,32
+  1388                        	.eos
+  1389                        	.stag	fake115_,32,115
+  1390                        	.member	mDiskSizeSec,0,18,8,32
+  1391                        	.eos
+  1392                        	.stag	fake116_,72,116
+  1393                        	.member	mTotalSector,0,18,8,32
+  1394                        	.member	mFreeSector,32,18,8,32
+  1395                        	.member	mDiskFat,64,14,8,8
+  1396                        	.eos
+  1397                        	.stag	fake117_,8,117
+  1398                        	.member	mMaxLogicUnit,0,14,8,8
+  1399                        	.eos
+  1400                        	.stag	fake118_,32,118
+  1401                        	.member	mDiskSizeSec,0,18,8,32
+  1402                        	.eos
+  1403                        	.stag	fake119_,40,119
+  1404                        	.member	mStartSector,0,18,8,32
+  1405                        	.member	mSectorCount,32,14,8,8
+  1406                        	.eos
+  1407                        	.stag	fake120_,40,120
+  1408                        	.member	mStartSector,0,18,8,32
+  1409                        	.member	mSectorCount,32,14,8,8
+  1410                        	.eos
+  1411                        	.utag	_CH376_CMD_DATA,288,121
+  1412                        	.member	Default,0,10,11,112,106
+  1413                        	.member	DiskMountInq,0,10,11,288,104
+  1414                        	.member	OpenDirInfo,0,10,11,256,102
+  1415                        	.member	EnumDirInfo,0,10,11,256,102
+  1416                        	.member	FileCLose,0,10,11,8,107
+  1417                        	.member	DirInfoRead,0,10,11,8,108
+  1418                        	.member	ByteLocate,0,11,11,32,109
+  1419                        	.member	ByteRead,0,10,11,16,110
+  1420                        	.member	ByteWrite,0,10,11,16,111
+  1421                        	.member	SectorLocate,0,11,11,32,112
+  1422                        	.member	SectorRead,0,10,11,64,113
+  1423                        	.member	SectorWrite,0,10,11,64,114
+  1424                        	.member	DiskCapacity,0,10,11,32,115
+  1425                        	.member	DiskQuery,0,10,11,72,116
+  1426                        	.member	DiskBocCbw,0,10,11,248,103
+  1427                        	.member	DiskMaxLun,0,10,11,8,117
+  1428                        	.member	DiskInitInq,0,10,11,288,104
+  1429                        	.member	DiskInqData,0,10,11,288,104
+  1430                        	.member	ReqSenseData,0,10,11,144,105
+  1431                        	.member	DiskSize,0,10,11,32,118
+  1432                        	.member	DiskRead,0,10,11,40,119
+  1433                        	.member	DiskWrite,0,10,11,40,120
+  1434                        	.eos
+  1435                        	.line	586
+  1436                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Thu Dec  3 2020 22:25                                                Page 28
+
+
+                    space\FXOSv1\src\DRIVER_B2SDCard.h",8
+  1437                        	.line	51
+  1438                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.c",2
+  1439                        ;
+  1440                        ;#pragma section CODE=B2SDCard,offset $08:A000
+  1441                        B2SDCard	section	offset $08:A000
+  1442 08:A000:              	ends
+  1443                        ;
+  1444                        ;static CHAR sd_card_dir_string[] =
+  1445                        	data
+  1446                        ~~sd_card_dir_string:
+  1447                        ;{ 0x2F, 0x2A, 0x00 };
+  1448 00:0000: 2F 2A 00     	db	$2F,$2A,$0
+  1449 00:0003:              	ends
+  1450                        ;static UINT8 buf[64];
+  1451                        ;
+  1452                        ;static UCHAR sectorBuffer[512];
+  1453                        ;
+  1454                        ;
+  1455                        ;static BOOL _mount_lock = FALSE;
+  1456                        	data
+  1457                        ~~_mount_lock:
+  1458 00:0003: 00           	db	$0
+  1459 00:0004:              	ends
+  1460                        ;static DISKINFO lastdiskInfo;
+  1461                        ;static PDISKINFO pdiskCache = NULL;
+  1462                        	data
+  1463                        ~~pdiskCache:
+  1464 00:0004: 00 00 00 00  	dl	$0
+  1465 00:0008:              	ends
+  1466                        ;
+  1467                        ;#ifdef USE_FX256_FMX
+  1468                        ;
+  1469                        ;FX_DEVICE_DRIVER DRIVER_B2SDCard = {
+  1470                        	data
+  1471                        	xdef	~~DRIVER_B2SDCard
+  1472                        ~~DRIVER_B2SDCard:
+  1473                        ;							
+                    			"DRIVER_B2SDCard\0",
+  1474 00:0008: 44 52 49 56  	db	$44,$52,$49,$56,$45,$52,$5F,$42,$32,$53
+       00:000C: 45 52 5F 42 
+       00:0010: 32 53 
+  1475 00:0012: 44 43 61 72  	db	$44,$43,$61,$72,$64,$0,$0
+       00:0016: 64 00 00 
+  1476 00:0019:              	ds	47
+  1477                        ;							
+                    			"v1.0.0\0",
+  1478 00:0048: 76 31 2E 30  	db	$76,$31,$2E,$30,$2E,$30,$0,$0
+       00:004C: 2E 30 00 00 
+  1479 00:0050:              	ds	56
+  1480                        ;							
+                    			"B\0",
+  1481 00:0088: 42 00 00     	db	$42,$0,$0
+  1482 00:008B:              	ds	13
+  1483                        ;							
+                    			"2\0",
+  1484 00:0098: 32 00 00     	db	$32,$0,$0
+  Thu Dec  3 2020 22:25                                                Page 29
+
+
+  1485 00:009B:              	ds	13
+  1486                        ;							
+                    			DRIVER_TYPE_SDCARD,
+  1487 00:00A8: 05           	db	$5
+  1488                        ;							
+                    			NULL,
+  1489 00:00A9: 00 00 00 00  	dl	$0
+  1490                        ;							
+                    			NULL,
+  1491 00:00AD: 00 00 00 00  	dl	$0
+  1492                        ;							
+                    			NULL,
+  1493 00:00B1: 00 00 00 00  	dl	$0
+  1494                        ;							
+                    			NULL
+  1495                        ;							
+                    	   };
+  1496 00:00B5: 00 00 00 00  	dl	$0
+  1497 00:00B9:              	ends
+  1498                        ;
+  1499                        ;
+  1500                        ;#else
+  1501                        ;
+  1502                        ;FX_DEVICE_DRIVER DRIVER_B2SDCard = {
+  1503                        ;							
+                    			"DRIVER_B2SDCard\0",
+  1504                        ;							
+                    			"v1.0.0\0",
+  1505                        ;							
+                    			"B\0",
+  1506                        ;							
+                    			"2\0",
+  1507                        ;							
+                    			DRIVER_TYPE_SDCARD,
+  1508                        ;							
+                    			k_sd_initialize,
+  1509                        ;							
+                    			NULL,
+  1510                        ;							
+                    			NULL,
+  1511                        ;							
+                    			NULL
+  1512                        ;							
+                    	   };
+  1513                        ;
+  1514                        ;
+  1515                        ;BOOL k_pc_initialize(void)
+  1516                        ;{
+  1517                        ;	return FALSE;
+  1518                        ;}
+  1519                        ;
+  1520                        ;
+  1521                        ;BOOL k_sd_initialize(void)
+  1522                        ;{
+  1523                        ;	BOOL retCode = FALSE;
+  1524                        ;	UCHAR data = 0;
+  1525                        ;	UCHAR status = 0;
+  1526                        ;	int abort = 0;
+  Thu Dec  3 2020 22:25                                                Page 30
+
+
+  1527                        ;	//k_sd_init();
+  1528                        ;	//k_sd_ismounted();
+  1529                        ;	k_debug_string("k_sd_initialize::reset...\r\n");
+  1530                        ;
+  1531                        ;	k_sd_mount();
+  1532                        ;
+  1533                        ;	SDCARD_PRSNT_MNT[0] = 0x00;
+  1534                        ;
+  1535                        ;	SDCARD_CMD[0] = 0x05;
+  1536                        ;
+  1537                        ;	for (abort = 0; abort < 35; abort++)
+  1538                        ;		k_sd_cmd_delay();
+  1539                        ;
+  1540                        ;	k_debug_string("k_sd_initialize::init s1...\r\n"
+                    );
+  1541                        ;
+  1542                        ;	SDCARD_CMD[0] = 0x06;
+  1543                        ;	k_sd_cmd_delay();
+  1544                        ;	SDCARD_DATA[0] = 0xA8;
+  1545                        ;
+  1546                        ;
+  1547                        ;	k_debug_string("k_sd_initialize::init s1a...\r\n
+                    ");
+  1548                        ;
+  1549                        ;	k_sd_dta_delay();
+  1550                        ;	k_sd_dta_delay();
+  1551                        ;	k_sd_dta_delay();
+  1552                        ;
+  1553                        ;	k_debug_string("k_sd_initialize::init s1b...\r\n
+                    ");
+  1554                        ;
+  1555                        ;	data = SDCARD_DATA[0];
+  1556                        ;
+  1557                        ;	k_debug_string("k_sd_initialize::init s1c...\r\n
+                    ");
+  1558                        ;
+  1559                        ;	k_sd_cmd_delay();
+  1560                        ;
+  1561                        ;	k_debug_string("k_sd_initialize::init s2...\r\n"
+                    );
+  1562                        ;
+  1563                        ;	SDCARD_CMD[0] = CH_CMD_SET_MODE;
+  1564                        ;	k_sd_cmd_delay();
+  1565                        ;	k_sd_cmd_delay();
+  1566                        ;	k_sd_cmd_delay();
+  1567                        ;
+  1568                        ;
+  1569                        ;
+  1570                        ;	SDCARD_DATA[0] = 0x03; // Mode 3 - SDCARD
+  1571                        ;
+  1572                        ;	k_debug_string("k_sd_initialize::read..\r\n");
+  1573                        ;
+  1574                        ;	retCode = TRUE;
+  1575                        ;	data = 0;
+  1576                        ;	while (data != 0x51)
+  1577                        ;	{
+  1578                        ;		abort++;
+  1579                        ;		if (abort > 100)
+  Thu Dec  3 2020 22:25                                                Page 31
+
+
+  1580                        ;		{
+  1581                        ;			retCode = FALSE;
+  1582                        ;			break;
+  1583                        ;		}
+  1584                        ;		k_sd_dta_delay();
+  1585                        ;
+  1586                        ;		data = SDCARD_DATA[0];
+  1587                        ;		k_debug_integer("k_sd_initialize::SDCARD
+                    _DATA:", data);
+  1588                        ;	}
+  1589                        ;
+  1590                        ;
+  1591                        ;	abort = k_read_disk_sector(sectorBuffer, 1, 1);
+  1592                        ;	//SDCARD_CMD[0] = 0x01;
+  1593                        ;	//k_sd_cmd_delay();
+  1594                        ;	//k_debug_integer("k_sd_initialize::version:",SD
+                    CARD_DATA[0]);
+  1595                        ;
+  1596                        ;	//SDCARD_CMD[0] = CH_CMD_GET_STATUS;
+  1597                        ;	//status = k_sd_waitforirq();
+  1598                        ;	//k_debug_integer("k_sd_initialize::CH_CMD_GET_S
+                    TATUS:",status);
+  1599                        ;
+  1600                        ;	k_debug_string("k_sd_initialize::exit...\r\n");
+  1601                        ;
+  1602                        ;	return retCode;
+  1603                        ;}
+  1604                        ;
+  1605                        ;UINT8 k_sd_reset(VOID)
+  1606                        ;{
+  1607                        ;	UINT8	s;
+  1608                        ;
+  1609                        ;	k_debug_string("***k_sd_reset 1\r\n");
+  1610                        ;
+  1611                        ;	xWriteCH376Cmd( CMD_RESET_ALL );
+  1612                        ;	s = xReadCH376Data( );
+  1613                        ;	xEndCH376Cmd( );
+  1614                        ;
+  1615                        ;	k_debug_string("***k_sd_reset 2\r\n");
+  1616                        ;
+  1617                        ;	k_sd_cmd_delay();
+  1618                        ;	k_sd_cmd_delay();
+  1619                        ;	k_sd_cmd_delay();
+  1620                        ;	k_sd_cmd_delay();
+  1621                        ;	k_sd_cmd_delay();
+  1622                        ;
+  1623                        ;	k_sd_initialize();
+  1624                        ;
+  1625                        ;	return( s );
+  1626                        ;}
+  1627                        ;
+  1628                        ;
+  1629                        ;UINT8 k_sd_status(VOID)
+  1630                        ;{
+  1631                        ;	UINT8	s;
+  1632                        ;
+  1633                        ;	xWriteCH376Cmd( CMD01_GET_STATUS );
+  1634                        ;	s = xReadCH376Data( );
+  Thu Dec  3 2020 22:25                                                Page 32
+
+
+  1635                        ;	xEndCH376Cmd( );
+  1636                        ;	return( s );
+  1637                        ;}
+  1638                        ;
+  1639                        ;BOOL k_sd_ispresent(void)
+  1640                        ;{
+  1641                        ;	UCHAR stat = 0;
+  1642                        ;	BOOL retCode = FALSE;
+  1643                        ;
+  1644                        ;	stat = SDCARD_STAT[0]; //  BIT[0] = Cd, BIT[1] =
+                     WP
+  1645                        ;	k_debug_integer("k_sd_initialize::SDCARD_STAT:",
+                     stat);
+  1646                        ;
+  1647                        ;	if (stat & 0x01)
+  1648                        ;	{
+  1649                        ;		retCode = FALSE;
+  1650                        ;		SDCARD_PRSNT_MNT[0] = 0x00;
+  1651                        ;	}
+  1652                        ;	else
+  1653                        ;	{
+  1654                        ;		SDCARD_PRSNT_MNT[0] = 0x01;
+  1655                        ;		retCode = TRUE;
+  1656                        ;	}
+  1657                        ;
+  1658                        ;
+  1659                        ;	if(!retCode)
+  1660                        ;	{
+  1661                        ;		pdiskCache = NULL;
+  1662                        ;		k_sd_reset();
+  1663                        ;	}
+  1664                        ;
+  1665                        ;
+  1666                        ;	k_debug_integer("k_sd_ispresent:", retCode);
+  1667                        ;
+  1668                        ;	return retCode;
+  1669                        ;}
+  1670                        ;
+  1671                        ;UCHAR k_sd_waitforirq(void)
+  1672                        ;{
+  1673                        ;	UINT abort = 0xFF;
+  1674                        ;	UCHAR status = 0x80;
+  1675                        ;
+  1676                        ;	//asm SEI;
+  1677                        ;
+  1678                        ;	while (status == 0x80)
+  1679                        ;	{
+  1680                        ;		status = SDCARD_DATA[0];
+  1681                        ;		//k_debug_integer("k_sd_waitforirq::wait
+                    :", status);
+  1682                        ;
+  1683                        ;		abort--;
+  1684                        ;		if(abort < 1)
+  1685                        ;		{
+  1686                        ;			return 0x80;
+  1687                        ;		}
+  1688                        ;	}
+  1689                        ;
+  Thu Dec  3 2020 22:25                                                Page 33
+
+
+  1690                        ;	k_sd_cmd_delay();
+  1691                        ;	k_sd_cmd_delay();
+  1692                        ;
+  1693                        ;	SDCARD_CMD[0] = CH_CMD_GET_STATUS;
+  1694                        ;
+  1695                        ;	k_sd_cmd_delay();
+  1696                        ;
+  1697                        ;	status = SDCARD_DATA[0];
+  1698                        ;
+  1699                        ;	//k_debug_integer("k_sd_waitforirq::status:", st
+                    atus);
+  1700                        ;
+  1701                        ;	//asm cli;
+  1702                        ;
+  1703                        ;	return status;
+  1704                        ;}
+  1705                        ;
+  1706                        ;BOOL k_sd_mount(void)
+  1707                        ;{
+  1708                        ;	int i = 0;
+  1709                        ;	int abort = 0;
+  1710                        ;	UCHAR status = 0x00;
+  1711                        ;	UCHAR data[37];
+  1712                        ;	BOOL retCode = FALSE;
+  1713                        ;
+  1714                        ;	if(_mount_lock)
+  1715                        ;		return TRUE;
+  1716                        ;
+  1717                        ;	if(k_sd_ispresent())
+  1718                        ;	{
+  1719                        ;		k_debug_string("k_sd_mount::card detecte
+                    d\r\n");
+  1720                        ;		//if(SDCARD_PRSNT_MNT[0] & 0x05 != 0x05)
+  1721                        ;		if (SDCARD_PRSNT_MNT[0] == 0x01)
+  1722                        ;		{
+  1723                        ;			k_debug_string("k_sd_mount::card
+                     mounting..\r\n");
+  1724                        ;
+  1725                        ;			/// SDCARD_PRSNT_MNT[0] = 0x01;/
+                    /      ; Bit[0] = Card Present
+  1726                        ;
+  1727                        ;			while (status != CH376S_STAT_SUC
+                    CESS) //TRY_MOUNT_AGAIN
+  1728                        ;			{
+  1729                        ;				SDCARD_CMD[0] = CH_CMD_D
+                    ISK_MOUNT;
+  1730                        ;				k_sd_cmd_delay();
+  1731                        ;
+  1732                        ;				k_sd_cmd_delay();
+  1733                        ;				k_sd_cmd_delay();
+  1734                        ;
+  1735                        ;				status = k_sd_waitforirq
+                    ();
+  1736                        ;
+  1737                        ;				if (status == CH376S_STA
+                    T_SUCCESS)
+  1738                        ;				{
+  1739                        ;
+  Thu Dec  3 2020 22:25                                                Page 34
+
+
+  1740                        ;					/*
+  1741                        ;					 SDCARD_CMD[0] =
+                     CH_CMD_RD_DATA0;
+  1742                        ;					 k_sd_cmd_delay(
+                    );
+  1743                        ;					 k_debug_hex("k_
+                    sd_read_dir::k_sd_mount-size:",SDCARD_DATA[0]);
+  1744                        ;
+  1745                        ;					 for(i=0;i<36;i+
+                    +)
+  1746                        ;					 {
+  1747                        ;					 data[i] = SDCAR
+                    D_DATA[0];
+  1748                        ;					 k_sd_dta_delay(
+                    );
+  1749                        ;					 k_debug_hexchar
+                    ("k_sd_read_dir::k_sd_mount:",data[i]);
+  1750                        ;					 }
+  1751                        ;					 data[36] = 0;
+  1752                        ;
+  1753                        ;					 k_debug_string(
+                    "k_sd_mount::mount-name:");
+  1754                        ;					 k_debug_string(
+                    data);
+  1755                        ;					 k_debug_string(
+                    "\r\n");
+  1756                        ;					 */
+  1757                        ;				}
+  1758                        ;
+  1759                        ;				//INY
+  1760                        ;				//CPY #$00F0
+  1761                        ;				//BNE TRY_MOUNT_AGAIN
+  1762                        ;				//JMP SDCARD_ERROR_MOUNT
+  1763                        ;				abort++;
+  1764                        ;				if (abort > 0x03FF) // 0
+                    x03FF
+  1765                        ;				{
+  1766                        ;					k_debug_string("
+                    k_sd_mount::card mount failed\r\n");
+  1767                        ;					k_debug_hex("k_s
+                    d_mount::status:",status);
+  1768                        ;					return FALSE;
+  1769                        ;				}
+  1770                        ;			}
+  1771                        ;
+  1772                        ;			k_debug_integer("k_sd_mount::abo
+                    rt:",abort);
+  1773                        ;		}
+  1774                        ;
+  1775                        ;		//;              LDA SDCARD_PRSNT_MNT   
+                         ; Load Presence Status
+  1776                        ;		//;              AND #$05
+  1777                        ;		//;              CMP #$05
+  1778                        ;		//;              BEQ ISDOS_MOUNTED
+  1779                        ;
+  1780                        ;		SDCARD_PRSNT_MNT[0] &= SDCARD_PRSNT_MNTE
+                    D;
+  1781                        ;		k_debug_string("k_sd_mount::card mounted
+  Thu Dec  3 2020 22:25                                                Page 35
+
+
+                    \r\n");
+  1782                        ;		retCode = TRUE;
+  1783                        ;	}
+  1784                        ;	else
+  1785                        ;	{
+  1786                        ;		SDCARD_PRSNT_MNT[0] = SDCARD_PRSNT_NO_CA
+                    RD;
+  1787                        ;	}
+  1788                        ;
+  1789                        ;	return retCode;
+  1790                        ;}
+  1791                        ;
+  1792                        ;BOOL k_sd_openfile(LPCHAR filename)
+  1793                        ;{
+  1794                        ;	UCHAR status = 0x00;
+  1795                        ;	BOOL retCode = FALSE;
+  1796                        ;
+  1797                        ;	k_debug_string("k_sd_openfile::filename:");
+  1798                        ;	k_debug_string(filename);
+  1799                        ;	k_debug_string("\r\n");
+  1800                        ;
+  1801                        ;	k_sd_setfilename(filename);
+  1802                        ;	k_sd_cmd_delay();
+  1803                        ;	SDCARD_CMD[0] = CH_CMD_FILE_OPEN;
+  1804                        ;
+  1805                        ;	status = k_sd_waitforirq();
+  1806                        ;
+  1807                        ;	k_debug_integer("k_sd_openfile::result:", status
+                    );
+  1808                        ;
+  1809                        ;	//retCode = (status == 0x14);
+  1810                        ;	retCode = (status !=USB_INT_DISK_ERR);
+  1811                        ;
+  1812                        ;
+  1813                        ;	return retCode;
+  1814                        ;}
+  1815                        ;
+  1816                        ;BOOL k_sd_setfilename(LPCHAR filename)
+  1817                        ;{
+  1818                        ;	int i = 0;
+  1819                        ;	BOOL bRet = FALSE;
+  1820                        ;	LPCHAR fptr = filename;
+  1821                        ;
+  1822                        ;	//k_debug_string("k_sd_setfilename::enter\r\n");
+  1823                        ;
+  1824                        ;	if (filename != NULL)
+  1825                        ;	{
+  1826                        ;		SDCARD_CMD[0] = CH_CMD_SET_FILENAME;
+  1827                        ;		k_sd_cmd_delay();
+  1828                        ;
+  1829                        ;		//k_debug_string("k_sd_setfilename::send
+                    \r\n");
+  1830                        ;
+  1831                        ;		while (*fptr)
+  1832                        ;		{
+  1833                        ;			SDCARD_DATA[0] = *fptr;
+  1834                        ;			k_sd_dta_delay();
+  1835                        ;			fptr++;
+  Thu Dec  3 2020 22:25                                                Page 36
+
+
+  1836                        ;		}
+  1837                        ;		SDCARD_DATA[0] = 0;
+  1838                        ;		k_sd_dta_delay();
+  1839                        ;
+  1840                        ;		bRet = TRUE;
+  1841                        ;	}
+  1842                        ;
+  1843                        ;	//k_debug_integer("k_sd_setfilename::result:", b
+                    Ret);
+  1844                        ;
+  1845                        ;	return bRet;
+  1846                        ;}
+  1847                        ;
+  1848                        ;/*
+  1849                        ; 	nodelist = k_nodelist_init(1,"node1",NUL
+                    L);
+  1850                        ;
+  1851                        ;	newnode = k_nodelist_create(2,"node2",NULL,NULL,
+                    NULL);
+  1852                        ;	k_nodelist_add(nodelist,newnode);
+  1853                        ;	newnode = k_nodelist_create(3,"node3",NULL,NULL,
+                    NULL);
+  1854                        ;	k_nodelist_add(nodelist,newnode);
+  1855                        ;	newnode = k_nodelist_create(34,"node4",NULL,NULL
+                    ,NULL);
+  1856                        ;	k_nodelist_add(nodelist,newnode);
+  1857                        ;
+  1858                        ;	k_debug_nodelist(nodelist);
+  1859                        ;
+  1860                        ;*/
+  1861                        ;
+  1862                        ;PFXNODE k_sd_read_dir(void)
+  1863                        ;{
+  1864                        ;	PFXNODE pnDirList = NULL;
+  1865                        ;	PFXNODE node  = NULL;
+  1866                        ;	PFILEINFO pfi = NULL;
+  1867                        ;	UCHAR rsize = 0;
+  1868                        ;	FX_FAT_DIR_INFO FAR *direntry = NULL;
+  1869                        ;	//FAT_DIR_INFO direntry;
+  1870                        ;	LPCHAR pdirentry = NULL;
+  1871                        ;	UCHAR data = 0;
+  1872                        ;	UCHAR status = 0x000;
+  1873                        ;	int i = 0;
+  1874                        ;
+  1875                        ;	k_debug_integer("k_sd_read_dir::enter:sizeof(FAT
+                    _DIR_INFO):",sizeof(FAT_DIR_INFO));
+  1876                        ;
+  1877                        ;	k_sd_read_vol(NULL);
+  1878                        ;
+  1879                        ;	if(k_sd_ispresent() && k_sd_mount())
+  1880                        ;	{
+  1881                        ;		if(k_sd_openfile(sd_card_dir_string))
+  1882                        ;		{
+  1883                        ;			k_debug_string("k_sd_read_dir::k
+                    _sd_openfile:success\r\n");
+  1884                        ;
+  1885                        ;			direntry = k_mem_allocate_heap(s
+                    izeof(FAT_DIR_INFO));
+  Thu Dec  3 2020 22:25                                                Page 37
+
+
+  1886                        ;
+  1887                        ;			status = CH376S_STAT_DSK_RD;
+  1888                        ;			while (status == CH376S_STAT_DSK
+                    _RD || status == 0x51)
+  1889                        ;			//while (status != ERR_MISS_FILE
+                    )
+  1890                        ;			{
+  1891                        ;				SDCARD_CMD[0] = CH_CMD_R
+                    D_DATA0;
+  1892                        ;				k_sd_cmd_delay();
+  1893                        ;
+  1894                        ;				rsize = SDCARD_DATA[0];
+  1895                        ;				k_debug_hex("k_sd_read_d
+                    ir::k_sd_openfile:read:",data);
+  1896                        ;
+  1897                        ;				//k_sd_cmd_delay();
+  1898                        ;
+  1899                        ;				pdirentry = (LPCHAR) dir
+                    entry;
+  1900                        ;
+  1901                        ;				for (i = 0; i < rsize; i
+                    ++)
+  1902                        ;				{
+  1903                        ;					k_sd_dta_delay()
+                    ;
+  1904                        ;					data = SDCARD_DA
+                    TA[0];
+  1905                        ;					//k_debug_char("
+                    k_sd_read_dir::entrydata:",data);
+  1906                        ;					*pdirentry = dat
+                    a;
+  1907                        ;					pdirentry++;
+  1908                        ;				}
+  1909                        ;
+  1910                        ;				k_debug_string("k_sd_rea
+                    d_dir::FAT_DIR_INFO.NAME:");
+  1911                        ;				k_debug_nstring(direntry
+                    ->DIR_Name, 11);
+  1912                        ;				k_debug_string("\r\n");
+  1913                        ;
+  1914                        ;				if(pnDirList == NULL)
+  1915                        ;				{
+  1916                        ;					k_debug_string("
+                    k_sd_read_dir::pnDirList\r\n");
+  1917                        ;					pnDirList = k_no
+                    delist_init(direntry->DIR_Attr,"dos",(LPVOID)_k_dos_alloc_fi
+                    leinfo(direntry));
+  1918                        ;				}
+  1919                        ;				else
+  1920                        ;				{
+  1921                        ;					node = k_nodelis
+                    t_create(direntry->DIR_Attr,"dos",(LPVOID)_k_dos_alloc_filei
+                    nfo(direntry),NULL,NULL);
+  1922                        ;					k_debug_pointer(
+                    "k_sd_read_dir::node:",node);
+  1923                        ;					if(node!=NULL)
+  1924                        ;						k_nodeli
+                    st_add(pnDirList,node);
+  Thu Dec  3 2020 22:25                                                Page 38
+
+
+  1925                        ;				}
+  1926                        ;
+  1927                        ;				/*
+  1928                        ;				if (direntry.DIR_Attr ==
+                     ATTR_VOLUME_ID)
+  1929                        ;				{
+  1930                        ;					k_debug_string("
+                    ** VOLUME **\r\n");
+  1931                        ;				}
+  1932                        ;				*/
+  1933                        ;				//k_debug_integer("k_sd_
+                    read_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+  1934                        ;				//k_debug_integer("k_sd_
+                    read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+  1935                        ;				//k_debug_integer("k_sd_
+                    read_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+  1936                        ;
+  1937                        ;				k_sd_cmd_delay();
+  1938                        ;
+  1939                        ;				SDCARD_CMD[0] = CH_CMD_F
+                    ILE_ENUM_GO;
+  1940                        ;				k_sd_cmd_delay();
+  1941                        ;				status = k_sd_waitforirq
+                    ();
+  1942                        ;				k_debug_hex("k_sd_read_d
+                    ir::CH_CMD_FILE_ENUM_GO:status:",status);
+  1943                        ;
+  1944                        ;				if(status == 0)
+  1945                        ;				{
+  1946                        ;					SDCARD_CMD[0] = 
+                    CH_CMD_FILE_ENUM_GO;
+  1947                        ;					k_sd_cmd_delay()
+                    ;
+  1948                        ;					status = k_sd_wa
+                    itforirq();
+  1949                        ;					k_debug_hex("k_s
+                    d_read_dir::CH_CMD_FILE_ENUM_GO:retry status:",status);
+  1950                        ;				}
+  1951                        ;
+  1952                        ;			}
+  1953                        ;
+  1954                        ;			k_sd_close(0);
+  1955                        ;		}
+  1956                        ;	}
+  1957                        ;
+  1958                        ;	return pnDirList;
+  1959                        ;}
+  1960                        ;
+  1961                        ;void k_sd_read_dir_OLD(void)
+  1962                        ;{
+  1963                        ;	PFXNODE nodesDirList = NULL;
+  1964                        ;
+  1965                        ;	FAT_DIR_INFO direntry;
+  1966                        ;	LPCHAR pdirentry = NULL;
+  1967                        ;	UCHAR data = 0;
+  1968                        ;	UCHAR status = 0x000;
+  1969                        ;	int i = 0;
+  1970                        ;
+  Thu Dec  3 2020 22:25                                                Page 39
+
+
+  1971                        ;	//k_debug_string("k_sd_read_dir::enter\r\n");
+  1972                        ;
+  1973                        ;	if (k_sd_mount())
+  1974                        ;	{
+  1975                        ;		if (k_sd_openfile(sd_card_dir_string))
+  1976                        ;		{
+  1977                        ;			//k_debug_string("k_sd_read_dir:
+                    :k_sd_openfile:success\r\n");
+  1978                        ;			;
+  1979                        ;			status = CH376S_STAT_DSK_RD;
+  1980                        ;			while (status == CH376S_STAT_DSK
+                    _RD || status == 0x51)
+  1981                        ;			{
+  1982                        ;				SDCARD_CMD[0] = CH_CMD_R
+                    D_DATA0;
+  1983                        ;				k_sd_cmd_delay();
+  1984                        ;
+  1985                        ;				data = SDCARD_DATA[0];
+  1986                        ;				//k_debug_hex("k_sd_read
+                    _dir::k_sd_openfile:read:",data);
+  1987                        ;
+  1988                        ;				//k_sd_cmd_delay();
+  1989                        ;
+  1990                        ;				pdirentry = (LPCHAR) &di
+                    rentry;
+  1991                        ;
+  1992                        ;				for (i = 0; i < sizeof(D
+                    IRENTRY); i++)
+  1993                        ;				{
+  1994                        ;					k_sd_dta_delay()
+                    ;
+  1995                        ;					data = SDCARD_DA
+                    TA[0];
+  1996                        ;					//k_debug_char("
+                    k_sd_read_dir::entrydata:",data);
+  1997                        ;					*pdirentry = dat
+                    a;
+  1998                        ;					pdirentry++;
+  1999                        ;				}
+  2000                        ;
+  2001                        ;				k_debug_string("k_sd_rea
+                    d_dir::FAT_DIR_INFO.NAME:");
+  2002                        ;				k_debug_nstring(direntry
+                    .DIR_Name, 11);
+  2003                        ;				//k_debug_string(pdirent
+                    ry);
+  2004                        ;				k_debug_string("\r\n");
+  2005                        ;
+  2006                        ;				if (direntry.DIR_Attr ==
+                     ATTR_VOLUME_ID)
+  2007                        ;				{
+  2008                        ;					k_debug_string("
+                    ** VOLUME **\r\n");
+  2009                        ;				}
+  2010                        ;
+  2011                        ;				k_debug_integer("k_sd_re
+                    ad_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+  2012                        ;				//k_debug_integer("k_sd_
+  Thu Dec  3 2020 22:25                                                Page 40
+
+
+                    read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+  2013                        ;				k_debug_integer("k_sd_re
+                    ad_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+  2014                        ;
+  2015                        ;				k_sd_cmd_delay();
+  2016                        ;
+  2017                        ;				SDCARD_CMD[0] = CH_CMD_F
+                    ILE_ENUM_GO;
+  2018                        ;				status = k_sd_waitforirq
+                    ();
+  2019                        ;				//k_debug_hex("k_sd_read
+                    _dir::CH_CMD_FILE_ENUM_GO:status:",status);
+  2020                        ;			}
+  2021                        ;
+  2022                        ;			k_sd_close(0);
+  2023                        ;		}
+  2024                        ;	}
+  2025                        ;}
+  2026                        ;
+  2027                        ;void k_sd_search_dir(LPCHAR searchString)
+  2028                        ;{
+  2029                        ;	FAT_DIR_INFO direntry;
+  2030                        ;	LPCHAR pdirentry = NULL;
+  2031                        ;	UCHAR data = 0;
+  2032                        ;	UCHAR status = 0x000;
+  2033                        ;	int i = 0;
+  2034                        ;
+  2035                        ;	//k_debug_string("k_sd_read_dir::enter\r\n");
+  2036                        ;
+  2037                        ;	if (k_sd_mount())
+  2038                        ;	{
+  2039                        ;		if (k_sd_openfile(searchString))
+  2040                        ;		{
+  2041                        ;			//k_debug_string("k_sd_read_dir:
+                    :k_sd_openfile:success\r\n");
+  2042                        ;			;
+  2043                        ;			status = CH376S_STAT_DSK_RD;
+  2044                        ;			while (status == CH376S_STAT_DSK
+                    _RD || status == 0x51)
+  2045                        ;			{
+  2046                        ;				SDCARD_CMD[0] = CH_CMD_R
+                    D_DATA0;
+  2047                        ;				k_sd_cmd_delay();
+  2048                        ;
+  2049                        ;				data = SDCARD_DATA[0];
+  2050                        ;				//k_debug_hex("k_sd_read
+                    _dir::k_sd_openfile:read:",data);
+  2051                        ;
+  2052                        ;				//k_sd_cmd_delay();
+  2053                        ;
+  2054                        ;				pdirentry = (LPCHAR) &di
+                    rentry;
+  2055                        ;
+  2056                        ;				for (i = 0; i < sizeof(D
+                    IRENTRY); i++)
+  2057                        ;				{
+  2058                        ;					k_sd_dta_delay()
+                    ;
+  Thu Dec  3 2020 22:25                                                Page 41
+
+
+  2059                        ;					data = SDCARD_DA
+                    TA[0];
+  2060                        ;					//k_debug_char("
+                    k_sd_read_dir::entrydata:",data);
+  2061                        ;					*pdirentry = dat
+                    a;
+  2062                        ;					pdirentry++;
+  2063                        ;				}
+  2064                        ;
+  2065                        ;				k_debug_string("k_sd_rea
+                    d_dir::FAT_DIR_INFO.NAME:");
+  2066                        ;				k_debug_nstring(direntry
+                    .DIR_Name, 11);
+  2067                        ;				//k_debug_string(pdirent
+                    ry);
+  2068                        ;				k_debug_string("\r\n");
+  2069                        ;
+  2070                        ;				if (direntry.DIR_Attr ==
+                     ATTR_VOLUME_ID)
+  2071                        ;				{
+  2072                        ;					k_debug_string("
+                    ** VOLUME **\r\n");
+  2073                        ;				}
+  2074                        ;
+  2075                        ;				k_debug_integer("k_sd_re
+                    ad_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+  2076                        ;				//k_debug_integer("k_sd_
+                    read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+  2077                        ;				k_debug_integer("k_sd_re
+                    ad_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+  2078                        ;
+  2079                        ;				k_sd_cmd_delay();
+  2080                        ;
+  2081                        ;				SDCARD_CMD[0] = CH_CMD_F
+                    ILE_ENUM_GO;
+  2082                        ;				status = k_sd_waitforirq
+                    ();
+  2083                        ;				//k_debug_hex("k_sd_read
+                    _dir::CH_CMD_FILE_ENUM_GO:status:",status);
+  2084                        ;			}
+  2085                        ;
+  2086                        ;			k_sd_close(0);
+  2087                        ;		}
+  2088                        ;	}
+  2089                        ;}
+  2090                        ;
+  2091                        ;
+  2092                        ;UINT16 k_read_disk_sector(LPCHAR buf, UINT32 iLba
+                    Start, UINT8 iSectorCount)
+  2093                        ;{
+  2094                        ;	UINT16 size = 0;
+  2095                        ;	UINT8  err;
+  2096                        ;	UINT16 mBlockCount;
+  2097                        ;
+  2098                        ;	UINT8  s = USB_INT_DISK_READ;
+  2099                        ;
+  2100                        ;	k_debug_long("k_read_disk_sector::iLbaStart:",iL
+                    baStart);
+  Thu Dec  3 2020 22:25                                                Page 42
+
+
+  2101                        ;
+  2102                        ;	for (err = 0; err != 3; ++err)
+  2103                        ;	{
+  2104                        ;		xWriteCH376Cmd(CMD5H_DISK_READ);
+  2105                        ;		k_sd_cmd_delay();
+  2106                        ;		k_sd_cmd_delay();
+  2107                        ;		xWriteCH376Data((UINT8) iLbaStart);
+  2108                        ;		k_sd_dta_delay();
+  2109                        ;		xWriteCH376Data((UINT8) ((UINT16) iLbaSt
+                    art >> 8));
+  2110                        ;		k_sd_dta_delay();
+  2111                        ;		xWriteCH376Data((UINT8) (iLbaStart >> 16
+                    ));
+  2112                        ;		k_sd_dta_delay();
+  2113                        ;		xWriteCH376Data((UINT8) (iLbaStart >> 24
+                    ));
+  2114                        ;		k_sd_dta_delay();
+  2115                        ;		xWriteCH376Data(iSectorCount);
+  2116                        ;		k_sd_dta_delay();
+  2117                        ;		xEndCH376Cmd();
+  2118                        ;
+  2119                        ;		s = USB_INT_DISK_READ;
+  2120                        ;
+  2121                        ;		for (mBlockCount = iSectorCount * DEF_SE
+                    CTOR_SIZE / CH376_DAT_BLOCK_LEN;mBlockCount != 0; --mBlockCo
+                    unt)
+  2122                        ;		{
+  2123                        ;			k_debug_integer("k_read_disk_sec
+                    tor::mBlockCount:",mBlockCount);
+  2124                        ;
+  2125                        ;			s = k_sd_waitforirq();
+  2126                        ;
+  2127                        ;			//s = USB_INT_DISK_READ;
+  2128                        ;			if (s == USB_INT_DISK_READ)
+  2129                        ;			{
+  2130                        ;				s = k_sd_read_block(buf)
+                    ;
+  2131                        ;				xWriteCH376Cmd( CMD0H_DI
+                    SK_RD_GO);
+  2132                        ;				xEndCH376Cmd();
+  2133                        ;				buf += s;
+  2134                        ;				size += s;
+  2135                        ;				k_debug_integer("k_read_
+                    disk_sector::read:size:",size);
+  2136                        ;			}
+  2137                        ;			else
+  2138                        ;			{
+  2139                        ;				k_debug_integer("k_read_
+                    disk_sector::k_sd_waitforirq:",s);
+  2140                        ;				break;
+  2141                        ;			}
+  2142                        ;			s = k_sd_waitforirq();
+  2143                        ;		}
+  2144                        ;
+  2145                        ;		if (mBlockCount == 0)
+  2146                        ;		{
+  2147                        ;			s = k_sd_waitforirq();
+  2148                        ;			if (s == USB_INT_SUCCESS)
+  Thu Dec  3 2020 22:25                                                Page 43
+
+
+  2149                        ;				return (size);
+  2150                        ;		}
+  2151                        ;		if (s == USB_INT_DISCONNECT)
+  2152                        ;			return (size);
+  2153                        ;		k_sd_disk_req_sense();
+  2154                        ;	}
+  2155                        ;	return (size);
+  2156                        ;}
+  2157                        ;
+  2158                        ;UINT8 k_sd_cmd_and_irq( UINT8 mCmd )
+  2159                        ;{
+  2160                        ;	xWriteCH376Cmd( mCmd );
+  2161                        ;	k_sd_cmd_delay();
+  2162                        ;	xEndCH376Cmd( );
+  2163                        ;	return( k_sd_waitforirq( ) );
+  2164                        ;}
+  2165                        ;
+  2166                        ;UINT8 k_sd_disk_req_sense( void )
+  2167                        ;{
+  2168                        ;	UINT8	s;
+  2169                        ;	mDelaymS( 5 );
+  2170                        ;	s = k_sd_cmd_and_irq( CMD0H_DISK_R_SENSE );
+  2171                        ;	mDelaymS( 5 );
+  2172                        ;	return( s );
+  2173                        ;}
+  2174                        ;
+  2175                        ;BOOL k_sd_read_vol(PDISKINFO pdiskInfo)
+  2176                        ;{
+  2177                        ;
+  2178                        ;	BOOL bRet = FALSE;
+  2179                        ;	//UINT size = 0;
+  2180                        ;	UINT   index = 0;
+  2181                        ;	BOOL   cmd = FALSE;
+  2182                        ;	UINT16 read = 0;
+  2183                        ;	//fat_BS_t direntry;
+  2184                        ;	//LPCHAR pdirentry = (LPCHAR) &direntry;
+  2185                        ;	UCHAR data = 0;
+  2186                        ;	//UCHAR status = 0x000;
+  2187                        ;	LPCHAR contents = NULL;
+  2188                        ;	//LPCHAR test = "This is a test!\r\n";
+  2189                        ;	int i = 0;
+  2190                        ;
+  2191                        ;	k_debug_string("k_sd_read_dir::enter\r\n");
+  2192                        ;
+  2193                        ;	//asm sei;
+  2194                        ;
+  2195                        ;	k_sd_reset();
+  2196                        ;
+  2197                        ;	//if(k_sd_ispresent() && k_sd_mount())
+  2198                        ;	if(k_sd_mount())
+  2199                        ;	{
+  2200                        ;		_mount_lock = TRUE;
+  2201                        ;
+  2202                        ;		k_sd_openfile("\0");
+  2203                        ;
+  2204                        ;		if (k_sd_openfile(CONST_FXINFO_FILE))
+  2205                        ;		{
+  2206                        ;
+  Thu Dec  3 2020 22:25                                                Page 44
+
+
+  2207                        ;			k_debug_string("k_sd_read_vol::o
+                    pened\r\n");
+  2208                        ;
+  2209                        ;			//k_sd_byte_locate(0L);
+  2210                        ;
+  2211                        ;			if(pdiskInfo!=NULL)
+  2212                        ;			{
+  2213                        ;				memset(pdiskInfo,0,sizeo
+                    f(DISKINFO));
+  2214                        ;
+  2215                        ;
+  2216                        ;				k_sd_byte_read((LPCHAR)p
+                    diskInfo,sizeof(DISKINFO),&read);
+  2217                        ;				if(read == 0)
+  2218                        ;				{
+  2219                        ;					strcpy(pdiskInfo
+                    ->stgName,"NO NAME");
+  2220                        ;				}
+  2221                        ;				k_debug_integer("k_sd_re
+                    ad_vol::k_sd_byte_read:read:", read);
+  2222                        ;				k_debug_string("VOLUME N
+                    AME:");
+  2223                        ;				k_debug_nstring(pdiskInf
+                    o->stgName, 32 );
+  2224                        ;				k_debug_string("\r\n");
+  2225                        ;
+  2226                        ;				memcpy(&lastdiskInfo,pdi
+                    skInfo,sizeof(DISKINFO));
+  2227                        ;				pdiskCache = &lastdiskIn
+                    fo;
+  2228                        ;
+  2229                        ;				bRet = TRUE;
+  2230                        ;			}
+  2231                        ;
+  2232                        ;			k_sd_close(CLOSE_NOUPDATE);
+  2233                        ;		}
+  2234                        ;
+  2235                        ;		k_debug_string("k_sd_read_vol::exit\r\n"
+                    );
+  2236                        ;
+  2237                        ;		_mount_lock = FALSE;
+  2238                        ;	}
+  2239                        ;	else
+  2240                        ;	{
+  2241                        ;		pdiskCache = NULL;
+  2242                        ;	}
+  2243                        ;
+  2244                        ;	//asm cli;
+  2245                        ;
+  2246                        ;	return bRet;
+  2247                        ;}
+  2248                        ;
+  2249                        ;BOOL k_sd_write_file(LPCHAR fileName,LPVOID fileB
+                    uffer,UINT fileSize)
+  2250                        ;{
+  2251                        ;
+  2252                        ;	BOOL bRet = FALSE;
+  2253                        ;	UINT   index = 0;
+  Thu Dec  3 2020 22:25                                                Page 45
+
+
+  2254                        ;	BOOL   cmd = FALSE;
+  2255                        ;	UINT16 wrote = 0;
+  2256                        ;	int i = 0;
+  2257                        ;
+  2258                        ;	k_debug_integer("k_sd_write_file::enter:",fileSi
+                    ze);
+  2259                        ;
+  2260                        ;	//asm sei;
+  2261                        ;
+  2262                        ;	k_sd_reset();
+  2263                        ;
+  2264                        ;	if(fileName && k_sd_ispresent() && k_sd_mount())
+  2265                        ;	{
+  2266                        ;		k_sd_openfile("\0");
+  2267                        ;
+  2268                        ;		k_sd_delete(fileName);
+  2269                        ;
+  2270                        ;		k_sd_reset();
+  2271                        ;
+  2272                        ;		k_sd_openfile("\0");
+  2273                        ;		if(k_sd_createfile(fileName))
+  2274                        ;		{
+  2275                        ;			if (k_sd_openfile(fileName))
+  2276                        ;			{
+  2277                        ;				k_sd_cmd_delay();
+  2278                        ;				k_debug_string("k_sd_wri
+                    te_file::opened\r\n");
+  2279                        ;				if(fileBuffer!=NULL)
+  2280                        ;				{
+  2281                        ;					k_sd_byte_write(
+                    (LPCHAR)fileBuffer,fileSize,&wrote);
+  2282                        ;					k_debug_integer(
+                    "k_sd_write_file::k_sd_byte_write:wrote:", wrote);
+  2283                        ;					bRet = (wrote ==
+                     fileSize);
+  2284                        ;				}
+  2285                        ;				k_sd_close(TRUE);
+  2286                        ;			}
+  2287                        ;		}
+  2288                        ;		k_debug_string("k_sd_write_file::exit\r\
+                    n");
+  2289                        ;	}
+  2290                        ;
+  2291                        ;	//asm cli;
+  2292                        ;
+  2293                        ;	return bRet;
+  2294                        ;}
+  2295                        ;
+  2296                        ;BOOL k_sd_read_file(LPCHAR fileName,LPVOID fileBu
+                    ffer,UINT fileSize)
+  2297                        ;{
+  2298                        ;
+  2299                        ;	BOOL bRet = FALSE;
+  2300                        ;	UINT   index = 0;
+  2301                        ;	BOOL   cmd = FALSE;
+  2302                        ;	UINT16 read = 0;
+  2303                        ;	UCHAR data = 0;
+  2304                        ;	LPCHAR contents = NULL;
+  Thu Dec  3 2020 22:25                                                Page 46
+
+
+  2305                        ;	int i = 0;
+  2306                        ;
+  2307                        ;	k_debug_string("k_sd_read_file::enter\r\n");
+  2308                        ;
+  2309                        ;	//asm sei;
+  2310                        ;
+  2311                        ;	k_sd_reset();
+  2312                        ;
+  2313                        ;	if(k_sd_ispresent() && k_sd_mount())
+  2314                        ;	{
+  2315                        ;		if (k_sd_openfile(CONST_FXINFO_FILE))
+  2316                        ;		{
+  2317                        ;
+  2318                        ;			k_debug_string("k_sd_read_file::
+                    opened\r\n");
+  2319                        ;
+  2320                        ;			//k_sd_byte_locate(0L);
+  2321                        ;
+  2322                        ;			if(fileBuffer!=NULL)
+  2323                        ;			{
+  2324                        ;				memset(fileBuffer,0,file
+                    Size);
+  2325                        ;				k_sd_byte_read((LPCHAR)f
+                    ileBuffer,fileSize,&read);
+  2326                        ;
+  2327                        ;
+  2328                        ;				k_debug_integer("k_sd_re
+                    ad_file::k_sd_byte_read:read:", read);
+  2329                        ;
+  2330                        ;				bRet = TRUE;
+  2331                        ;			}
+  2332                        ;
+  2333                        ;			k_sd_close(CLOSE_NOUPDATE);
+  2334                        ;		}
+  2335                        ;
+  2336                        ;		k_debug_string("k_sd_read_file::exit\r\n
+                    ");
+  2337                        ;	}
+  2338                        ;
+  2339                        ;	//asm cli;
+  2340                        ;
+  2341                        ;	return bRet;
+  2342                        ;}
+  2343                        ;
+  2344                        ;BOOL k_sd_create_dir(LPCHAR dirName)
+  2345                        ;{
+  2346                        ;	UCHAR status = 0;
+  2347                        ;	BOOL bRet = FALSE;
+  2348                        ;
+  2349                        ;	if (k_sd_setfilename(dirName))
+  2350                        ;	{
+  2351                        ;		k_sd_sendcmd( CMD0H_DIR_CREATE);
+  2352                        ;		status = k_sd_waitforirq();
+  2353                        ;		if (status == USB_INT_SUCCESS)
+  2354                        ;		{
+  2355                        ;			bRet = TRUE;
+  2356                        ;		}
+  2357                        ;	}
+  Thu Dec  3 2020 22:25                                                Page 47
+
+
+  2358                        ;
+  2359                        ;	return bRet;
+  2360                        ;}
+  2361                        ;
+  2362                        ;BOOL k_sd_getdirinfo(P_FAT_DIR_INFO pdirName)
+  2363                        ;{
+  2364                        ;	int i = 0;
+  2365                        ;	UCHAR status = 0;
+  2366                        ;	UCHAR data = 0;
+  2367                        ;	BOOL bRet = FALSE;
+  2368                        ;	LPCHAR ptr = (LPCHAR) pdirName;
+  2369                        ;
+  2370                        ;	if (k_sd_openfile("/NEWDIR"))
+  2371                        ;	{
+  2372                        ;		k_sd_sendcmd( CMD1H_DIR_INFO_READ);
+  2373                        ;		k_sd_senddta(0xFF);
+  2374                        ;		status = k_sd_waitforirq();
+  2375                        ;		k_debug_hex("k_sd_getdirinfo::CMD1H_DIR_
+                    INFO_READ:read:", status);
+  2376                        ;		if (status == USB_INT_SUCCESS)
+  2377                        ;		{
+  2378                        ;			k_sd_sendcmd( CH_CMD_RD_DATA0);
+  2379                        ;
+  2380                        ;			//data = SDCARD_DATA[0];
+  2381                        ;			//k_debug_hex("k_sd_getdirinfo::
+                    read:",data);
+  2382                        ;
+  2383                        ;			//k_sd_cmd_delay();
+  2384                        ;
+  2385                        ;			for (i = 0; i < sizeof(FAT_DIR_I
+                    NFO); i++)
+  2386                        ;			{
+  2387                        ;				k_sd_dta_delay();
+  2388                        ;				data = SDCARD_DATA[0];
+  2389                        ;				k_debug_char("k_sd_getdi
+                    rinfo::entrydata:", data);
+  2390                        ;				*ptr = data;
+  2391                        ;				ptr++;
+  2392                        ;			}
+  2393                        ;
+  2394                        ;			bRet = TRUE;
+  2395                        ;		}
+  2396                        ;
+  2397                        ;		k_sd_close(FALSE);
+  2398                        ;	}
+  2399                        ;	return bRet;
+  2400                        ;}
+  2401                        ;
+  2402                        ;BOOL k_sd_delete(LPCHAR dirOrFileName)
+  2403                        ;{
+  2404                        ;	UCHAR status = 0;
+  2405                        ;	BOOL bRet = FALSE;
+  2406                        ;
+  2407                        ;	k_debug_string("k_sd_delete:enter\r\n");
+  2408                        ;
+  2409                        ;	if (k_sd_setfilename(dirOrFileName))
+  2410                        ;	{
+  2411                        ;		k_sd_sendcmd( CMD0H_FILE_ERASE);
+  Thu Dec  3 2020 22:25                                                Page 48
+
+
+  2412                        ;		status = k_sd_waitforirq();
+  2413                        ;		if (status == USB_INT_SUCCESS)
+  2414                        ;		{
+  2415                        ;			bRet = TRUE;
+  2416                        ;		}
+  2417                        ;		//k_sd_close(TRUE);
+  2418                        ;	}
+  2419                        ;
+  2420                        ;
+  2421                        ;	k_debug_integer("k_sd_delete:exit:",bRet);
+  2422                        ;
+  2423                        ;	return bRet;
+  2424                        ;}
+  2425                        ;
+  2426                        ;BOOL k_sd_close(UCHAR update)
+  2427                        ;{
+  2428                        ;	UCHAR status = 0;
+  2429                        ;	BOOL bRet = FALSE;
+  2430                        ;
+  2431                        ;	k_debug_string("k_sd_close\r\n");
+  2432                        ;
+  2433                        ;	k_sd_sendcmd( CMD1H_FILE_CLOSE);
+  2434                        ;	k_sd_senddta(update);
+  2435                        ;
+  2436                        ;	status = k_sd_waitforirq();
+  2437                        ;	if (status == USB_INT_SUCCESS)
+  2438                        ;	{
+  2439                        ;		bRet = TRUE;
+  2440                        ;	}
+  2441                        ;
+  2442                        ;	return bRet;
+  2443                        ;}
+  2444                        ;
+  2445                        ;void k_sd_sendcmd(UCHAR command)
+  2446                        ;{
+  2447                        ;	SDCARD_CMD[0] = command;
+  2448                        ;	k_sd_cmd_delay();
+  2449                        ;}
+  2450                        ;
+  2451                        ;void k_sd_senddta(UCHAR data)
+  2452                        ;{
+  2453                        ;	SDCARD_DATA[0] = data;
+  2454                        ;	k_sd_dta_delay();
+  2455                        ;}
+  2456                        ;
+  2457                        ;void k_sd_cmd_delay(void)
+  2458                        ;{
+  2459                        ;#asm
+  2460                        ;	NOP
+  2461                        ;	NOP
+  2462                        ;	NOP
+  2463                        ;	NOP
+  2464                        ;	NOP
+  2465                        ;	NOP
+  2466                        ;	NOP
+  2467                        ;	NOP
+  2468                        ;	NOP
+  2469                        ;	NOP
+  Thu Dec  3 2020 22:25                                                Page 49
+
+
+  2470                        ;#endasm
+  2471                        ;}
+  2472                        ;
+  2473                        ;void k_sd_dta_delay(void)
+  2474                        ;{
+  2475                        ;#asm
+  2476                        ;	NOP
+  2477                        ;	NOP
+  2478                        ;	NOP
+  2479                        ;	NOP
+  2480                        ;	NOP
+  2481                        ;#endasm
+  2482                        ;}
+  2483                        ;
+  2484                        ;
+  2485                        ;UINT8 k_sd_createfile( LPCHAR name )
+  2486                        ;{
+  2487                        ;	if(name)
+  2488                        ;	{
+  2489                        ;		k_debug_string("k_sd_createfile:name:");
+  2490                        ;		k_debug_string(name);
+  2491                        ;		k_debug_string("\r\n");
+  2492                        ;
+  2493                        ;		k_sd_setfilename( name );
+  2494                        ;	}
+  2495                        ;	return( k_sd_cmd_and_irq( CMD0H_FILE_CREATE ) );
+  2496                        ;}
+  2497                        ;
+  2498                        ;UINT8	k_sd_read_block( PUINT8 buf )
+  2499                        ;{
+  2500                        ;	UINT8	s, l;
+  2501                        ;	xWriteCH376Cmd( CMD01_RD_USB_DATA0 );
+  2502                        ;	s = l = xReadCH376Data( );
+  2503                        ;	if ( l ) {
+  2504                        ;		do {
+  2505                        ;			*buf = xReadCH376Data( );
+  2506                        ;			buf ++;
+  2507                        ;		} while ( -- l );
+  2508                        ;	}
+  2509                        ;	xEndCH376Cmd( );
+  2510                        ;	return( s );
+  2511                        ;}
+  2512                        ;
+  2513                        ;
+  2514                        ;void k_sd_write_host_block( PUINT8 buf, UINT8 len
+                     )
+  2515                        ;{
+  2516                        ;	xWriteCH376Cmd( CMD10_WR_HOST_DATA );
+  2517                        ;	xWriteCH376Data( len );
+  2518                        ;	if ( len ) {
+  2519                        ;		do {
+  2520                        ;			xWriteCH376Data( *buf );
+  2521                        ;			buf ++;
+  2522                        ;		} while ( -- len );
+  2523                        ;	}
+  2524                        ;	xEndCH376Cmd( );
+  2525                        ;}
+  2526                        ;
+  Thu Dec  3 2020 22:25                                                Page 50
+
+
+  2527                        ;void k_sd_write_ofs_blocks( PUINT8 buf, UINT8 ofs
+                    , UINT8 len )
+  2528                        ;{
+  2529                        ;	xWriteCH376Cmd( CMD20_WR_OFS_DATA );
+  2530                        ;	xWriteCH376Data( ofs );
+  2531                        ;	xWriteCH376Data( len );
+  2532                        ;	if ( len ) {
+  2533                        ;		do {
+  2534                        ;			xWriteCH376Data( *buf );
+  2535                        ;			buf ++;
+  2536                        ;		} while ( -- len );
+  2537                        ;	}
+  2538                        ;	xEndCH376Cmd( );
+  2539                        ;}
+  2540                        ;
+  2541                        ;UINT8 k_sd_byte_locate( UINT32 offset )
+  2542                        ;{
+  2543                        ;	xWriteCH376Cmd( CMD4H_BYTE_LOCATE );
+  2544                        ;	xWriteCH376Data( (UINT8)offset );
+  2545                        ;	xWriteCH376Data( (UINT8)((UINT16)offset>>8) );
+  2546                        ;	xWriteCH376Data( (UINT8)(offset>>16) );
+  2547                        ;	xWriteCH376Data( (UINT8)(offset>>24) );
+  2548                        ;	xEndCH376Cmd( );
+  2549                        ;	return( Wait376Interrupt( ) );
+  2550                        ;}
+  2551                        ;
+  2552                        ;/*
+  2553                        ;UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount
+                    , PUINT16 RealCount )
+  2554                        ;{
+  2555                        ;	UINT8	s;
+  2556                        ;
+  2557                        ;	k_debug_integer("k_sd_byte_read:",ReqCount);
+  2558                        ;
+  2559                        ;	xWriteCH376Cmd( CMD2H_BYTE_READ );
+  2560                        ;	xWriteCH376Data( (UINT8)ReqCount );
+  2561                        ;	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+  2562                        ;	xEndCH376Cmd( );
+  2563                        ;	if ( RealCount ) *RealCount = 0;
+  2564                        ;	while ( 1 )
+  2565                        ;	{
+  2566                        ;		s = k_sd_waitforirq( );
+  2567                        ;		k_debug_integer("k_sd_byte_read:status:"
+                    ,s);
+  2568                        ;		if ( s == USB_INT_DISK_READ || s == USB_
+                    INT_SUCCESS)
+  2569                        ;		{
+  2570                        ;			s = k_sd_read_block( buf );
+  2571                        ;			xWriteCH376Cmd( CMD0H_BYTE_RD_GO
+                     );
+  2572                        ;			xEndCH376Cmd( );
+  2573                        ;			buf += s;
+  2574                        ;			if ( RealCount )
+  2575                        ;				*RealCount += s;
+  2576                        ;
+  2577                        ;			k_debug_integer("k_sd_byte_read:
+                    RealCount:",*RealCount);
+  2578                        ;		}
+  Thu Dec  3 2020 22:25                                                Page 51
+
+
+  2579                        ;		//else if ( s == USB_INT_SUCCESS ) retur
+                    n( s );
+  2580                        ;		else return( s );
+  2581                        ;	}
+  2582                        ;}
+  2583                        ;*/
+  2584                        ;UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount
+                    , PUINT16 RealCount )
+  2585                        ;{
+  2586                        ;	UINT8	s;
+  2587                        ;
+  2588                        ;	k_debug_integer("k_sd_byte_read:ReqCount:",ReqCo
+                    unt);
+  2589                        ;
+  2590                        ;	k_debug_hex("k_sd_byte_read:ReqCount L:",(UINT8)
+                    ReqCount );
+  2591                        ;	k_debug_hex("k_sd_byte_read:ReqCount H:",(UINT8)
+                    (ReqCount>>8));
+  2592                        ;
+  2593                        ;	xWriteCH376Cmd( CMD2H_BYTE_READ );
+  2594                        ;	xWriteCH376Data( (UINT8)ReqCount );
+  2595                        ;	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+  2596                        ;	xEndCH376Cmd( );
+  2597                        ;	if ( RealCount )
+  2598                        ;		*RealCount = 0;
+  2599                        ;
+  2600                        ;	s = k_sd_waitforirq( );
+  2601                        ;	k_debug_integer("k_sd_byte_read:INITIAL:",s);
+  2602                        ;	if(s == USB_INT_SUCCESS || s == USB_INT_DISK_REA
+                    D)
+  2603                        ;	{
+  2604                        ;		k_debug_integer("k_sd_byte_read:STATUS:"
+                    ,s);
+  2605                        ;
+  2606                        ;		s = USB_INT_DISK_READ;
+  2607                        ;		while(s == USB_INT_DISK_READ)
+  2608                        ;		{
+  2609                        ;			s = k_sd_read_block( buf );
+  2610                        ;			buf += s;
+  2611                        ;
+  2612                        ;			if ( RealCount )
+  2613                        ;			{
+  2614                        ;				*RealCount += s;
+  2615                        ;			}
+  2616                        ;			k_debug_integer("k_sd_byte_read:
+                    READ:",s);
+  2617                        ;
+  2618                        ;			xWriteCH376Cmd( CMD0H_BYTE_RD_GO
+                     );
+  2619                        ;			xEndCH376Cmd( );
+  2620                        ;
+  2621                        ;			s = k_sd_waitforirq();
+  2622                        ;		}
+  2623                        ;	}
+  2624                        ;
+  2625                        ;	return s;
+  2626                        ;}
+  2627                        ;
+  Thu Dec  3 2020 22:25                                                Page 52
+
+
+  2628                        ;/*
+  2629                        ;UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCoun
+                    t, PUINT16 RealCount )
+  2630                        ;{
+  2631                        ;	UINT8	s;
+  2632                        ;
+  2633                        ;	k_debug_integer("k_sd_byte_write:",ReqCount);
+  2634                        ;
+  2635                        ;	xWriteCH376Cmd( CMD2H_BYTE_WRITE );
+  2636                        ;	xWriteCH376Data( (UINT8)ReqCount );
+  2637                        ;	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+  2638                        ;	xEndCH376Cmd( );
+  2639                        ;	if ( RealCount ) *RealCount = 0;
+  2640                        ;	while ( 1 )
+  2641                        ;	{
+  2642                        ;		s = k_sd_waitforirq( );
+  2643                        ;		k_debug_integer("k_sd_byte_write:status1
+                    :",s);
+  2644                        ;		//if ( s == USB_INT_DISK_WRITE )
+  2645                        ;		if ( s == USB_INT_SUCCESS ||  s == USB_I
+                    NT_DISK_WRITE)
+  2646                        ;		{
+  2647                        ;			s = k_sd_write_req_block( buf );
+  2648                        ;
+  2649                        ;			xWriteCH376Cmd( CMD0H_BYTE_WR_GO
+                     );
+  2650                        ;			xEndCH376Cmd( );
+  2651                        ;			buf += s;
+  2652                        ;
+  2653                        ;			if ( RealCount )
+  2654                        ;			{
+  2655                        ;				*RealCount += s;
+  2656                        ;				if(*RealCount == ReqCoun
+                    t)
+  2657                        ;					return s;
+  2658                        ;			}
+  2659                        ;			k_debug_integer("k_sd_byte_write
+                    :status2:",s);
+  2660                        ;		}
+  2661                        ;		//e-lse if ( s == USB_INT_SUCCESS ) retu
+                    rn( s );
+  2662                        ;		else return( s );
+  2663                        ;	}
+  2664                        ;}
+  2665                        ;*/
+  2666                        ;
+  2667                        ;UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCoun
+                    t, PUINT16 RealCount )
+  2668                        ;{
+  2669                        ;	UINT8	s;
+  2670                        ;
+  2671                        ;	k_debug_integer("k_sd_byte_write:ReqCount:",ReqC
+                    ount);
+  2672                        ;
+  2673                        ;	k_debug_hex("k_sd_byte_write:ReqCount L:",(UINT8
+                    )ReqCount );
+  2674                        ;	k_debug_hex("k_sd_byte_write:ReqCount H:",(UINT8
+                    )(ReqCount>>8));
+  Thu Dec  3 2020 22:25                                                Page 53
+
+
+  2675                        ;
+  2676                        ;	xWriteCH376Cmd( CMD2H_BYTE_WRITE );
+  2677                        ;	xWriteCH376Data( (UINT8)ReqCount );
+  2678                        ;	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+  2679                        ;	xEndCH376Cmd( );
+  2680                        ;
+  2681                        ;	if ( RealCount )
+  2682                        ;		*RealCount = 0;
+  2683                        ;
+  2684                        ;	s = k_sd_waitforirq( );
+  2685                        ;
+  2686                        ;	k_debug_integer("k_sd_byte_write:INITIAL:",s);
+  2687                        ;	if(s == USB_INT_SUCCESS || s == CMD_RET_SUCCESS 
+                     || s == USB_INT_DISK_WRITE)
+  2688                        ;	{
+  2689                        ;		k_debug_integer("k_sd_byte_write:STATUS:
+                    ",s);
+  2690                        ;		s = USB_INT_DISK_WRITE;
+  2691                        ;		while(s == USB_INT_DISK_WRITE)
+  2692                        ;		{
+  2693                        ;			s = k_sd_write_req_block( buf );
+  2694                        ;			buf += s;
+  2695                        ;
+  2696                        ;			if ( RealCount )
+  2697                        ;			{
+  2698                        ;				*RealCount += s;
+  2699                        ;			}
+  2700                        ;			k_debug_integer("k_sd_byte_write
+                    :WRITE:",s);
+  2701                        ;
+  2702                        ;			xWriteCH376Cmd( CMD0H_BYTE_WR_GO
+                     );
+  2703                        ;			xEndCH376Cmd( );
+  2704                        ;
+  2705                        ;			s = k_sd_waitforirq();
+  2706                        ;			k_debug_integer("k_sd_byte_write
+                    :CMD0H_BYTE_WR_GO:STATUS:",s);
+  2707                        ;		}
+  2708                        ;	}
+  2709                        ;
+  2710                        ;	return s;
+  2711                        ;}
+  2712                        ;
+  2713                        ;UINT8 k_sd_write_req_block( PUINT8 buf )
+  2714                        ;{
+  2715                        ;	UINT8	s, l;
+  2716                        ;
+  2717                        ;	k_debug_string("k_sd_write_req_block::ENTER\r\n"
+                    );
+  2718                        ;
+  2719                        ;	xWriteCH376Cmd( CMD01_WR_REQ_DATA );
+  2720                        ;	s = l = xReadCH376Data( );
+  2721                        ;	k_debug_integer("k_sd_write_req_block:SIZE:",l);
+  2722                        ;
+  2723                        ;	if ( l )
+  2724                        ;	{
+  2725                        ;		do
+  2726                        ;		{
+  Thu Dec  3 2020 22:25                                                Page 54
+
+
+  2727                        ;			xWriteCH376Data( *buf );
+  2728                        ;			buf ++;
+  2729                        ;		} while ( -- l );
+  2730                        ;	}
+  2731                        ;	xEndCH376Cmd( );
+  2732                        ;
+  2733                        ;	k_debug_integer("k_sd_write_req_block::EXIT:",s)
+                    ;
+  2734                        ;
+  2735                        ;	return( s );
+  2736                        ;}
+  2737                        ;
+  2738                        ;
+  2739                        ;void k_sd_test_new(void)
+  2740                        ;{
+  2741                        ;	UINT8 s;
+  2742                        ;	UINT16 j;
+  2743                        ;
+  2744                        ;	mDelaymS(100);
+  2745                        ;
+  2746                        ;	//mInitCH376Host();
+  2747                        ;
+  2748                        ;	if (k_sd_initialize())
+  2749                        ;	{
+  2750                        ;		k_debug_string("k_sd_test::initialized..
+                    .\r\n");
+  2751                        ;		if (k_sd_ispresent())
+  2752                        ;		{
+  2753                        ;			k_debug_string("k_sd_test::card 
+                    present...\r\n");
+  2754                        ;
+  2755                        ;			if (k_sd_mount())
+  2756                        ;			{
+  2757                        ;				k_debug_string("k_sd_tes
+                    t::card mounted...\r\n");
+  2758                        ;
+  2759                        ;				k_debug_string("k_sd_tes
+                    t::k_sd_read_dir...\r\n");
+  2760                        ;				s = CH376ReadBlock(buf);
+  2761                        ;				if (s == sizeof(INQUIRY_
+                    DATA))
+  2762                        ;				{
+  2763                        ;					buf[s] = 0;
+  2764                        ;					k_debug_string("
+                    UdiskInfo:");
+  2765                        ;					k_debug_string(
+  2766                        ;							
+                    (char FAR*) ((P_INQUIRY_DATA) buf)->VendorIdStr);
+  2767                        ;					k_debug_string("
+                    \r\n");
+  2768                        ;				}
+  2769                        ;
+  2770                        ;			}
+  2771                        ;			else
+  2772                        ;			{
+  2773                        ;				k_debug_string("k_sd_tes
+                    t::card NOT mounted...\r\n");
+  2774                        ;			}
+  Thu Dec  3 2020 22:25                                                Page 55
+
+
+  2775                        ;		}
+  2776                        ;		else
+  2777                        ;		{
+  2778                        ;			k_debug_string("k_sd_test::card 
+                    NOT present...\r\n");
+  2779                        ;		}
+  2780                        ;	}
+  2781                        ;	else
+  2782                        ;	{
+  2783                        ;		k_debug_string("k_sd_test::NOT initializ
+                    ed...\r\n");
+  2784                        ;	}
+  2785                        ;
+  2786                        ;}
+  2787                        ;
+  2788                        ;void k_sd_test(void)
+  2789                        ;{
+  2790                        ;
+  2791                        ;	DISKINFO di;
+  2792                        ;	FAT_DIR_INFO dirName;
+  2793                        ;
+  2794                        ;	if (k_sd_initialize())
+  2795                        ;	{
+  2796                        ;		k_debug_string("k_sd_test::initialized..
+                    .\r\n");
+  2797                        ;		if (k_sd_ispresent())
+  2798                        ;		{
+  2799                        ;			k_debug_string("k_sd_test::card 
+                    present...\r\n");
+  2800                        ;
+  2801                        ;			if (k_sd_mount())
+  2802                        ;			{
+  2803                        ;				k_debug_string("k_sd_tes
+                    t::card mounted...\r\n");
+  2804                        ;
+  2805                        ;				k_debug_string("k_sd_tes
+                    t::k_sd_read_dir...\r\n");
+  2806                        ;
+  2807                        ;				//k_sd_read_vol(&di);
+  2808                        ;				//k_sd_search_dir("*VOL"
+                    );
+  2809                        ;
+  2810                        ;				//k_sd_read_dir();
+  2811                        ;				/*
+  2812                        ;				 k_sd_read_vol();
+  2813                        ;
+  2814                        ;				 if(k_sd_getdirinfo( &di
+                    rName ))
+  2815                        ;				 {
+  2816                        ;				 k_debug_string("k_sd_ge
+                    tdirinfo::ROOT:FAT_DIR_INFO.NAME:");
+  2817                        ;				 k_debug_nstring(dirName
+                    .DIR_Name,11);
+  2818                        ;				 k_debug_string("\r\n");
+  2819                        ;				 }
+  2820                        ;				 */
+  2821                        ;
+  2822                        ;				/*
+  Thu Dec  3 2020 22:25                                                Page 56
+
+
+  2823                        ;				 k_debug_string("k_sd_te
+                    st::k_sd_delete...\r\n");
+  2824                        ;				 if(k_sd_delete("/NEWDIR
+                    "))
+  2825                        ;				 {
+  2826                        ;				 k_debug_string("k_sd_te
+                    st::k_sd_delete:DELETED\r\n");
+  2827                        ;				 }
+  2828                        ;				 else
+  2829                        ;				 {
+  2830                        ;				 k_debug_string("k_sd_te
+                    st::k_sd_delete:NOT DELETED\r\n");
+  2831                        ;				 }
+  2832                        ;
+  2833                        ;				 k_debug_string("k_sd_te
+                    st::k_sd_create_dir...\r\n");
+  2834                        ;				 if(k_sd_create_dir("/NE
+                    WDIR"))
+  2835                        ;				 {
+  2836                        ;				 k_debug_string("k_sd_te
+                    st::ck_sd_create_dir CREATED...\r\n");
+  2837                        ;				 }
+  2838                        ;				 else
+  2839                        ;				 {
+  2840                        ;				 k_debug_string("k_sd_te
+                    st::ck_sd_create_dir:NOT CREATED\r\n");
+  2841                        ;				 }
+  2842                        ;
+  2843                        ;				 k_debug_string("k_sd_te
+                    st::k_sd_read_dir...\r\n");
+  2844                        ;				 k_sd_read_dir();
+  2845                        ;				 */
+  2846                        ;			}
+  2847                        ;			else
+  2848                        ;			{
+  2849                        ;				k_debug_string("k_sd_tes
+                    t::card NOT mounted...\r\n");
+  2850                        ;			}
+  2851                        ;		}
+  2852                        ;		else
+  2853                        ;		{
+  2854                        ;			k_debug_string("k_sd_test::card 
+                    NOT present...\r\n");
+  2855                        ;		}
+  2856                        ;	}
+  2857                        ;	else
+  2858                        ;	{
+  2859                        ;		k_debug_string("k_sd_test::NOT initializ
+                    ed...\r\n");
+  2860                        ;	}
+  2861                        ;}
+  2862                        ;
+  2863                        ;
+  2864                        ;#endif
+  2865                        ;
+  2866                        	.line	1396
+  2867                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\DRIVER_B2SDCard.c",48
+  Thu Dec  3 2020 22:25                                                Page 57
+
+
+  2868                        	udata
+  2869                        ~~lastdiskInfo
+  2870 00:0000:              	ds	52
+  2871 00:0034:              	ends
+  2872                        	udata
+  2873                        ~~sectorBuffer
+  2874 00:0034:              	ds	512
+  2875 00:0234:              	ends
+  2876                        	udata
+  2877                        ~~buf
+  2878 00:0234:              	ds	64
+  2879 00:0274:              	ends
+  2880                        	.sym	~~DRIVER_B2SDCard,~~DRIVER_B2SDCard,10,2
+                    ,1416,48
+  2881                        	.sym	~~pdiskCache,~~pdiskCache,138,3,32,65
+  2882                        	.sym	~~lastdiskInfo,~~lastdiskInfo,10,3,416,6
+                    5
+  2883                        	.sym	~~_mount_lock,~~_mount_lock,14,3,8
+  2884                        	.sym	~~sectorBuffer,~~sectorBuffer,110,3,0,51
+                    2
+  2885                        	.sym	~~buf,~~buf,110,3,0,64
+  2886                        	.sym	~~sd_card_dir_string,~~sd_card_dir_strin
+                    g,110,3,0,3
+  2887                        	.sym	P_CH376_CMD_DATA,0,139,14,32,121
+  2888                        	.sym	CH376_CMD_DATA,0,11,14,288,121
+  2889                        	.sym	P_SENSE_DATA,0,138,14,32,105
+  2890                        	.sym	SENSE_DATA,0,10,14,144,105
+  2891                        	.sym	P_INQUIRY_DATA,0,138,14,32,104
+  2892                        	.sym	INQUIRY_DATA,0,10,14,288,104
+  2893                        	.sym	P_BULK_ONLY_CBW,0,138,14,32,103
+  2894                        	.sym	BULK_ONLY_CBW,0,10,14,248,103
+  2895                        	.sym	P_FAT_DIR_INFO,0,138,14,32,102
+  2896                        	.sym	FAT_DIR_INFO,0,10,14,256,102
+  2897                        	.sym	PUINT8V,0,142,14,32
+  2898                        	.sym	UINT8V,0,14,14,8
+  2899                        	.sym	PUINT32,0,146,14,32
+  2900                        	.sym	PUINT16,0,143,14,32
+  2901                        	.sym	PUINT8,0,142,14,32
+  2902                        	.sym	UINT32,0,18,14,32
+  2903                        	.sym	UINT16,0,15,14,16
+  2904                        	.sym	UINT8,0,14,14,8
+  2905                        	.sym	PFXDOSDEVICE,0,138,14,32,101
+  2906                        	.sym	FXDOSDEVICE,0,10,14,5648,101
+  2907                        	.sym	DOSINITDEVICE,0,641,14,32
+  2908                        	.sym	DOSSECTORWRITER,0,654,14,32
+  2909                        	.sym	DOSSECTORREADER,0,654,14,32
+  2910                        	.sym	PIDENTIFY_DEVICE_DATA,0,138,14,32,100
+  2911                        	.sym	IDENTIFY_DEVICE_DATA,0,10,14,4096,100
+  2912                        	.sym	PIDSECTOR,0,138,14,32,77
+  2913                        	.sym	IDSECTOR,0,10,14,2048,77
+  2914                        	.sym	PLFN,0,138,14,32,76
+  2915                        	.sym	LFN,0,10,14,256,76
+  2916                        	.sym	PFAT16ENTRYLONG,0,138,14,32,75
+  2917                        	.sym	FAT16ENTRYLONG,0,10,14,288,75
+  2918                        	.sym	PFAT16ENTRY,0,138,14,32,74
+  2919                        	.sym	FAT16ENTRY,0,10,14,256,74
+  2920                        	.sym	Fat16BootSector,0,10,14,4096,73
+  2921                        	.sym	PPARTITIONTABLE,0,138,14,32,72
+  Thu Dec  3 2020 22:25                                                Page 58
+
+
+  2922                        	.sym	PARTITIONTABLE,0,10,14,128,72
+  2923                        	.sym	PFATBOOTSECTOR,0,138,14,32,71
+  2924                        	.sym	FATBOOTSECTOR,0,10,14,928,71
+  2925                        	.sym	fat_BS_t,0,10,14,688,70
+  2926                        	.sym	fat_extBS_16_t,0,10,14,192,69
+  2927                        	.sym	PFAT32EXT,0,138,14,32,68
+  2928                        	.sym	fat_extBS_32_t,0,10,14,416,68
+  2929                        	.sym	P_FX_FAT_DIR_INFO,0,138,14,32,67
+  2930                        	.sym	FX_FAT_DIR_INFO,0,10,14,256,67
+  2931                        	.sym	PFILEINFO,0,138,14,32,66
+  2932                        	.sym	FILEINFO,0,10,14,136,66
+  2933                        	.sym	PDISKINFO,0,138,14,32,65
+  2934                        	.sym	DISKINFO,0,10,14,416,65
+  2935                        	.sym	PDIRENTRY,0,138,14,32,64
+  2936                        	.sym	DIRENTRY,0,10,14,256,64
+  2937                        	.sym	PCOMMANDARGS,0,138,14,32,63
+  2938                        	.sym	COMMANDARGS,0,10,14,64,63
+  2939                        	.sym	PTOKENIZESTATE,0,133,14,32
+  2940                        	.sym	TOKENIZESTATE,0,5,14,16
+  2941                        	.sym	PTOKEN,0,138,14,32,62
+  2942                        	.sym	TOKEN,0,10,14,64,62
+  2943                        	.sym	PTOKENTYPE,0,133,14,32
+  2944                        	.sym	TOKENTYPE,0,5,14,16
+  2945                        	.sym	FXCommandHandler,0,656,14,32
+  2946                        	.sym	PCONSOLECTX,0,138,14,32,61
+  2947                        	.sym	CONSOLECTX,0,10,14,1144,61
+  2948                        	.sym	PSPINNERCTX,0,138,14,32,60
+  2949                        	.sym	SPINNERCTX,0,10,14,48,60
+  2950                        	.sym	PMOUSE_MSG_STATE,0,138,14,32,59
+  2951                        	.sym	MOUSE_MSG_STATE,0,10,14,184,59
+  2952                        	.sym	PFXEVENTPROCESS,0,138,14,32,58
+  2953                        	.sym	FXEVENTPROCESS,0,10,14,64,58
+  2954                        	.sym	FXEventProc,0,641,14,32
+  2955                        	.sym	PMOUSEMSGDATA,0,138,14,32,57
+  2956                        	.sym	MOUSEMSGDATA,0,10,14,64,57
+  2957                        	.sym	MSGIRQ,0,5,14,16
+  2958                        	.sym	MAINLOOPARGS,0,10,14,16,56
+  2959                        	.sym	PEACHCHILD_MSG,0,138,14,32,55
+  2960                        	.sym	EACHCHILD_MSG,0,10,14,64,55
+  2961                        	.sym	PCUR_PALETTE_MAP,0,138,14,32,54
+  2962                        	.sym	CUR_PALETTE_MAP,0,10,14,400,54
+  2963                        	.sym	PCLICKDETECTED,0,138,14,32,53
+  2964                        	.sym	CLICKDETECTED,0,10,14,64,53
+  2965                        	.sym	OBJECTCLICKED,0,641,14,32
+  2966                        	.sym	MemoryCallback,0,641,14,32
+  2967                        	.sym	PFXMEMORYMAP,0,138,14,32,52
+  2968                        	.sym	FXMEMORYMAP,0,10,14,2072,52
+  2969                        	.sym	UMM_HEAP_INFO,0,10,14,256,51
+  2970                        	.sym	PFXSTRING,0,138,14,32,50
+  2971                        	.sym	FXSTRING,0,10,14,64,50
+  2972                        	.sym	DEVICEDRIVER_COMMAND,0,656,14,32
+  2973                        	.sym	DEVICEDRIVER_UNLOAD,0,654,14,32
+  2974                        	.sym	DEVICEDRIVER_WRITE,0,656,14,32
+  2975                        	.sym	DEVICEDRIVER_READ,0,656,14,32
+  2976                        	.sym	DEVICEDRIVER_LOAD,0,654,14,32
+  2977                        	.sym	PFX_BLOCK_DEVICE_DRIVER,0,138,14,32,49
+  2978                        	.sym	FX_BLOCK_DEVICE_DRIVER,0,10,14,1448,49
+  2979                        	.sym	PFX_DEVICE_DRIVER,0,138,14,32,48
+  Thu Dec  3 2020 22:25                                                Page 59
+
+
+  2980                        	.sym	FX_DEVICE_DRIVER,0,10,14,1416,48
+  2981                        	.sym	PDEBUGBYTEBITS,0,138,14,32,47
+  2982                        	.sym	DEBUGBYTEBITS,0,10,14,8,47
+  2983                        	.sym	PFXENVIRONMENT,0,138,14,32,46
+  2984                        	.sym	FXENVIRONMENT,0,10,14,96,46
+  2985                        	.sym	PFXZERPOPAGE,0,138,14,32,45
+  2986                        	.sym	FXZERPOPAGE,0,10,14,448,45
+  2987                        	.sym	KERNELTRAPCALL,0,641,14,32
+  2988                        	.sym	FOREACHNODEUNTIL,0,654,14,32
+  2989                        	.sym	FOREACHNODE,0,641,14,32
+  2990                        	.sym	PFXCOMBUFFER,0,138,14,32,44
+  2991                        	.sym	FXCOMBUFFER,0,10,14,2080,44
+  2992                        	.sym	PSUBMENULIST,0,138,14,32,43
+  2993                        	.sym	SUBMENULIST,0,10,14,40,43
+  2994                        	.sym	HSUBMENU,0,7,14,32
+  2995                        	.sym	PSUBMENU,0,138,14,32,42
+  2996                        	.sym	SUBMENU,0,10,14,64,42
+  2997                        	.sym	MenuAction,0,641,14,32
+  2998                        	.sym	PMENUANCHOR,0,138,14,32,41
+  2999                        	.sym	MENUANCHOR,0,10,14,144,41
+  3000                        	.sym	PTEXTBOX,0,138,14,32,40
+  3001                        	.sym	TEXTBOX,0,10,14,144,40
+  3002                        	.sym	PLISTBOX,0,138,14,32,39
+  3003                        	.sym	LISTBOX,0,10,14,240,39
+  3004                        	.sym	PSCROLLBAR,0,138,14,32,38
+  3005                        	.sym	SCROLLBAR,0,10,14,192,38
+  3006                        	.sym	PBUTTON,0,138,14,32,37
+  3007                        	.sym	BUTTON,0,10,14,80,37
+  3008                        	.sym	PMENUDROPDOWNDATA,0,138,14,32,36
+  3009                        	.sym	MENUDROPDOWNDATA,0,10,14,3568,36
+  3010                        	.sym	PMENUTAG,0,138,14,32,35
+  3011                        	.sym	MENUTAG,0,10,14,112,35
+  3012                        	.sym	PMENU,0,138,14,32,34
+  3013                        	.sym	MENU,0,10,14,248,34
+  3014                        	.sym	HMENURESOURCE,0,129,14,32
+  3015                        	.sym	HTEXTBOX,0,7,14,32
+  3016                        	.sym	PTEXTBOXX,0,138,14,32,33
+  3017                        	.sym	TEXTBOXX,0,10,14,112,33
+  3018                        	.sym	FONTMETRIC,0,10,14,32,32
+  3019                        	.sym	TITLE,0,142,14,32
+  3020                        	.sym	PHANDLE,0,1153,14,32
+  3021                        	.sym	HANDLE,0,129,14,32
+  3022                        	.sym	PWINDOWEX,0,138,14,32,31
+  3023                        	.sym	WINDOWEX,0,10,14,2704,31
+  3024                        	.sym	PWINDOW,0,138,14,32,30
+  3025                        	.sym	WINDOW,0,10,14,2808,30
+  3026                        	.sym	PDRAGDATA,0,138,14,32,29
+  3027                        	.sym	DRAGDATA,0,10,14,136,29
+  3028                        	.sym	PNCCLICKABLE,0,138,14,32,28
+  3029                        	.sym	NCCLICKABLE,0,10,14,88,28
+  3030                        	.sym	HCLICKABLE,0,7,14,32
+  3031                        	.sym	PCLICKABLE,0,138,14,32,27
+  3032                        	.sym	CLICKABLE,0,10,14,88,27
+  3033                        	.sym	PWNDCLASS,0,138,14,32,26
+  3034                        	.sym	WNDCLASS,0,10,14,256,26
+  3035                        	.sym	HBRUSH,0,129,14,32
+  3036                        	.sym	HCURSOR,0,129,14,32
+  3037                        	.sym	HICON,0,129,14,32
+  Thu Dec  3 2020 22:25                                                Page 60
+
+
+  3038                        	.sym	HINSTANCE,0,129,14,32
+  3039                        	.sym	FXWndProc,0,654,14,32
+  3040                        	.sym	PRECT,0,138,14,32,25
+  3041                        	.sym	RECT,0,10,14,64,25
+  3042                        	.sym	PPOINT,0,138,14,32,24
+  3043                        	.sym	POINT,0,10,14,32,24
+  3044                        	.sym	PFXPROPERTY,0,138,14,32,22
+  3045                        	.sym	FXPROPERTY,0,10,14,384,22
+  3046                        	.sym	SCANCODE,0,14,14,8
+  3047                        	.sym	KEYCODE,0,14,14,8
+  3048                        	.sym	PFXPROCESSMESSAGE,0,138,14,32,21
+  3049                        	.sym	FXPROCESSMESSAGE,0,10,14,112,21
+  3050                        	.sym	PFXPROCESS,0,138,14,32,20
+  3051                        	.sym	FXPROCESS,0,10,14,800,20
+  3052                        	.sym	PDESKTOP_CONTROL,0,138,14,32,19
+  3053                        	.sym	DESKTOP_CONTROL,0,10,14,392,19
+  3054                        	.sym	PCONSOLE_CONTROL,0,138,14,32,18
+  3055                        	.sym	CONSOLE_CONTROL,0,10,14,448,18
+  3056                        	.sym	FXProcessProc,0,641,14,32
+  3057                        	.sym	PFXCMDMESSAGE,0,138,14,32,17
+  3058                        	.sym	FXCMDMESSAGE,0,10,14,304,17
+  3059                        	.sym	PFXOSMESSAGE,0,138,14,32,16
+  3060                        	.sym	FXOSMESSAGE,0,10,14,304,16
+  3061                        	.sym	PINT_REGS,0,138,14,32,15
+  3062                        	.sym	INT_REGS,0,10,14,104,15
+  3063                        	.sym	TASK_STACK,0,10,14,32,14
+  3064                        	.sym	TASK,0,10,14,48,13
+  3065                        	.sym	PIRQDATA,0,138,14,32,12
+  3066                        	.sym	IRQDATA,0,10,14,48,12
+  3067                        	.sym	HMENU,0,129,14,32
+  3068                        	.sym	HWND,0,129,14,32
+  3069                        	.sym	MSGDATA,0,14,14,8
+  3070                        	.sym	MSGDEST,0,18,14,32
+  3071                        	.sym	MSGSRC,0,18,14,32
+  3072                        	.sym	MSGTYPE,0,16,14,16
+  3073                        	.sym	PROCESS_RESOURCE_LIST,0,138,14,32,6
+  3074                        	.sym	PROCESS_TLS_LIST,0,138,14,32,6
+  3075                        	.sym	SEMAPHORE_LIST,0,138,14,32,6
+  3076                        	.sym	FILE_BLOCK_LIST,0,138,14,32,6
+  3077                        	.sym	FILE_PATH_LIST,0,138,14,32,6
+  3078                        	.sym	PROCEDURE_LIST,0,138,14,32,6
+  3079                        	.sym	FILE_HANDLE,0,138,14,32,11
+  3080                        	.sym	FILE_BLOCK,0,10,14,552,11
+  3081                        	.sym	SEMAPHORE,0,10,14,16,10
+  3082                        	.sym	PPROCESS_SIGNAL,0,138,14,32,9
+  3083                        	.sym	PROCESS_SIGNAL,0,10,14,16,9
+  3084                        	.sym	KRESULT,0,18,14,32
+  3085                        	.sym	PKERNEL_ERROR,0,138,14,32,8
+  3086                        	.sym	KERNEL_ERROR,0,10,14,32,8
+  3087                        	.sym	PROCESS_STATUS,0,16,14,16
+  3088                        	.sym	FILE_PATH_NAME,0,142,14,32
+  3089                        	.sym	PROCESS_RESOURCE,0,129,14,32
+  3090                        	.sym	PROCESS_TLS,0,129,14,32
+  3091                        	.sym	PROCESS_CTX,0,129,14,32
+  3092                        	.sym	USERID,0,16,14,16
+  3093                        	.sym	PROCESS_ID,0,18,14,32
+  3094                        	.sym	PROCESS_BANK,0,14,14,8
+  3095                        	.sym	PFXQUEUE,0,138,14,32,7
+  Thu Dec  3 2020 22:25                                                Page 61
+
+
+  3096                        	.sym	FXQUEUE,0,10,14,80,7
+  3097                        	.sym	PFXNODELIST,0,138,14,32,6
+  3098                        	.sym	FXNODELIST,0,10,14,96,6
+  3099                        	.sym	NodeListDeallocator,0,641,14,32
+  3100                        	.sym	PFXNODE,0,138,14,32,5
+  3101                        	.sym	FXNODE,0,10,14,384,5
+  3102                        	.sym	PBYTEBITS,0,138,14,32,4
+  3103                        	.sym	BYTEBITS,0,10,14,8,4
+  3104                        	.sym	HCOLOR,0,129,14,32
+  3105                        	.sym	HFONT,0,129,14,32
+  3106                        	.sym	HDC,0,129,14,32
+  3107                        	.sym	HPOINTER,0,129,14,32
+  3108                        	.sym	uint32_t,0,18,14,32
+  3109                        	.sym	uint8_t,0,14,14,8
+  3110                        	.sym	PFAR,0,142,14,32
+  3111                        	.sym	LPBOOL,0,142,14,32
+  3112                        	.sym	BOOL,0,14,14,8
+  3113                        	.sym	DWORD,0,18,14,32
+  3114                        	.sym	ULONG,0,18,14,32
+  3115                        	.sym	LPLONG,0,135,14,32
+  3116                        	.sym	LONG,0,7,14,32
+  3117                        	.sym	PUINT,0,144,14,32
+  3118                        	.sym	USHORT,0,16,14,16
+  3119                        	.sym	UINT,0,16,14,16
+  3120                        	.sym	INT,0,5,14,16
+  3121                        	.sym	WORD,0,5,14,16
+  3122                        	.sym	PBYTE,0,142,14,32
+  3123                        	.sym	BYTE,0,14,14,8
+  3124                        	.sym	UCHAR,0,14,14,8
+  3125                        	.sym	LPWCSTR,0,142,14,32
+  3126                        	.sym	LPCSTR,0,142,14,32
+  3127                        	.sym	LPSTR,0,142,14,32
+  3128                        	.sym	LPCHAR,0,142,14,32
+  3129                        	.sym	CHAR,0,14,14,8
+  3130                        	.sym	LPVOID,0,129,14,32
+  3131                        	.sym	VOID,0,1,14,32
+  3132                        	.sym	Boolean_T,0,5,14,16
+  3133                        	.sym	ldiv_t,0,10,14,64,2
+  3134                        	.sym	div_t,0,10,14,32,1
+  3135                        	.sym	wctype_t,0,16,14,16
+  3136                        	.sym	wint_t,0,16,14,16
+  3137                        	.sym	wchar_t,0,14,14,8
+  3138                        	.sym	ptrdiff_t,0,7,14,32
+  3139                        	.sym	size_t,0,16,14,16
+  3140                        	end
+
+
+      Lines assembled: 3140
+      Errors: 0

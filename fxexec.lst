@@ -1,0 +1,4017 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",0
+     7                        ;
+     8                        ;#include "fxkernel.h"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+    11                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    12                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    13                        	.line	88
+    14                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    15                        	.stag	fake1_,32,1
+    16                        	.member	quot,0,5,8,16
+    17                        	.member	rem,16,5,8,16
+    18                        	.eos
+    19                        	.stag	fake2_,64,2
+    20                        	.member	quot,0,7,8,32
+    21                        	.member	rem,32,7,8,32
+    22                        	.eos
+    23                        	.stag	int_sqrt,32,3
+    24                        	.member	sqrt,0,16,8,16
+    25                        	.member	frac,16,16,8,16
+    26                        	.eos
+    27                        	.line	205
+    28                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",4
+    29                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    30                        	.line	134
+    31                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",5
+    32                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    33                        	.line	103
+    34                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",6
+    35                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+    36                        	.stag	_fx_bytebits,8,4
+    37                        	.member	b7,0,14,17,1
+    38                        	.member	b6,1,14,17,1
+    39                        	.member	b5,2,14,17,1
+    40                        	.member	b4,3,14,17,1
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    41                        	.member	b3,4,14,17,1
+    42                        	.member	b2,5,14,17,1
+    43                        	.member	b1,6,14,17,1
+    44                        	.member	b0,7,14,17,1
+    45                        	.eos
+    46                        	.stag	_fx_node,384,5
+    47                        	.member	type,0,14,8,8
+    48                        	.member	Reserved0,8,14,8,8
+    49                        	.member	data,16,129,8,32
+    50                        	.member	last,48,138,8,32,5
+    51                        	.member	next,80,138,8,32,5
+    52                        	.member	name,112,110,8,0,32
+    53                        	.member	Reserved1,368,16,8,16
+    54                        	.eos
+    55                        	.stag	_fx_nodelist,96,6
+    56                        	.member	listhead,0,138,8,32,5
+    57                        	.member	listData,32,129,8,32
+    58                        	.member	deallocator,64,641,8,32
+    59                        	.eos
+    60                        	.stag	_fx_queue,80,7
+    61                        	.member	count,0,5,8,16
+    62                        	.member	front,16,138,8,32,5
+    63                        	.member	rear,48,138,8,32,5
+    64                        	.eos
+    65                        	.stag	fake8_,32,8
+    66                        	.member	subsystem,0,14,8,8
+    67                        	.member	level,8,14,8,8
+    68                        	.member	error,16,16,8,16
+    69                        	.eos
+    70                        	.stag	_fx_process_signal,16,9
+    71                        	.member	cbSize,0,16,8,16
+    72                        	.eos
+    73                        	.stag	_fx_semaphore,16,10
+    74                        	.member	reserved,0,5,8,16
+    75                        	.eos
+    76                        	.stag	_fx_fileBlock,552,11
+    77                        	.member	openCount,0,16,8,16
+    78                        	.member	lockCount,16,16,8,16
+    79                        	.member	dirty,32,14,8,8
+    80                        	.member	fileBuffer,40,110,8,0,64
+    81                        	.eos
+    82                        	.stag	_fx_irq_data,48,12
+    83                        	.member	line,0,5,8,16
+    84                        	.member	keycode,16,142,8,32
+    85                        	.eos
+    86                        	.stag	_task,48,13
+    87                        	.member	SPL,0,14,8,8
+    88                        	.member	SPH,8,14,8,8
+    89                        	.member	pstack,16,142,8,32
+    90                        	.eos
+    91                        	.stag	_task_stack,32,14
+    92                        	.member	SS,0,142,8,32
+    93                        	.eos
+    94                        	.stag	int_regs,104,15
+    95                        	.member	PB,0,14,8,8
+    96                        	.member	PH,8,14,8,8
+    97                        	.member	PL,16,14,8,8
+    98                        	.member	PP,24,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+    99                        	.member	DB,32,14,8,8
+   100                        	.member	DH,40,14,8,8
+   101                        	.member	DL,48,14,8,8
+   102                        	.member	AH,56,14,8,8
+   103                        	.member	AL,64,14,8,8
+   104                        	.member	XH,72,14,8,8
+   105                        	.member	XL,80,14,8,8
+   106                        	.member	YH,88,14,8,8
+   107                        	.member	YL,96,14,8,8
+   108                        	.eos
+   109                        	.stag	_fx_eventMessage,304,16
+   110                        	.member	src,0,18,8,32
+   111                        	.member	dest,32,18,8,32
+   112                        	.member	type,64,16,8,16
+   113                        	.member	hwnd,80,129,8,32
+   114                        	.member	pheap,112,129,8,32
+   115                        	.member	msgTime,144,18,8,32
+   116                        	.member	data,176,110,8,0,16
+   117                        	.eos
+   118                        	.stag	_fx_cmdMessage,304,17
+   119                        	.member	src,0,18,8,32
+   120                        	.member	dest,32,18,8,32
+   121                        	.member	type,64,16,8,16
+   122                        	.member	hwnd,80,129,8,32
+   123                        	.member	pheap,112,129,8,32
+   124                        	.member	msgTime,144,18,8,32
+   125                        	.member	cmdCId,176,16,8,16
+   126                        	.member	cmdMId,192,16,8,16
+   127                        	.member	parameter1,208,18,8,32
+   128                        	.member	parameter2,240,18,8,32
+   129                        	.member	parameter3,272,18,8,32
+   130                        	.eos
+   131                        	.stag	_fx_console_ctl,448,18
+   132                        	.member	maxCols,0,5,8,16
+   133                        	.member	maxRows,16,5,8,16
+   134                        	.member	curX,32,5,8,16
+   135                        	.member	curY,48,5,8,16
+   136                        	.member	fgColor,64,5,8,16
+   137                        	.member	bgColor,80,5,8,16
+   138                        	.member	mode,96,14,8,8
+   139                        	.member	kbBuffer,104,101,8,0,16
+   140                        	.member	screenBuffer,360,142,8,32
+   141                        	.member	desktopMode,392,14,8,8
+   142                        	.member	lastMouseButton,400,5,8,16
+   143                        	.member	lastMouseX,416,5,8,16
+   144                        	.member	lastMouseY,432,5,8,16
+   145                        	.eos
+   146                        	.stag	_fx_desktop_ctl,392,19
+   147                        	.member	desktopMode,0,14,8,8
+   148                        	.member	cursorCtl,8,5,8,16
+   149                        	.member	cursorState,24,5,8,16
+   150                        	.member	backgroundColor,40,5,8,16
+   151                        	.member	foregroundColor,56,5,8,16
+   152                        	.member	menuMode,72,5,8,16
+   153                        	.member	lastMouseButton,88,5,8,16
+   154                        	.member	lastMouseX,104,5,8,16
+   155                        	.member	lastMouseY,120,5,8,16
+   156                        	.member	currentDiskName,136,142,8,32
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   157                        	.member	diskNodes,168,129,8,32
+   158                        	.member	titleNodes,200,129,8,32
+   159                        	.member	menuNodes,232,129,8,32
+   160                        	.member	iconNodes,264,129,8,32
+   161                        	.member	windowNodes,296,129,8,32
+   162                        	.member	fontNodes,328,129,8,32
+   163                        	.member	wndProc,360,138,8,32,6
+   164                        	.eos
+   165                        	.stag	_fx_process,800,20
+   166                        	.member	cbSize,0,5,8,16
+   167                        	.member	procId,16,18,8,32
+   168                        	.member	parentId,48,18,8,32
+   169                        	.member	ctx,80,129,8,32
+   170                        	.member	userId,112,16,8,16
+   171                        	.member	status,128,16,8,16
+   172                        	.member	foregroundActive,144,14,8,8
+   173                        	.member	tls,152,1121,8,32,8
+   174                        	.member	commandLine,408,142,8,32
+   175                        	.member	semaphores,440,138,8,32,6
+   176                        	.member	fileHandles,472,138,8,32,6
+   177                        	.member	pathList,504,138,8,32,6
+   178                        	.member	resources,536,138,8,32,6
+   179                        	.member	timerAware,568,14,8,8
+   180                        	.member	timerTicks,576,112,8,0,2
+   181                        	.member	timerTickCount,608,112,8,0,2
+   182                        	.member	kernelError,640,10,8,32,8
+   183                        	.member	consoleCtl,672,138,8,32,18
+   184                        	.member	desktopCtl,704,138,8,32,19
+   185                        	.member	execProc,736,641,8,32
+   186                        	.member	startupArgs,768,129,8,32
+   187                        	.eos
+   188                        	.stag	_fxProcessMessage,112,21
+   189                        	.member	src,0,18,8,32
+   190                        	.member	dest,32,18,8,32
+   191                        	.member	type,64,16,8,16
+   192                        	.member	processInfo,80,138,8,32,20
+   193                        	.eos
+   194                        	.stag	_fx_property,384,22
+   195                        	.member	name,0,110,8,0,16
+   196                        	.member	value,128,110,8,0,32
+   197                        	.eos
+   198                        	.utag	_24bitPointer,32,23
+   199                        	.member	address,0,142,11,32
+   200                        	.member	bytes,0,110,11,0,4
+   201                        	.eos
+   202                        	.stag	_PointStruct,32,24
+   203                        	.member	x,0,5,8,16
+   204                        	.member	y,16,5,8,16
+   205                        	.eos
+   206                        	.stag	_RectStruct,64,25
+   207                        	.member	x,0,5,8,16
+   208                        	.member	y,16,5,8,16
+   209                        	.member	width,32,5,8,16
+   210                        	.member	height,48,5,8,16
+   211                        	.eos
+   212                        	.stag	_k_WindowClass,256,26
+   213                        	.member	cbSize,0,16,8,16
+   214                        	.member	style,16,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   215                        	.member	pWndProc,32,654,8,32
+   216                        	.member	hInstance,64,129,8,32
+   217                        	.member	hIcon,96,129,8,32
+   218                        	.member	hCursor,128,129,8,32
+   219                        	.member	hbrBackground,160,129,8,32
+   220                        	.member	lpszMenuName,192,142,8,32
+   221                        	.member	lpszClassName,224,142,8,32
+   222                        	.eos
+   223                        	.stag	_ClickableRect,88,27
+   224                        	.member	area,0,10,8,64,25
+   225                        	.member	z,64,5,8,16
+   226                        	.member	enabled,80,14,8,8
+   227                        	.eos
+   228                        	.stag	_NCClickableRect,88,28
+   229                        	.member	area,0,10,8,64,25
+   230                        	.member	msgType,64,16,8,16
+   231                        	.member	enabled,80,14,8,8
+   232                        	.eos
+   233                        	.stag	_DragData,136,29
+   234                        	.member	area,0,10,8,64,25
+   235                        	.member	xoffset,64,5,8,16
+   236                        	.member	yoffset,80,5,8,16
+   237                        	.member	msgType,96,16,8,16
+   238                        	.member	isDrag,112,14,8,8
+   239                        	.member	canDrag,120,14,8,8
+   240                        	.member	canDrop,128,14,8,8
+   241                        	.eos
+   242                        	.stag	_k_WindowStruct,2808,30
+   243                        	.member	cbSize,0,16,8,16
+   244                        	.member	style,16,18,8,32
+   245                        	.member	win_id,48,5,8,16
+   246                        	.member	win_x,64,5,8,16
+   247                        	.member	win_y,80,5,8,16
+   248                        	.member	win_width,96,5,8,16
+   249                        	.member	win_height,112,5,8,16
+   250                        	.member	wndRect,128,10,8,64,25
+   251                        	.member	clientRect,192,10,8,64,25
+   252                        	.member	nonclientGadgets,256,106,8,0,28,16
+   253                        	.member	clickable,1664,129,8,32
+   254                        	.member	win_title,1696,110,8,0,32
+   255                        	.member	Reserved0,1952,16,8,16
+   256                        	.member	win_class,1968,110,8,0,16
+   257                        	.member	win_class_name,2096,110,8,0,32
+   258                        	.member	nBitmapLayer,2352,16,8,16
+   259                        	.member	procid,2368,18,8,32
+   260                        	.member	pWndClass,2400,138,8,32,26
+   261                        	.member	pParentWindow,2432,129,8,32
+   262                        	.member	hMenu,2464,129,8,32
+   263                        	.member	pChildWindows,2496,138,8,32,6
+   264                        	.member	pChildHitList,2528,138,8,32,6
+   265                        	.member	isVisible,2560,14,8,8
+   266                        	.member	windowData,2568,129,8,32
+   267                        	.member	clientData,2600,1121,8,32,6
+   268                        	.member	isClosed,2792,14,8,8
+   269                        	.member	isClosing,2800,14,8,8
+   270                        	.eos
+   271                        	.stag	_k_WindowStructEx,2704,31
+   272                        	.member	cbSize,0,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   273                        	.member	style,16,18,8,32
+   274                        	.member	win_id,48,5,8,16
+   275                        	.member	win_x,64,5,8,16
+   276                        	.member	win_y,80,5,8,16
+   277                        	.member	win_width,96,5,8,16
+   278                        	.member	win_height,112,5,8,16
+   279                        	.member	wndRect,128,10,8,64,25
+   280                        	.member	clientRect,192,10,8,64,25
+   281                        	.member	nonclientGadgets,256,106,8,0,28,16
+   282                        	.member	clickable,1664,129,8,32
+   283                        	.member	win_title,1696,110,8,0,32
+   284                        	.member	Reserved0,1952,16,8,16
+   285                        	.member	win_class,1968,110,8,0,16
+   286                        	.member	nBitmapLayer,2096,16,8,16
+   287                        	.member	procid,2112,18,8,32
+   288                        	.member	pWndClass,2144,138,8,32,26
+   289                        	.member	pParentWindow,2176,129,8,32
+   290                        	.member	hMenu,2208,129,8,32
+   291                        	.member	pChildWindows,2240,138,8,32,6
+   292                        	.member	pChildHitList,2272,138,8,32,6
+   293                        	.member	isVisible,2304,14,8,8
+   294                        	.member	windowData,2312,129,8,32
+   295                        	.member	clientData,2344,1121,8,32,4
+   296                        	.member	isClosed,2472,14,8,8
+   297                        	.member	hWnd,2480,129,8,32
+   298                        	.member	localRect,2512,10,8,64,25
+   299                        	.member	globalRect,2576,10,8,64,25
+   300                        	.member	clientOffsetRect,2640,10,8,64,25
+   301                        	.eos
+   302                        	.stag	_FontMetric,32,32
+   303                        	.member	width,0,5,8,16
+   304                        	.member	height,16,5,8,16
+   305                        	.eos
+   306                        	.stag	_ctl_Textbox,112,33
+   307                        	.member	win_id,0,5,8,16
+   308                        	.member	win_x,16,5,8,16
+   309                        	.member	win_y,32,5,8,16
+   310                        	.member	win_width,48,5,8,16
+   311                        	.member	win_height,64,5,8,16
+   312                        	.member	content,80,1166,8,32
+   313                        	.eos
+   314                        	.stag	_MenuStruct,248,34
+   315                        	.member	cx,0,5,8,16
+   316                        	.member	cy,16,5,8,16
+   317                        	.member	width,32,5,8,16
+   318                        	.member	height,48,5,8,16
+   319                        	.member	fcolor,64,14,8,8
+   320                        	.member	bcolor,72,14,8,8
+   321                        	.member	chromeLeft,80,14,8,8
+   322                        	.member	chromeRight1,88,14,8,8
+   323                        	.member	chromeRight2,96,14,8,8
+   324                        	.member	itemId,104,16,8,16
+   325                        	.member	pCaption,120,142,8,32
+   326                        	.member	subMenus,152,138,8,32,6
+   327                        	.member	pBackground,184,129,8,32
+   328                        	.member	hWndOwner,216,129,8,32
+   329                        	.eos
+   330                        	.stag	fake35_,112,35
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   331                        	.member	menuId,0,16,8,16
+   332                        	.member	caption,16,142,8,32
+   333                        	.member	rect,48,10,8,64,25
+   334                        	.eos
+   335                        	.stag	fake36_,3568,36
+   336                        	.member	pParent,0,138,8,32,30
+   337                        	.member	rect,32,10,8,64,25
+   338                        	.member	captions,96,1134,8,32,24
+   339                        	.member	chrome,864,110,8,0,24
+   340                        	.member	ids,1056,112,8,0,24
+   341                        	.member	clickable,1440,106,8,0,27,24
+   342                        	.member	selected,3552,16,8,16
+   343                        	.eos
+   344                        	.stag	_fx_button_t,80,37
+   345                        	.member	pCaption,0,142,8,32
+   346                        	.member	data,32,129,8,32
+   347                        	.member	captionPixelWidth,64,16,8,16
+   348                        	.eos
+   349                        	.stag	_fx_scrollbar_t,192,38
+   350                        	.member	min,0,16,8,16
+   351                        	.member	max,16,16,8,16
+   352                        	.member	increment,32,16,8,16
+   353                        	.member	stopsize,48,16,8,16
+   354                        	.member	location,64,5,8,16
+   355                        	.member	state,80,5,8,16
+   356                        	.member	rectThumb,96,10,8,64,25
+   357                        	.member	data,160,129,8,32
+   358                        	.eos
+   359                        	.stag	_fx_listbox_t,240,39
+   360                        	.member	pos,0,5,8,16
+   361                        	.member	selected,16,16,8,16
+   362                        	.member	offsetX,32,5,8,16
+   363                        	.member	offsetY,48,5,8,16
+   364                        	.member	inc,64,5,8,16
+   365                        	.member	direction,80,5,8,16
+   366                        	.member	top,96,5,8,16
+   367                        	.member	bottom,112,5,8,16
+   368                        	.member	indexTop,128,5,8,16
+   369                        	.member	indexBottom,144,5,8,16
+   370                        	.member	maxItems,160,16,8,16
+   371                        	.member	fontSet,176,142,8,32
+   372                        	.member	data,208,129,8,32
+   373                        	.eos
+   374                        	.stag	_fx_textbox_t,144,40
+   375                        	.member	pos,0,5,8,16
+   376                        	.member	selected,16,16,8,16
+   377                        	.member	offsetX,32,5,8,16
+   378                        	.member	offsetY,48,5,8,16
+   379                        	.member	isShifted,64,14,8,8
+   380                        	.member	cursorState,72,14,8,8
+   381                        	.member	fontSet,80,142,8,32
+   382                        	.member	data,112,129,8,32
+   383                        	.eos
+   384                        	.stag	_fx_menuAnchor_t,144,41
+   385                        	.member	pCaption,0,142,8,32
+   386                        	.member	renderLayoutX,32,16,8,16
+   387                        	.member	renderLayoutY,48,16,8,16
+   388                        	.member	captionPixelWidth,64,16,8,16
+  Thu Dec  3 2020 22:25                                                Page 8
+
+
+   389                        	.member	data,80,129,8,32
+   390                        	.member	droppedWindow,112,138,8,32,30
+   391                        	.eos
+   392                        	.stag	_SubMenuStruct,64,42
+   393                        	.member	caption,0,142,8,32
+   394                        	.member	action,32,641,8,32
+   395                        	.eos
+   396                        	.stag	_SubMenuListStruct,40,43
+   397                        	.member	cMenus,0,14,8,8
+   398                        	.member	psubmenus,8,9354,8,32,42
+   399                        	.eos
+   400                        	.stag	_fx_ComBuffer,2080,44
+   401                        	.member	cbSize,0,16,8,16
+   402                        	.member	cbBuffer,16,16,8,16
+   403                        	.member	buffer,32,110,8,0,256
+   404                        	.eos
+   405                        	.line	708
+   406                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",8
+   407                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstringtable.h",0
+   408                        	.line	89
+   409                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",9
+   410                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   411                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   412                        	.line	708
+   413                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",5
+   414                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",0
+   415                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   416                        	.line	708
+   417                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",11
+   418                        	.line	72
+   419                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",6
+   420                        	.line	1325
+   421                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",13
+   422                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+   423                        	.line	270
+   424                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",19
+   425                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   426                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   427                        	.line	134
+   428                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",5
+   429                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+  Thu Dec  3 2020 22:25                                                Page 9
+
+
+   430                        	.line	205
+   431                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",6
+   432                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   433                        	.line	708
+   434                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",7
+   435                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   436                        	.line	1325
+   437                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",10
+   438                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   439                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   440                        	.line	205
+   441                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",5
+   442                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   443                        	.line	134
+   444                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",6
+   445                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   446                        	.line	708
+   447                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",7
+   448                        	.stag	_fx_string,64,45
+   449                        	.member	size,0,16,8,16
+   450                        	.member	pos,16,5,8,16
+   451                        	.member	buffer,32,142,8,32
+   452                        	.eos
+   453                        	.line	71
+   454                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",15
+   455                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   456                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   457                        	.line	25
+   458                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",5
+   459                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",0
+   460                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   461                        	.line	708
+   462                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",5
+   463                        	.line	52
+   464                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",6
+   465                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   466                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Thu Dec  3 2020 22:25                                                Page 10
+
+
+                    space\FXOSv1\src\fxtypes.h",0
+   467                        	.line	708
+   468                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",5
+   469                        	.line	61
+   470                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",7
+   471                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   472                        	.line	171
+   473                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",8
+   474                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",0
+   475                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   476                        	.line	708
+   477                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",5
+   478                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   479                        	.line	25
+   480                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",6
+   481                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   482                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   483                        	.line	25
+   484                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",5
+   485                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",0
+   486                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_build_parameters.h",0
+   487                        	.line	32
+   488                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",8
+   489                        	.stag	UMM_HEAP_INFO_t,256,46
+   490                        	.member	totalEntries,0,18,8,32
+   491                        	.member	usedEntries,32,18,8,32
+   492                        	.member	freeEntries,64,18,8,32
+   493                        	.member	totalBlocks,96,18,8,32
+   494                        	.member	usedBlocks,128,18,8,32
+   495                        	.member	freeBlocks,160,18,8,32
+   496                        	.member	maxFreeContiguousBlocks,192,18,8,32
+   497                        	.member	blockSize,224,18,8,32
+   498                        	.eos
+   499                        	.line	199
+   500                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",6
+   501                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",0
+   502                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   503                        	.line	708
+   504                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",11
+  Thu Dec  3 2020 22:25                                                Page 11
+
+
+   505                        	.line	24
+   506                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",7
+   507                        	.stag	_fx_memory_map,2072,47
+   508                        	.member	availableMemory,0,18,8,32
+   509                        	.member	valid_segments,32,110,8,0,255
+   510                        	.eos
+   511                        	.line	39
+   512                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",7
+   513                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   514                        	.line	743
+   515                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",8
+   516                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   517                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",0
+   518                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   519                        	.line	708
+   520                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",6
+   521                        	.line	64
+   522                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",4
+   523                        	.stag	_click_detected,64,48
+   524                        	.member	window,0,138,8,32,30
+   525                        	.member	handler,32,641,8,32
+   526                        	.eos
+   527                        	.stag	_current_palette_map,400,49
+   528                        	.member	CUR_DESKTOP,0,5,8,16
+   529                        	.member	CUR_BACKGROUND,16,5,8,16
+   530                        	.member	CUR_FONT,32,5,8,16
+   531                        	.member	CUR_SELECTED_FONT,48,5,8,16
+   532                        	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+   533                        	.member	CUR_WINDOWFRAME,80,5,8,16
+   534                        	.member	CUR_WINDOWBORDER,96,5,8,16
+   535                        	.member	CUR_WINDOWSHADOW,112,5,8,16
+   536                        	.member	CUR_MENU,128,5,8,16
+   537                        	.member	CUR_GADGET,144,5,8,16
+   538                        	.member	CUR_COLOR,160,101,8,0,15
+   539                        	.eos
+   540                        	.line	264
+   541                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",9
+   542                        	.stag	_childMessage_t,64,50
+   543                        	.member	msgType,0,16,8,16
+   544                        	.member	msgData,16,129,8,32
+   545                        	.member	dataSize,48,16,8,16
+   546                        	.eos
+   547                        	.line	362
+   548                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",9
+   549                        	.stag	_fx_main_loopvars,16,51
+   550                        	.member	dummy,0,5,8,16
+   551                        	.eos
+  Thu Dec  3 2020 22:25                                                Page 12
+
+
+   552                        	.stag	_fxMouseMessageData,64,52
+   553                        	.member	button1,0,14,8,8
+   554                        	.member	button2,8,14,8,8
+   555                        	.member	button3,16,14,8,8
+   556                        	.member	button4,24,14,8,8
+   557                        	.member	x,32,16,8,16
+   558                        	.member	y,48,16,8,16
+   559                        	.eos
+   560                        	.stag	_fx_eventProcess,64,53
+   561                        	.member	process,0,138,8,32,20
+   562                        	.member	eventProc,32,641,8,32
+   563                        	.eos
+   564                        	.stag	_mouse_msg_state,184,54
+   565                        	.member	lastEvent,0,18,8,32
+   566                        	.member	buttonLeftDown,32,14,8,8
+   567                        	.member	lastLeftDown,40,18,8,32
+   568                        	.member	buttonRightDown,72,14,8,8
+   569                        	.member	lastRightDown,80,18,8,32
+   570                        	.member	buttonMiddleDown,112,14,8,8
+   571                        	.member	lastMiddleDown,120,18,8,32
+   572                        	.member	lastX,152,16,8,16
+   573                        	.member	lastY,168,16,8,16
+   574                        	.eos
+   575                        	.line	743
+   576                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",16
+   577                        	.stag	_fx_spinner_ctx,48,55
+   578                        	.member	index,0,5,8,16
+   579                        	.member	spinner,16,142,8,32
+   580                        	.eos
+   581                        	.stag	_fx_console_ctx,1144,56
+   582                        	.member	lineBufferIndex,0,5,8,16
+   583                        	.member	lineBuffer,16,110,8,0,128
+   584                        	.member	isShifted,1040,14,8,8
+   585                        	.member	userData,1048,129,8,32
+   586                        	.member	screenBuffer,1080,129,8,32
+   587                        	.member	Reserved1,1112,129,8,32
+   588                        	.eos
+   589                        	.stag	_token,64,57
+   590                        	.member	type,0,5,8,16
+   591                        	.member	depth,16,16,8,16
+   592                        	.member	text,32,142,8,32
+   593                        	.eos
+   594                        	.stag	_command_args,64,58
+   595                        	.member	proc,0,656,8,32
+   596                        	.member	tokens,32,138,8,32,5
+   597                        	.eos
+   598                        	.line	171
+   599                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",20
+   600                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   601                        	.line	71
+   602                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",21
+   603                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   604                        	.line	61
+  Thu Dec  3 2020 22:25                                                Page 13
+
+
+   605                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",22
+   606                        	.line	25
+   607                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",5
+   608                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   609                        	.line	61
+   610                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",6
+   611                        	.stag	_fx_zero_page,448,59
+   612                        	.member	fxos_mouse_byte_0,0,14,8,8
+   613                        	.member	fxos_mouse_byte_1,8,14,8,8
+   614                        	.member	fxos_mouse_byte_2,16,14,8,8
+   615                        	.member	fxos_mouse_byte_t,24,14,8,8
+   616                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+   617                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+   618                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+   619                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+   620                        	.member	fxos_key_byte_0,64,14,8,8
+   621                        	.member	fxos_key_byte_1,72,14,8,8
+   622                        	.member	fxos_key_byte_2,80,14,8,8
+   623                        	.member	fxos_mouse_ctl,88,14,8,8
+   624                        	.member	fxos_mouse_index,96,14,8,8
+   625                        	.member	fxos_mouse_status,104,14,8,8
+   626                        	.member	VersionMajor,112,16,8,16
+   627                        	.member	VersionMinor,128,16,8,16
+   628                        	.member	VersionRelease,144,16,8,16
+   629                        	.member	topMemory,160,18,8,32
+   630                        	.member	bottomMemory,192,18,8,32
+   631                        	.member	availableMemory,224,18,8,32
+   632                        	.member	availableMemoryK,256,18,8,32
+   633                        	.member	availableHeapMemory,288,18,8,32
+   634                        	.member	availableHeapMemoryK,320,18,8,32
+   635                        	.member	kernelFunctionCallId,352,16,8,16
+   636                        	.member	kernelFunctionCallBank,368,14,8,8
+   637                        	.member	kernelFunctionCallReserved,376,14,8,8
+   638                        	.member	kernelFunctionCallParameter,384,129,8,32
+   639                        	.member	kernelFunctionCallReturn,416,129,8,32
+   640                        	.eos
+   641                        	.stag	_fx_environment,96,60
+   642                        	.member	variables,0,142,8,32
+   643                        	.member	reserved1,32,5,8,16
+   644                        	.member	reserved2,48,5,8,16
+   645                        	.member	reserved3,64,5,8,16
+   646                        	.member	reserved4,80,5,8,16
+   647                        	.eos
+   648                        	.stag	_debug_byte_bits,8,61
+   649                        	.member	bit7,0,14,17,1
+   650                        	.member	bit6,1,14,17,1
+   651                        	.member	bit5,2,14,17,1
+   652                        	.member	bit4,3,14,17,1
+   653                        	.member	bit3,4,14,17,1
+   654                        	.member	bit2,5,14,17,1
+   655                        	.member	bit1,6,14,17,1
+   656                        	.member	bit0,7,14,17,1
+   657                        	.eos
+   658                        	.stag	_fx_device_driver,1416,62
+  Thu Dec  3 2020 22:25                                                Page 14
+
+
+   659                        	.member	name,0,110,8,0,64
+   660                        	.member	version,512,110,8,0,64
+   661                        	.member	hmajor,1024,110,8,0,16
+   662                        	.member	hminor,1152,110,8,0,16
+   663                        	.member	type,1280,14,8,8
+   664                        	.member	f_driver_load,1288,129,8,32
+   665                        	.member	f_driver_read,1320,129,8,32
+   666                        	.member	f_driver_write,1352,129,8,32
+   667                        	.member	f_driver_unload,1384,129,8,32
+   668                        	.eos
+   669                        	.stag	_fx_block_device_driver,1448,63
+   670                        	.member	name,0,110,8,0,64
+   671                        	.member	version,512,110,8,0,64
+   672                        	.member	hmajor,1024,110,8,0,16
+   673                        	.member	hminor,1152,110,8,0,16
+   674                        	.member	type,1280,14,8,8
+   675                        	.member	f_driver_load,1288,129,8,32
+   676                        	.member	f_driver_read,1320,129,8,32
+   677                        	.member	f_driver_write,1352,129,8,32
+   678                        	.member	f_driver_unload,1384,129,8,32
+   679                        	.member	f_driver_command,1416,129,8,32
+   680                        	.eos
+   681                        	.line	270
+   682                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",2
+   683                        ;#include "fxexec.h"
+   684                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",0
+   685                        	.line	52
+   686                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",3
+   687                        ;#include "fxmemorymanager.h"
+   688                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   689                        	.line	39
+   690                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",4
+   691                        ;#include "fxos_desktop_proc.h"
+   692                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",0
+   693                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   694                        	.line	708
+   695                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",5
+   696                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   697                        	.line	1325
+   698                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",8
+   699                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   700                        	.line	71
+   701                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",13
+   702                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   703                        	.line	743
+  Thu Dec  3 2020 22:25                                                Page 15
+
+
+   704                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",14
+   705                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   706                        	.line	264
+   707                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",15
+   708                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",0
+   709                        	.line	362
+   710                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_desktop_proc.h",16
+   711                        	.line	62
+   712                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",5
+   713                        ;
+   714                        ;//
+   715                        ;// SEH Variables
+   716                        ;//
+   717                        ;ULONG _k_exec_context 	= 0L;
+   718                        	data
+   719                        	xdef	~~_k_exec_context
+   720                        ~~_k_exec_context:
+   721 00:0000: 00 00 00 00  	dl	$0
+   722 00:0004:              	ends
+   723                        ;ULONG _k_exec_error		= 0L;
+   724                        	data
+   725                        	xdef	~~_k_exec_error
+   726                        ~~_k_exec_error:
+   727 00:0004: 00 00 00 00  	dl	$0
+   728 00:0008:              	ends
+   729                        ;UCHAR _k_exec_message[64];
+   730                        ;//
+   731                        ;//
+   732                        ;//
+   733                        ;static PFXPROCESS _k_processList[MAX_PROCESS];
+   734                        ;static PFXPROCESS _k_current_Process = NULL;
+   735                        	data
+   736                        ~~_k_current_Process:
+   737 00:0008: 00 00 00 00  	dl	$0
+   738 00:000C:              	ends
+   739                        ;//
+   740                        ;//
+   741                        ;static PFXPROCESS  _exec_Process 		
+                    		= NULL;
+   742                        	data
+   743                        ~~_exec_Process:
+   744 00:000C: 00 00 00 00  	dl	$0
+   745 00:0010:              	ends
+   746                        ;static PFXNODELIST _k_execManager_ProcesssList 	
+                    = NULL;
+   747                        	data
+   748                        ~~_k_execManager_ProcesssList:
+   749 00:0010: 00 00 00 00  	dl	$0
+   750 00:0014:              	ends
+   751                        ;//
+   752                        ;// SEH MODULE ID
+   753                        ;//
+  Thu Dec  3 2020 22:25                                                Page 16
+
+
+   754                        ;static ULONG THIS_MODULE = 0x00000000;
+   755                        	data
+   756                        ~~THIS_MODULE:
+   757 00:0014: 00 00 00 00  	dl	$0
+   758 00:0018:              	ends
+   759                        ;//
+   760                        ;//
+   761                        ;//
+   762                        ;
+   763                        ;void k_initalize_executive(void)
+   764                        ;{
+   765                        	.line	30
+   766                        	.line	31
+   767                        	code
+   768                        	xdef	~~k_initalize_executive
+   769                        	func
+   770                        	.function	31
+   771                        ~~k_initalize_executive:
+   772                        	longa	on
+   773                        	longi	on
+   774 00:0000: 3B           	tsc
+   775 00:0001: 38           	sec
+   776 00:0002: E9 0A 00     	sbc	#L2
+   777 00:0005: 1B           	tcs
+   778 00:0006: 0B           	phd
+   779 00:0007: 5B           	tcd
+   780                        	.block	31
+   781                        ;	int index = 0;
+   782                        ;
+   783                        ;	_k_execManager_ProcesssList = k_nodelist_allocat
+                    e_list("_process_task_list" ,k_deallocate_process_task);
+   784             00000000   index_1	set	0
+   785                        	.sym	index,0,5,1,16
+   786 00:0008: 64 09        	stz	<L3+index_1
+   787                        	.line	34
+   788 00:000A: F4 xx xx     	pea	#^~~k_deallocate_process_task
+   789 00:000D: F4 xx xx     	pea	#<~~k_deallocate_process_task
+   790 00:0010: F4 xx xx     	pea	#^L1
+   791 00:0013: F4 xx xx     	pea	#<L1
+   792 00:0016: 22 xx xx xx  	jsl	~~k_nodelist_allocate_list
+   793 00:001A: 8D xx xx     	sta	|~~_k_execManager_ProcesssList
+   794 00:001D: 8E xx xx     	stx	|~~_k_execManager_ProcesssList+2
+   795                        ;
+   796                        ;	for(index=0;index<MAX_PROCESS;index++)
+   797                        	.line	36
+   798 00:0020: 64 09        	stz	<L3+index_1
+   799                        L10003:
+   800                        ;	{
+   801                        	.line	37
+   802                        ;		_k_processList[index] = NULL;
+   803                        	.line	38
+   804 00:0022: A5 09        	lda	<L3+index_1
+   805 00:0024: 0A           	asl	A
+   806 00:0025: 0A           	asl	A
+   807 00:0026: 85 01        	sta	<R0
+   808 00:0028: 18           	clc
+   809 00:0029: A9 xx xx     	lda	#<~~_k_processList
+   810 00:002C: 65 01        	adc	<R0
+  Thu Dec  3 2020 22:25                                                Page 17
+
+
+   811 00:002E: 85 05        	sta	<R1
+   812 00:0030: A9 00 00     	lda	#$0
+   813 00:0033: 92 05        	sta	(<R1)
+   814 00:0035: A9 00 00     	lda	#$0
+   815 00:0038: A0 02 00     	ldy	#$2
+   816 00:003B: 91 05        	sta	(<R1),Y
+   817                        ;	}
+   818                        	.line	39
+   819                        L10001:
+   820 00:003D: E6 09        	inc	<L3+index_1
+   821 00:003F: 38           	sec
+   822 00:0040: A5 09        	lda	<L3+index_1
+   823 00:0042: E9 20 00     	sbc	#<$20
+   824 00:0045: 70 03        	bvs	L5
+   825 00:0047: 49 00 80     	eor	#$8000
+   826                        L5:
+   827 00:004A: 30 03        	bmi	L6
+   828 00:004C: 82 D3 FF     	brl	L10003
+   829                        L6:
+   830                        L10002:
+   831                        ;
+   832                        ;	_exec_Process = k_mem_allocate_heap(sizeof(FXPRO
+                    CESS));
+   833                        	.line	41
+   834 00:004F: F4 64 00     	pea	#<$64
+   835 00:0052: 22 xx xx xx  	jsl	~~k_mem_allocate_heap
+   836 00:0056: 8D xx xx     	sta	|~~_exec_Process
+   837 00:0059: 8E xx xx     	stx	|~~_exec_Process+2
+   838                        ;	if(_exec_Process)
+   839                        	.line	42
+   840                        ;	{
+   841 00:005C: AD xx xx     	lda	|~~_exec_Process
+   842 00:005F: 0D xx xx     	ora	|~~_exec_Process+2
+   843 00:0062: D0 03        	bne	L7
+   844 00:0064: 82 A8 00     	brl	L10004
+   845                        L7:
+   846                        	.line	43
+   847                        ;		memset(_exec_Process,0,sizeof(FXPROCESS)
+                    );
+   848                        	.line	44
+   849 00:0067: F4 64 00     	pea	#<$64
+   850 00:006A: F4 00 00     	pea	#<$0
+   851 00:006D: AD xx xx     	lda	|~~_exec_Process+2
+   852 00:0070: 48           	pha
+   853 00:0071: AD xx xx     	lda	|~~_exec_Process
+   854 00:0074: 48           	pha
+   855 00:0075: 22 xx xx xx  	jsl	~~memset
+   856                        ;
+   857                        ;		_exec_Process->cbSize      = sizeof(FXPR
+                    OCESS);
+   858                        	.line	46
+   859 00:0079: AD xx xx     	lda	|~~_exec_Process
+   860 00:007C: 85 01        	sta	<R0
+   861 00:007E: AD xx xx     	lda	|~~_exec_Process+2
+   862 00:0081: 85 03        	sta	<R0+2
+   863 00:0083: A9 64 00     	lda	#$64
+   864 00:0086: 87 01        	sta	[<R0]
+   865                        ;		_exec_Process->procId      = 0xFFFF0000;
+  Thu Dec  3 2020 22:25                                                Page 18
+
+
+   866                        	.line	47
+   867 00:0088: AD xx xx     	lda	|~~_exec_Process
+   868 00:008B: 85 01        	sta	<R0
+   869 00:008D: AD xx xx     	lda	|~~_exec_Process+2
+   870 00:0090: 85 03        	sta	<R0+2
+   871 00:0092: A9 00 00     	lda	#$0
+   872 00:0095: A0 02 00     	ldy	#$2
+   873 00:0098: 97 01        	sta	[<R0],Y
+   874 00:009A: A9 FF FF     	lda	#$ffff
+   875 00:009D: A0 04 00     	ldy	#$4
+   876 00:00A0: 97 01        	sta	[<R0],Y
+   877                        ;		_exec_Process->parentId    = 0x00000000;
+   878                        	.line	48
+   879 00:00A2: AD xx xx     	lda	|~~_exec_Process
+   880 00:00A5: 85 01        	sta	<R0
+   881 00:00A7: AD xx xx     	lda	|~~_exec_Process+2
+   882 00:00AA: 85 03        	sta	<R0+2
+   883 00:00AC: A9 00 00     	lda	#$0
+   884 00:00AF: A0 06 00     	ldy	#$6
+   885 00:00B2: 97 01        	sta	[<R0],Y
+   886 00:00B4: A9 00 00     	lda	#$0
+   887 00:00B7: A0 08 00     	ldy	#$8
+   888 00:00BA: 97 01        	sta	[<R0],Y
+   889                        ;		_exec_Process->commandLine = k_string_co
+                    py_string("@/executive");
+   890                        	.line	49
+   891 00:00BC: AD xx xx     	lda	|~~_exec_Process
+   892 00:00BF: 85 01        	sta	<R0
+   893 00:00C1: AD xx xx     	lda	|~~_exec_Process+2
+   894 00:00C4: 85 03        	sta	<R0+2
+   895 00:00C6: F4 xx xx     	pea	#^L1+19
+   896 00:00C9: F4 xx xx     	pea	#<L1+19
+   897 00:00CC: 22 xx xx xx  	jsl	~~k_string_copy_string
+   898 00:00D0: 85 05        	sta	<R1
+   899 00:00D2: 86 07        	stx	<R1+2
+   900 00:00D4: A5 05        	lda	<R1
+   901 00:00D6: A0 33 00     	ldy	#$33
+   902 00:00D9: 97 01        	sta	[<R0],Y
+   903 00:00DB: A5 07        	lda	<R1+2
+   904 00:00DD: A0 35 00     	ldy	#$35
+   905 00:00E0: 97 01        	sta	[<R0],Y
+   906                        ;
+   907                        ;		k_nodelist_naddtolist(_k_execManager_Pro
+                    cesssList,NL_TYPE_PROCESS,_exec_Process->procId,_exec_Proces
+                    s);
+   908                        	.line	51
+   909 00:00E2: AD xx xx     	lda	|~~_exec_Process+2
+   910 00:00E5: 48           	pha
+   911 00:00E6: AD xx xx     	lda	|~~_exec_Process
+   912 00:00E9: 48           	pha
+   913 00:00EA: AD xx xx     	lda	|~~_exec_Process
+   914 00:00ED: 85 01        	sta	<R0
+   915 00:00EF: AD xx xx     	lda	|~~_exec_Process+2
+   916 00:00F2: 85 03        	sta	<R0+2
+   917 00:00F4: A0 04 00     	ldy	#$4
+   918 00:00F7: B7 01        	lda	[<R0],Y
+   919 00:00F9: 48           	pha
+   920 00:00FA: A0 02 00     	ldy	#$2
+  Thu Dec  3 2020 22:25                                                Page 19
+
+
+   921 00:00FD: B7 01        	lda	[<R0],Y
+   922 00:00FF: 48           	pha
+   923 00:0100: F4 FE 00     	pea	#<$fe
+   924 00:0103: AD xx xx     	lda	|~~_k_execManager_ProcesssList+2
+   925 00:0106: 48           	pha
+   926 00:0107: AD xx xx     	lda	|~~_k_execManager_ProcesssList
+   927 00:010A: 48           	pha
+   928 00:010B: 22 xx xx xx  	jsl	~~k_nodelist_naddtolist
+   929                        ;	}
+   930                        	.line	52
+   931                        ;}
+   932                        L10004:
+   933                        	.line	53
+   934                        L8:
+   935 00:010F: 2B           	pld
+   936 00:0110: 3B           	tsc
+   937 00:0111: 18           	clc
+   938 00:0112: 69 0A 00     	adc	#L2
+   939 00:0115: 1B           	tcs
+   940 00:0116: 6B           	rtl
+   941                        	.endblock	53
+   942             0000000A   L2	equ	10
+   943             00000009   L3	equ	9
+   944                        	ends
+   945                        	efunc
+   946                        	.endfunc	53,9,10
+   947                        	.line	53
+   948                        	data
+   949                        L1:
+   950 00:0018: 5F 70 72 6F  	db	$5F,$70,$72,$6F,$63,$65,$73,$73,$5F,$74,
+                    $61,$73,$6B,$5F,$6C
+       00:001C: 63 65 73 73 
+       00:0020: 5F 74 61 73 
+       00:0024: 6B 5F 6C 
+   951 00:0027: 69 73 74 00  	db	$69,$73,$74,$00,$40,$2F,$65,$78,$65,$63,
+                    $75,$74,$69,$76,$65
+       00:002B: 40 2F 65 78 
+       00:002F: 65 63 75 74 
+       00:0033: 69 76 65 
+   952 00:0036: 00           	db	$00
+   953 00:0037:              	ends
+   954                        ;
+   955                        ;void k_deallocate_process_task(LPCSTR name,LPVOID
+                     pdata)
+   956                        ;{
+   957                        	.line	55
+   958                        	.line	56
+   959                        	code
+   960                        	xdef	~~k_deallocate_process_task
+   961                        	func
+   962                        	.function	56
+   963                        ~~k_deallocate_process_task:
+   964                        	longa	on
+   965                        	longi	on
+   966 00:0117: 3B           	tsc
+   967 00:0118: 38           	sec
+   968 00:0119: E9 00 00     	sbc	#L10
+   969 00:011C: 1B           	tcs
+  Thu Dec  3 2020 22:25                                                Page 20
+
+
+   970 00:011D: 0B           	phd
+   971 00:011E: 5B           	tcd
+   972             00000004   name_0	set	4
+   973             00000008   pdata_0	set	8
+   974                        	.block	56
+   975                        ;
+   976                        ;}
+   977                        	.sym	name,4,142,6,32
+   978                        	.sym	pdata,8,129,6,32
+   979                        	.line	58
+   980                        L13:
+   981 00:011F: A5 02        	lda	<L10+2
+   982 00:0121: 85 0A        	sta	<L10+2+8
+   983 00:0123: A5 01        	lda	<L10+1
+   984 00:0125: 85 09        	sta	<L10+1+8
+   985 00:0127: 2B           	pld
+   986 00:0128: 3B           	tsc
+   987 00:0129: 18           	clc
+   988 00:012A: 69 08 00     	adc	#L10+8
+   989 00:012D: 1B           	tcs
+   990 00:012E: 6B           	rtl
+   991                        	.endblock	58
+   992             00000000   L10	equ	0
+   993             00000001   L11	equ	1
+   994                        	ends
+   995                        	efunc
+   996                        	.endfunc	58,1,0
+   997                        	.line	58
+   998                        ;
+   999                        ;void debug_process_node(LPVOID ctx,LPVOID data)
+  1000                        ;{
+  1001                        	.line	60
+  1002                        	.line	61
+  1003                        	code
+  1004                        	xdef	~~debug_process_node
+  1005                        	func
+  1006                        	.function	61
+  1007                        ~~debug_process_node:
+  1008                        	longa	on
+  1009                        	longi	on
+  1010 00:012F: 3B           	tsc
+  1011 00:0130: 38           	sec
+  1012 00:0131: E9 08 00     	sbc	#L14
+  1013 00:0134: 1B           	tcs
+  1014 00:0135: 0B           	phd
+  1015 00:0136: 5B           	tcd
+  1016             00000004   ctx_0	set	4
+  1017             00000008   data_0	set	8
+  1018                        	.block	61
+  1019                        ;	PFXPROCESS pproc = (PFXPROCESS)data;
+  1020                        ;	if(pproc)
+  1021             00000000   pproc_1	set	0
+  1022                        	.sym	pproc,0,138,1,32,20
+  1023                        	.sym	ctx,4,129,6,32
+  1024                        	.sym	data,8,129,6,32
+  1025 00:0137: A5 10        	lda	<L14+data_0
+  1026 00:0139: 85 05        	sta	<L15+pproc_1
+  1027 00:013B: A5 12        	lda	<L14+data_0+2
+  Thu Dec  3 2020 22:25                                                Page 21
+
+
+  1028 00:013D: 85 07        	sta	<L15+pproc_1+2
+  1029                        	.line	63
+  1030                        ;	{
+  1031 00:013F: A5 05        	lda	<L15+pproc_1
+  1032 00:0141: 05 07        	ora	<L15+pproc_1+2
+  1033 00:0143: D0 03        	bne	L17
+  1034 00:0145: 82 7D 00     	brl	L10005
+  1035                        L17:
+  1036                        	.line	64
+  1037                        ;		k_debug_strings("      PROCESS  CMDLN:",
+                    (LPCHAR)pproc->commandLine);
+  1038                        	.line	65
+  1039 00:0148: A0 35 00     	ldy	#$35
+  1040 00:014B: B7 05        	lda	[<L15+pproc_1],Y
+  1041 00:014D: 48           	pha
+  1042 00:014E: A0 33 00     	ldy	#$33
+  1043 00:0151: B7 05        	lda	[<L15+pproc_1],Y
+  1044 00:0153: 48           	pha
+  1045 00:0154: F4 xx xx     	pea	#^L9
+  1046 00:0157: F4 xx xx     	pea	#<L9
+  1047 00:015A: 22 xx xx xx  	jsl	~~k_debug_strings
+  1048                        ;		k_debug_long   ("      PROCESS    PID:",
+                    pproc->procId);
+  1049                        	.line	66
+  1050 00:015E: A0 04 00     	ldy	#$4
+  1051 00:0161: B7 05        	lda	[<L15+pproc_1],Y
+  1052 00:0163: 48           	pha
+  1053 00:0164: A0 02 00     	ldy	#$2
+  1054 00:0167: B7 05        	lda	[<L15+pproc_1],Y
+  1055 00:0169: 48           	pha
+  1056 00:016A: F4 xx xx     	pea	#^L9+22
+  1057 00:016D: F4 xx xx     	pea	#<L9+22
+  1058 00:0170: 22 xx xx xx  	jsl	~~k_debug_long
+  1059                        ;		k_debug_long   ("      PROCESS   PPID:",
+                    pproc->parentId);
+  1060                        	.line	67
+  1061 00:0174: A0 08 00     	ldy	#$8
+  1062 00:0177: B7 05        	lda	[<L15+pproc_1],Y
+  1063 00:0179: 48           	pha
+  1064 00:017A: A0 06 00     	ldy	#$6
+  1065 00:017D: B7 05        	lda	[<L15+pproc_1],Y
+  1066 00:017F: 48           	pha
+  1067 00:0180: F4 xx xx     	pea	#^L9+44
+  1068 00:0183: F4 xx xx     	pea	#<L9+44
+  1069 00:0186: 22 xx xx xx  	jsl	~~k_debug_long
+  1070                        ;		k_debug_long   ("      PROCESS STATUS:",
+                    pproc->status);
+  1071                        	.line	68
+  1072 00:018A: A0 10 00     	ldy	#$10
+  1073 00:018D: B7 05        	lda	[<L15+pproc_1],Y
+  1074 00:018F: 85 01        	sta	<R0
+  1075 00:0191: 64 03        	stz	<R0+2
+  1076 00:0193: D4 03        	pei	<R0+2
+  1077 00:0195: D4 01        	pei	<R0
+  1078 00:0197: F4 xx xx     	pea	#^L9+66
+  1079 00:019A: F4 xx xx     	pea	#<L9+66
+  1080 00:019D: 22 xx xx xx  	jsl	~~k_debug_long
+  1081                        ;		k_debug_pointer("      PROCESS    PTR:",
+  Thu Dec  3 2020 22:25                                                Page 22
+
+
+                    pproc);
+  1082                        	.line	69
+  1083 00:01A1: D4 07        	pei	<L15+pproc_1+2
+  1084 00:01A3: D4 05        	pei	<L15+pproc_1
+  1085 00:01A5: F4 xx xx     	pea	#^L9+88
+  1086 00:01A8: F4 xx xx     	pea	#<L9+88
+  1087 00:01AB: 22 xx xx xx  	jsl	~~k_debug_pointer
+  1088                        ;		k_debug_pointer("      PROCESS   PPTR:",
+                    pproc->execProc);
+  1089                        	.line	70
+  1090 00:01AF: A0 5E 00     	ldy	#$5e
+  1091 00:01B2: B7 05        	lda	[<L15+pproc_1],Y
+  1092 00:01B4: 48           	pha
+  1093 00:01B5: A0 5C 00     	ldy	#$5c
+  1094 00:01B8: B7 05        	lda	[<L15+pproc_1],Y
+  1095 00:01BA: 48           	pha
+  1096 00:01BB: F4 xx xx     	pea	#^L9+110
+  1097 00:01BE: F4 xx xx     	pea	#<L9+110
+  1098 00:01C1: 22 xx xx xx  	jsl	~~k_debug_pointer
+  1099                        ;	}
+  1100                        	.line	71
+  1101                        ;}
+  1102                        L10005:
+  1103                        	.line	72
+  1104                        L18:
+  1105 00:01C5: A5 0A        	lda	<L14+2
+  1106 00:01C7: 85 12        	sta	<L14+2+8
+  1107 00:01C9: A5 09        	lda	<L14+1
+  1108 00:01CB: 85 11        	sta	<L14+1+8
+  1109 00:01CD: 2B           	pld
+  1110 00:01CE: 3B           	tsc
+  1111 00:01CF: 18           	clc
+  1112 00:01D0: 69 10 00     	adc	#L14+8
+  1113 00:01D3: 1B           	tcs
+  1114 00:01D4: 6B           	rtl
+  1115                        	.endblock	72
+  1116             00000008   L14	equ	8
+  1117             00000005   L15	equ	5
+  1118                        	ends
+  1119                        	efunc
+  1120                        	.endfunc	72,5,8
+  1121                        	.line	72
+  1122                        	data
+  1123                        L9:
+  1124 00:0037: 20 20 20 20  	db	$20,$20,$20,$20,$20,$20,$50,$52,$4F,$43,
+                    $45,$53,$53,$20,$20
+       00:003B: 20 20 50 52 
+       00:003F: 4F 43 45 53 
+       00:0043: 53 20 20 
+  1125 00:0046: 43 4D 44 4C  	db	$43,$4D,$44,$4C,$4E,$3A,$00,$20,$20,$20,
+                    $20,$20,$20,$50,$52
+       00:004A: 4E 3A 00 20 
+       00:004E: 20 20 20 20 
+       00:0052: 20 50 52 
+  1126 00:0055: 4F 43 45 53  	db	$4F,$43,$45,$53,$53,$20,$20,$20,$20,$50,
+                    $49,$44,$3A,$00,$20
+       00:0059: 53 20 20 20 
+       00:005D: 20 50 49 44 
+  Thu Dec  3 2020 22:25                                                Page 23
+
+
+       00:0061: 3A 00 20 
+  1127 00:0064: 20 20 20 20  	db	$20,$20,$20,$20,$20,$50,$52,$4F,$43,$45,
+                    $53,$53,$20,$20,$20
+       00:0068: 20 50 52 4F 
+       00:006C: 43 45 53 53 
+       00:0070: 20 20 20 
+  1128 00:0073: 50 50 49 44  	db	$50,$50,$49,$44,$3A,$00,$20,$20,$20,$20,
+                    $20,$20,$50,$52,$4F
+       00:0077: 3A 00 20 20 
+       00:007B: 20 20 20 20 
+       00:007F: 50 52 4F 
+  1129 00:0082: 43 45 53 53  	db	$43,$45,$53,$53,$20,$53,$54,$41,$54,$55,
+                    $53,$3A,$00,$20,$20
+       00:0086: 20 53 54 41 
+       00:008A: 54 55 53 3A 
+       00:008E: 00 20 20 
+  1130 00:0091: 20 20 20 20  	db	$20,$20,$20,$20,$50,$52,$4F,$43,$45,$53,
+                    $53,$20,$20,$20,$20
+       00:0095: 50 52 4F 43 
+       00:0099: 45 53 53 20 
+       00:009D: 20 20 20 
+  1131 00:00A0: 50 54 52 3A  	db	$50,$54,$52,$3A,$00,$20,$20,$20,$20,$20,
+                    $20,$50,$52,$4F,$43
+       00:00A4: 00 20 20 20 
+       00:00A8: 20 20 20 50 
+       00:00AC: 52 4F 43 
+  1132 00:00AF: 45 53 53 20  	db	$45,$53,$53,$20,$20,$20,$50,$50,$54,$52,
+                    $3A,$00
+       00:00B3: 20 20 50 50 
+       00:00B7: 54 52 3A 00 
+  1133 00:00BB:              	ends
+  1134                        ;
+  1135                        ;PFXPROCESS FAR *k_exec_process_list(void)
+  1136                        ;{
+  1137                        	.line	74
+  1138                        	.line	75
+  1139                        	code
+  1140                        	xdef	~~k_exec_process_list
+  1141                        	func
+  1142                        	.function	75
+  1143                        ~~k_exec_process_list:
+  1144                        	longa	on
+  1145                        	longi	on
+  1146 00:01D5: 3B           	tsc
+  1147 00:01D6: 38           	sec
+  1148 00:01D7: E9 04 00     	sbc	#L20
+  1149 00:01DA: 1B           	tcs
+  1150 00:01DB: 0B           	phd
+  1151 00:01DC: 5B           	tcd
+  1152                        	.block	75
+  1153                        ;	return _k_processList;
+  1154                        	.line	76
+  1155 00:01DD: A9 xx xx     	lda	#<~~_k_processList
+  1156 00:01E0: 85 01        	sta	<R0
+  1157                        	xref	_BEG_DATA
+  1158 00:01E2: A9 xx xx     	lda	#_BEG_DATA>>16
+  1159 00:01E5: 85 03        	sta	<R0+2
+  1160 00:01E7: A6 03        	ldx	<R0+2
+  Thu Dec  3 2020 22:25                                                Page 24
+
+
+  1161 00:01E9: A5 01        	lda	<R0
+  1162                        L23:
+  1163 00:01EB: A8           	tay
+  1164 00:01EC: 2B           	pld
+  1165 00:01ED: 3B           	tsc
+  1166 00:01EE: 18           	clc
+  1167 00:01EF: 69 04 00     	adc	#L20
+  1168 00:01F2: 1B           	tcs
+  1169 00:01F3: 98           	tya
+  1170 00:01F4: 6B           	rtl
+  1171                        ;}
+  1172                        	.line	77
+  1173                        	.endblock	77
+  1174             00000004   L20	equ	4
+  1175             00000005   L21	equ	5
+  1176                        	ends
+  1177                        	efunc
+  1178                        	.endfunc	77,5,4
+  1179                        	.line	77
+  1180                        ;
+  1181                        ;PROCESS_ID k_exec_nextprocess(PFXPROCESS process)
+  1182                        ;{
+  1183                        	.line	79
+  1184                        	.line	80
+  1185                        	code
+  1186                        	xdef	~~k_exec_nextprocess
+  1187                        	func
+  1188                        	.function	80
+  1189                        ~~k_exec_nextprocess:
+  1190                        	longa	on
+  1191                        	longi	on
+  1192 00:01F5: 3B           	tsc
+  1193 00:01F6: 38           	sec
+  1194 00:01F7: E9 0E 00     	sbc	#L24
+  1195 00:01FA: 1B           	tcs
+  1196 00:01FB: 0B           	phd
+  1197 00:01FC: 5B           	tcd
+  1198             00000004   process_0	set	4
+  1199                        	.block	80
+  1200                        ;	PROCESS_ID pid = INVALID_HANDLE;
+  1201                        ;
+  1202                        ;	int index = 0;
+  1203                        ;
+  1204                        ;	for(index=0;index<MAX_PROCESS;index++)
+  1205             00000000   pid_1	set	0
+  1206             00000004   index_1	set	4
+  1207                        	.sym	pid,0,18,1,32
+  1208                        	.sym	index,4,5,1,16
+  1209                        	.sym	process,4,138,6,32,20
+  1210 00:01FD: A9 FF FF     	lda	#$ffff
+  1211 00:0200: 85 09        	sta	<L25+pid_1
+  1212 00:0202: A9 FF FF     	lda	#$ffff
+  1213 00:0205: 85 0B        	sta	<L25+pid_1+2
+  1214 00:0207: 64 0D        	stz	<L25+index_1
+  1215                        	.line	85
+  1216 00:0209: 64 0D        	stz	<L25+index_1
+  1217                        L10008:
+  1218                        ;	{
+  Thu Dec  3 2020 22:25                                                Page 25
+
+
+  1219                        	.line	86
+  1220                        ;		if(_k_processList[index] == NULL)
+  1221                        	.line	87
+  1222                        ;		{
+  1223 00:020B: A5 0D        	lda	<L25+index_1
+  1224 00:020D: 0A           	asl	A
+  1225 00:020E: 0A           	asl	A
+  1226 00:020F: 85 01        	sta	<R0
+  1227 00:0211: 18           	clc
+  1228 00:0212: A9 xx xx     	lda	#<~~_k_processList
+  1229 00:0215: 65 01        	adc	<R0
+  1230 00:0217: 85 05        	sta	<R1
+  1231 00:0219: B2 05        	lda	(<R1)
+  1232 00:021B: A0 02 00     	ldy	#$2
+  1233 00:021E: 11 05        	ora	(<R1),Y
+  1234 00:0220: F0 03        	beq	L27
+  1235 00:0222: 82 3F 00     	brl	L10009
+  1236                        L27:
+  1237                        	.line	88
+  1238                        ;			pid = (index | 0x0000A000);
+  1239                        	.line	89
+  1240 00:0225: A5 0D        	lda	<L25+index_1
+  1241 00:0227: 09 00 A0     	ora	#<$a000
+  1242 00:022A: 85 01        	sta	<R0
+  1243 00:022C: A5 01        	lda	<R0
+  1244 00:022E: 85 09        	sta	<L25+pid_1
+  1245 00:0230: 64 0B        	stz	<L25+pid_1+2
+  1246                        ;			_k_processList[index] = process;
+  1247                        	.line	90
+  1248 00:0232: A5 0D        	lda	<L25+index_1
+  1249 00:0234: 0A           	asl	A
+  1250 00:0235: 0A           	asl	A
+  1251 00:0236: 85 01        	sta	<R0
+  1252 00:0238: 18           	clc
+  1253 00:0239: A9 xx xx     	lda	#<~~_k_processList
+  1254 00:023C: 65 01        	adc	<R0
+  1255 00:023E: 85 05        	sta	<R1
+  1256 00:0240: A5 12        	lda	<L24+process_0
+  1257 00:0242: 92 05        	sta	(<R1)
+  1258 00:0244: A5 14        	lda	<L24+process_0+2
+  1259 00:0246: A0 02 00     	ldy	#$2
+  1260 00:0249: 91 05        	sta	(<R1),Y
+  1261                        ;			process->procId = pid;
+  1262                        	.line	91
+  1263 00:024B: A5 09        	lda	<L25+pid_1
+  1264 00:024D: A0 02 00     	ldy	#$2
+  1265 00:0250: 97 12        	sta	[<L24+process_0],Y
+  1266 00:0252: A5 0B        	lda	<L25+pid_1+2
+  1267 00:0254: A0 04 00     	ldy	#$4
+  1268 00:0257: 97 12        	sta	[<L24+process_0],Y
+  1269                        ;			process->status = PROCESS_STATUS
+                    _INIT;
+  1270                        	.line	92
+  1271 00:0259: A9 00 00     	lda	#$0
+  1272 00:025C: A0 10 00     	ldy	#$10
+  1273 00:025F: 97 12        	sta	[<L24+process_0],Y
+  1274                        ;			break;
+  1275                        	.line	93
+  Thu Dec  3 2020 22:25                                                Page 26
+
+
+  1276 00:0261: 82 12 00     	brl	L10007
+  1277                        ;		}
+  1278                        	.line	94
+  1279                        ;	}
+  1280                        L10009:
+  1281                        	.line	95
+  1282                        L10006:
+  1283 00:0264: E6 0D        	inc	<L25+index_1
+  1284 00:0266: 38           	sec
+  1285 00:0267: A5 0D        	lda	<L25+index_1
+  1286 00:0269: E9 20 00     	sbc	#<$20
+  1287 00:026C: 70 03        	bvs	L28
+  1288 00:026E: 49 00 80     	eor	#$8000
+  1289                        L28:
+  1290 00:0271: 30 03        	bmi	L29
+  1291 00:0273: 82 95 FF     	brl	L10008
+  1292                        L29:
+  1293                        L10007:
+  1294                        ;
+  1295                        ;	return pid;
+  1296                        	.line	97
+  1297 00:0276: A6 0B        	ldx	<L25+pid_1+2
+  1298 00:0278: A5 09        	lda	<L25+pid_1
+  1299                        L30:
+  1300 00:027A: A8           	tay
+  1301 00:027B: A5 10        	lda	<L24+2
+  1302 00:027D: 85 14        	sta	<L24+2+4
+  1303 00:027F: A5 0F        	lda	<L24+1
+  1304 00:0281: 85 13        	sta	<L24+1+4
+  1305 00:0283: 2B           	pld
+  1306 00:0284: 3B           	tsc
+  1307 00:0285: 18           	clc
+  1308 00:0286: 69 12 00     	adc	#L24+4
+  1309 00:0289: 1B           	tcs
+  1310 00:028A: 98           	tya
+  1311 00:028B: 6B           	rtl
+  1312                        ;}
+  1313                        	.line	98
+  1314                        	.endblock	98
+  1315             0000000E   L24	equ	14
+  1316             00000009   L25	equ	9
+  1317                        	ends
+  1318                        	efunc
+  1319                        	.endfunc	98,9,14
+  1320                        	.line	98
+  1321                        ;
+  1322                        ;PFXPROCESS k_exec_get_process(PROCESS_ID procId)
+  1323                        ;{
+  1324                        	.line	100
+  1325                        	.line	101
+  1326                        	code
+  1327                        	xdef	~~k_exec_get_process
+  1328                        	func
+  1329                        	.function	101
+  1330                        ~~k_exec_get_process:
+  1331                        	longa	on
+  1332                        	longi	on
+  1333 00:028C: 3B           	tsc
+  Thu Dec  3 2020 22:25                                                Page 27
+
+
+  1334 00:028D: 38           	sec
+  1335 00:028E: E9 0E 00     	sbc	#L31
+  1336 00:0291: 1B           	tcs
+  1337 00:0292: 0B           	phd
+  1338 00:0293: 5B           	tcd
+  1339             00000004   procId_0	set	4
+  1340                        	.block	101
+  1341                        ;	PFXPROCESS p = NULL;
+  1342                        ;
+  1343                        ;	int index = 0;
+  1344                        ;
+  1345                        ;	for(index=0;index<MAX_PROCESS;index++)
+  1346             00000000   p_1	set	0
+  1347             00000004   index_1	set	4
+  1348                        	.sym	p,0,138,1,32,20
+  1349                        	.sym	index,4,5,1,16
+  1350                        	.sym	procId,4,18,6,32
+  1351 00:0294: 64 09        	stz	<L32+p_1
+  1352 00:0296: 64 0B        	stz	<L32+p_1+2
+  1353 00:0298: 64 0D        	stz	<L32+index_1
+  1354                        	.line	106
+  1355 00:029A: 64 0D        	stz	<L32+index_1
+  1356                        L10012:
+  1357                        ;	{
+  1358                        	.line	107
+  1359                        ;		if(_k_processList[index]->procId == proc
+                    Id)
+  1360                        	.line	108
+  1361                        ;		{
+  1362 00:029C: A5 0D        	lda	<L32+index_1
+  1363 00:029E: 0A           	asl	A
+  1364 00:029F: 0A           	asl	A
+  1365 00:02A0: 85 01        	sta	<R0
+  1366 00:02A2: 18           	clc
+  1367 00:02A3: A9 xx xx     	lda	#<~~_k_processList
+  1368 00:02A6: 65 01        	adc	<R0
+  1369 00:02A8: 85 05        	sta	<R1
+  1370 00:02AA: B2 05        	lda	(<R1)
+  1371 00:02AC: 85 01        	sta	<R0
+  1372 00:02AE: A0 02 00     	ldy	#$2
+  1373 00:02B1: B1 05        	lda	(<R1),Y
+  1374 00:02B3: 85 03        	sta	<R0+2
+  1375 00:02B5: A0 02 00     	ldy	#$2
+  1376 00:02B8: B7 01        	lda	[<R0],Y
+  1377 00:02BA: C5 12        	cmp	<L31+procId_0
+  1378 00:02BC: D0 07        	bne	L34
+  1379 00:02BE: A0 04 00     	ldy	#$4
+  1380 00:02C1: B7 01        	lda	[<R0],Y
+  1381 00:02C3: C5 14        	cmp	<L31+procId_0+2
+  1382                        L34:
+  1383 00:02C5: F0 03        	beq	L35
+  1384 00:02C7: 82 1C 00     	brl	L10013
+  1385                        L35:
+  1386                        	.line	109
+  1387                        ;			p = _k_processList[index];
+  1388                        	.line	110
+  1389 00:02CA: A5 0D        	lda	<L32+index_1
+  1390 00:02CC: 0A           	asl	A
+  Thu Dec  3 2020 22:25                                                Page 28
+
+
+  1391 00:02CD: 0A           	asl	A
+  1392 00:02CE: 85 01        	sta	<R0
+  1393 00:02D0: 18           	clc
+  1394 00:02D1: A9 xx xx     	lda	#<~~_k_processList
+  1395 00:02D4: 65 01        	adc	<R0
+  1396 00:02D6: 85 05        	sta	<R1
+  1397 00:02D8: B2 05        	lda	(<R1)
+  1398 00:02DA: 85 09        	sta	<L32+p_1
+  1399 00:02DC: A0 02 00     	ldy	#$2
+  1400 00:02DF: B1 05        	lda	(<R1),Y
+  1401 00:02E1: 85 0B        	sta	<L32+p_1+2
+  1402                        ;			break;
+  1403                        	.line	111
+  1404 00:02E3: 82 12 00     	brl	L10011
+  1405                        ;		}
+  1406                        	.line	112
+  1407                        ;	}
+  1408                        L10013:
+  1409                        	.line	113
+  1410                        L10010:
+  1411 00:02E6: E6 0D        	inc	<L32+index_1
+  1412 00:02E8: 38           	sec
+  1413 00:02E9: A5 0D        	lda	<L32+index_1
+  1414 00:02EB: E9 20 00     	sbc	#<$20
+  1415 00:02EE: 70 03        	bvs	L36
+  1416 00:02F0: 49 00 80     	eor	#$8000
+  1417                        L36:
+  1418 00:02F3: 30 03        	bmi	L37
+  1419 00:02F5: 82 A4 FF     	brl	L10012
+  1420                        L37:
+  1421                        L10011:
+  1422                        ;
+  1423                        ;	return p;
+  1424                        	.line	115
+  1425 00:02F8: A6 0B        	ldx	<L32+p_1+2
+  1426 00:02FA: A5 09        	lda	<L32+p_1
+  1427                        L38:
+  1428 00:02FC: A8           	tay
+  1429 00:02FD: A5 10        	lda	<L31+2
+  1430 00:02FF: 85 14        	sta	<L31+2+4
+  1431 00:0301: A5 0F        	lda	<L31+1
+  1432 00:0303: 85 13        	sta	<L31+1+4
+  1433 00:0305: 2B           	pld
+  1434 00:0306: 3B           	tsc
+  1435 00:0307: 18           	clc
+  1436 00:0308: 69 12 00     	adc	#L31+4
+  1437 00:030B: 1B           	tcs
+  1438 00:030C: 98           	tya
+  1439 00:030D: 6B           	rtl
+  1440                        ;}
+  1441                        	.line	116
+  1442                        	.endblock	116
+  1443             0000000E   L31	equ	14
+  1444             00000009   L32	equ	9
+  1445                        	ends
+  1446                        	efunc
+  1447                        	.endfunc	116,9,14
+  1448                        	.line	116
+  Thu Dec  3 2020 22:25                                                Page 29
+
+
+  1449                        ;
+  1450                        ;
+  1451                        ;PFXPROCESS k_exec_get_process_byname(LPCSTR proce
+                    ssName)
+  1452                        ;{
+  1453                        	.line	119
+  1454                        	.line	120
+  1455                        	code
+  1456                        	xdef	~~k_exec_get_process_byname
+  1457                        	func
+  1458                        	.function	120
+  1459                        ~~k_exec_get_process_byname:
+  1460                        	longa	on
+  1461                        	longi	on
+  1462 00:030E: 3B           	tsc
+  1463 00:030F: 38           	sec
+  1464 00:0310: E9 10 00     	sbc	#L39
+  1465 00:0313: 1B           	tcs
+  1466 00:0314: 0B           	phd
+  1467 00:0315: 5B           	tcd
+  1468             00000004   processName_0	set	4
+  1469                        	.block	120
+  1470                        ;	PFXPROCESS pproc = NULL;
+  1471                        ;	PFXNODE node = NULL;
+  1472                        ;
+  1473                        ;	if(_k_execManager_ProcesssList)
+  1474             00000000   pproc_1	set	0
+  1475             00000004   node_1	set	4
+  1476                        	.sym	pproc,0,138,1,32,20
+  1477                        	.sym	node,4,138,1,32,5
+  1478                        	.sym	processName,4,142,6,32
+  1479 00:0316: 64 09        	stz	<L40+pproc_1
+  1480 00:0318: 64 0B        	stz	<L40+pproc_1+2
+  1481 00:031A: 64 0D        	stz	<L40+node_1
+  1482 00:031C: 64 0F        	stz	<L40+node_1+2
+  1483                        	.line	124
+  1484                        ;	{
+  1485 00:031E: AD xx xx     	lda	|~~_k_execManager_ProcesssList
+  1486 00:0321: 0D xx xx     	ora	|~~_k_execManager_ProcesssList+2
+  1487 00:0324: D0 03        	bne	L42
+  1488 00:0326: 82 44 00     	brl	L10014
+  1489                        L42:
+  1490                        	.line	125
+  1491                        ;		node = k_nodelist_getname(_k_execManager
+                    _ProcesssList->listhead->next,processName);
+  1492                        	.line	126
+  1493 00:0329: D4 16        	pei	<L39+processName_0+2
+  1494 00:032B: D4 14        	pei	<L39+processName_0
+  1495 00:032D: AD xx xx     	lda	|~~_k_execManager_ProcesssList
+  1496 00:0330: 85 01        	sta	<R0
+  1497 00:0332: AD xx xx     	lda	|~~_k_execManager_ProcesssList+2
+  1498 00:0335: 85 03        	sta	<R0+2
+  1499 00:0337: A7 01        	lda	[<R0]
+  1500 00:0339: 85 05        	sta	<R1
+  1501 00:033B: A0 02 00     	ldy	#$2
+  1502 00:033E: B7 01        	lda	[<R0],Y
+  1503 00:0340: 85 07        	sta	<R1+2
+  1504 00:0342: A0 0C 00     	ldy	#$c
+  Thu Dec  3 2020 22:25                                                Page 30
+
+
+  1505 00:0345: B7 05        	lda	[<R1],Y
+  1506 00:0347: 48           	pha
+  1507 00:0348: A0 0A 00     	ldy	#$a
+  1508 00:034B: B7 05        	lda	[<R1],Y
+  1509 00:034D: 48           	pha
+  1510 00:034E: 22 xx xx xx  	jsl	~~k_nodelist_getname
+  1511 00:0352: 85 0D        	sta	<L40+node_1
+  1512 00:0354: 86 0F        	stx	<L40+node_1+2
+  1513                        ;		if(node)
+  1514                        	.line	127
+  1515                        ;		{
+  1516 00:0356: A5 0D        	lda	<L40+node_1
+  1517 00:0358: 05 0F        	ora	<L40+node_1+2
+  1518 00:035A: D0 03        	bne	L43
+  1519 00:035C: 82 0E 00     	brl	L10015
+  1520                        L43:
+  1521                        	.line	128
+  1522                        ;			pproc = node->data;
+  1523                        	.line	129
+  1524 00:035F: A0 02 00     	ldy	#$2
+  1525 00:0362: B7 0D        	lda	[<L40+node_1],Y
+  1526 00:0364: 85 09        	sta	<L40+pproc_1
+  1527 00:0366: A0 04 00     	ldy	#$4
+  1528 00:0369: B7 0D        	lda	[<L40+node_1],Y
+  1529 00:036B: 85 0B        	sta	<L40+pproc_1+2
+  1530                        ;		}
+  1531                        	.line	130
+  1532                        ;	}
+  1533                        L10015:
+  1534                        	.line	131
+  1535                        ;
+  1536                        ;	return pproc;
+  1537                        L10014:
+  1538                        	.line	133
+  1539 00:036D: A6 0B        	ldx	<L40+pproc_1+2
+  1540 00:036F: A5 09        	lda	<L40+pproc_1
+  1541                        L44:
+  1542 00:0371: A8           	tay
+  1543 00:0372: A5 12        	lda	<L39+2
+  1544 00:0374: 85 16        	sta	<L39+2+4
+  1545 00:0376: A5 11        	lda	<L39+1
+  1546 00:0378: 85 15        	sta	<L39+1+4
+  1547 00:037A: 2B           	pld
+  1548 00:037B: 3B           	tsc
+  1549 00:037C: 18           	clc
+  1550 00:037D: 69 14 00     	adc	#L39+4
+  1551 00:0380: 1B           	tcs
+  1552 00:0381: 98           	tya
+  1553 00:0382: 6B           	rtl
+  1554                        ;}
+  1555                        	.line	134
+  1556                        	.endblock	134
+  1557             00000010   L39	equ	16
+  1558             00000009   L40	equ	9
+  1559                        	ends
+  1560                        	efunc
+  1561                        	.endfunc	134,9,16
+  1562                        	.line	134
+  Thu Dec  3 2020 22:25                                                Page 31
+
+
+  1563                        ;
+  1564                        ;
+  1565                        ;void k_exec_set_process_foreground(PFXPROCESS pro
+                    cess,BOOL fActive)
+  1566                        ;{
+  1567                        	.line	137
+  1568                        	.line	138
+  1569                        	code
+  1570                        	xdef	~~k_exec_set_process_foreground
+  1571                        	func
+  1572                        	.function	138
+  1573                        ~~k_exec_set_process_foreground:
+  1574                        	longa	on
+  1575                        	longi	on
+  1576 00:0383: 3B           	tsc
+  1577 00:0384: 38           	sec
+  1578 00:0385: E9 00 00     	sbc	#L45
+  1579 00:0388: 1B           	tcs
+  1580 00:0389: 0B           	phd
+  1581 00:038A: 5B           	tcd
+  1582             00000004   process_0	set	4
+  1583             00000008   fActive_0	set	8
+  1584                        	.block	138
+  1585                        ;	if(process!=NULL)
+  1586                        	.sym	process,4,138,6,32,20
+  1587                        	.sym	fActive,8,14,6,8
+  1588                        	.line	139
+  1589                        ;	{
+  1590 00:038B: A5 04        	lda	<L45+process_0
+  1591 00:038D: 05 06        	ora	<L45+process_0+2
+  1592 00:038F: D0 03        	bne	L48
+  1593 00:0391: 82 0B 00     	brl	L10016
+  1594                        L48:
+  1595                        	.line	140
+  1596                        ;		process->foregroundActive = fActive;
+  1597                        	.line	141
+  1598 00:0394: E2 20        	sep	#$20
+  1599                        	longa	off
+  1600 00:0396: A5 08        	lda	<L45+fActive_0
+  1601 00:0398: A0 12 00     	ldy	#$12
+  1602 00:039B: 97 04        	sta	[<L45+process_0],Y
+  1603 00:039D: C2 20        	rep	#$20
+  1604                        	longa	on
+  1605                        ;	}
+  1606                        	.line	142
+  1607                        ;}
+  1608                        L10016:
+  1609                        	.line	143
+  1610                        L49:
+  1611 00:039F: A5 02        	lda	<L45+2
+  1612 00:03A1: 85 08        	sta	<L45+2+6
+  1613 00:03A3: A5 01        	lda	<L45+1
+  1614 00:03A5: 85 07        	sta	<L45+1+6
+  1615 00:03A7: 2B           	pld
+  1616 00:03A8: 3B           	tsc
+  1617 00:03A9: 18           	clc
+  1618 00:03AA: 69 06 00     	adc	#L45+6
+  1619 00:03AD: 1B           	tcs
+  Thu Dec  3 2020 22:25                                                Page 32
+
+
+  1620 00:03AE: 6B           	rtl
+  1621                        	.endblock	143
+  1622             00000000   L45	equ	0
+  1623             00000001   L46	equ	1
+  1624                        	ends
+  1625                        	efunc
+  1626                        	.endfunc	143,1,0
+  1627                        	.line	143
+  1628                        ;
+  1629                        ;void k_exec_start_process(PROCESS_ID procId)
+  1630                        ;{
+  1631                        	.line	145
+  1632                        	.line	146
+  1633                        	code
+  1634                        	xdef	~~k_exec_start_process
+  1635                        	func
+  1636                        	.function	146
+  1637                        ~~k_exec_start_process:
+  1638                        	longa	on
+  1639                        	longi	on
+  1640 00:03AF: 3B           	tsc
+  1641 00:03B0: 38           	sec
+  1642 00:03B1: E9 0E 00     	sbc	#L50
+  1643 00:03B4: 1B           	tcs
+  1644 00:03B5: 0B           	phd
+  1645 00:03B6: 5B           	tcd
+  1646             00000004   procId_0	set	4
+  1647                        	.block	146
+  1648                        ;	PFXPROCESS p = NULL;
+  1649                        ;
+  1650                        ;	int index = 0;
+  1651                        ;
+  1652                        ;	for(index=0;index<MAX_PROCESS;index++)
+  1653             00000000   p_1	set	0
+  1654             00000004   index_1	set	4
+  1655                        	.sym	p,0,138,1,32,20
+  1656                        	.sym	index,4,5,1,16
+  1657                        	.sym	procId,4,18,6,32
+  1658 00:03B7: 64 09        	stz	<L51+p_1
+  1659 00:03B9: 64 0B        	stz	<L51+p_1+2
+  1660 00:03BB: 64 0D        	stz	<L51+index_1
+  1661                        	.line	151
+  1662 00:03BD: 64 0D        	stz	<L51+index_1
+  1663                        L10019:
+  1664                        ;	{
+  1665                        	.line	152
+  1666                        ;		if(_k_processList[index]->procId == proc
+                    Id)
+  1667                        	.line	153
+  1668                        ;		{
+  1669 00:03BF: A5 0D        	lda	<L51+index_1
+  1670 00:03C1: 0A           	asl	A
+  1671 00:03C2: 0A           	asl	A
+  1672 00:03C3: 85 01        	sta	<R0
+  1673 00:03C5: 18           	clc
+  1674 00:03C6: A9 xx xx     	lda	#<~~_k_processList
+  1675 00:03C9: 65 01        	adc	<R0
+  1676 00:03CB: 85 05        	sta	<R1
+  Thu Dec  3 2020 22:25                                                Page 33
+
+
+  1677 00:03CD: B2 05        	lda	(<R1)
+  1678 00:03CF: 85 01        	sta	<R0
+  1679 00:03D1: A0 02 00     	ldy	#$2
+  1680 00:03D4: B1 05        	lda	(<R1),Y
+  1681 00:03D6: 85 03        	sta	<R0+2
+  1682 00:03D8: A0 02 00     	ldy	#$2
+  1683 00:03DB: B7 01        	lda	[<R0],Y
+  1684 00:03DD: C5 12        	cmp	<L50+procId_0
+  1685 00:03DF: D0 07        	bne	L53
+  1686 00:03E1: A0 04 00     	ldy	#$4
+  1687 00:03E4: B7 01        	lda	[<R0],Y
+  1688 00:03E6: C5 14        	cmp	<L50+procId_0+2
+  1689                        L53:
+  1690 00:03E8: F0 03        	beq	L54
+  1691 00:03EA: 82 1C 00     	brl	L10020
+  1692                        L54:
+  1693                        	.line	154
+  1694                        ;			p = _k_processList[index];
+  1695                        	.line	155
+  1696 00:03ED: A5 0D        	lda	<L51+index_1
+  1697 00:03EF: 0A           	asl	A
+  1698 00:03F0: 0A           	asl	A
+  1699 00:03F1: 85 01        	sta	<R0
+  1700 00:03F3: 18           	clc
+  1701 00:03F4: A9 xx xx     	lda	#<~~_k_processList
+  1702 00:03F7: 65 01        	adc	<R0
+  1703 00:03F9: 85 05        	sta	<R1
+  1704 00:03FB: B2 05        	lda	(<R1)
+  1705 00:03FD: 85 09        	sta	<L51+p_1
+  1706 00:03FF: A0 02 00     	ldy	#$2
+  1707 00:0402: B1 05        	lda	(<R1),Y
+  1708 00:0404: 85 0B        	sta	<L51+p_1+2
+  1709                        ;
+  1710                        ;
+  1711                        ;			break;
+  1712                        	.line	158
+  1713 00:0406: 82 12 00     	brl	L10018
+  1714                        ;		}
+  1715                        	.line	159
+  1716                        ;	}
+  1717                        L10020:
+  1718                        	.line	160
+  1719                        L10017:
+  1720 00:0409: E6 0D        	inc	<L51+index_1
+  1721 00:040B: 38           	sec
+  1722 00:040C: A5 0D        	lda	<L51+index_1
+  1723 00:040E: E9 20 00     	sbc	#<$20
+  1724 00:0411: 70 03        	bvs	L55
+  1725 00:0413: 49 00 80     	eor	#$8000
+  1726                        L55:
+  1727 00:0416: 30 03        	bmi	L56
+  1728 00:0418: 82 A4 FF     	brl	L10019
+  1729                        L56:
+  1730                        L10018:
+  1731                        ;
+  1732                        ;}
+  1733                        	.line	162
+  1734                        L57:
+  Thu Dec  3 2020 22:25                                                Page 34
+
+
+  1735 00:041B: A5 10        	lda	<L50+2
+  1736 00:041D: 85 14        	sta	<L50+2+4
+  1737 00:041F: A5 0F        	lda	<L50+1
+  1738 00:0421: 85 13        	sta	<L50+1+4
+  1739 00:0423: 2B           	pld
+  1740 00:0424: 3B           	tsc
+  1741 00:0425: 18           	clc
+  1742 00:0426: 69 12 00     	adc	#L50+4
+  1743 00:0429: 1B           	tcs
+  1744 00:042A: 6B           	rtl
+  1745                        	.endblock	162
+  1746             0000000E   L50	equ	14
+  1747             00000009   L51	equ	9
+  1748                        	ends
+  1749                        	efunc
+  1750                        	.endfunc	162,9,14
+  1751                        	.line	162
+  1752                        ;
+  1753                        ;PFXPROCESS k_exec_launchProcess(LPCHAR commandLin
+                    e)
+  1754                        ;{
+  1755                        	.line	164
+  1756                        	.line	165
+  1757                        	code
+  1758                        	xdef	~~k_exec_launchProcess
+  1759                        	func
+  1760                        	.function	165
+  1761                        ~~k_exec_launchProcess:
+  1762                        	longa	on
+  1763                        	longi	on
+  1764 00:042B: 3B           	tsc
+  1765 00:042C: 38           	sec
+  1766 00:042D: E9 08 00     	sbc	#L58
+  1767 00:0430: 1B           	tcs
+  1768 00:0431: 0B           	phd
+  1769 00:0432: 5B           	tcd
+  1770             00000004   commandLine_0	set	4
+  1771                        	.block	165
+  1772                        ;	PFXPROCESS process = NULL;
+  1773                        ;	FXProcessProc processProc = NULL;
+  1774                        ;
+  1775                        ;	if(commandLine)
+  1776             00000000   process_1	set	0
+  1777             00000004   processProc_1	set	4
+  1778                        	.sym	process,0,138,1,32,20
+  1779                        	.sym	processProc,4,641,1,32
+  1780                        	.sym	commandLine,4,142,6,32
+  1781 00:0433: 64 01        	stz	<L59+process_1
+  1782 00:0435: 64 03        	stz	<L59+process_1+2
+  1783 00:0437: 64 05        	stz	<L59+processProc_1
+  1784 00:0439: 64 07        	stz	<L59+processProc_1+2
+  1785                        	.line	169
+  1786                        ;	{
+  1787 00:043B: A5 0C        	lda	<L58+commandLine_0
+  1788 00:043D: 05 0E        	ora	<L58+commandLine_0+2
+  1789 00:043F: D0 03        	bne	L61
+  1790 00:0441: 82 9D 00     	brl	L10021
+  1791                        L61:
+  Thu Dec  3 2020 22:25                                                Page 35
+
+
+  1792                        	.line	170
+  1793                        ;		k_debug_strings("k_exec_launchProcess:",
+                    commandLine);
+  1794                        	.line	171
+  1795 00:0444: D4 0E        	pei	<L58+commandLine_0+2
+  1796 00:0446: D4 0C        	pei	<L58+commandLine_0
+  1797 00:0448: F4 xx xx     	pea	#^L19
+  1798 00:044B: F4 xx xx     	pea	#<L19
+  1799 00:044E: 22 xx xx xx  	jsl	~~k_debug_strings
+  1800                        ;
+  1801                        ;		if(commandLine[0] == '@')
+  1802                        	.line	173
+  1803                        ;		{
+  1804 00:0452: E2 20        	sep	#$20
+  1805                        	longa	off
+  1806 00:0454: A7 0C        	lda	[<L58+commandLine_0]
+  1807 00:0456: C9 40        	cmp	#<$40
+  1808 00:0458: C2 20        	rep	#$20
+  1809                        	longa	on
+  1810 00:045A: F0 03        	beq	L62
+  1811 00:045C: 82 60 00     	brl	L10022
+  1812                        L62:
+  1813                        	.line	174
+  1814                        ;			if(strcmp(commandLine,"@/console
+                    ") == 0)
+  1815                        	.line	175
+  1816                        ;			{
+  1817 00:045F: F4 xx xx     	pea	#^L19+22
+  1818 00:0462: F4 xx xx     	pea	#<L19+22
+  1819 00:0465: D4 0E        	pei	<L58+commandLine_0+2
+  1820 00:0467: D4 0C        	pei	<L58+commandLine_0
+  1821 00:0469: 22 xx xx xx  	jsl	~~strcmp
+  1822 00:046D: AA           	tax
+  1823 00:046E: F0 03        	beq	L63
+  1824 00:0470: 82 0D 00     	brl	L10023
+  1825                        L63:
+  1826                        	.line	176
+  1827                        ;				processProc = DefConsole
+                    Proc;
+  1828                        	.line	177
+  1829 00:0473: A9 xx xx     	lda	#<~~DefConsoleProc
+  1830 00:0476: 85 05        	sta	<L59+processProc_1
+  1831 00:0478: A9 xx xx     	lda	#^~~DefConsoleProc
+  1832 00:047B: 85 07        	sta	<L59+processProc_1+2
+  1833                        ;			}
+  1834                        	.line	178
+  1835                        ;			else if(strcmp(commandLine,"@/de
+                    sktop") == 0)
+  1836 00:047D: 82 3F 00     	brl	L10024
+  1837                        L10023:
+  1838                        	.line	179
+  1839                        ;			{
+  1840 00:0480: F4 xx xx     	pea	#^L19+32
+  1841 00:0483: F4 xx xx     	pea	#<L19+32
+  1842 00:0486: D4 0E        	pei	<L58+commandLine_0+2
+  1843 00:0488: D4 0C        	pei	<L58+commandLine_0
+  1844 00:048A: 22 xx xx xx  	jsl	~~strcmp
+  1845 00:048E: AA           	tax
+  Thu Dec  3 2020 22:25                                                Page 36
+
+
+  1846 00:048F: F0 03        	beq	L64
+  1847 00:0491: 82 0D 00     	brl	L10025
+  1848                        L64:
+  1849                        	.line	180
+  1850                        ;				processProc = DesktopEnv
+                    ironmentProc;
+  1851                        	.line	181
+  1852 00:0494: A9 xx xx     	lda	#<~~DesktopEnvironmentProc
+  1853 00:0497: 85 05        	sta	<L59+processProc_1
+  1854 00:0499: A9 xx xx     	lda	#^~~DesktopEnvironmentProc
+  1855 00:049C: 85 07        	sta	<L59+processProc_1+2
+  1856                        ;			}
+  1857                        	.line	182
+  1858                        ;			else if(strcmp(commandLine,"@/id
+                    le") == 0)
+  1859 00:049E: 82 1E 00     	brl	L10026
+  1860                        L10025:
+  1861                        	.line	183
+  1862                        ;			{
+  1863 00:04A1: F4 xx xx     	pea	#^L19+42
+  1864 00:04A4: F4 xx xx     	pea	#<L19+42
+  1865 00:04A7: D4 0E        	pei	<L58+commandLine_0+2
+  1866 00:04A9: D4 0C        	pei	<L58+commandLine_0
+  1867 00:04AB: 22 xx xx xx  	jsl	~~strcmp
+  1868 00:04AF: AA           	tax
+  1869 00:04B0: F0 03        	beq	L65
+  1870 00:04B2: 82 0A 00     	brl	L10027
+  1871                        L65:
+  1872                        	.line	184
+  1873                        ;				processProc = IdleProc;
+  1874                        	.line	185
+  1875 00:04B5: A9 xx xx     	lda	#<~~IdleProc
+  1876 00:04B8: 85 05        	sta	<L59+processProc_1
+  1877 00:04BA: A9 xx xx     	lda	#^~~IdleProc
+  1878 00:04BD: 85 07        	sta	<L59+processProc_1+2
+  1879                        ;			}
+  1880                        	.line	186
+  1881                        ;		}
+  1882                        L10027:
+  1883                        L10026:
+  1884                        L10024:
+  1885                        	.line	187
+  1886                        ;
+  1887                        ;		if(processProc)
+  1888                        L10022:
+  1889                        	.line	189
+  1890                        ;			process = k_exec_createProcess(c
+                    ommandLine,processProc,NULL);
+  1891 00:04BF: A5 05        	lda	<L59+processProc_1
+  1892 00:04C1: 05 07        	ora	<L59+processProc_1+2
+  1893 00:04C3: D0 03        	bne	L66
+  1894 00:04C5: 82 16 00     	brl	L10028
+  1895                        L66:
+  1896                        	.line	190
+  1897 00:04C8: F4 00 00     	pea	#^$0
+  1898 00:04CB: F4 00 00     	pea	#<$0
+  1899 00:04CE: D4 07        	pei	<L59+processProc_1+2
+  1900 00:04D0: D4 05        	pei	<L59+processProc_1
+  Thu Dec  3 2020 22:25                                                Page 37
+
+
+  1901 00:04D2: D4 0E        	pei	<L58+commandLine_0+2
+  1902 00:04D4: D4 0C        	pei	<L58+commandLine_0
+  1903 00:04D6: 22 xx xx xx  	jsl	~~k_exec_createProcess
+  1904 00:04DA: 85 01        	sta	<L59+process_1
+  1905 00:04DC: 86 03        	stx	<L59+process_1+2
+  1906                        ;	}
+  1907                        L10028:
+  1908                        	.line	191
+  1909                        ;	else
+  1910 00:04DE: 82 00 00     	brl	L10029
+  1911                        L10021:
+  1912                        ;	{
+  1913                        	.line	193
+  1914                        ;
+  1915                        ;	}
+  1916                        	.line	195
+  1917                        L10029:
+  1918                        ;
+  1919                        ;
+  1920                        ;	return process;
+  1921                        	.line	198
+  1922 00:04E1: A6 03        	ldx	<L59+process_1+2
+  1923 00:04E3: A5 01        	lda	<L59+process_1
+  1924                        L67:
+  1925 00:04E5: A8           	tay
+  1926 00:04E6: A5 0A        	lda	<L58+2
+  1927 00:04E8: 85 0E        	sta	<L58+2+4
+  1928 00:04EA: A5 09        	lda	<L58+1
+  1929 00:04EC: 85 0D        	sta	<L58+1+4
+  1930 00:04EE: 2B           	pld
+  1931 00:04EF: 3B           	tsc
+  1932 00:04F0: 18           	clc
+  1933 00:04F1: 69 0C 00     	adc	#L58+4
+  1934 00:04F4: 1B           	tcs
+  1935 00:04F5: 98           	tya
+  1936 00:04F6: 6B           	rtl
+  1937                        ;}
+  1938                        	.line	199
+  1939                        	.endblock	199
+  1940             00000008   L58	equ	8
+  1941             00000001   L59	equ	1
+  1942                        	ends
+  1943                        	efunc
+  1944                        	.endfunc	199,1,8
+  1945                        	.line	199
+  1946                        	data
+  1947                        L19:
+  1948 00:00BB: 6B 5F 65 78  	db	$6B,$5F,$65,$78,$65,$63,$5F,$6C,$61,$75,
+                    $6E,$63,$68,$50,$72
+       00:00BF: 65 63 5F 6C 
+       00:00C3: 61 75 6E 63 
+       00:00C7: 68 50 72 
+  1949 00:00CA: 6F 63 65 73  	db	$6F,$63,$65,$73,$73,$3A,$00,$40,$2F,$63,
+                    $6F,$6E,$73,$6F,$6C
+       00:00CE: 73 3A 00 40 
+       00:00D2: 2F 63 6F 6E 
+       00:00D6: 73 6F 6C 
+  1950 00:00D9: 65 00 40 2F  	db	$65,$00,$40,$2F,$64,$65,$73,$6B,$74,$6F,
+  Thu Dec  3 2020 22:25                                                Page 38
+
+
+                    $70,$00,$40,$2F,$69
+       00:00DD: 64 65 73 6B 
+       00:00E1: 74 6F 70 00 
+       00:00E5: 40 2F 69 
+  1951 00:00E8: 64 6C 65 00  	db	$64,$6C,$65,$00
+  1952 00:00EC:              	ends
+  1953                        ;
+  1954                        ;PFXPROCESS k_exec_createProcess(LPCHAR commandLin
+                    e,FXProcessProc processProc,LPVOID startupArgs)
+  1955                        ;{
+  1956                        	.line	201
+  1957                        	.line	202
+  1958                        	code
+  1959                        	xdef	~~k_exec_createProcess
+  1960                        	func
+  1961                        	.function	202
+  1962                        ~~k_exec_createProcess:
+  1963                        	longa	on
+  1964                        	longi	on
+  1965 00:04F7: 3B           	tsc
+  1966 00:04F8: 38           	sec
+  1967 00:04F9: E9 0C 00     	sbc	#L69
+  1968 00:04FC: 1B           	tcs
+  1969 00:04FD: 0B           	phd
+  1970 00:04FE: 5B           	tcd
+  1971             00000004   commandLine_0	set	4
+  1972             00000008   processProc_0	set	8
+  1973             0000000C   startupArgs_0	set	12
+  1974                        	.block	202
+  1975                        ;	PFXPROCESS process = NULL;
+  1976                        ;	PROCESS_ID processId = INVALID_HANDLE;
+  1977                        ;
+  1978                        ;	if(!processProc)
+  1979             00000000   process_1	set	0
+  1980             00000004   processId_1	set	4
+  1981                        	.sym	process,0,138,1,32,20
+  1982                        	.sym	processId,4,18,1,32
+  1983                        	.sym	commandLine,4,142,6,32
+  1984                        	.sym	processProc,8,641,6,32
+  1985                        	.sym	startupArgs,12,129,6,32
+  1986 00:04FF: 64 05        	stz	<L70+process_1
+  1987 00:0501: 64 07        	stz	<L70+process_1+2
+  1988 00:0503: A9 FF FF     	lda	#$ffff
+  1989 00:0506: 85 09        	sta	<L70+processId_1
+  1990 00:0508: A9 FF FF     	lda	#$ffff
+  1991 00:050B: 85 0B        	sta	<L70+processId_1+2
+  1992                        	.line	206
+  1993                        ;		return NULL;
+  1994 00:050D: A5 14        	lda	<L69+processProc_0
+  1995 00:050F: 05 16        	ora	<L69+processProc_0+2
+  1996 00:0511: F0 03        	beq	L72
+  1997 00:0513: 82 19 00     	brl	L10030
+  1998                        L72:
+  1999                        	.line	207
+  2000 00:0516: A9 00 00     	lda	#$0
+  2001 00:0519: AA           	tax
+  2002 00:051A: A9 00 00     	lda	#$0
+  2003                        L73:
+  Thu Dec  3 2020 22:25                                                Page 39
+
+
+  2004 00:051D: A8           	tay
+  2005 00:051E: A5 0E        	lda	<L69+2
+  2006 00:0520: 85 1A        	sta	<L69+2+12
+  2007 00:0522: A5 0D        	lda	<L69+1
+  2008 00:0524: 85 19        	sta	<L69+1+12
+  2009 00:0526: 2B           	pld
+  2010 00:0527: 3B           	tsc
+  2011 00:0528: 18           	clc
+  2012 00:0529: 69 18 00     	adc	#L69+12
+  2013 00:052C: 1B           	tcs
+  2014 00:052D: 98           	tya
+  2015 00:052E: 6B           	rtl
+  2016                        ;
+  2017                        ;	k_debug_pointer("k_exec_createProcess::processPr
+                    oc:",processProc);
+  2018                        L10030:
+  2019                        	.line	209
+  2020 00:052F: D4 16        	pei	<L69+processProc_0+2
+  2021 00:0531: D4 14        	pei	<L69+processProc_0
+  2022 00:0533: F4 xx xx     	pea	#^L68
+  2023 00:0536: F4 xx xx     	pea	#<L68
+  2024 00:0539: 22 xx xx xx  	jsl	~~k_debug_pointer
+  2025                        ;
+  2026                        ;	process = (PFXPROCESS)k_mem_allocate_heap(sizeof
+                    (FXPROCESS));
+  2027                        	.line	211
+  2028 00:053D: F4 64 00     	pea	#<$64
+  2029 00:0540: 22 xx xx xx  	jsl	~~k_mem_allocate_heap
+  2030 00:0544: 85 05        	sta	<L70+process_1
+  2031 00:0546: 86 07        	stx	<L70+process_1+2
+  2032                        ;	if(process)
+  2033                        	.line	212
+  2034                        ;	{
+  2035 00:0548: A5 05        	lda	<L70+process_1
+  2036 00:054A: 05 07        	ora	<L70+process_1+2
+  2037 00:054C: D0 03        	bne	L74
+  2038 00:054E: 82 02 01     	brl	L10031
+  2039                        L74:
+  2040                        	.line	213
+  2041                        ;		memset(process,0,sizeof(FXPROCESS));
+  2042                        	.line	214
+  2043 00:0551: F4 64 00     	pea	#<$64
+  2044 00:0554: F4 00 00     	pea	#<$0
+  2045 00:0557: D4 07        	pei	<L70+process_1+2
+  2046 00:0559: D4 05        	pei	<L70+process_1
+  2047 00:055B: 22 xx xx xx  	jsl	~~memset
+  2048                        ;		process->cbSize = sizeof(FXPROCESS);
+  2049                        	.line	215
+  2050 00:055F: A9 64 00     	lda	#$64
+  2051 00:0562: 87 05        	sta	[<L70+process_1]
+  2052                        ;		if(commandLine!=NULL)
+  2053                        	.line	216
+  2054                        ;		{
+  2055 00:0564: A5 10        	lda	<L69+commandLine_0
+  2056 00:0566: 05 12        	ora	<L69+commandLine_0+2
+  2057 00:0568: D0 03        	bne	L75
+  2058 00:056A: 82 1A 00     	brl	L10032
+  2059                        L75:
+  Thu Dec  3 2020 22:25                                                Page 40
+
+
+  2060                        	.line	217
+  2061                        ;			process->commandLine = k_string_
+                    copy_string(commandLine);
+  2062                        	.line	218
+  2063 00:056D: D4 12        	pei	<L69+commandLine_0+2
+  2064 00:056F: D4 10        	pei	<L69+commandLine_0
+  2065 00:0571: 22 xx xx xx  	jsl	~~k_string_copy_string
+  2066 00:0575: 85 01        	sta	<R0
+  2067 00:0577: 86 03        	stx	<R0+2
+  2068 00:0579: A5 01        	lda	<R0
+  2069 00:057B: A0 33 00     	ldy	#$33
+  2070 00:057E: 97 05        	sta	[<L70+process_1],Y
+  2071 00:0580: A5 03        	lda	<R0+2
+  2072 00:0582: A0 35 00     	ldy	#$35
+  2073 00:0585: 97 05        	sta	[<L70+process_1],Y
+  2074                        ;		}
+  2075                        	.line	219
+  2076                        ;		//processId = k_exec_nextprocess(process
+                    );
+  2077                        ;		process->procId = k_exec_nextprocess(pro
+                    cess);
+  2078                        L10032:
+  2079                        	.line	221
+  2080 00:0587: D4 07        	pei	<L70+process_1+2
+  2081 00:0589: D4 05        	pei	<L70+process_1
+  2082 00:058B: 22 xx xx xx  	jsl	~~k_exec_nextprocess
+  2083 00:058F: 85 01        	sta	<R0
+  2084 00:0591: 86 03        	stx	<R0+2
+  2085 00:0593: A5 01        	lda	<R0
+  2086 00:0595: A0 02 00     	ldy	#$2
+  2087 00:0598: 97 05        	sta	[<L70+process_1],Y
+  2088 00:059A: A5 03        	lda	<R0+2
+  2089 00:059C: A0 04 00     	ldy	#$4
+  2090 00:059F: 97 05        	sta	[<L70+process_1],Y
+  2091                        ;		if(process->procId == INVALID_HANDLE)
+  2092                        	.line	222
+  2093                        ;		{
+  2094 00:05A1: A0 02 00     	ldy	#$2
+  2095 00:05A4: B7 05        	lda	[<L70+process_1],Y
+  2096 00:05A6: C9 FF FF     	cmp	#<$ffffffff
+  2097 00:05A9: D0 08        	bne	L76
+  2098 00:05AB: A0 04 00     	ldy	#$4
+  2099 00:05AE: B7 05        	lda	[<L70+process_1],Y
+  2100 00:05B0: C9 FF FF     	cmp	#^$ffffffff
+  2101                        L76:
+  2102 00:05B3: F0 03        	beq	L77
+  2103 00:05B5: 82 1B 00     	brl	L10033
+  2104                        L77:
+  2105                        	.line	223
+  2106                        ;			k_exec_throw_exception(THIS_MODU
+                    LE,0x000A0000,"Kernel returned invalid process id.",-1);
+  2107                        	.line	224
+  2108 00:05B8: F4 FF FF     	pea	#<$ffffffff
+  2109 00:05BB: F4 xx xx     	pea	#^L68+35
+  2110 00:05BE: F4 xx xx     	pea	#<L68+35
+  2111 00:05C1: F4 0A 00     	pea	#^$a0000
+  2112 00:05C4: F4 00 00     	pea	#<$a0000
+  2113 00:05C7: AD xx xx     	lda	|~~THIS_MODULE+2
+  Thu Dec  3 2020 22:25                                                Page 41
+
+
+  2114 00:05CA: 48           	pha
+  2115 00:05CB: AD xx xx     	lda	|~~THIS_MODULE
+  2116 00:05CE: 48           	pha
+  2117 00:05CF: 22 xx xx xx  	jsl	~~k_exec_throw_exception
+  2118                        ;		}
+  2119                        	.line	225
+  2120                        ;		process->parentId = 0L;
+  2121                        L10033:
+  2122                        	.line	226
+  2123 00:05D3: A9 00 00     	lda	#$0
+  2124 00:05D6: A0 06 00     	ldy	#$6
+  2125 00:05D9: 97 05        	sta	[<L70+process_1],Y
+  2126 00:05DB: A9 00 00     	lda	#$0
+  2127 00:05DE: A0 08 00     	ldy	#$8
+  2128 00:05E1: 97 05        	sta	[<L70+process_1],Y
+  2129                        ;		if(k_exec_get_current_process())
+  2130                        	.line	227
+  2131                        ;		{
+  2132 00:05E3: 22 xx xx xx  	jsl	~~k_exec_get_current_process
+  2133 00:05E7: 85 01        	sta	<R0
+  2134 00:05E9: 86 03        	stx	<R0+2
+  2135 00:05EB: A5 01        	lda	<R0
+  2136 00:05ED: 05 03        	ora	<R0+2
+  2137 00:05EF: D0 03        	bne	L78
+  2138 00:05F1: 82 30 00     	brl	L10034
+  2139                        L78:
+  2140                        	.line	228
+  2141                        ;			k_debug_pointer("k_exec_createPr
+                    ocess::k_exec_get_current_process:",k_exec_get_current_proce
+                    ss());
+  2142                        	.line	229
+  2143 00:05F4: 22 xx xx xx  	jsl	~~k_exec_get_current_process
+  2144 00:05F8: 85 01        	sta	<R0
+  2145 00:05FA: 86 03        	stx	<R0+2
+  2146 00:05FC: DA           	phx
+  2147 00:05FD: 48           	pha
+  2148 00:05FE: F4 xx xx     	pea	#^L68+71
+  2149 00:0601: F4 xx xx     	pea	#<L68+71
+  2150 00:0604: 22 xx xx xx  	jsl	~~k_debug_pointer
+  2151                        ;			process->parentId = k_exec_get_c
+                    urrent_process()->procId;
+  2152                        	.line	230
+  2153 00:0608: 22 xx xx xx  	jsl	~~k_exec_get_current_process
+  2154 00:060C: 85 01        	sta	<R0
+  2155 00:060E: 86 03        	stx	<R0+2
+  2156 00:0610: A0 02 00     	ldy	#$2
+  2157 00:0613: B7 01        	lda	[<R0],Y
+  2158 00:0615: A0 06 00     	ldy	#$6
+  2159 00:0618: 97 05        	sta	[<L70+process_1],Y
+  2160 00:061A: A0 04 00     	ldy	#$4
+  2161 00:061D: B7 01        	lda	[<R0],Y
+  2162 00:061F: A0 08 00     	ldy	#$8
+  2163 00:0622: 97 05        	sta	[<L70+process_1],Y
+  2164                        ;		}
+  2165                        	.line	231
+  2166                        ;		//process->execProc = k_nodelist_create(
+                    PFXNODE_PROCEDURE_TYPE,NULL,processProc,NULL,NULL);
+  2167                        ;		process->execProc = processProc;
+  Thu Dec  3 2020 22:25                                                Page 42
+
+
+  2168                        L10034:
+  2169                        	.line	233
+  2170 00:0624: A5 14        	lda	<L69+processProc_0
+  2171 00:0626: A0 5C 00     	ldy	#$5c
+  2172 00:0629: 97 05        	sta	[<L70+process_1],Y
+  2173 00:062B: A5 16        	lda	<L69+processProc_0+2
+  2174 00:062D: A0 5E 00     	ldy	#$5e
+  2175 00:0630: 97 05        	sta	[<L70+process_1],Y
+  2176                        ;		process->status = PROCESS_STATUS_READY;
+  2177                        	.line	234
+  2178 00:0632: A9 F0 00     	lda	#$f0
+  2179 00:0635: A0 10 00     	ldy	#$10
+  2180 00:0638: 97 05        	sta	[<L70+process_1],Y
+  2181                        ;		process->foregroundActive = FALSE;
+  2182                        	.line	235
+  2183 00:063A: E2 20        	sep	#$20
+  2184                        	longa	off
+  2185 00:063C: A9 00        	lda	#$0
+  2186 00:063E: A0 12 00     	ldy	#$12
+  2187 00:0641: 97 05        	sta	[<L70+process_1],Y
+  2188 00:0643: C2 20        	rep	#$20
+  2189                        	longa	on
+  2190                        ;		process->startupArgs = startupArgs;
+  2191                        	.line	236
+  2192 00:0645: A5 18        	lda	<L69+startupArgs_0
+  2193 00:0647: A0 60 00     	ldy	#$60
+  2194 00:064A: 97 05        	sta	[<L70+process_1],Y
+  2195 00:064C: A5 1A        	lda	<L69+startupArgs_0+2
+  2196 00:064E: A0 62 00     	ldy	#$62
+  2197 00:0651: 97 05        	sta	[<L70+process_1],Y
+  2198                        ;		//k_nodelist_naddtolist(_k_execManager_P
+                    rocesssList,NL_TYPE_PROCESS,process->procId,process);
+  2199                        ;
+  2200                        ;		//k_debug_nodelist_list(_k_execManager_P
+                    rocesssList,debug_process_node);
+  2201                        ;
+  2202                        ;		//k_heap_integrity_check();
+  2203                        ;
+  2204                        ;	}
+  2205                        	.line	243
+  2206                        ;	return process;
+  2207                        L10031:
+  2208                        	.line	244
+  2209 00:0653: A6 07        	ldx	<L70+process_1+2
+  2210 00:0655: A5 05        	lda	<L70+process_1
+  2211 00:0657: 82 C3 FE     	brl	L73
+  2212                        ;}
+  2213                        	.line	245
+  2214                        	.endblock	245
+  2215             0000000C   L69	equ	12
+  2216             00000005   L70	equ	5
+  2217                        	ends
+  2218                        	efunc
+  2219                        	.endfunc	245,5,12
+  2220                        	.line	245
+  2221                        	data
+  2222                        L68:
+  2223 00:00EC: 6B 5F 65 78  	db	$6B,$5F,$65,$78,$65,$63,$5F,$63,$72,$65,
+  Thu Dec  3 2020 22:25                                                Page 43
+
+
+                    $61,$74,$65,$50,$72
+       00:00F0: 65 63 5F 63 
+       00:00F4: 72 65 61 74 
+       00:00F8: 65 50 72 
+  2224 00:00FB: 6F 63 65 73  	db	$6F,$63,$65,$73,$73,$3A,$3A,$70,$72,$6F,
+                    $63,$65,$73,$73,$50
+       00:00FF: 73 3A 3A 70 
+       00:0103: 72 6F 63 65 
+       00:0107: 73 73 50 
+  2225 00:010A: 72 6F 63 3A  	db	$72,$6F,$63,$3A,$00,$4B,$65,$72,$6E,$65,
+                    $6C,$20,$72,$65,$74
+       00:010E: 00 4B 65 72 
+       00:0112: 6E 65 6C 20 
+       00:0116: 72 65 74 
+  2226 00:0119: 75 72 6E 65  	db	$75,$72,$6E,$65,$64,$20,$69,$6E,$76,$61,
+                    $6C,$69,$64,$20,$70
+       00:011D: 64 20 69 6E 
+       00:0121: 76 61 6C 69 
+       00:0125: 64 20 70 
+  2227 00:0128: 72 6F 63 65  	db	$72,$6F,$63,$65,$73,$73,$20,$69,$64,$2E,
+                    $00,$6B,$5F,$65,$78
+       00:012C: 73 73 20 69 
+       00:0130: 64 2E 00 6B 
+       00:0134: 5F 65 78 
+  2228 00:0137: 65 63 5F 63  	db	$65,$63,$5F,$63,$72,$65,$61,$74,$65,$50,
+                    $72,$6F,$63,$65,$73
+       00:013B: 72 65 61 74 
+       00:013F: 65 50 72 6F 
+       00:0143: 63 65 73 
+  2229 00:0146: 73 3A 3A 6B  	db	$73,$3A,$3A,$6B,$5F,$65,$78,$65,$63,$5F,
+                    $67,$65,$74,$5F,$63
+       00:014A: 5F 65 78 65 
+       00:014E: 63 5F 67 65 
+       00:0152: 74 5F 63 
+  2230 00:0155: 75 72 72 65  	db	$75,$72,$72,$65,$6E,$74,$5F,$70,$72,$6F,
+                    $63,$65,$73,$73,$3A
+       00:0159: 6E 74 5F 70 
+       00:015D: 72 6F 63 65 
+       00:0161: 73 73 3A 
+  2231 00:0164: 00           	db	$00
+  2232 00:0165:              	ends
+  2233                        ;
+  2234                        ;PFXPROCESS k_exec_set_current_process(PFXPROCESS 
+                    currentProcess)
+  2235                        ;{
+  2236                        	.line	247
+  2237                        	.line	248
+  2238                        	code
+  2239                        	xdef	~~k_exec_set_current_process
+  2240                        	func
+  2241                        	.function	248
+  2242                        ~~k_exec_set_current_process:
+  2243                        	longa	on
+  2244                        	longi	on
+  2245 00:065A: 3B           	tsc
+  2246 00:065B: 38           	sec
+  2247 00:065C: E9 04 00     	sbc	#L80
+  2248 00:065F: 1B           	tcs
+  Thu Dec  3 2020 22:25                                                Page 44
+
+
+  2249 00:0660: 0B           	phd
+  2250 00:0661: 5B           	tcd
+  2251             00000004   currentProcess_0	set	4
+  2252                        	.block	248
+  2253                        ;	PFXPROCESS previousProcess = _k_current_Process;
+  2254                        ;
+  2255                        ;	_k_current_Process = currentProcess;
+  2256             00000000   previousProcess_1	set	0
+  2257                        	.sym	previousProcess,0,138,1,32,20
+  2258                        	.sym	currentProcess,4,138,6,32,20
+  2259 00:0662: AD xx xx     	lda	|~~_k_current_Process
+  2260 00:0665: 85 01        	sta	<L81+previousProcess_1
+  2261 00:0667: AD xx xx     	lda	|~~_k_current_Process+2
+  2262 00:066A: 85 03        	sta	<L81+previousProcess_1+2
+  2263                        	.line	251
+  2264 00:066C: A5 08        	lda	<L80+currentProcess_0
+  2265 00:066E: 8D xx xx     	sta	|~~_k_current_Process
+  2266 00:0671: A5 0A        	lda	<L80+currentProcess_0+2
+  2267 00:0673: 8D xx xx     	sta	|~~_k_current_Process+2
+  2268                        ;
+  2269                        ;	return previousProcess;
+  2270                        	.line	253
+  2271 00:0676: A6 03        	ldx	<L81+previousProcess_1+2
+  2272 00:0678: A5 01        	lda	<L81+previousProcess_1
+  2273                        L83:
+  2274 00:067A: A8           	tay
+  2275 00:067B: A5 06        	lda	<L80+2
+  2276 00:067D: 85 0A        	sta	<L80+2+4
+  2277 00:067F: A5 05        	lda	<L80+1
+  2278 00:0681: 85 09        	sta	<L80+1+4
+  2279 00:0683: 2B           	pld
+  2280 00:0684: 3B           	tsc
+  2281 00:0685: 18           	clc
+  2282 00:0686: 69 08 00     	adc	#L80+4
+  2283 00:0689: 1B           	tcs
+  2284 00:068A: 98           	tya
+  2285 00:068B: 6B           	rtl
+  2286                        ;}
+  2287                        	.line	254
+  2288                        	.endblock	254
+  2289             00000004   L80	equ	4
+  2290             00000001   L81	equ	1
+  2291                        	ends
+  2292                        	efunc
+  2293                        	.endfunc	254,1,4
+  2294                        	.line	254
+  2295                        ;
+  2296                        ;PFXPROCESS k_exec_get_current_process(void)
+  2297                        ;{
+  2298                        	.line	256
+  2299                        	.line	257
+  2300                        	code
+  2301                        	xdef	~~k_exec_get_current_process
+  2302                        	func
+  2303                        	.function	257
+  2304                        ~~k_exec_get_current_process:
+  2305                        	longa	on
+  2306                        	longi	on
+  Thu Dec  3 2020 22:25                                                Page 45
+
+
+  2307 00:068C: 3B           	tsc
+  2308 00:068D: 38           	sec
+  2309 00:068E: E9 00 00     	sbc	#L84
+  2310 00:0691: 1B           	tcs
+  2311 00:0692: 0B           	phd
+  2312 00:0693: 5B           	tcd
+  2313                        	.block	257
+  2314                        ;	return _k_current_Process;
+  2315                        	.line	258
+  2316 00:0694: AE xx xx     	ldx	|~~_k_current_Process+2
+  2317 00:0697: AD xx xx     	lda	|~~_k_current_Process
+  2318                        L87:
+  2319 00:069A: A8           	tay
+  2320 00:069B: 2B           	pld
+  2321 00:069C: 3B           	tsc
+  2322 00:069D: 18           	clc
+  2323 00:069E: 69 00 00     	adc	#L84
+  2324 00:06A1: 1B           	tcs
+  2325 00:06A2: 98           	tya
+  2326 00:06A3: 6B           	rtl
+  2327                        ;}
+  2328                        	.line	259
+  2329                        	.endblock	259
+  2330             00000000   L84	equ	0
+  2331             00000001   L85	equ	1
+  2332                        	ends
+  2333                        	efunc
+  2334                        	.endfunc	259,1,0
+  2335                        	.line	259
+  2336                        ;
+  2337                        ;PROCESS_CTX k_exec_setContext(PROCESS_ID processI
+                    d,PROCESS_CTX data)
+  2338                        ;{
+  2339                        	.line	261
+  2340                        	.line	262
+  2341                        	code
+  2342                        	xdef	~~k_exec_setContext
+  2343                        	func
+  2344                        	.function	262
+  2345                        ~~k_exec_setContext:
+  2346                        	longa	on
+  2347                        	longi	on
+  2348 00:06A4: 3B           	tsc
+  2349 00:06A5: 38           	sec
+  2350 00:06A6: E9 00 00     	sbc	#L88
+  2351 00:06A9: 1B           	tcs
+  2352 00:06AA: 0B           	phd
+  2353 00:06AB: 5B           	tcd
+  2354             00000004   processId_0	set	4
+  2355             00000008   data_0	set	8
+  2356                        	.block	262
+  2357                        ;	return NULL;
+  2358                        	.sym	processId,4,18,6,32
+  2359                        	.sym	data,8,129,6,32
+  2360                        	.line	263
+  2361 00:06AC: A9 00 00     	lda	#$0
+  2362 00:06AF: AA           	tax
+  2363 00:06B0: A9 00 00     	lda	#$0
+  Thu Dec  3 2020 22:25                                                Page 46
+
+
+  2364                        L91:
+  2365 00:06B3: A8           	tay
+  2366 00:06B4: A5 02        	lda	<L88+2
+  2367 00:06B6: 85 0A        	sta	<L88+2+8
+  2368 00:06B8: A5 01        	lda	<L88+1
+  2369 00:06BA: 85 09        	sta	<L88+1+8
+  2370 00:06BC: 2B           	pld
+  2371 00:06BD: 3B           	tsc
+  2372 00:06BE: 18           	clc
+  2373 00:06BF: 69 08 00     	adc	#L88+8
+  2374 00:06C2: 1B           	tcs
+  2375 00:06C3: 98           	tya
+  2376 00:06C4: 6B           	rtl
+  2377                        ;}
+  2378                        	.line	264
+  2379                        	.endblock	264
+  2380             00000000   L88	equ	0
+  2381             00000001   L89	equ	1
+  2382                        	ends
+  2383                        	efunc
+  2384                        	.endfunc	264,1,0
+  2385                        	.line	264
+  2386                        ;
+  2387                        ;PROCESS_CTX k_exec_getContext(PROCESS_ID processI
+                    d)
+  2388                        ;{
+  2389                        	.line	266
+  2390                        	.line	267
+  2391                        	code
+  2392                        	xdef	~~k_exec_getContext
+  2393                        	func
+  2394                        	.function	267
+  2395                        ~~k_exec_getContext:
+  2396                        	longa	on
+  2397                        	longi	on
+  2398 00:06C5: 3B           	tsc
+  2399 00:06C6: 38           	sec
+  2400 00:06C7: E9 00 00     	sbc	#L92
+  2401 00:06CA: 1B           	tcs
+  2402 00:06CB: 0B           	phd
+  2403 00:06CC: 5B           	tcd
+  2404             00000004   processId_0	set	4
+  2405                        	.block	267
+  2406                        ;	return NULL;
+  2407                        	.sym	processId,4,18,6,32
+  2408                        	.line	268
+  2409 00:06CD: A9 00 00     	lda	#$0
+  2410 00:06D0: AA           	tax
+  2411 00:06D1: A9 00 00     	lda	#$0
+  2412                        L95:
+  2413 00:06D4: A8           	tay
+  2414 00:06D5: A5 02        	lda	<L92+2
+  2415 00:06D7: 85 06        	sta	<L92+2+4
+  2416 00:06D9: A5 01        	lda	<L92+1
+  2417 00:06DB: 85 05        	sta	<L92+1+4
+  2418 00:06DD: 2B           	pld
+  2419 00:06DE: 3B           	tsc
+  2420 00:06DF: 18           	clc
+  Thu Dec  3 2020 22:25                                                Page 47
+
+
+  2421 00:06E0: 69 04 00     	adc	#L92+4
+  2422 00:06E3: 1B           	tcs
+  2423 00:06E4: 98           	tya
+  2424 00:06E5: 6B           	rtl
+  2425                        ;}
+  2426                        	.line	269
+  2427                        	.endblock	269
+  2428             00000000   L92	equ	0
+  2429             00000001   L93	equ	1
+  2430                        	ends
+  2431                        	efunc
+  2432                        	.endfunc	269,1,0
+  2433                        	.line	269
+  2434                        ;//
+  2435                        ;//
+  2436                        ;//
+  2437                        ;//
+  2438                        ;BOOL k_exec_signal_sleep(PROCESS_ID processId)
+  2439                        ;{
+  2440                        	.line	274
+  2441                        	.line	275
+  2442                        	code
+  2443                        	xdef	~~k_exec_signal_sleep
+  2444                        	func
+  2445                        	.function	275
+  2446                        ~~k_exec_signal_sleep:
+  2447                        	longa	on
+  2448                        	longi	on
+  2449 00:06E6: 3B           	tsc
+  2450 00:06E7: 38           	sec
+  2451 00:06E8: E9 04 00     	sbc	#L96
+  2452 00:06EB: 1B           	tcs
+  2453 00:06EC: 0B           	phd
+  2454 00:06ED: 5B           	tcd
+  2455             00000004   processId_0	set	4
+  2456                        	.block	275
+  2457                        ;	return k_exec_set_signal(processId,PROCESS_STATU
+                    S_SLEEPING);
+  2458                        	.sym	processId,4,18,6,32
+  2459                        	.line	276
+  2460 00:06EE: F4 02 00     	pea	#<$2
+  2461 00:06F1: D4 0A        	pei	<L96+processId_0+2
+  2462 00:06F3: D4 08        	pei	<L96+processId_0
+  2463 00:06F5: 22 xx xx xx  	jsl	~~k_exec_set_signal
+  2464 00:06F9: E2 20        	sep	#$20
+  2465                        	longa	off
+  2466 00:06FB: 85 01        	sta	<R0
+  2467 00:06FD: C2 20        	rep	#$20
+  2468                        	longa	on
+  2469 00:06FF: A5 01        	lda	<R0
+  2470 00:0701: 29 FF 00     	and	#$ff
+  2471                        L99:
+  2472 00:0704: A8           	tay
+  2473 00:0705: A5 06        	lda	<L96+2
+  2474 00:0707: 85 0A        	sta	<L96+2+4
+  2475 00:0709: A5 05        	lda	<L96+1
+  2476 00:070B: 85 09        	sta	<L96+1+4
+  2477 00:070D: 2B           	pld
+  Thu Dec  3 2020 22:25                                                Page 48
+
+
+  2478 00:070E: 3B           	tsc
+  2479 00:070F: 18           	clc
+  2480 00:0710: 69 08 00     	adc	#L96+4
+  2481 00:0713: 1B           	tcs
+  2482 00:0714: 98           	tya
+  2483 00:0715: 6B           	rtl
+  2484                        ;}
+  2485                        	.line	277
+  2486                        	.endblock	277
+  2487             00000004   L96	equ	4
+  2488             00000005   L97	equ	5
+  2489                        	ends
+  2490                        	efunc
+  2491                        	.endfunc	277,5,4
+  2492                        	.line	277
+  2493                        ;
+  2494                        ;BOOL k_exec_signal_terminate(PROCESS_ID processId
+                    )
+  2495                        ;{
+  2496                        	.line	279
+  2497                        	.line	280
+  2498                        	code
+  2499                        	xdef	~~k_exec_signal_terminate
+  2500                        	func
+  2501                        	.function	280
+  2502                        ~~k_exec_signal_terminate:
+  2503                        	longa	on
+  2504                        	longi	on
+  2505 00:0716: 3B           	tsc
+  2506 00:0717: 38           	sec
+  2507 00:0718: E9 04 00     	sbc	#L100
+  2508 00:071B: 1B           	tcs
+  2509 00:071C: 0B           	phd
+  2510 00:071D: 5B           	tcd
+  2511             00000004   processId_0	set	4
+  2512                        	.block	280
+  2513                        ;	return k_exec_set_signal(processId,PROCESS_STATU
+                    S_TERMINATED);
+  2514                        	.sym	processId,4,18,6,32
+  2515                        	.line	281
+  2516 00:071E: F4 03 00     	pea	#<$3
+  2517 00:0721: D4 0A        	pei	<L100+processId_0+2
+  2518 00:0723: D4 08        	pei	<L100+processId_0
+  2519 00:0725: 22 xx xx xx  	jsl	~~k_exec_set_signal
+  2520 00:0729: E2 20        	sep	#$20
+  2521                        	longa	off
+  2522 00:072B: 85 01        	sta	<R0
+  2523 00:072D: C2 20        	rep	#$20
+  2524                        	longa	on
+  2525 00:072F: A5 01        	lda	<R0
+  2526 00:0731: 29 FF 00     	and	#$ff
+  2527                        L103:
+  2528 00:0734: A8           	tay
+  2529 00:0735: A5 06        	lda	<L100+2
+  2530 00:0737: 85 0A        	sta	<L100+2+4
+  2531 00:0739: A5 05        	lda	<L100+1
+  2532 00:073B: 85 09        	sta	<L100+1+4
+  2533 00:073D: 2B           	pld
+  Thu Dec  3 2020 22:25                                                Page 49
+
+
+  2534 00:073E: 3B           	tsc
+  2535 00:073F: 18           	clc
+  2536 00:0740: 69 08 00     	adc	#L100+4
+  2537 00:0743: 1B           	tcs
+  2538 00:0744: 98           	tya
+  2539 00:0745: 6B           	rtl
+  2540                        ;}
+  2541                        	.line	282
+  2542                        	.endblock	282
+  2543             00000004   L100	equ	4
+  2544             00000005   L101	equ	5
+  2545                        	ends
+  2546                        	efunc
+  2547                        	.endfunc	282,5,4
+  2548                        	.line	282
+  2549                        ;
+  2550                        ;BOOL k_exec_signal_start(PROCESS_ID processId)
+  2551                        ;{
+  2552                        	.line	284
+  2553                        	.line	285
+  2554                        	code
+  2555                        	xdef	~~k_exec_signal_start
+  2556                        	func
+  2557                        	.function	285
+  2558                        ~~k_exec_signal_start:
+  2559                        	longa	on
+  2560                        	longi	on
+  2561 00:0746: 3B           	tsc
+  2562 00:0747: 38           	sec
+  2563 00:0748: E9 04 00     	sbc	#L104
+  2564 00:074B: 1B           	tcs
+  2565 00:074C: 0B           	phd
+  2566 00:074D: 5B           	tcd
+  2567             00000004   processId_0	set	4
+  2568                        	.block	285
+  2569                        ;	return k_exec_set_signal(processId,PROCESS_STATU
+                    S_RUNNING);
+  2570                        	.sym	processId,4,18,6,32
+  2571                        	.line	286
+  2572 00:074E: F4 01 00     	pea	#<$1
+  2573 00:0751: D4 0A        	pei	<L104+processId_0+2
+  2574 00:0753: D4 08        	pei	<L104+processId_0
+  2575 00:0755: 22 xx xx xx  	jsl	~~k_exec_set_signal
+  2576 00:0759: E2 20        	sep	#$20
+  2577                        	longa	off
+  2578 00:075B: 85 01        	sta	<R0
+  2579 00:075D: C2 20        	rep	#$20
+  2580                        	longa	on
+  2581 00:075F: A5 01        	lda	<R0
+  2582 00:0761: 29 FF 00     	and	#$ff
+  2583                        L107:
+  2584 00:0764: A8           	tay
+  2585 00:0765: A5 06        	lda	<L104+2
+  2586 00:0767: 85 0A        	sta	<L104+2+4
+  2587 00:0769: A5 05        	lda	<L104+1
+  2588 00:076B: 85 09        	sta	<L104+1+4
+  2589 00:076D: 2B           	pld
+  2590 00:076E: 3B           	tsc
+  Thu Dec  3 2020 22:25                                                Page 50
+
+
+  2591 00:076F: 18           	clc
+  2592 00:0770: 69 08 00     	adc	#L104+4
+  2593 00:0773: 1B           	tcs
+  2594 00:0774: 98           	tya
+  2595 00:0775: 6B           	rtl
+  2596                        ;}
+  2597                        	.line	287
+  2598                        	.endblock	287
+  2599             00000004   L104	equ	4
+  2600             00000005   L105	equ	5
+  2601                        	ends
+  2602                        	efunc
+  2603                        	.endfunc	287,5,4
+  2604                        	.line	287
+  2605                        ;
+  2606                        ;BOOL k_exec_signal_wait(PROCESS_ID processId,PPRO
+                    CESS_SIGNAL signal)
+  2607                        ;{
+  2608                        	.line	289
+  2609                        	.line	290
+  2610                        	code
+  2611                        	xdef	~~k_exec_signal_wait
+  2612                        	func
+  2613                        	.function	290
+  2614                        ~~k_exec_signal_wait:
+  2615                        	longa	on
+  2616                        	longi	on
+  2617 00:0776: 3B           	tsc
+  2618 00:0777: 38           	sec
+  2619 00:0778: E9 04 00     	sbc	#L108
+  2620 00:077B: 1B           	tcs
+  2621 00:077C: 0B           	phd
+  2622 00:077D: 5B           	tcd
+  2623             00000004   processId_0	set	4
+  2624             00000008   signal_0	set	8
+  2625                        	.block	290
+  2626                        ;	return k_exec_set_signal(processId,PROCESS_STATU
+                    S_WAITING);
+  2627                        	.sym	processId,4,18,6,32
+  2628                        	.sym	signal,8,138,6,32,9
+  2629                        	.line	291
+  2630 00:077E: F4 F1 00     	pea	#<$f1
+  2631 00:0781: D4 0A        	pei	<L108+processId_0+2
+  2632 00:0783: D4 08        	pei	<L108+processId_0
+  2633 00:0785: 22 xx xx xx  	jsl	~~k_exec_set_signal
+  2634 00:0789: E2 20        	sep	#$20
+  2635                        	longa	off
+  2636 00:078B: 85 01        	sta	<R0
+  2637 00:078D: C2 20        	rep	#$20
+  2638                        	longa	on
+  2639 00:078F: A5 01        	lda	<R0
+  2640 00:0791: 29 FF 00     	and	#$ff
+  2641                        L111:
+  2642 00:0794: A8           	tay
+  2643 00:0795: A5 06        	lda	<L108+2
+  2644 00:0797: 85 0E        	sta	<L108+2+8
+  2645 00:0799: A5 05        	lda	<L108+1
+  2646 00:079B: 85 0D        	sta	<L108+1+8
+  Thu Dec  3 2020 22:25                                                Page 51
+
+
+  2647 00:079D: 2B           	pld
+  2648 00:079E: 3B           	tsc
+  2649 00:079F: 18           	clc
+  2650 00:07A0: 69 0C 00     	adc	#L108+8
+  2651 00:07A3: 1B           	tcs
+  2652 00:07A4: 98           	tya
+  2653 00:07A5: 6B           	rtl
+  2654                        ;}
+  2655                        	.line	292
+  2656                        	.endblock	292
+  2657             00000004   L108	equ	4
+  2658             00000005   L109	equ	5
+  2659                        	ends
+  2660                        	efunc
+  2661                        	.endfunc	292,5,4
+  2662                        	.line	292
+  2663                        ;
+  2664                        ;BOOL k_exec_set_signal(PROCESS_ID processId,PROCE
+                    SS_STATUS signal)
+  2665                        ;{
+  2666                        	.line	294
+  2667                        	.line	295
+  2668                        	code
+  2669                        	xdef	~~k_exec_set_signal
+  2670                        	func
+  2671                        	.function	295
+  2672                        ~~k_exec_set_signal:
+  2673                        	longa	on
+  2674                        	longi	on
+  2675 00:07A6: 3B           	tsc
+  2676 00:07A7: 38           	sec
+  2677 00:07A8: E9 0E 00     	sbc	#L112
+  2678 00:07AB: 1B           	tcs
+  2679 00:07AC: 0B           	phd
+  2680 00:07AD: 5B           	tcd
+  2681             00000004   processId_0	set	4
+  2682             00000008   signal_0	set	8
+  2683                        	.block	295
+  2684                        ;	PFXPROCESS p = NULL;
+  2685                        ;
+  2686                        ;	int index = 0;
+  2687                        ;
+  2688                        ;	for(index=0;index<MAX_PROCESS;index++)
+  2689             00000000   p_1	set	0
+  2690             00000004   index_1	set	4
+  2691                        	.sym	p,0,138,1,32,20
+  2692                        	.sym	index,4,5,1,16
+  2693                        	.sym	processId,4,18,6,32
+  2694                        	.sym	signal,8,16,6,16
+  2695 00:07AE: 64 09        	stz	<L113+p_1
+  2696 00:07B0: 64 0B        	stz	<L113+p_1+2
+  2697 00:07B2: 64 0D        	stz	<L113+index_1
+  2698                        	.line	300
+  2699 00:07B4: 64 0D        	stz	<L113+index_1
+  2700                        L10037:
+  2701                        ;	{
+  2702                        	.line	301
+  2703                        ;		if(_k_processList[index] && (_k_processL
+  Thu Dec  3 2020 22:25                                                Page 52
+
+
+                    ist[index]->procId == processId))
+  2704                        	.line	302
+  2705                        ;		{
+  2706 00:07B6: A5 0D        	lda	<L113+index_1
+  2707 00:07B8: 0A           	asl	A
+  2708 00:07B9: 0A           	asl	A
+  2709 00:07BA: 85 01        	sta	<R0
+  2710 00:07BC: 18           	clc
+  2711 00:07BD: A9 xx xx     	lda	#<~~_k_processList
+  2712 00:07C0: 65 01        	adc	<R0
+  2713 00:07C2: 85 05        	sta	<R1
+  2714 00:07C4: B2 05        	lda	(<R1)
+  2715 00:07C6: A0 02 00     	ldy	#$2
+  2716 00:07C9: 11 05        	ora	(<R1),Y
+  2717 00:07CB: D0 03        	bne	L115
+  2718 00:07CD: 82 63 00     	brl	L10038
+  2719                        L115:
+  2720 00:07D0: A5 0D        	lda	<L113+index_1
+  2721 00:07D2: 0A           	asl	A
+  2722 00:07D3: 0A           	asl	A
+  2723 00:07D4: 85 01        	sta	<R0
+  2724 00:07D6: 18           	clc
+  2725 00:07D7: A9 xx xx     	lda	#<~~_k_processList
+  2726 00:07DA: 65 01        	adc	<R0
+  2727 00:07DC: 85 05        	sta	<R1
+  2728 00:07DE: B2 05        	lda	(<R1)
+  2729 00:07E0: 85 01        	sta	<R0
+  2730 00:07E2: A0 02 00     	ldy	#$2
+  2731 00:07E5: B1 05        	lda	(<R1),Y
+  2732 00:07E7: 85 03        	sta	<R0+2
+  2733 00:07E9: A0 02 00     	ldy	#$2
+  2734 00:07EC: B7 01        	lda	[<R0],Y
+  2735 00:07EE: C5 12        	cmp	<L112+processId_0
+  2736 00:07F0: D0 07        	bne	L116
+  2737 00:07F2: A0 04 00     	ldy	#$4
+  2738 00:07F5: B7 01        	lda	[<R0],Y
+  2739 00:07F7: C5 14        	cmp	<L112+processId_0+2
+  2740                        L116:
+  2741 00:07F9: F0 03        	beq	L117
+  2742 00:07FB: 82 35 00     	brl	L10038
+  2743                        L117:
+  2744                        	.line	303
+  2745                        ;			_k_processList[index]->status = 
+                    signal;
+  2746                        	.line	304
+  2747 00:07FE: A5 0D        	lda	<L113+index_1
+  2748 00:0800: 0A           	asl	A
+  2749 00:0801: 0A           	asl	A
+  2750 00:0802: 85 01        	sta	<R0
+  2751 00:0804: 18           	clc
+  2752 00:0805: A9 xx xx     	lda	#<~~_k_processList
+  2753 00:0808: 65 01        	adc	<R0
+  2754 00:080A: 85 05        	sta	<R1
+  2755 00:080C: B2 05        	lda	(<R1)
+  2756 00:080E: 85 01        	sta	<R0
+  2757 00:0810: A0 02 00     	ldy	#$2
+  2758 00:0813: B1 05        	lda	(<R1),Y
+  2759 00:0815: 85 03        	sta	<R0+2
+  Thu Dec  3 2020 22:25                                                Page 53
+
+
+  2760 00:0817: A5 16        	lda	<L112+signal_0
+  2761 00:0819: A0 10 00     	ldy	#$10
+  2762 00:081C: 97 01        	sta	[<R0],Y
+  2763                        ;			return TRUE;
+  2764                        	.line	305
+  2765 00:081E: A9 01 00     	lda	#$1
+  2766                        L118:
+  2767 00:0821: A8           	tay
+  2768 00:0822: A5 10        	lda	<L112+2
+  2769 00:0824: 85 16        	sta	<L112+2+6
+  2770 00:0826: A5 0F        	lda	<L112+1
+  2771 00:0828: 85 15        	sta	<L112+1+6
+  2772 00:082A: 2B           	pld
+  2773 00:082B: 3B           	tsc
+  2774 00:082C: 18           	clc
+  2775 00:082D: 69 14 00     	adc	#L112+6
+  2776 00:0830: 1B           	tcs
+  2777 00:0831: 98           	tya
+  2778 00:0832: 6B           	rtl
+  2779                        ;		}
+  2780                        	.line	306
+  2781                        ;	}
+  2782                        L10038:
+  2783                        	.line	307
+  2784                        L10035:
+  2785 00:0833: E6 0D        	inc	<L113+index_1
+  2786 00:0835: 38           	sec
+  2787 00:0836: A5 0D        	lda	<L113+index_1
+  2788 00:0838: E9 20 00     	sbc	#<$20
+  2789 00:083B: 70 03        	bvs	L119
+  2790 00:083D: 49 00 80     	eor	#$8000
+  2791                        L119:
+  2792 00:0840: 30 03        	bmi	L120
+  2793 00:0842: 82 71 FF     	brl	L10037
+  2794                        L120:
+  2795                        L10036:
+  2796                        ;
+  2797                        ;	return FALSE;
+  2798                        	.line	309
+  2799 00:0845: A9 00 00     	lda	#$0
+  2800 00:0848: 82 D6 FF     	brl	L118
+  2801                        ;}
+  2802                        	.line	310
+  2803                        	.endblock	310
+  2804             0000000E   L112	equ	14
+  2805             00000009   L113	equ	9
+  2806                        	ends
+  2807                        	efunc
+  2808                        	.endfunc	310,9,14
+  2809                        	.line	310
+  2810                        ;
+  2811                        ;
+  2812                        ;VOID k_exec_throw_exception(ULONG ctxId,ULONG err
+                    orId,LPVOID exceptionMessage,UINT exMsgSize)
+  2813                        ;{
+  2814                        	.line	313
+  2815                        	.line	314
+  2816                        	code
+  Thu Dec  3 2020 22:25                                                Page 54
+
+
+  2817                        	xdef	~~k_exec_throw_exception
+  2818                        	func
+  2819                        	.function	314
+  2820                        ~~k_exec_throw_exception:
+  2821                        	longa	on
+  2822                        	longi	on
+  2823 00:084B: 3B           	tsc
+  2824 00:084C: 38           	sec
+  2825 00:084D: E9 06 00     	sbc	#L121
+  2826 00:0850: 1B           	tcs
+  2827 00:0851: 0B           	phd
+  2828 00:0852: 5B           	tcd
+  2829             00000004   ctxId_0	set	4
+  2830             00000008   errorId_0	set	8
+  2831             0000000C   exceptionMessage_0	set	12
+  2832             00000010   exMsgSize_0	set	16
+  2833                        	.block	314
+  2834                        ;	UINT len = 0;
+  2835                        ;
+  2836                        ;	k_enable_text_mode();
+  2837             00000000   len_1	set	0
+  2838                        	.sym	len,0,16,1,16
+  2839                        	.sym	ctxId,4,18,6,32
+  2840                        	.sym	errorId,8,18,6,32
+  2841                        	.sym	exceptionMessage,12,129,6,32
+  2842                        	.sym	exMsgSize,16,16,6,16
+  2843 00:0853: 64 05        	stz	<L122+len_1
+  2844                        	.line	317
+  2845 00:0855: 22 xx xx xx  	jsl	~~k_enable_text_mode
+  2846                        ;
+  2847                        ;	if(exceptionMessage)
+  2848                        	.line	319
+  2849                        ;		k_debug_strings("k_exec_throw_exception:
+                    ",(LPSTR)exceptionMessage);
+  2850 00:0859: A5 12        	lda	<L121+exceptionMessage_0
+  2851 00:085B: 05 14        	ora	<L121+exceptionMessage_0+2
+  2852 00:085D: D0 03        	bne	L124
+  2853 00:085F: 82 0E 00     	brl	L10039
+  2854                        L124:
+  2855                        	.line	320
+  2856 00:0862: D4 14        	pei	<L121+exceptionMessage_0+2
+  2857 00:0864: D4 12        	pei	<L121+exceptionMessage_0
+  2858 00:0866: F4 xx xx     	pea	#^L79
+  2859 00:0869: F4 xx xx     	pea	#<L79
+  2860 00:086C: 22 xx xx xx  	jsl	~~k_debug_strings
+  2861                        ;
+  2862                        ;	_k_exec_context 	= ctxId;
+  2863                        L10039:
+  2864                        	.line	322
+  2865 00:0870: A5 0A        	lda	<L121+ctxId_0
+  2866 00:0872: 8D xx xx     	sta	|~~_k_exec_context
+  2867 00:0875: A5 0C        	lda	<L121+ctxId_0+2
+  2868 00:0877: 8D xx xx     	sta	|~~_k_exec_context+2
+  2869                        ;	_k_exec_error		= errorId;
+  2870                        	.line	323
+  2871 00:087A: A5 0E        	lda	<L121+errorId_0
+  2872 00:087C: 8D xx xx     	sta	|~~_k_exec_error
+  2873 00:087F: A5 10        	lda	<L121+errorId_0+2
+  Thu Dec  3 2020 22:25                                                Page 55
+
+
+  2874 00:0881: 8D xx xx     	sta	|~~_k_exec_error+2
+  2875                        ;
+  2876                        ;	if(exMsgSize == -1)
+  2877                        	.line	325
+  2878                        ;	{
+  2879 00:0884: A5 16        	lda	<L121+exMsgSize_0
+  2880 00:0886: C9 FF FF     	cmp	#<$ffffffff
+  2881 00:0889: F0 03        	beq	L125
+  2882 00:088B: 82 20 00     	brl	L10040
+  2883                        L125:
+  2884                        	.line	326
+  2885                        ;		len = strlen(exceptionMessage);
+  2886                        	.line	327
+  2887 00:088E: D4 14        	pei	<L121+exceptionMessage_0+2
+  2888 00:0890: D4 12        	pei	<L121+exceptionMessage_0
+  2889 00:0892: 22 xx xx xx  	jsl	~~strlen
+  2890 00:0896: 85 05        	sta	<L122+len_1
+  2891                        ;		if(len < 64)
+  2892                        	.line	328
+  2893                        ;			exMsgSize = len;
+  2894 00:0898: A5 05        	lda	<L122+len_1
+  2895 00:089A: C9 40 00     	cmp	#<$40
+  2896 00:089D: 90 03        	bcc	L126
+  2897 00:089F: 82 07 00     	brl	L10041
+  2898                        L126:
+  2899                        	.line	329
+  2900 00:08A2: A5 05        	lda	<L122+len_1
+  2901 00:08A4: 85 16        	sta	<L121+exMsgSize_0
+  2902                        ;		else
+  2903 00:08A6: 82 05 00     	brl	L10042
+  2904                        L10041:
+  2905                        ;			exMsgSize = 63;
+  2906                        	.line	331
+  2907 00:08A9: A9 3F 00     	lda	#$3f
+  2908 00:08AC: 85 16        	sta	<L121+exMsgSize_0
+  2909                        L10042:
+  2910                        ;	}
+  2911                        	.line	332
+  2912                        ;
+  2913                        ;	memcpy(_k_exec_message,exceptionMessage,exMsgSiz
+                    e);
+  2914                        L10040:
+  2915                        	.line	334
+  2916 00:08AE: D4 16        	pei	<L121+exMsgSize_0
+  2917 00:08B0: D4 14        	pei	<L121+exceptionMessage_0+2
+  2918 00:08B2: D4 12        	pei	<L121+exceptionMessage_0
+  2919 00:08B4: A9 xx xx     	lda	#<~~_k_exec_message
+  2920 00:08B7: 85 01        	sta	<R0
+  2921                        	xref	_BEG_DATA
+  2922 00:08B9: A9 xx xx     	lda	#_BEG_DATA>>16
+  2923 00:08BC: 85 03        	sta	<R0+2
+  2924 00:08BE: D4 03        	pei	<R0+2
+  2925 00:08C0: D4 01        	pei	<R0
+  2926 00:08C2: 22 xx xx xx  	jsl	~~memcpy
+  2927                        ;
+  2928                        ;	asm BRK;
+  2929                        	.line	336
+  2930                        	asmstart
+  Thu Dec  3 2020 22:25                                                Page 56
+
+
+  2931 00:08C6: 00 00        	BRK
+  2932                        	asmend
+  2933                        ;}
+  2934                        	.line	337
+  2935                        L127:
+  2936 00:08C8: A5 08        	lda	<L121+2
+  2937 00:08CA: 85 16        	sta	<L121+2+14
+  2938 00:08CC: A5 07        	lda	<L121+1
+  2939 00:08CE: 85 15        	sta	<L121+1+14
+  2940 00:08D0: 2B           	pld
+  2941 00:08D1: 3B           	tsc
+  2942 00:08D2: 18           	clc
+  2943 00:08D3: 69 14 00     	adc	#L121+14
+  2944 00:08D6: 1B           	tcs
+  2945 00:08D7: 6B           	rtl
+  2946                        	.endblock	337
+  2947             00000006   L121	equ	6
+  2948             00000005   L122	equ	5
+  2949                        	ends
+  2950                        	efunc
+  2951                        	.endfunc	337,5,6
+  2952                        	.line	337
+  2953                        	data
+  2954                        L79:
+  2955 00:0165: 6B 5F 65 78  	db	$6B,$5F,$65,$78,$65,$63,$5F,$74,$68,$72,
+                    $6F,$77,$5F,$65,$78
+       00:0169: 65 63 5F 74 
+       00:016D: 68 72 6F 77 
+       00:0171: 5F 65 78 
+  2956 00:0174: 63 65 70 74  	db	$63,$65,$70,$74,$69,$6F,$6E,$3A,$00
+       00:0178: 69 6F 6E 3A 
+       00:017C: 00 
+  2957 00:017D:              	ends
+  2958                        ;
+  2959                        ;KRESULT k_exec_enable_process_timer(UINT timerId,
+                    UINT increment)
+  2960                        ;{
+  2961                        	.line	339
+  2962                        	.line	340
+  2963                        	code
+  2964                        	xdef	~~k_exec_enable_process_timer
+  2965                        	func
+  2966                        	.function	340
+  2967                        ~~k_exec_enable_process_timer:
+  2968                        	longa	on
+  2969                        	longi	on
+  2970 00:08D8: 3B           	tsc
+  2971 00:08D9: 38           	sec
+  2972 00:08DA: E9 18 00     	sbc	#L129
+  2973 00:08DD: 1B           	tcs
+  2974 00:08DE: 0B           	phd
+  2975 00:08DF: 5B           	tcd
+  2976             00000004   timerId_0	set	4
+  2977             00000006   increment_0	set	6
+  2978                        	.block	340
+  2979                        ;	KRESULT kerr = KERR_FAIL;
+  2980                        ;	PFXPROCESS p = NULL;
+  2981                        ;
+  Thu Dec  3 2020 22:25                                                Page 57
+
+
+  2982                        ;
+  2983                        ;	k_debug_integer("k_exec_enable_process_timer::in
+                    crement:",increment);
+  2984             00000000   kerr_1	set	0
+  2985             00000004   p_1	set	4
+  2986                        	.sym	kerr,0,18,1,32
+  2987                        	.sym	p,4,138,1,32,20
+  2988                        	.sym	timerId,4,16,6,16
+  2989                        	.sym	increment,6,16,6,16
+  2990 00:08E0: A9 00 00     	lda	#$0
+  2991 00:08E3: 85 11        	sta	<L130+kerr_1
+  2992 00:08E5: A9 00 80     	lda	#$8000
+  2993 00:08E8: 85 13        	sta	<L130+kerr_1+2
+  2994 00:08EA: 64 15        	stz	<L130+p_1
+  2995 00:08EC: 64 17        	stz	<L130+p_1+2
+  2996                        	.line	345
+  2997 00:08EE: D4 1E        	pei	<L129+increment_0
+  2998 00:08F0: F4 xx xx     	pea	#^L128
+  2999 00:08F3: F4 xx xx     	pea	#<L128
+  3000 00:08F6: 22 xx xx xx  	jsl	~~k_debug_integer
+  3001                        ;
+  3002                        ;	if(timerId <= PROCESS_TIMER_1)
+  3003                        	.line	347
+  3004                        ;	{
+  3005 00:08FA: A9 01 00     	lda	#$1
+  3006 00:08FD: C5 1C        	cmp	<L129+timerId_0
+  3007 00:08FF: B0 03        	bcs	L132
+  3008 00:0901: 82 E5 00     	brl	L10043
+  3009                        L132:
+  3010                        	.line	348
+  3011                        ;		p = k_exec_get_current_process();
+  3012                        	.line	349
+  3013 00:0904: 22 xx xx xx  	jsl	~~k_exec_get_current_process
+  3014 00:0908: 85 15        	sta	<L130+p_1
+  3015 00:090A: 86 17        	stx	<L130+p_1+2
+  3016                        ;		if(p)
+  3017                        	.line	350
+  3018                        ;		{
+  3019 00:090C: A5 15        	lda	<L130+p_1
+  3020 00:090E: 05 17        	ora	<L130+p_1+2
+  3021 00:0910: D0 03        	bne	L133
+  3022 00:0912: 82 D4 00     	brl	L10044
+  3023                        L133:
+  3024                        	.line	351
+  3025                        ;			k_debug_long("k_exec_enable_proc
+                    ess_timer::process:",p->procId);
+  3026                        	.line	352
+  3027 00:0915: A0 04 00     	ldy	#$4
+  3028 00:0918: B7 15        	lda	[<L130+p_1],Y
+  3029 00:091A: 48           	pha
+  3030 00:091B: A0 02 00     	ldy	#$2
+  3031 00:091E: B7 15        	lda	[<L130+p_1],Y
+  3032 00:0920: 48           	pha
+  3033 00:0921: F4 xx xx     	pea	#^L128+40
+  3034 00:0924: F4 xx xx     	pea	#<L128+40
+  3035 00:0927: 22 xx xx xx  	jsl	~~k_debug_long
+  3036                        ;
+  3037                        ;			p->timerAware = TRUE;
+  Thu Dec  3 2020 22:25                                                Page 58
+
+
+  3038                        	.line	354
+  3039 00:092B: E2 20        	sep	#$20
+  3040                        	longa	off
+  3041 00:092D: A9 01        	lda	#$1
+  3042 00:092F: A0 47 00     	ldy	#$47
+  3043 00:0932: 97 15        	sta	[<L130+p_1],Y
+  3044 00:0934: C2 20        	rep	#$20
+  3045                        	longa	on
+  3046                        ;			p->timerTicks[timerId] = increme
+                    nt;
+  3047                        	.line	355
+  3048 00:0936: A5 1C        	lda	<L129+timerId_0
+  3049 00:0938: 85 05        	sta	<R1
+  3050 00:093A: 64 07        	stz	<R1+2
+  3051 00:093C: D4 07        	pei	<R1+2
+  3052 00:093E: D4 05        	pei	<R1
+  3053 00:0940: A9 01 00     	lda	#$1
+  3054                        	xref	~~~lasl
+  3055 00:0943: 22 xx xx xx  	jsl	~~~lasl
+  3056 00:0947: 85 01        	sta	<R0
+  3057 00:0949: 86 03        	stx	<R0+2
+  3058 00:094B: 18           	clc
+  3059 00:094C: A9 48 00     	lda	#$48
+  3060 00:094F: 65 15        	adc	<L130+p_1
+  3061 00:0951: 85 09        	sta	<R2
+  3062 00:0953: A9 00 00     	lda	#$0
+  3063 00:0956: 65 17        	adc	<L130+p_1+2
+  3064 00:0958: 85 0B        	sta	<R2+2
+  3065 00:095A: 18           	clc
+  3066 00:095B: A5 09        	lda	<R2
+  3067 00:095D: 65 01        	adc	<R0
+  3068 00:095F: 85 0D        	sta	<R3
+  3069 00:0961: A5 0B        	lda	<R2+2
+  3070 00:0963: 65 03        	adc	<R0+2
+  3071 00:0965: 85 0F        	sta	<R3+2
+  3072 00:0967: A5 1E        	lda	<L129+increment_0
+  3073 00:0969: 87 0D        	sta	[<R3]
+  3074                        ;			p->timerTickCount[timerId] = inc
+                    rement;
+  3075                        	.line	356
+  3076 00:096B: A5 1C        	lda	<L129+timerId_0
+  3077 00:096D: 85 05        	sta	<R1
+  3078 00:096F: 64 07        	stz	<R1+2
+  3079 00:0971: D4 07        	pei	<R1+2
+  3080 00:0973: D4 05        	pei	<R1
+  3081 00:0975: A9 01 00     	lda	#$1
+  3082                        	xref	~~~lasl
+  3083 00:0978: 22 xx xx xx  	jsl	~~~lasl
+  3084 00:097C: 85 01        	sta	<R0
+  3085 00:097E: 86 03        	stx	<R0+2
+  3086 00:0980: 18           	clc
+  3087 00:0981: A9 4C 00     	lda	#$4c
+  3088 00:0984: 65 15        	adc	<L130+p_1
+  3089 00:0986: 85 09        	sta	<R2
+  3090 00:0988: A9 00 00     	lda	#$0
+  3091 00:098B: 65 17        	adc	<L130+p_1+2
+  3092 00:098D: 85 0B        	sta	<R2+2
+  3093 00:098F: 18           	clc
+  Thu Dec  3 2020 22:25                                                Page 59
+
+
+  3094 00:0990: A5 09        	lda	<R2
+  3095 00:0992: 65 01        	adc	<R0
+  3096 00:0994: 85 0D        	sta	<R3
+  3097 00:0996: A5 0B        	lda	<R2+2
+  3098 00:0998: 65 03        	adc	<R0+2
+  3099 00:099A: 85 0F        	sta	<R3+2
+  3100 00:099C: A5 1E        	lda	<L129+increment_0
+  3101 00:099E: 87 0D        	sta	[<R3]
+  3102                        ;
+  3103                        ;			k_debug_long("k_exec_enable_proc
+                    ess_timer::p->timerTicks[timerId]:",p->timerTicks[timerId]);
+  3104                        	.line	358
+  3105 00:09A0: A5 1C        	lda	<L129+timerId_0
+  3106 00:09A2: 85 05        	sta	<R1
+  3107 00:09A4: 64 07        	stz	<R1+2
+  3108 00:09A6: D4 07        	pei	<R1+2
+  3109 00:09A8: D4 05        	pei	<R1
+  3110 00:09AA: A9 01 00     	lda	#$1
+  3111                        	xref	~~~lasl
+  3112 00:09AD: 22 xx xx xx  	jsl	~~~lasl
+  3113 00:09B1: 85 01        	sta	<R0
+  3114 00:09B3: 86 03        	stx	<R0+2
+  3115 00:09B5: 18           	clc
+  3116 00:09B6: A9 48 00     	lda	#$48
+  3117 00:09B9: 65 15        	adc	<L130+p_1
+  3118 00:09BB: 85 09        	sta	<R2
+  3119 00:09BD: A9 00 00     	lda	#$0
+  3120 00:09C0: 65 17        	adc	<L130+p_1+2
+  3121 00:09C2: 85 0B        	sta	<R2+2
+  3122 00:09C4: 18           	clc
+  3123 00:09C5: A5 09        	lda	<R2
+  3124 00:09C7: 65 01        	adc	<R0
+  3125 00:09C9: 85 0D        	sta	<R3
+  3126 00:09CB: A5 0B        	lda	<R2+2
+  3127 00:09CD: 65 03        	adc	<R0+2
+  3128 00:09CF: 85 0F        	sta	<R3+2
+  3129 00:09D1: A7 0D        	lda	[<R3]
+  3130 00:09D3: 85 01        	sta	<R0
+  3131 00:09D5: 64 03        	stz	<R0+2
+  3132 00:09D7: D4 03        	pei	<R0+2
+  3133 00:09D9: D4 01        	pei	<R0
+  3134 00:09DB: F4 xx xx     	pea	#^L128+78
+  3135 00:09DE: F4 xx xx     	pea	#<L128+78
+  3136 00:09E1: 22 xx xx xx  	jsl	~~k_debug_long
+  3137                        ;
+  3138                        ;			kerr= KERR_SUCCESS;
+  3139                        	.line	360
+  3140 00:09E5: 64 11        	stz	<L130+kerr_1
+  3141 00:09E7: 64 13        	stz	<L130+kerr_1+2
+  3142                        ;		}
+  3143                        	.line	361
+  3144                        ;	}
+  3145                        L10044:
+  3146                        	.line	362
+  3147                        ;	return 0;
+  3148                        L10043:
+  3149                        	.line	363
+  3150 00:09E9: A9 00 00     	lda	#$0
+  Thu Dec  3 2020 22:25                                                Page 60
+
+
+  3151 00:09EC: AA           	tax
+  3152 00:09ED: A9 00 00     	lda	#$0
+  3153                        L134:
+  3154 00:09F0: A8           	tay
+  3155 00:09F1: A5 1A        	lda	<L129+2
+  3156 00:09F3: 85 1E        	sta	<L129+2+4
+  3157 00:09F5: A5 19        	lda	<L129+1
+  3158 00:09F7: 85 1D        	sta	<L129+1+4
+  3159 00:09F9: 2B           	pld
+  3160 00:09FA: 3B           	tsc
+  3161 00:09FB: 18           	clc
+  3162 00:09FC: 69 1C 00     	adc	#L129+4
+  3163 00:09FF: 1B           	tcs
+  3164 00:0A00: 98           	tya
+  3165 00:0A01: 6B           	rtl
+  3166                        ;}
+  3167                        	.line	364
+  3168                        	.endblock	364
+  3169             00000018   L129	equ	24
+  3170             00000011   L130	equ	17
+  3171                        	ends
+  3172                        	efunc
+  3173                        	.endfunc	364,17,24
+  3174                        	.line	364
+  3175                        	data
+  3176                        L128:
+  3177 00:017D: 6B 5F 65 78  	db	$6B,$5F,$65,$78,$65,$63,$5F,$65,$6E,$61,
+                    $62,$6C,$65,$5F,$70
+       00:0181: 65 63 5F 65 
+       00:0185: 6E 61 62 6C 
+       00:0189: 65 5F 70 
+  3178 00:018C: 72 6F 63 65  	db	$72,$6F,$63,$65,$73,$73,$5F,$74,$69,$6D,
+                    $65,$72,$3A,$3A,$69
+       00:0190: 73 73 5F 74 
+       00:0194: 69 6D 65 72 
+       00:0198: 3A 3A 69 
+  3179 00:019B: 6E 63 72 65  	db	$6E,$63,$72,$65,$6D,$65,$6E,$74,$3A,$00,
+                    $6B,$5F,$65,$78,$65
+       00:019F: 6D 65 6E 74 
+       00:01A3: 3A 00 6B 5F 
+       00:01A7: 65 78 65 
+  3180 00:01AA: 63 5F 65 6E  	db	$63,$5F,$65,$6E,$61,$62,$6C,$65,$5F,$70,
+                    $72,$6F,$63,$65,$73
+       00:01AE: 61 62 6C 65 
+       00:01B2: 5F 70 72 6F 
+       00:01B6: 63 65 73 
+  3181 00:01B9: 73 5F 74 69  	db	$73,$5F,$74,$69,$6D,$65,$72,$3A,$3A,$70,
+                    $72,$6F,$63,$65,$73
+       00:01BD: 6D 65 72 3A 
+       00:01C1: 3A 70 72 6F 
+       00:01C5: 63 65 73 
+  3182 00:01C8: 73 3A 00 6B  	db	$73,$3A,$00,$6B,$5F,$65,$78,$65,$63,$5F,
+                    $65,$6E,$61,$62,$6C
+       00:01CC: 5F 65 78 65 
+       00:01D0: 63 5F 65 6E 
+       00:01D4: 61 62 6C 
+  3183 00:01D7: 65 5F 70 72  	db	$65,$5F,$70,$72,$6F,$63,$65,$73,$73,$5F,
+                    $74,$69,$6D,$65,$72
+  Thu Dec  3 2020 22:25                                                Page 61
+
+
+       00:01DB: 6F 63 65 73 
+       00:01DF: 73 5F 74 69 
+       00:01E3: 6D 65 72 
+  3184 00:01E6: 3A 3A 70 2D  	db	$3A,$3A,$70,$2D,$3E,$74,$69,$6D,$65,$72,
+                    $54,$69,$63,$6B,$73
+       00:01EA: 3E 74 69 6D 
+       00:01EE: 65 72 54 69 
+       00:01F2: 63 6B 73 
+  3185 00:01F5: 5B 74 69 6D  	db	$5B,$74,$69,$6D,$65,$72,$49,$64,$5D,$3A,
+                    $00
+       00:01F9: 65 72 49 64 
+       00:01FD: 5D 3A 00 
+  3186 00:0200:              	ends
+  3187                        ;
+  3188                        ;
+  3189                        ;
+  3190                        	.line	366
+  3191                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.c",339
+  3192                        	xref	~~DesktopEnvironmentProc
+  3193                        	xref	~~k_debug_strings
+  3194                        	xref	~~k_debug_long
+  3195                        	xref	~~k_debug_integer
+  3196                        	xref	~~k_debug_pointer
+  3197                        	xref	~~DefConsoleProc
+  3198                        	xref	~~IdleProc
+  3199                        	xref	~~k_enable_text_mode
+  3200                        	xref	~~k_mem_allocate_heap
+  3201                        	xref	~~k_nodelist_naddtolist
+  3202                        	xref	~~k_nodelist_allocate_list
+  3203                        	xref	~~k_nodelist_getname
+  3204                        	xref	~~k_string_copy_string
+  3205                        	xref	~~strlen
+  3206                        	xref	~~strcmp
+  3207                        	xref	~~memset
+  3208                        	xref	~~memcpy
+  3209                        	udata
+  3210                        ~~_k_processList
+  3211 00:0000:              	ds	128
+  3212 00:0080:              	ends
+  3213                        	udata
+  3214                        	xdef	~~_k_exec_message
+  3215                        ~~_k_exec_message
+  3216 00:0080:              	ds	64
+  3217 00:00C0:              	ends
+  3218                        	.sym	~~k_exec_set_process_foreground,~~k_exec
+                    _set_process_foreground,65,2,0
+  3219                        	.sym	~~k_exec_nextprocess,~~k_exec_nextproces
+                    s,82,2,0
+  3220                        	.sym	~~THIS_MODULE,~~THIS_MODULE,18,3,32
+  3221                        	.sym	~~_k_execManager_ProcesssList,~~_k_execM
+                    anager_ProcesssList,138,3,32,6
+  3222                        	.sym	~~_exec_Process,~~_exec_Process,138,3,32
+                    ,20
+  3223                        	.sym	~~_k_current_Process,~~_k_current_Proces
+                    s,138,3,32,20
+  3224                        	.sym	~~_k_processList,~~_k_processList,1130,3
+                    ,32,20,32
+  Thu Dec  3 2020 22:25                                                Page 62
+
+
+  3225                        	.sym	~~_k_exec_message,~~_k_exec_message,110,
+                    2,0,64
+  3226                        	.sym	~~_k_exec_error,~~_k_exec_error,18,2,32
+  3227                        	.sym	~~_k_exec_context,~~_k_exec_context,18,2
+                    ,32
+  3228                        	.sym	~~DesktopEnvironmentProc,~~DesktopEnviro
+                    nmentProc,65,18,0
+  3229                        	.sym	DEVICEDRIVER_COMMAND,0,656,14,32
+  3230                        	.sym	DEVICEDRIVER_UNLOAD,0,654,14,32
+  3231                        	.sym	DEVICEDRIVER_WRITE,0,656,14,32
+  3232                        	.sym	DEVICEDRIVER_READ,0,656,14,32
+  3233                        	.sym	DEVICEDRIVER_LOAD,0,654,14,32
+  3234                        	.sym	PFX_BLOCK_DEVICE_DRIVER,0,138,14,32,63
+  3235                        	.sym	FX_BLOCK_DEVICE_DRIVER,0,10,14,1448,63
+  3236                        	.sym	PFX_DEVICE_DRIVER,0,138,14,32,62
+  3237                        	.sym	FX_DEVICE_DRIVER,0,10,14,1416,62
+  3238                        	.sym	~~k_debug_strings,~~k_debug_strings,65,1
+                    8,0
+  3239                        	.sym	~~k_debug_long,~~k_debug_long,65,18,0
+  3240                        	.sym	~~k_debug_integer,~~k_debug_integer,65,1
+                    8,0
+  3241                        	.sym	~~k_debug_pointer,~~k_debug_pointer,65,1
+                    8,0
+  3242                        	.sym	PDEBUGBYTEBITS,0,138,14,32,61
+  3243                        	.sym	DEBUGBYTEBITS,0,10,14,8,61
+  3244                        	.sym	PFXENVIRONMENT,0,138,14,32,60
+  3245                        	.sym	FXENVIRONMENT,0,10,14,96,60
+  3246                        	.sym	PFXZERPOPAGE,0,138,14,32,59
+  3247                        	.sym	FXZERPOPAGE,0,10,14,448,59
+  3248                        	.sym	KERNELTRAPCALL,0,641,14,32
+  3249                        	.sym	~~DefConsoleProc,~~DefConsoleProc,65,18,
+                    0
+  3250                        	.sym	PCOMMANDARGS,0,138,14,32,58
+  3251                        	.sym	COMMANDARGS,0,10,14,64,58
+  3252                        	.sym	PTOKENIZESTATE,0,133,14,32
+  3253                        	.sym	TOKENIZESTATE,0,5,14,16
+  3254                        	.sym	PTOKEN,0,138,14,32,57
+  3255                        	.sym	TOKEN,0,10,14,64,57
+  3256                        	.sym	PTOKENTYPE,0,133,14,32
+  3257                        	.sym	TOKENTYPE,0,5,14,16
+  3258                        	.sym	FXCommandHandler,0,656,14,32
+  3259                        	.sym	PCONSOLECTX,0,138,14,32,56
+  3260                        	.sym	CONSOLECTX,0,10,14,1144,56
+  3261                        	.sym	PSPINNERCTX,0,138,14,32,55
+  3262                        	.sym	SPINNERCTX,0,10,14,48,55
+  3263                        	.sym	~~IdleProc,~~IdleProc,65,18,0
+  3264                        	.sym	PMOUSE_MSG_STATE,0,138,14,32,54
+  3265                        	.sym	MOUSE_MSG_STATE,0,10,14,184,54
+  3266                        	.sym	PFXEVENTPROCESS,0,138,14,32,53
+  3267                        	.sym	FXEVENTPROCESS,0,10,14,64,53
+  3268                        	.sym	FXEventProc,0,641,14,32
+  3269                        	.sym	PMOUSEMSGDATA,0,138,14,32,52
+  3270                        	.sym	MOUSEMSGDATA,0,10,14,64,52
+  3271                        	.sym	MSGIRQ,0,5,14,16
+  3272                        	.sym	MAINLOOPARGS,0,10,14,16,51
+  3273                        	.sym	PEACHCHILD_MSG,0,138,14,32,50
+  3274                        	.sym	EACHCHILD_MSG,0,10,14,64,50
+  3275                        	.sym	~~k_enable_text_mode,~~k_enable_text_mod
+  Thu Dec  3 2020 22:25                                                Page 63
+
+
+                    e,65,18,0
+  3276                        	.sym	PCUR_PALETTE_MAP,0,138,14,32,49
+  3277                        	.sym	CUR_PALETTE_MAP,0,10,14,400,49
+  3278                        	.sym	PCLICKDETECTED,0,138,14,32,48
+  3279                        	.sym	CLICKDETECTED,0,10,14,64,48
+  3280                        	.sym	OBJECTCLICKED,0,641,14,32
+  3281                        	.sym	~~k_mem_allocate_heap,~~k_mem_allocate_h
+                    eap,1089,18,32
+  3282                        	.sym	MemoryCallback,0,641,14,32
+  3283                        	.sym	PFXMEMORYMAP,0,138,14,32,47
+  3284                        	.sym	FXMEMORYMAP,0,10,14,2072,47
+  3285                        	.sym	UMM_HEAP_INFO,0,10,14,256,46
+  3286                        	.sym	FOREACHNODEUNTIL,0,654,14,32
+  3287                        	.sym	FOREACHNODE,0,641,14,32
+  3288                        	.sym	~~k_nodelist_naddtolist,~~k_nodelist_nad
+                    dtolist,1098,18,32,5
+  3289                        	.sym	~~k_nodelist_allocate_list,~~k_nodelist_
+                    allocate_list,1098,18,32,6
+  3290                        	.sym	~~k_nodelist_getname,~~k_nodelist_getnam
+                    e,1098,18,32,5
+  3291                        	.sym	~~debug_process_node,~~debug_process_nod
+                    e,65,2,0
+  3292                        	.sym	~~k_deallocate_process_task,~~k_dealloca
+                    te_process_task,65,2,0
+  3293                        	.sym	~~k_exec_enable_process_timer,~~k_exec_e
+                    nable_process_timer,82,2,0
+  3294                        	.sym	~~k_exec_set_signal,~~k_exec_set_signal,
+                    78,2,0
+  3295                        	.sym	~~k_exec_signal_wait,~~k_exec_signal_wai
+                    t,78,2,0
+  3296                        	.sym	~~k_exec_signal_start,~~k_exec_signal_st
+                    art,78,2,0
+  3297                        	.sym	~~k_exec_signal_terminate,~~k_exec_signa
+                    l_terminate,78,2,0
+  3298                        	.sym	~~k_exec_signal_sleep,~~k_exec_signal_sl
+                    eep,78,2,0
+  3299                        	.sym	~~k_exec_getContext,~~k_exec_getContext,
+                    1089,2,32
+  3300                        	.sym	~~k_exec_setContext,~~k_exec_setContext,
+                    1089,2,32
+  3301                        	.sym	~~k_exec_get_current_process,~~k_exec_ge
+                    t_current_process,1098,2,32,20
+  3302                        	.sym	~~k_exec_set_current_process,~~k_exec_se
+                    t_current_process,1098,2,32,20
+  3303                        	.sym	~~k_exec_start_process,~~k_exec_start_pr
+                    ocess,65,2,0
+  3304                        	.sym	~~k_exec_createProcess,~~k_exec_createPr
+                    ocess,1098,2,32,20
+  3305                        	.sym	~~k_exec_launchProcess,~~k_exec_launchPr
+                    ocess,1098,2,32,20
+  3306                        	.sym	~~k_exec_process_list,~~k_exec_process_l
+                    ist,9290,2,32,20
+  3307                        	.sym	~~k_exec_get_process_byname,~~k_exec_get
+                    _process_byname,1098,2,32,20
+  3308                        	.sym	~~k_exec_get_process,~~k_exec_get_proces
+                    s,1098,2,32,20
+  3309                        	.sym	~~k_exec_throw_exception,~~k_exec_throw_
+                    exception,65,2,0
+  Thu Dec  3 2020 22:25                                                Page 64
+
+
+  3310                        	.sym	~~k_initalize_executive,~~k_initalize_ex
+                    ecutive,65,2,0
+  3311                        	.sym	~~k_string_copy_string,~~k_string_copy_s
+                    tring,1102,18,32
+  3312                        	.sym	PFXSTRING,0,138,14,32,45
+  3313                        	.sym	FXSTRING,0,10,14,64,45
+  3314                        	.sym	PFXCOMBUFFER,0,138,14,32,44
+  3315                        	.sym	FXCOMBUFFER,0,10,14,2080,44
+  3316                        	.sym	PSUBMENULIST,0,138,14,32,43
+  3317                        	.sym	SUBMENULIST,0,10,14,40,43
+  3318                        	.sym	HSUBMENU,0,7,14,32
+  3319                        	.sym	PSUBMENU,0,138,14,32,42
+  3320                        	.sym	SUBMENU,0,10,14,64,42
+  3321                        	.sym	MenuAction,0,641,14,32
+  3322                        	.sym	PMENUANCHOR,0,138,14,32,41
+  3323                        	.sym	MENUANCHOR,0,10,14,144,41
+  3324                        	.sym	PTEXTBOX,0,138,14,32,40
+  3325                        	.sym	TEXTBOX,0,10,14,144,40
+  3326                        	.sym	PLISTBOX,0,138,14,32,39
+  3327                        	.sym	LISTBOX,0,10,14,240,39
+  3328                        	.sym	PSCROLLBAR,0,138,14,32,38
+  3329                        	.sym	SCROLLBAR,0,10,14,192,38
+  3330                        	.sym	PBUTTON,0,138,14,32,37
+  3331                        	.sym	BUTTON,0,10,14,80,37
+  3332                        	.sym	PMENUDROPDOWNDATA,0,138,14,32,36
+  3333                        	.sym	MENUDROPDOWNDATA,0,10,14,3568,36
+  3334                        	.sym	PMENUTAG,0,138,14,32,35
+  3335                        	.sym	MENUTAG,0,10,14,112,35
+  3336                        	.sym	PMENU,0,138,14,32,34
+  3337                        	.sym	MENU,0,10,14,248,34
+  3338                        	.sym	HMENURESOURCE,0,129,14,32
+  3339                        	.sym	HTEXTBOX,0,7,14,32
+  3340                        	.sym	PTEXTBOXX,0,138,14,32,33
+  3341                        	.sym	TEXTBOXX,0,10,14,112,33
+  3342                        	.sym	FONTMETRIC,0,10,14,32,32
+  3343                        	.sym	TITLE,0,142,14,32
+  3344                        	.sym	PHANDLE,0,1153,14,32
+  3345                        	.sym	HANDLE,0,129,14,32
+  3346                        	.sym	PWINDOWEX,0,138,14,32,31
+  3347                        	.sym	WINDOWEX,0,10,14,2704,31
+  3348                        	.sym	PWINDOW,0,138,14,32,30
+  3349                        	.sym	WINDOW,0,10,14,2808,30
+  3350                        	.sym	PDRAGDATA,0,138,14,32,29
+  3351                        	.sym	DRAGDATA,0,10,14,136,29
+  3352                        	.sym	PNCCLICKABLE,0,138,14,32,28
+  3353                        	.sym	NCCLICKABLE,0,10,14,88,28
+  3354                        	.sym	HCLICKABLE,0,7,14,32
+  3355                        	.sym	PCLICKABLE,0,138,14,32,27
+  3356                        	.sym	CLICKABLE,0,10,14,88,27
+  3357                        	.sym	PWNDCLASS,0,138,14,32,26
+  3358                        	.sym	WNDCLASS,0,10,14,256,26
+  3359                        	.sym	HBRUSH,0,129,14,32
+  3360                        	.sym	HCURSOR,0,129,14,32
+  3361                        	.sym	HICON,0,129,14,32
+  3362                        	.sym	HINSTANCE,0,129,14,32
+  3363                        	.sym	FXWndProc,0,654,14,32
+  3364                        	.sym	PRECT,0,138,14,32,25
+  3365                        	.sym	RECT,0,10,14,64,25
+  Thu Dec  3 2020 22:25                                                Page 65
+
+
+  3366                        	.sym	PPOINT,0,138,14,32,24
+  3367                        	.sym	POINT,0,10,14,32,24
+  3368                        	.sym	PFXPROPERTY,0,138,14,32,22
+  3369                        	.sym	FXPROPERTY,0,10,14,384,22
+  3370                        	.sym	SCANCODE,0,14,14,8
+  3371                        	.sym	KEYCODE,0,14,14,8
+  3372                        	.sym	PFXPROCESSMESSAGE,0,138,14,32,21
+  3373                        	.sym	FXPROCESSMESSAGE,0,10,14,112,21
+  3374                        	.sym	PFXPROCESS,0,138,14,32,20
+  3375                        	.sym	FXPROCESS,0,10,14,800,20
+  3376                        	.sym	PDESKTOP_CONTROL,0,138,14,32,19
+  3377                        	.sym	DESKTOP_CONTROL,0,10,14,392,19
+  3378                        	.sym	PCONSOLE_CONTROL,0,138,14,32,18
+  3379                        	.sym	CONSOLE_CONTROL,0,10,14,448,18
+  3380                        	.sym	FXProcessProc,0,641,14,32
+  3381                        	.sym	PFXCMDMESSAGE,0,138,14,32,17
+  3382                        	.sym	FXCMDMESSAGE,0,10,14,304,17
+  3383                        	.sym	PFXOSMESSAGE,0,138,14,32,16
+  3384                        	.sym	FXOSMESSAGE,0,10,14,304,16
+  3385                        	.sym	PINT_REGS,0,138,14,32,15
+  3386                        	.sym	INT_REGS,0,10,14,104,15
+  3387                        	.sym	TASK_STACK,0,10,14,32,14
+  3388                        	.sym	TASK,0,10,14,48,13
+  3389                        	.sym	PIRQDATA,0,138,14,32,12
+  3390                        	.sym	IRQDATA,0,10,14,48,12
+  3391                        	.sym	HMENU,0,129,14,32
+  3392                        	.sym	HWND,0,129,14,32
+  3393                        	.sym	MSGDATA,0,14,14,8
+  3394                        	.sym	MSGDEST,0,18,14,32
+  3395                        	.sym	MSGSRC,0,18,14,32
+  3396                        	.sym	MSGTYPE,0,16,14,16
+  3397                        	.sym	PROCESS_RESOURCE_LIST,0,138,14,32,6
+  3398                        	.sym	PROCESS_TLS_LIST,0,138,14,32,6
+  3399                        	.sym	SEMAPHORE_LIST,0,138,14,32,6
+  3400                        	.sym	FILE_BLOCK_LIST,0,138,14,32,6
+  3401                        	.sym	FILE_PATH_LIST,0,138,14,32,6
+  3402                        	.sym	PROCEDURE_LIST,0,138,14,32,6
+  3403                        	.sym	FILE_HANDLE,0,138,14,32,11
+  3404                        	.sym	FILE_BLOCK,0,10,14,552,11
+  3405                        	.sym	SEMAPHORE,0,10,14,16,10
+  3406                        	.sym	PPROCESS_SIGNAL,0,138,14,32,9
+  3407                        	.sym	PROCESS_SIGNAL,0,10,14,16,9
+  3408                        	.sym	KRESULT,0,18,14,32
+  3409                        	.sym	PKERNEL_ERROR,0,138,14,32,8
+  3410                        	.sym	KERNEL_ERROR,0,10,14,32,8
+  3411                        	.sym	PROCESS_STATUS,0,16,14,16
+  3412                        	.sym	FILE_PATH_NAME,0,142,14,32
+  3413                        	.sym	PROCESS_RESOURCE,0,129,14,32
+  3414                        	.sym	PROCESS_TLS,0,129,14,32
+  3415                        	.sym	PROCESS_CTX,0,129,14,32
+  3416                        	.sym	USERID,0,16,14,16
+  3417                        	.sym	PROCESS_ID,0,18,14,32
+  3418                        	.sym	PROCESS_BANK,0,14,14,8
+  3419                        	.sym	PFXQUEUE,0,138,14,32,7
+  3420                        	.sym	FXQUEUE,0,10,14,80,7
+  3421                        	.sym	PFXNODELIST,0,138,14,32,6
+  3422                        	.sym	FXNODELIST,0,10,14,96,6
+  3423                        	.sym	NodeListDeallocator,0,641,14,32
+  Thu Dec  3 2020 22:25                                                Page 66
+
+
+  3424                        	.sym	PFXNODE,0,138,14,32,5
+  3425                        	.sym	FXNODE,0,10,14,384,5
+  3426                        	.sym	PBYTEBITS,0,138,14,32,4
+  3427                        	.sym	BYTEBITS,0,10,14,8,4
+  3428                        	.sym	HCOLOR,0,129,14,32
+  3429                        	.sym	HFONT,0,129,14,32
+  3430                        	.sym	HDC,0,129,14,32
+  3431                        	.sym	HPOINTER,0,129,14,32
+  3432                        	.sym	uint32_t,0,18,14,32
+  3433                        	.sym	uint8_t,0,14,14,8
+  3434                        	.sym	PFAR,0,142,14,32
+  3435                        	.sym	LPBOOL,0,142,14,32
+  3436                        	.sym	BOOL,0,14,14,8
+  3437                        	.sym	DWORD,0,18,14,32
+  3438                        	.sym	ULONG,0,18,14,32
+  3439                        	.sym	LPLONG,0,135,14,32
+  3440                        	.sym	LONG,0,7,14,32
+  3441                        	.sym	PUINT,0,144,14,32
+  3442                        	.sym	USHORT,0,16,14,16
+  3443                        	.sym	UINT,0,16,14,16
+  3444                        	.sym	INT,0,5,14,16
+  3445                        	.sym	WORD,0,5,14,16
+  3446                        	.sym	PBYTE,0,142,14,32
+  3447                        	.sym	BYTE,0,14,14,8
+  3448                        	.sym	UCHAR,0,14,14,8
+  3449                        	.sym	LPWCSTR,0,142,14,32
+  3450                        	.sym	LPCSTR,0,142,14,32
+  3451                        	.sym	LPSTR,0,142,14,32
+  3452                        	.sym	LPCHAR,0,142,14,32
+  3453                        	.sym	CHAR,0,14,14,8
+  3454                        	.sym	LPVOID,0,129,14,32
+  3455                        	.sym	VOID,0,1,14,32
+  3456                        	.sym	~~strlen,~~strlen,80,18,0
+  3457                        	.sym	~~strcmp,~~strcmp,69,18,0
+  3458                        	.sym	~~memset,~~memset,1089,18,32
+  3459                        	.sym	~~memcpy,~~memcpy,1089,18,32
+  3460                        	.sym	Boolean_T,0,5,14,16
+  3461                        	.sym	ldiv_t,0,10,14,64,2
+  3462                        	.sym	div_t,0,10,14,32,1
+  3463                        	.sym	wctype_t,0,16,14,16
+  3464                        	.sym	wint_t,0,16,14,16
+  3465                        	.sym	wchar_t,0,14,14,8
+  3466                        	.sym	ptrdiff_t,0,7,14,32
+  3467                        	.sym	size_t,0,16,14,16
+  3468                        	end
+
+
+      Lines assembled: 3468
+      Errors: 0

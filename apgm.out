@@ -1,0 +1,652 @@
+***************************
+**   File Information    **
+***************************
+
+     - File Name      :  'apgmlib'
+     - Length         :  001124 (4388)
+     - Segment Count  :  05 (5)
+
+***************************
+**    Segments Summary   **
+***************************
+
+     +----------+----------+-----------------+----------------+----------------+-------------+-------------+------------+------------+--------------
+     |  Offset  |  SegNum  |     SegType     |     SegName    |    LoadName    |  SegLength  |  MemLength  | OrgAddress |  # Record  |  RecordList  
+     +----------+----------+-----------------+----------------+----------------+-------------+-------------+------------+------------+--------------
+     |  000000  |    01    | Data            |  ~ExpressLoad  |                |    00018B   |    000142   |   000000   |    0002    |  LCONST + END
+     |  00018B  |    02    | Code            |  FXOS          |                |    00015B   |    0000DA   |   000000   |    0008    |  LCONST + SUPER (3) + cINTERSEG + cRELOC (2) + END
+     |  0002E6  |    03    | Code            |  DISPOSE       |                |    000063   |    000018   |   000000   |    0002    |  LCONST + END
+     |  000349  |    04    | Code            |                |                |    000AC7   |    0009A7   |   000000   |    000A    |  LCONST + SUPER (3) + cRELOC (5) + END
+     |  000E10  |    05    | Code            |  FXUSER        |                |    000314   |    00028E   |   000000   |    0008    |  LCONST + SUPER (3) + cINTERSEG + cRELOC (2) + END
+     +----------+----------+-----------------+----------------+----------------+-------------+-------------+------------+------------+--------------
+
+***************************
+**      Segment 01       **
+***************************
+
+  ***  Header  ***
+
+     - Segment Header size + Segment Body size               :  00018B 395
+     - Number of 0x00 to add at the end of the Segment Body  :  000000 0
+     - Size of the Segment once loaded in Memory             :  000142 322
+     - Undefined Byte #1 (usually set to 0x00)               :      00
+     - Label Length (usually set to 0x00 or 0x0A)            :      00
+     - Number Length (usually set to 4 bytes)                :      04
+     - Segment OMF Version (should be 0x02 for 2.1)          :      02
+     - Bank Size (64 KB for Code, 0-64 KB for Data)          :  010000 65536
+     - Segment Type + Segment Attributes                     :    8001 = Data  (Dynamic + Can be loaded in Special Memory)
+     - Undefined Byte #2 (usually set to 0x00)               :      00
+     - Undefined Byte #3 (usually set to 0x00)               :      00
+     - Org Address to load the Segment (0x0000 = anywhere)   :  000000
+     - Boundary for Segment Alignment (0, 0x100 or 0x010000) :  000000 = No alignment needed
+     - Order of the bytes in a Number (0x00 for the IIgs)    :      00
+     - Undefined Byte #4 (usually set to 0x00)               :      00
+     - Segment Number (1 to N)                               :    0001 1
+     - Entry Point in the Segment                            :  000000 0
+     - Load Name                                             :  '          '
+     - Segment Name                                          :  '~ExpressLoad'
+
+  ***  Data or Code  ***
+
+     o Body Record List                                      :  LCONST + END
+
+     - Data Offset    :  000048
+     - Data Length    :  000142 (322)
+
+     - ExpressLoad Segment Data
+        0000   00000000           ; Reserved
+        0004   0003               ; #Segment - 1
+
+     - Header entry table
+        0006 + 0028 = 002E        ; Offset to Segment #02 Header Table Entry
+        0008   0000               ; Reserved
+        000A   00000000           ; Reserved
+
+        000E + 0065 = 0073        ; Offset to Segment #03 Header Table Entry
+        0010   0000               ; Reserved
+        0012   00000000           ; Reserved
+
+        0016 + 00A2 = 00B8        ; Offset to Segment #04 Header Table Entry
+        0018   0000               ; Reserved
+        001A   00000000           ; Reserved
+
+        001E + 00DF = 00FD        ; Offset to Segment #05 Header Table Entry
+        0020   0000               ; Reserved
+        0022   00000000           ; Reserved
+
+     - Segment Number Conversion Table
+        0026   0002               ; Actual file Segment Number for Original Segment #02
+        0028   0003               ; Actual file Segment Number for Original Segment #03
+        002A   0004               ; Actual file Segment Number for Original Segment #04
+        002C   0005               ; Actual file Segment Number for Original Segment #05
+
+     - Segment Header Table
+        002E   000001D5           ; File Mark for Segment #02 LConst Record
+        0032   000000DA           ; Number of bytes in Segment #02 LConst Record
+        0036   000002AF           ; File Mark for Segment #02 Relocation Dictionary
+        003A   00000036           ; Number of bytes in Segment #02 Relocation Dictionary
+        003E   00                 ; Reserved
+        003F   00                 ; Label Length (usually set to 0x00 or 0x0A)
+        0040   04                 ; Number Length (usually set to 4 bytes)
+        0041   02                 ; Segment OMF Version (should be 0x02 for 2.1)
+        0042   00010000           ; Bank Size (64 KB for Code, 0-64 KB for Data)
+        0046   0000               ; Segment Type + Segment Attributes
+        0048   0000               ; Reserved
+        004A   00000000           ; Org Address to load the Segment (0x0000 = anywhere)
+        004E   00000000           ; Boundary for Segment Alignment (0, 0x100 or 0x010000)
+        0052   00                 ; Order of the bytes in a Number (0x00 for the IIgs)
+        0053   00                 ; Reserved
+        0054   0002               ; Segment Number (1 to N)
+        0056   00000000           ; Entry Point in the Segment
+        005A   002C               ; Displacement to Names (usually 0x2C)
+        005C   0045               ; Displacement to Data (usually 0x40)
+        005E                      ; Load Name
+        0068   0A                 ; Segment Name Length
+        0069   FXOS; Segment Name
+
+        0073   00000330           ; File Mark for Segment #03 LConst Record
+        0077   00000018           ; Number of bytes in Segment #03 LConst Record
+        007B   00000000           ; File Mark for Segment #03 Relocation Dictionary
+        007F   00000000           ; Number of bytes in Segment #03 Relocation Dictionary
+        0083   00                 ; Reserved
+        0084   00                 ; Label Length (usually set to 0x00 or 0x0A)
+        0085   04                 ; Number Length (usually set to 4 bytes)
+        0086   02                 ; Segment OMF Version (should be 0x02 for 2.1)
+        0087   00010000           ; Bank Size (64 KB for Code, 0-64 KB for Data)
+        008B   0000               ; Segment Type + Segment Attributes
+        008D   0000               ; Reserved
+        008F   00000000           ; Org Address to load the Segment (0x0000 = anywhere)
+        0093   00000000           ; Boundary for Segment Alignment (0, 0x100 or 0x010000)
+        0097   00                 ; Order of the bytes in a Number (0x00 for the IIgs)
+        0098   00                 ; Reserved
+        0099   0003               ; Segment Number (1 to N)
+        009B   00000000           ; Entry Point in the Segment
+        009F   002C               ; Displacement to Names (usually 0x2C)
+        00A1   0045               ; Displacement to Data (usually 0x40)
+        00A3                      ; Load Name
+        00AD   0A                 ; Segment Name Length
+        00AE   DISPOSE; Segment Name
+
+        00B8   00000393           ; File Mark for Segment #04 LConst Record
+        00BC   000009A7           ; Number of bytes in Segment #04 LConst Record
+        00C0   00000D3A           ; File Mark for Segment #04 Relocation Dictionary
+        00C4   000000D5           ; Number of bytes in Segment #04 Relocation Dictionary
+        00C8   00                 ; Reserved
+        00C9   00                 ; Label Length (usually set to 0x00 or 0x0A)
+        00CA   04                 ; Number Length (usually set to 4 bytes)
+        00CB   02                 ; Segment OMF Version (should be 0x02 for 2.1)
+        00CC   00010000           ; Bank Size (64 KB for Code, 0-64 KB for Data)
+        00D0   0000               ; Segment Type + Segment Attributes
+        00D2   0000               ; Reserved
+        00D4   00000000           ; Org Address to load the Segment (0x0000 = anywhere)
+        00D8   00000000           ; Boundary for Segment Alignment (0, 0x100 or 0x010000)
+        00DC   00                 ; Order of the bytes in a Number (0x00 for the IIgs)
+        00DD   00                 ; Reserved
+        00DE   0004               ; Segment Number (1 to N)
+        00E0   00000000           ; Entry Point in the Segment
+        00E4   002C               ; Displacement to Names (usually 0x2C)
+        00E6   0045               ; Displacement to Data (usually 0x40)
+        00E8                      ; Load Name
+        00F2   0A                 ; Segment Name Length
+        00F3                      ; Segment Name
+
+        00FD   00000E5A           ; File Mark for Segment #05 LConst Record
+        0101   0000028E           ; Number of bytes in Segment #05 LConst Record
+        0105   000010E8           ; File Mark for Segment #05 Relocation Dictionary
+        0109   0000003B           ; Number of bytes in Segment #05 Relocation Dictionary
+        010D   00                 ; Reserved
+        010E   00                 ; Label Length (usually set to 0x00 or 0x0A)
+        010F   04                 ; Number Length (usually set to 4 bytes)
+        0110   02                 ; Segment OMF Version (should be 0x02 for 2.1)
+        0111   00010000           ; Bank Size (64 KB for Code, 0-64 KB for Data)
+        0115   0000               ; Segment Type + Segment Attributes
+        0117   0000               ; Reserved
+        0119   00000000           ; Org Address to load the Segment (0x0000 = anywhere)
+        011D   00000000           ; Boundary for Segment Alignment (0, 0x100 or 0x010000)
+        0121   00                 ; Order of the bytes in a Number (0x00 for the IIgs)
+        0122   00                 ; Reserved
+        0123   0005               ; Segment Number (1 to N)
+        0125   00000000           ; Entry Point in the Segment
+        0129   002C               ; Displacement to Names (usually 0x2C)
+        012B   0045               ; Displacement to Data (usually 0x40)
+        012D                      ; Load Name
+        0137   0A                 ; Segment Name Length
+        0138   FXUSER; Segment Name
+
+
+***************************
+**      Segment 02       **
+***************************
+
+  ***  Header  ***
+
+     - Segment Header size + Segment Body size               :  00015B 347
+     - Number of 0x00 to add at the end of the Segment Body  :  000000 0
+     - Size of the Segment once loaded in Memory             :  0000DA 218
+     - Undefined Byte #1 (usually set to 0x00)               :      00
+     - Label Length (usually set to 0x00 or 0x0A)            :      00
+     - Number Length (usually set to 4 bytes)                :      04
+     - Segment OMF Version (should be 0x02 for 2.1)          :      02
+     - Bank Size (64 KB for Code, 0-64 KB for Data)          :  010000 65536
+     - Segment Type + Segment Attributes                     :    0000 = Code  (Static + Can be loaded in Special Memory)
+     - Undefined Byte #2 (usually set to 0x00)               :      00
+     - Undefined Byte #3 (usually set to 0x00)               :      00
+     - Org Address to load the Segment (0x0000 = anywhere)   :  000000
+     - Boundary for Segment Alignment (0, 0x100 or 0x010000) :  000000 = No alignment needed
+     - Order of the bytes in a Number (0x00 for the IIgs)    :      00
+     - Undefined Byte #4 (usually set to 0x00)               :      00
+     - Segment Number (1 to N)                               :    0002 2
+     - Entry Point in the Segment                            :  000000 0
+     - Load Name                                             :  '          '
+     - Segment Name                                          :  'FXOS'
+
+  ***  Data or Code  ***
+
+     o Body Record List                                      :  LCONST + SUPER (3) + cINTERSEG + cRELOC (2) + END
+
+     - Data Offset    :  0001D5
+     - Data Length    :  0000DA (218)
+
+       000000   22 AC 04 04 F4 00 00 AB AB 22 DE 00 04 22 00 00.03 22 D5 00 04 3B 38 E9 0E 00 1B 0B 5B D4 14 D4 
+       000020   12 18 68 6D 09 00 48 A3 03 6D 0B 00 83 03 68 85.07 68 85 09 D4 14 D4 12 18 68 6D 01 00 48 A3 03 
+       000040   6D 03 00 83 03 68 85 0B 68 85 0D A6 05 DA BA 86.05 D4 0D D4 0B D4 09 D4 07 A3 01 3A 48 E2 20 A3 
+       000060   05 83 03 A9 00 83 06 C2 20 A9 6E 00 83 04 6B 9B.A6 05 9A BB 7A 84 05 82 00 00 A5 10 85 14 A5 0F 
+       000080   85 13 2B 3B 18 69 12 00 1B 6B 3B 38 E9 04 00 1B.0B 5B A6 03 DA BA 86 03 F4 00 00 F4 C5 00 22 A5 
+       0000A0   01 05 A8 A5 03 1B 68 85 03 98 A9 2A 00 85 01 82.00 00 A5 06 85 08 A5 05 85 07 A4 01 2B 3B 18 69 
+       0000C0   06 00 1B 98 6B 41 50 47 4D 20 44 6F 53 6F 6D 65.74 68 69 6E 67 20 32 0D 0A 00 
+
+  ***  Relocation Dictionary ***
+
+     - Reloc Offset   :  0002AF
+     - Reloc Length   :  000036 (54)
+
+     - # Address to be patched  :  0004 (4)
+
+       +--------+-----------+-------------+----------+-------------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |
+       +--------+-----------+-------------+----------+-------------+
+       |  0000  |    01     |    >> 16    |  000064  |   00006F    |  cRELOC              
+       |  0001  |    02     |             |  00006A  |   00006E    |  SUPER RELOC 2      
+       |  0002  |    02     |    >> 16    |  000099  |   0000C5    |  cRELOC              
+       |  0003  |    02     |             |  00009C  |   0000C5    |  SUPER RELOC 2      
+       +--------+-----------+-------------+----------+-------------+
+
+     - # Address to be patched  :  000A (10)
+
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |  File Num  |  Seg Num  |
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |  0000  |    03     |             |  000001  |   0004AC    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0001  |    02     |    >> 8     |  000005  |   000000    |    0001    |    0004   |  cINTERSEG           
+       |  0002  |    03     |             |  00000A  |   0000DE    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0003  |    03     |             |  00000E  |   000000    |    0001    |    0003   |  SUPER INTERSEG 1    
+       |  0004  |    03     |             |  000012  |   0000D5    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0005  |    02     |             |  000024  |   000009    |    0001    |    0004   |  SUPER INTERSEG 13-24
+       |  0006  |    02     |             |  00002A  |   00000B    |    0001    |    0004   |  SUPER INTERSEG 13-24
+       |  0007  |    02     |             |  00003B  |   000001    |    0001    |    0004   |  SUPER INTERSEG 13-24
+       |  0008  |    02     |             |  000041  |   000003    |    0001    |    0004   |  SUPER INTERSEG 13-24
+       |  0009  |    03     |             |  00009F  |   0001A5    |    0001    |    0005   |  SUPER INTERSEG 1    
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+
+***************************
+**      Segment 03       **
+***************************
+
+  ***  Header  ***
+
+     - Segment Header size + Segment Body size               :  000063 99
+     - Number of 0x00 to add at the end of the Segment Body  :  000000 0
+     - Size of the Segment once loaded in Memory             :  000018 24
+     - Undefined Byte #1 (usually set to 0x00)               :      00
+     - Label Length (usually set to 0x00 or 0x0A)            :      00
+     - Number Length (usually set to 4 bytes)                :      04
+     - Segment OMF Version (should be 0x02 for 2.1)          :      02
+     - Bank Size (64 KB for Code, 0-64 KB for Data)          :  010000 65536
+     - Segment Type + Segment Attributes                     :    0000 = Code  (Static + Can be loaded in Special Memory)
+     - Undefined Byte #2 (usually set to 0x00)               :      00
+     - Undefined Byte #3 (usually set to 0x00)               :      00
+     - Org Address to load the Segment (0x0000 = anywhere)   :  000000
+     - Boundary for Segment Alignment (0, 0x100 or 0x010000) :  000000 = No alignment needed
+     - Order of the bytes in a Number (0x00 for the IIgs)    :      00
+     - Undefined Byte #4 (usually set to 0x00)               :      00
+     - Segment Number (1 to N)                               :    0003 3
+     - Entry Point in the Segment                            :  000000 0
+     - Load Name                                             :  '          '
+     - Segment Name                                          :  'DISPOSE'
+
+  ***  Data or Code  ***
+
+     o Body Record List                                      :  LCONST + END
+
+     - Data Offset    :  000330
+     - Data Length    :  000018 (24)
+
+       000000   3B 38 E9 04 00 1B 0B 5B 64 01 82 00 00 A4 01 2B.3B 18 69 04 00 1B 98 6B 
+
+***************************
+**      Segment 04       **
+***************************
+
+  ***  Header  ***
+
+     - Segment Header size + Segment Body size               :  000AC7 2759
+     - Number of 0x00 to add at the end of the Segment Body  :  000000 0
+     - Size of the Segment once loaded in Memory             :  0009A7 2471
+     - Undefined Byte #1 (usually set to 0x00)               :      00
+     - Label Length (usually set to 0x00 or 0x0A)            :      00
+     - Number Length (usually set to 4 bytes)                :      04
+     - Segment OMF Version (should be 0x02 for 2.1)          :      02
+     - Bank Size (64 KB for Code, 0-64 KB for Data)          :  010000 65536
+     - Segment Type + Segment Attributes                     :    0000 = Code  (Static + Can be loaded in Special Memory)
+     - Undefined Byte #2 (usually set to 0x00)               :      00
+     - Undefined Byte #3 (usually set to 0x00)               :      00
+     - Org Address to load the Segment (0x0000 = anywhere)   :  000000
+     - Boundary for Segment Alignment (0, 0x100 or 0x010000) :  000000 = No alignment needed
+     - Order of the bytes in a Number (0x00 for the IIgs)    :      00
+     - Undefined Byte #4 (usually set to 0x00)               :      00
+     - Segment Number (1 to N)                               :    0004 4
+     - Entry Point in the Segment                            :  000000 0
+     - Load Name                                             :  '          '
+     - Segment Name                                          :  '          '
+
+  ***  Data or Code  ***
+
+     o Body Record List                                      :  LCONST + SUPER (3) + cRELOC (5) + END
+
+     - Data Offset    :  000393
+     - Data Length    :  0009A7 (2471)
+
+       000000   00 11 00 00 00 8A 00 02 00 A5 01 05 00 15 00 02.00 41 50 47 4D 20 44 6C 6C 4D 61 69 6E 20 0D 0A 
+       000020   00 00 00 00 1B 21 40 23 24 25 5E 26 2A 28 29 5F.2B 08 09 51 57 45 52 54 59 55 49 4F 50 7B 7D 0D 
+       000040   00 41 53 44 46 47 48 4A 4B 4C 3A 22 7E 00 7C 5A.58 43 56 42 4E 4D 3C 3E 3F 00 2A 00 20 00 00 00 
+       000060   00 00 00 00 00 00 00 00 00 00 37 38 39 2D 34 35.36 2B 31 32 33 30 2E 00 00 00 00 00 00 1B 31 32 
+       000080   33 34 35 36 37 38 39 30 2D 3D 08 09 71 77 65 72.74 79 75 69 6F 70 5B 5D 0D 00 61 73 64 66 67 68 
+       0000A0   6A 6B 6C 3B 27 60 00 5C 7A 78 63 76 62 6E 6D 2C.2E 2F 00 2A 00 20 00 00 00 00 00 00 00 00 00 00 
+       0000C0   00 00 00 37 38 39 2D 34 35 36 2B 31 32 33 30 2E.00 00 00 00 00 48 20 70 02 68 5C 8C 04 00 8B 4B 
+       0000E0   AB FA 7A F4 00 00 F4 00 00 F4 00 00 5A DA AD DB.02 48 AD D9 02 48 3B 0B 5B 9C CB 02 9C CD 02 A5 
+       000100   01 05 03 D0 03 82 5D 01 18 A5 01 69 08 00 85 01.90 02 E6 03 A2 00 00 9B E2 20 B7 01 F0 23 C9 20 
+       000120   F0 08 C9 22 F0 04 C9 09 D0 03 C8 80 ED E8 B7 01.F0 0F C9 20 F0 E4 C9 22 F0 E0 C9 09 F0 DC C8 80 
+       000140   ED C2 20 8A 1A 0A 0A 8D 6E 02 5A 38 63 01 7A 48.48 F4 00 00 48 AF D1 02 00 48 F4 08 C0 F4 00 00 
+       000160   F4 00 00 A2 02 09 22 00 00 E1 90 2A 80 0E 0D 4F.75 74 20 6F 66 20 6D 65 6D 6F 72 79 F4 00 00 F4 
+       000180   6D 01 F4 00 00 F4 01 00 F4 01 00 22 0C 04 00 A9.FF FF 5C 8C 04 00 68 85 0B 68 85 0D A0 02 00 B7 
+       0001A0   0B AA A7 0B 8D 6A 02 8E 6C 02 18 6D 6E 02 90 01.E8 85 0B 86 0D E2 20 A0 00 00 B7 01 97 0B F0 03 
+       0001C0   C8 80 F7 C2 20 A5 0D 85 03 A5 0B 85 01 AD 6C 02.85 0D AD 6A 02 85 0B A7 01 29 FF 00 F0 73 C9 20 
+       0001E0   00 F0 05 C9 09 00 D0 08 E6 01 D0 02 E6 03 80 E7.AA C9 22 00 D0 06 E6 01 D0 02 E6 03 A0 02 00 A5 
+       000200   01 87 0B A5 03 97 0B 18 A5 0B 69 04 00 85 0B 90.02 E6 0D E6 09 E0 22 00 D0 14 A7 01 29 FF 00 F0 
+       000220   30 C9 22 00 F0 21 E6 01 D0 02 E6 03 80 EC A7 01.29 FF 00 F0 1C C9 20 00 F0 0D C9 09 00 F0 08 E6 
+       000240   01 D0 02 E6 03 80 E7 E2 20 A9 00 87 01 C2 20 80.97 A9 00 00 87 0B A0 02 00 97 0B AD 6C 02 85 0D 
+       000260   AD 6A 02 85 0B 2B 68 68 AB 6B 00 00 00 00 00 00.8B 4B AB AD CD 02 48 AD CB 02 48 0B 3B 5B A5 03 
+       000280   05 05 F0 24 F4 02 00 F4 00 99 8B 68 A0 05 00 B7.03 48 88 88 B7 03 48 8B 68 6B A0 02 00 B7 03 AA 
+       0002A0   A7 03 85 03 86 05 80 D6 AF D5 02 00 0F D3 02 00.F0 14 4B F4 C5 02 E2 30 AF D5 02 00 48 C2 30 AF 
+       0002C0   D3 02 00 3A 48 6B 2B 68 68 AB 60 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       0002E0   00 E5 02 00 00 00 00 EB 02 00 00 00 00 00 00 F3.02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000300   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000320   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 A8 0B 3B 38 E9 08 00 5B 1B 98 A0 00 00 89 00 
+       000340   80 F0 07 49 FF FF 1A 30 0F C8 85 03 8A 10 0C 88.49 FF FF 1A 10 05 A6 03 82 83 00 C5 03 B0 05 A6 
+       000360   03 85 03 8A 85 05 84 07 A9 00 00 64 01 46 03 90.03 18 65 05 6A 66 01 46 03 90 03 18 65 05 6A 66 
+       000380   01 46 03 90 03 18 65 05 6A 66 01 46 03 90 03 18.65 05 6A 66 01 46 03 F0 52 90 03 18 65 05 6A 66 
+       0003A0   01 46 03 90 03 18 65 05 6A 66 01 46 03 90 03 18.65 05 6A 66 01 46 03 90 03 18 65 05 6A 66 01 A4 
+       0003C0   03 D0 3F 89 80 FF D0 3A 05 01 EB A4 07 F0 04 49.FF FF 1A A8 3B 18 69 08 00 1B 2B 98 B8 6B 8A F0 
+       0003E0   F2 C9 01 00 D0 1C A9 00 80 80 E8 90 03 18 65 05.89 00 F8 F0 03 82 0A 00 26 01 05 01 2A 2A 2A 2A 
+       000400   80 C9 3B 18 69 08 00 1B 2B E2 40 6B 3B 0B 5B E6.0A D0 02 E6 0C A7 0A 29 FF 00 38 E5 08 10 0A 49 
+       000420   FF FF 1A A4 04 22 59 09 00 A7 0A 29 FF 00 F0 4C.85 08 E6 0A D0 02 E6 0C A5 04 F0 21 A7 0A 29 FF 
+       000440   00 48 22 C4 04 00 E6 0A D0 02 E6 0C C6 08 D0 EC.A5 06 F0 28 F4 0D 00 22 C4 04 00 80 1F A7 0A 29 
+       000460   FF 00 48 22 04 05 00 E6 0A D0 02 E6 0C C6 08 D0.EC A5 06 F0 07 F4 0D 00 22 04 05 00 A5 02 85 0C 
+       000480   A5 00 85 0A 2B 18 3B 69 0A 00 1B 6B 48 22 44 05.00 22 B3 06 00 22 74 06 00 68 22 A8 00 E1 29 20 
+       0004A0   A4 04 00 00 02 00 00 00 00 00 00 00 48 DA 5A 22.C8 06 00 22 59 06 00 22 85 06 00 22 30 06 00 22 
+       0004C0   8C 05 00 6B 4C C7 04 3B 0B 5B A5 04 8F 02 05 00.AF E8 08 00 8F F4 04 00 22 A8 00 E1 13 20 F2 04 
+       0004E0   00 00 A5 02 85 04 A5 01 85 03 2B 3B 18 69 02 00.1B 6B 04 00 00 00 02 05 00 00 01 00 00 00 00 00 
+       000500   00 00 00 00 4C 07 05 3B 0B 5B A5 04 8F 42 05 00.AF E6 08 00 8F 34 05 00 22 A8 00 E1 13 20 32 05 
+       000520   00 00 A5 02 85 04 A5 01 85 03 2B 3B 18 69 02 00.1B 6B 04 00 00 00 42 05 00 00 01 00 00 00 00 00 
+       000540   00 00 00 00 8B 4B AB AD EA 08 F0 10 AD E4 08 8D.8A 05 22 A8 00 E1 14 20 88 05 00 00 AD EC 08 F0 
+       000560   10 AD E6 08 8D 8A 05 22 A8 00 E1 14 20 88 05 00.00 AD EE 08 F0 10 AD E8 08 8D 8A 05 22 A8 00 E1 
+       000580   14 20 88 05 00 00 AB 6B 01 00 00 00 8B 4B AB 9C.DE 07 9C DE 08 9C E0 08 9C E2 08 F4 0A 00 22 E1 
+       0005A0   06 00 8D E4 08 9C F0 08 AD E4 08 8D 09 06 22 A8.00 E1 39 20 07 06 00 00 B0 37 AD 13 06 C9 09 00 
+       0005C0   D0 0E AD 1D 06 29 FF 00 C9 3A 00 D0 24 CE 13 06.A0 08 00 B9 13 06 D9 26 06 D0 16 88 88 10 F4 22 
+       0005E0   A8 00 E1 20 20 1E 06 00 00 B0 06 AD 24 06 8D F0.08 F4 0B 00 22 E1 06 00 8D E6 08 F4 0C 00 22 E1 
+       000600   06 00 8D E8 08 AB 6B 03 00 00 00 00 00 11 06 00.00 0D 00 00 00 20 20 20 20 20 20 20 20 20 02 00 
+       000620   26 06 00 00 00 00 08 00 2E 43 4F 4E 53 4F 4C 45.8B 4B AB A9 20 00 8D EB 02 9C DF 02 9C DD 02 9C 
+       000640   0F 03 9C 11 03 9C 0B 03 9C 0D 03 9C 05 03 9C 07.03 9C 01 03 9C 03 03 AB 6B 48 48 F4 00 00 3B 48 
+       000660   A2 02 1A 22 00 00 E1 0B 3B 5B A7 03 2B 8F ED 02.00 68 68 6B 22 44 09 00 AF D1 02 00 48 A2 02 11 
+       000680   22 00 00 E1 6B A9 00 00 8F FF 02 00 48 A2 0A 06.22 00 00 E1 68 D0 1B AF ED 02 00 48 18 69 00 01 
+       0006A0   8F ED 02 00 A2 0A 02 22 00 00 E1 A9 01 00 8F FF.02 00 6B AF FF 02 00 F0 0E A2 0A 03 22 00 00 E1 
+       0006C0   A9 00 00 8F FF 02 00 6B 4B FA 7A 68 8F D9 02 00.68 8F DB 02 00 68 09 00 01 8F D1 02 00 5A DA AB 
+       0006E0   6B 3B 38 E9 0A 00 1B 0B 5B 64 01 A5 0E 0A AA 9E.D6 08 A5 0E 8D CA 07 22 A8 00 E1 37 20 C8 07 00 
+       000700   00 B0 0A AD CC 07 F0 05 85 01 82 A0 00 48 48 F4.00 00 F4 00 20 48 F4 00 00 48 48 F4 00 00 F4 E1 
+       000720   06 A2 02 1A 22 00 00 E1 A2 02 30 22 00 00 E1 F4.10 C0 F4 00 00 F4 00 00 A2 02 09 22 00 00 E1 7A 
+       000740   FA B0 6A 86 05 84 03 A0 02 00 B7 03 85 09 8D C6.07 8D D2 07 8D DC 07 A7 03 85 07 8D C4 07 1A 1A 
+       000760   8D D0 07 8D DA 07 A9 00 20 87 07 A5 0E 8D C2 07.22 A8 00 E1 0A 20 C0 07 00 00 B0 24 22 A8 00 E1 
+       000780   38 20 CE 07 00 00 B0 07 AD D4 07 85 01 D0 11 22.A8 00 E1 10 20 D6 07 00 00 B0 05 AD D8 07 85 01 
+       0007A0   A5 05 48 A5 03 48 A2 02 10 22 00 00 E1 A4 01 A5.0C 85 0E A5 0B 85 0D 2B 3B 18 69 0C 00 1B 98 6B 
+       0007C0   02 00 00 00 00 00 00 00 02 00 00 00 00 00 02 00.00 00 00 00 00 00 02 00 00 00 00 00 00 00 00 00 
+       0007E0   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000800   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000820   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000840   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000860   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000880   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       0008A0   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       0008C0   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       0008E0   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 28 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000900   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000920   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       000940   00 00 00 00 8B 4B AB 9C 7B 09 9C 7D 09 A2 26 00.9E 7F 09 CA CA 10 F9 AB 6B 48 0B 3B 5B 98 F0 0D 
+       000960   F4 20 00 22 C4 04 00 C6 03 D0 F5 80 0B F4 20 00.22 04 05 00 C6 03 D0 F5 2B 68 6B 00 00 00 00 00 
+       000980   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00.00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+       0009A0   00 00 00 00 00 00 00 
+
+  ***  Relocation Dictionary ***
+
+     - Reloc Offset   :  000D3A
+     - Reloc Length   :  0000D5 (213)
+
+     - # Address to be patched  :  008D (141)
+
+       +--------+-----------+-------------+----------+-------------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |
+       +--------+-----------+-------------+----------+-------------+
+       |  0000  |    02     |             |  000001  |   000011    |  SUPER RELOC 2      
+       |  0001  |    02     |    >> 16    |  000003  |   000011    |  cRELOC              
+       |  0002  |    02     |             |  0000D7  |   000270    |  SUPER RELOC 2      
+       |  0003  |    03     |             |  0000DB  |   00048C    |  SUPER RELOC 3       
+       |  0004  |    02     |             |  0000EF  |   0002DB    |  SUPER RELOC 2      
+       |  0005  |    02     |             |  0000F3  |   0002D9    |  SUPER RELOC 2      
+       |  0006  |    02     |             |  0000FA  |   0002CB    |  SUPER RELOC 2      
+       |  0007  |    02     |             |  0000FD  |   0002CD    |  SUPER RELOC 2      
+       |  0008  |    02     |             |  000148  |   00026E    |  SUPER RELOC 2      
+       |  0009  |    03     |             |  000156  |   0002D1    |  SUPER RELOC 3       
+       |  000A  |    02     |    >> 16    |  00017D  |   00016D    |  cRELOC              
+       |  000B  |    02     |             |  000180  |   00016D    |  SUPER RELOC 2      
+       |  000C  |    03     |             |  00018C  |   00040C    |  SUPER RELOC 3       
+       |  000D  |    03     |             |  000193  |   00048C    |  SUPER RELOC 3       
+       |  000E  |    02     |             |  0001A5  |   00026A    |  SUPER RELOC 2      
+       |  000F  |    02     |             |  0001A8  |   00026C    |  SUPER RELOC 2      
+       |  0010  |    02     |             |  0001AC  |   00026E    |  SUPER RELOC 2      
+       |  0011  |    02     |             |  0001CE  |   00026C    |  SUPER RELOC 2      
+       |  0012  |    02     |             |  0001D3  |   00026A    |  SUPER RELOC 2      
+       |  0013  |    02     |             |  00025C  |   00026C    |  SUPER RELOC 2      
+       |  0014  |    02     |             |  000261  |   00026A    |  SUPER RELOC 2      
+       |  0015  |    02     |             |  000274  |   0002CD    |  SUPER RELOC 2      
+       |  0016  |    02     |             |  000278  |   0002CB    |  SUPER RELOC 2      
+       |  0017  |    02     |    >> 8     |  000285  |   000299    |  cRELOC              
+       |  0018  |    02     |     08      |  000288  |   000299    |  cRELOC              
+       |  0019  |    03     |             |  0002A9  |   0002D5    |  SUPER RELOC 3       
+       |  001A  |    03     |             |  0002AD  |   0002D3    |  SUPER RELOC 3       
+       |  001B  |    02     |             |  0002B4  |   0002C5    |  SUPER RELOC 2      
+       |  001C  |    03     |             |  0002B9  |   0002D5    |  SUPER RELOC 3       
+       |  001D  |    03     |             |  0002C0  |   0002D3    |  SUPER RELOC 3       
+       |  001E  |    03     |             |  0002E1  |   0002E5    |  SUPER RELOC 3       
+       |  001F  |    03     |             |  0002E7  |   0002EB    |  SUPER RELOC 3       
+       |  0020  |    03     |             |  0002EF  |   0002F3    |  SUPER RELOC 3       
+       |  0021  |    03     |             |  000426  |   000959    |  SUPER RELOC 3       
+       |  0022  |    03     |             |  000443  |   0004C4    |  SUPER RELOC 3       
+       |  0023  |    03     |             |  000458  |   0004C4    |  SUPER RELOC 3       
+       |  0024  |    03     |             |  000464  |   000504    |  SUPER RELOC 3       
+       |  0025  |    03     |             |  000479  |   000504    |  SUPER RELOC 3       
+       |  0026  |    03     |             |  00048E  |   000544    |  SUPER RELOC 3       
+       |  0027  |    03     |             |  000492  |   0006B3    |  SUPER RELOC 3       
+       |  0028  |    03     |             |  000496  |   000674    |  SUPER RELOC 3       
+       |  0029  |    03     |             |  0004A0  |   0004A4    |  SUPER RELOC 3       
+       |  002A  |    03     |             |  0004B0  |   0006C8    |  SUPER RELOC 3       
+       |  002B  |    03     |             |  0004B4  |   000659    |  SUPER RELOC 3       
+       |  002C  |    03     |             |  0004B8  |   000685    |  SUPER RELOC 3       
+       |  002D  |    03     |             |  0004BC  |   000630    |  SUPER RELOC 3       
+       |  002E  |    03     |             |  0004C0  |   00058C    |  SUPER RELOC 3       
+       |  002F  |    02     |             |  0004C5  |   0004C7    |  SUPER RELOC 2      
+       |  0030  |    03     |             |  0004CD  |   000502    |  SUPER RELOC 3       
+       |  0031  |    03     |             |  0004D1  |   0008E8    |  SUPER RELOC 3       
+       |  0032  |    03     |             |  0004D5  |   0004F4    |  SUPER RELOC 3       
+       |  0033  |    03     |             |  0004DE  |   0004F2    |  SUPER RELOC 3       
+       |  0034  |    03     |             |  0004F6  |   000502    |  SUPER RELOC 3       
+       |  0035  |    02     |             |  000505  |   000507    |  SUPER RELOC 2      
+       |  0036  |    03     |             |  00050D  |   000542    |  SUPER RELOC 3       
+       |  0037  |    03     |             |  000511  |   0008E6    |  SUPER RELOC 3       
+       |  0038  |    03     |             |  000515  |   000534    |  SUPER RELOC 3       
+       |  0039  |    03     |             |  00051E  |   000532    |  SUPER RELOC 3       
+       |  003A  |    03     |             |  000536  |   000542    |  SUPER RELOC 3       
+       |  003B  |    02     |             |  000548  |   0008EA    |  SUPER RELOC 2      
+       |  003C  |    02     |             |  00054D  |   0008E4    |  SUPER RELOC 2      
+       |  003D  |    02     |             |  000550  |   00058A    |  SUPER RELOC 2      
+       |  003E  |    03     |             |  000558  |   000588    |  SUPER RELOC 3       
+       |  003F  |    02     |             |  00055D  |   0008EC    |  SUPER RELOC 2      
+       |  0040  |    02     |             |  000562  |   0008E6    |  SUPER RELOC 2      
+       |  0041  |    02     |             |  000565  |   00058A    |  SUPER RELOC 2      
+       |  0042  |    03     |             |  00056D  |   000588    |  SUPER RELOC 3       
+       |  0043  |    02     |             |  000572  |   0008EE    |  SUPER RELOC 2      
+       |  0044  |    02     |             |  000577  |   0008E8    |  SUPER RELOC 2      
+       |  0045  |    02     |             |  00057A  |   00058A    |  SUPER RELOC 2      
+       |  0046  |    03     |             |  000582  |   000588    |  SUPER RELOC 3       
+       |  0047  |    02     |             |  000590  |   0007DE    |  SUPER RELOC 2      
+       |  0048  |    02     |             |  000593  |   0008DE    |  SUPER RELOC 2      
+       |  0049  |    02     |             |  000596  |   0008E0    |  SUPER RELOC 2      
+       |  004A  |    02     |             |  000599  |   0008E2    |  SUPER RELOC 2      
+       |  004B  |    03     |             |  00059F  |   0006E1    |  SUPER RELOC 3       
+       |  004C  |    02     |             |  0005A3  |   0008E4    |  SUPER RELOC 2      
+       |  004D  |    02     |             |  0005A6  |   0008F0    |  SUPER RELOC 2      
+       |  004E  |    02     |             |  0005A9  |   0008E4    |  SUPER RELOC 2      
+       |  004F  |    02     |             |  0005AC  |   000609    |  SUPER RELOC 2      
+       |  0050  |    03     |             |  0005B4  |   000607    |  SUPER RELOC 3       
+       |  0051  |    02     |             |  0005BB  |   000613    |  SUPER RELOC 2      
+       |  0052  |    02     |             |  0005C3  |   00061D    |  SUPER RELOC 2      
+       |  0053  |    02     |             |  0005CE  |   000613    |  SUPER RELOC 2      
+       |  0054  |    02     |             |  0005D4  |   000613    |  SUPER RELOC 2      
+       |  0055  |    02     |             |  0005D7  |   000626    |  SUPER RELOC 2      
+       |  0056  |    03     |             |  0005E5  |   00061E    |  SUPER RELOC 3       
+       |  0057  |    02     |             |  0005EC  |   000624    |  SUPER RELOC 2      
+       |  0058  |    02     |             |  0005EF  |   0008F0    |  SUPER RELOC 2      
+       |  0059  |    03     |             |  0005F5  |   0006E1    |  SUPER RELOC 3       
+       |  005A  |    02     |             |  0005F9  |   0008E6    |  SUPER RELOC 2      
+       |  005B  |    03     |             |  0005FF  |   0006E1    |  SUPER RELOC 3       
+       |  005C  |    02     |             |  000603  |   0008E8    |  SUPER RELOC 2      
+       |  005D  |    03     |             |  00060D  |   000611    |  SUPER RELOC 3       
+       |  005E  |    03     |             |  000620  |   000626    |  SUPER RELOC 3       
+       |  005F  |    02     |             |  000637  |   0002EB    |  SUPER RELOC 2      
+       |  0060  |    02     |             |  00063A  |   0002DF    |  SUPER RELOC 2      
+       |  0061  |    02     |             |  00063D  |   0002DD    |  SUPER RELOC 2      
+       |  0062  |    02     |             |  000640  |   00030F    |  SUPER RELOC 2      
+       |  0063  |    02     |             |  000643  |   000311    |  SUPER RELOC 2      
+       |  0064  |    02     |             |  000646  |   00030B    |  SUPER RELOC 2      
+       |  0065  |    02     |             |  000649  |   00030D    |  SUPER RELOC 2      
+       |  0066  |    02     |             |  00064C  |   000305    |  SUPER RELOC 2      
+       |  0067  |    02     |             |  00064F  |   000307    |  SUPER RELOC 2      
+       |  0068  |    02     |             |  000652  |   000301    |  SUPER RELOC 2      
+       |  0069  |    02     |             |  000655  |   000303    |  SUPER RELOC 2      
+       |  006A  |    03     |             |  00066E  |   0002ED    |  SUPER RELOC 3       
+       |  006B  |    03     |             |  000675  |   000944    |  SUPER RELOC 3       
+       |  006C  |    03     |             |  000679  |   0002D1    |  SUPER RELOC 3       
+       |  006D  |    03     |             |  000689  |   0002FF    |  SUPER RELOC 3       
+       |  006E  |    03     |             |  000698  |   0002ED    |  SUPER RELOC 3       
+       |  006F  |    03     |             |  0006A1  |   0002ED    |  SUPER RELOC 3       
+       |  0070  |    03     |             |  0006AF  |   0002FF    |  SUPER RELOC 3       
+       |  0071  |    03     |             |  0006B4  |   0002FF    |  SUPER RELOC 3       
+       |  0072  |    03     |             |  0006C4  |   0002FF    |  SUPER RELOC 3       
+       |  0073  |    03     |             |  0006CD  |   0002D9    |  SUPER RELOC 3       
+       |  0074  |    03     |             |  0006D2  |   0002DB    |  SUPER RELOC 3       
+       |  0075  |    03     |             |  0006DA  |   0002D1    |  SUPER RELOC 3       
+       |  0076  |    02     |             |  0006F0  |   0008D6    |  SUPER RELOC 2      
+       |  0077  |    02     |             |  0006F5  |   0007CA    |  SUPER RELOC 2      
+       |  0078  |    03     |             |  0006FD  |   0007C8    |  SUPER RELOC 3       
+       |  0079  |    02     |             |  000704  |   0007CC    |  SUPER RELOC 2      
+       |  007A  |    02     |    >> 16    |  00071C  |   0006E1    |  cRELOC              
+       |  007B  |    02     |             |  00071F  |   0006E1    |  SUPER RELOC 2      
+       |  007C  |    02     |             |  00074F  |   0007C6    |  SUPER RELOC 2      
+       |  007D  |    02     |             |  000752  |   0007D2    |  SUPER RELOC 2      
+       |  007E  |    02     |             |  000755  |   0007DC    |  SUPER RELOC 2      
+       |  007F  |    02     |             |  00075C  |   0007C4    |  SUPER RELOC 2      
+       |  0080  |    02     |             |  000761  |   0007D0    |  SUPER RELOC 2      
+       |  0081  |    02     |             |  000764  |   0007DA    |  SUPER RELOC 2      
+       |  0082  |    02     |             |  00076E  |   0007C2    |  SUPER RELOC 2      
+       |  0083  |    03     |             |  000776  |   0007C0    |  SUPER RELOC 3       
+       |  0084  |    03     |             |  000782  |   0007CE    |  SUPER RELOC 3       
+       |  0085  |    02     |             |  000789  |   0007D4    |  SUPER RELOC 2      
+       |  0086  |    03     |             |  000795  |   0007D6    |  SUPER RELOC 3       
+       |  0087  |    02     |             |  00079C  |   0007D8    |  SUPER RELOC 2      
+       |  0088  |    02     |             |  000948  |   00097B    |  SUPER RELOC 2      
+       |  0089  |    02     |             |  00094B  |   00097D    |  SUPER RELOC 2      
+       |  008A  |    02     |             |  000951  |   00097F    |  SUPER RELOC 2      
+       |  008B  |    03     |             |  000964  |   0004C4    |  SUPER RELOC 3       
+       |  008C  |    03     |             |  000971  |   000504    |  SUPER RELOC 3       
+       +--------+-----------+-------------+----------+-------------+
+
+     - # Address to be patched  :  0003 (3)
+
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |  File Num  |  Seg Num  |
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |  0000  |    03     |             |  000005  |   00008A    |    0001    |    0002   |  SUPER INTERSEG 1    
+       |  0001  |    03     |             |  000009  |   0001A5    |    0001    |    0005   |  SUPER INTERSEG 1    
+       |  0002  |    03     |             |  00000D  |   000015    |    0001    |    0002   |  SUPER INTERSEG 1    
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+
+***************************
+**      Segment 05       **
+***************************
+
+  ***  Header  ***
+
+     - Segment Header size + Segment Body size               :  000314 788
+     - Number of 0x00 to add at the end of the Segment Body  :  000000 0
+     - Size of the Segment once loaded in Memory             :  00028E 654
+     - Undefined Byte #1 (usually set to 0x00)               :      00
+     - Label Length (usually set to 0x00 or 0x0A)            :      00
+     - Number Length (usually set to 4 bytes)                :      04
+     - Segment OMF Version (should be 0x02 for 2.1)          :      02
+     - Bank Size (64 KB for Code, 0-64 KB for Data)          :  010000 65536
+     - Segment Type + Segment Attributes                     :    0000 = Code  (Static + Can be loaded in Special Memory)
+     - Undefined Byte #2 (usually set to 0x00)               :      00
+     - Undefined Byte #3 (usually set to 0x00)               :      00
+     - Org Address to load the Segment (0x0000 = anywhere)   :  000000
+     - Boundary for Segment Alignment (0, 0x100 or 0x010000) :  000000 = No alignment needed
+     - Order of the bytes in a Number (0x00 for the IIgs)    :      00
+     - Undefined Byte #4 (usually set to 0x00)               :      00
+     - Segment Number (1 to N)                               :    0005 5
+     - Entry Point in the Segment                            :  000000 0
+     - Load Name                                             :  '          '
+     - Segment Name                                          :  'FXUSER'
+
+  ***  Data or Code  ***
+
+     o Body Record List                                      :  LCONST + SUPER (3) + cINTERSEG + cRELOC (2) + END
+
+     - Data Offset    :  000E5A
+     - Data Length    :  00028E (654)
+
+       000000   22 AC 04 04 F4 21 00 AB AB 22 DE 00 04 22 00 00.03 22 D5 00 04 3B 38 E9 06 00 1B 0B 5B A9 00 15 
+       000020   A2 00 00 A8 10 01 CA 86 03 85 01 82 00 00 A6 03.A4 01 2B 3B 18 69 06 00 1B 98 6B 3B 38 E9 0C 00 
+       000040   1B 0B 5B A6 07 DA BA 86 07 22 15 00 00 A8 A5 07.1B 68 85 07 98 DA 48 68 85 09 68 85 0B A6 07 DA 
+       000060   BA 86 07 F4 00 00 F4 FD 00 22 D9 01 00 A8 A5 07.1B 68 85 07 98 A5 10 48 A0 2C 00 68 97 09 A9 0E 
+       000080   00 29 FF 00 48 A0 2E 00 68 E2 20 97 09 C2 20 29.FF 00 D4 14 D4 12 A0 30 00 A3 01 97 09 C8 C8 A3 
+       0000A0   03 97 09 68 68 8B 48 02 00 68 AB A5 16 05 18 D0.03 82 19 00 A0 36 00 B7 09 48 A0 34 00 B7 09 48 
+       0000C0   A3 01 87 16 A0 02 00 A3 03 97 16 68 68 A6 07 DA.BA 86 07 F4 00 00 F4 14 01 22 D9 01 00 A8 A5 07 
+       0000E0   1B 68 85 07 98 64 01 82 00 00 A5 0E 85 18 A5 0D.85 17 A4 01 2B 3B 18 69 16 00 1B 98 6B 5F 5F 6B 
+       000100   65 72 6E 65 6C 5F 63 61 6C 6C 3A 3A 45 4E 54 45.52 0D 0A 00 5F 5F 6B 65 72 6E 65 6C 5F 63 61 6C 
+       000120   6C 3A 3A 45 58 49 54 0D 0A 00 3B 38 E9 0A 00 1B.0B 5B A6 05 DA BA 86 05 22 15 00 00 A8 A5 05 1B 
+       000140   68 85 05 98 DA 48 68 85 07 68 85 09 A9 01 00 48.A0 2C 00 68 97 07 D4 10 D4 0E A0 30 00 A3 01 97 
+       000160   07 C8 C8 A3 03 97 07 68 68 02 00 A0 36 00 B7 07.48 A0 34 00 B7 07 48 A9 00 00 A2 00 00 A0 01 00 
+       000180   C3 01 F0 01 88 8A C3 03 F0 03 A0 00 00 68 68 98.F0 03 82 00 00 A5 0C 85 10 A5 0B 85 0F 2B 3B 18 
+       0001A0   69 0E 00 1B 6B 48 3B 0B 5B A6 01 DA BA 86 01 F4.00 00 F4 00 00 D4 08 D4 06 A9 32 00 48 22 3B 00 
+       0001C0   00 A8 A5 01 1B 68 85 01 98 A5 04 85 08 A5 03 85.07 2B 3B 18 69 06 00 1B 6B 3B 38 E9 0A 00 1B 0B 
+       0001E0   5B D4 10 D4 0E 68 85 07 68 85 09 A7 07 29 FF 00.D0 03 82 86 00 A9 05 00 A2 01 00 22 31 03 04 A2 
+       000200   00 00 A8 10 01 CA DA 48 F4 AF 00 F4 F8 13 18 68.63 03 83 03 68 63 03 83 03 68 FA 85 01 86 03 A7 
+       000220   01 29 FF 00 29 20 00 AA F0 03 A9 01 00 49 01 00.D0 03 82 03 00 82 BD FF A7 07 29 FF 00 48 A9 00 
+       000240   00 A2 01 00 22 31 03 04 A2 00 00 A8 10 01 CA DA.48 F4 AF 00 F4 F8 13 18 68 63 03 83 03 68 63 03 
+       000260   83 03 68 FA 85 01 86 03 68 E2 20 87 01 C2 20 29.FF 00 E6 07 D0 02 E6 09 82 70 FF 82 00 00 A5 0C 
+       000280   85 10 A5 0B 85 0F 2B 3B 18 69 0E 00 1B 6B 
+
+  ***  Relocation Dictionary ***
+
+     - Reloc Offset   :  0010E8
+     - Reloc Length   :  00003B (59)
+
+     - # Address to be patched  :  0009 (9)
+
+       +--------+-----------+-------------+----------+-------------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |
+       +--------+-----------+-------------+----------+-------------+
+       |  0000  |    03     |             |  00004A  |   000015    |  SUPER RELOC 3       
+       |  0001  |    02     |    >> 16    |  000064  |   0000FD    |  cRELOC              
+       |  0002  |    02     |             |  000067  |   0000FD    |  SUPER RELOC 2      
+       |  0003  |    03     |             |  00006A  |   0001D9    |  SUPER RELOC 3       
+       |  0004  |    02     |    >> 16    |  0000D4  |   000114    |  cRELOC              
+       |  0005  |    02     |             |  0000D7  |   000114    |  SUPER RELOC 2      
+       |  0006  |    03     |             |  0000DA  |   0001D9    |  SUPER RELOC 3       
+       |  0007  |    03     |             |  000139  |   000015    |  SUPER RELOC 3       
+       |  0008  |    03     |             |  0001BE  |   00003B    |  SUPER RELOC 3       
+       +--------+-----------+-------------+----------+-------------+
+
+     - # Address to be patched  :  0007 (7)
+
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |    #   |  # Bytes  |  Bit Shift  |  Offset  |  Reference  |  File Num  |  Seg Num  |
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+       |  0000  |    03     |             |  000001  |   0004AC    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0001  |    02     |    >> 8     |  000005  |   000021    |    0001    |    0004   |  cINTERSEG           
+       |  0002  |    03     |             |  00000A  |   0000DE    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0003  |    03     |             |  00000E  |   000000    |    0001    |    0003   |  SUPER INTERSEG 1    
+       |  0004  |    03     |             |  000012  |   0000D5    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0005  |    03     |             |  0001FC  |   000331    |    0001    |    0004   |  SUPER INTERSEG 1    
+       |  0006  |    03     |             |  000245  |   000331    |    0001    |    0004   |  SUPER INTERSEG 1    
+       +--------+-----------+-------------+----------+-------------+------------+-----------+
+
+
+************************************************************************************************************

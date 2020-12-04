@@ -1,0 +1,93 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxheapfar.c",0
+     7                        ;
+     8                        ;
+     9                        ;#pragma section CODE=HEAPFAR, offset $19:0000
+    10                        HEAPFAR	section	 offset $19:0000
+    11 19:0000:              	ends
+    12                        ;
+    13                        ;//LPVOID __init_heap_near1(void)
+    14                        ;void far * k_mem_get_heap_far(void)
+    15                        ;{
+    16                        	.line	6
+    17                        	.line	7
+    18                        	HEAPFAR
+    19                        	xdef	~~k_mem_get_heap_far
+    20                        	func
+    21                        	.function	7
+    22                        ~~k_mem_get_heap_far:
+    23                        	longa	on
+    24                        	longi	on
+    25 19:0000: 3B           	tsc
+    26 19:0001: 38           	sec
+    27 19:0002: E9 00 00     	sbc	#L2
+    28 19:0005: 1B           	tcs
+    29 19:0006: 0B           	phd
+    30 19:0007: 5B           	tcd
+    31                        	.block	7
+    32                        ;	return (void far *)k_mem_get_heap_far;
+    33                        	.line	8
+    34 19:0008: A9 19 00     	lda	#^~~k_mem_get_heap_far
+    35 19:000B: AA           	tax
+    36 19:000C: A9 00 00     	lda	#<~~k_mem_get_heap_far
+    37                        L5:
+    38 19:000F: A8           	tay
+    39 19:0010: 2B           	pld
+    40 19:0011: 3B           	tsc
+    41 19:0012: 18           	clc
+    42 19:0013: 69 00 00     	adc	#L2
+    43 19:0016: 1B           	tcs
+    44 19:0017: 98           	tya
+    45 19:0018: 6B           	rtl
+    46                        ;}
+    47                        	.line	9
+    48                        	.endblock	9
+    49             00000000   L2	equ	0
+    50             00000001   L3	equ	1
+    51 19:0019:              	ends
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    52                        	efunc
+    53                        	.endfunc	9,1,0
+    54                        	.line	9
+    55                        ;/*
+    56                        ;
+    57                        ;#pragma section DATA=HEAPNEAR,offset $1A:0000
+    58                        ;
+    59                        ;static void __init_heap_near2(void)
+    60                        ;{
+    61                        ;}
+    62                        ;
+    63                        ;#pragma section DATA=HEAPNEAR,offset $1B:0000
+    64                        ;
+    65                        ;static void __init_heap_near3(void)
+    66                        ;{
+    67                        ;}
+    68                        ;
+    69                        ;*/
+    70                        ;
+    71                        	.line	24
+    72                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxheapfar.c",6
+    73                        	.sym	~~k_mem_get_heap_far,~~k_mem_get_heap_fa
+                    r,1089,2,32
+    74                        	end
+
+
+      Lines assembled: 74
+      Errors: 0

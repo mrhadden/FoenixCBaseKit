@@ -1,0 +1,654 @@
+  Mon Jul 27 2020  8:34                                                                                                Page 1
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+                                             ***************************************
+                                             **      WDC 65C816 Macro Assembler   **
+                                             **                                   **
+                                             **     Version 3.49.1- Feb  6 2006    **
+                                             ***************************************
+
+     1                        ; File: WDC_CStartup_816.asm
+     2                        ; 05/14/2004
+     3                        
+     4                             PW 128         ;Page Width (# of char/line) 
+     5                             PL 60          ;Page Length for HP Laser
+     6                             INCLIST ON     ;Add Include files in Listing
+     7                        
+     8                        				;*********************************************
+     9                        				;Test for Valid Processor defined in -D option
+    10                        				;*********************************************
+    11                        	IF	USING_265
+    12                        	ELSEIF	USING_816
+    13                        	ELSEIF	USING_CDC16F 
+    14                        	ELSE
+    15                        		EXIT         "Not Valid Processor: Use -DUSING_816, etc. ! ! ! ! ! ! ! ! ! ! ! !"
+    16                        	ENDIF
+    17                        
+    18                        
+    19                        				;*********************************************
+    20                        				;Test for Valid 'Model' type defined in -D option
+    21                        				;*********************************************
+    22                        	IF	SMALL
+    23                        	ELSEIF	MEDIUM
+    24                        	ELSEIF	COMPACT
+    25                        	ELSEIF	LARGE
+    26                        	ELSE
+    27                        ;		EXIT         "Not Valid 'Model' type - SMALL, MEDIUM, COMPACT, or LARGE: Use -DSMALL, et
+                    c. ! ! ! ! ! ! ! ! ! ! ! !"
+    28                        	ENDIF
+    29                        
+    30                        	title  "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    31                        
+    32                        
+    33                        ; bgnpkhdr
+    34                        ;***************************************************************************
+    35                        ;  FILE_NAME: WDC_CStartup_816.asm
+    36                        ;
+    37                        ;  DATA_RIGHTS: Western Design Center and R & C Services Proprietary
+    38                        ;               Copyright(C) 1980-2003
+    39                        ;               All rights reserved. Reproduction in any manner, 
+    40                        ;               in whole or in part, is strictly prohibited without
+    41                        ;               the prior written approval of R & C Services or 
+    42                        ;               Western Design Center.
+    43                        ;
+    44                        ;               Information contained in this publication regarding
+    45                        ;               device applications and the like is intended through
+    46                        ;               suggestion only and may be superseded by updates.  
+    47                        ;               It is your responsibility to ensure that your application
+    48                        ;               meets with your specifications.  No representation or
+  Mon Jul 27 2020  8:34                                                                                                Page 2
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+    49                        ;               warranty is given and no liability is assumed by 
+    50                        ;               Western Design Center, Inc. with respect to the accuracy
+    51                        ;               or use of such information, or infringement of patents
+    52                        ;               or other intellectual property rights arising from such
+    53                        ;               use or otherwise.  Use of Western Design Center's products
+    54                        ;               as critical components in life support systems is not
+    55                        ;               authorized except with express written approval by
+    56                        ;               Western Design Center, Inc.'s.  No licenses are conveyed,
+    57                        ;               implicitly or otherwise, under any intellectual property rights.
+    58                        ;
+    59                        ;
+    60                        ;
+    61                        ;  TITLE: WDC_CStartup_816
+    62                        ;
+    63                        ;  DESCRIPTION: This File describes the WDC SDS General purpose ROM startup code.
+    64                        ;
+    65                        ;                Program Flow
+    66                        ;
+    67                        ;                First we make sure we are in native mode.
+    68                        ;                Then we set up the stack pointer.
+    69                        ;                Then we set the data bank register.
+    70                        ;                Then we copy the initialized data.
+    71                        ;                Then we clear out the uninitialized data.
+    72                        ;                Then we call main.
+    73                        ;
+    74                        ;  DEFINED FUNCTIONS:
+    75                        ;          Undefined_IRQ
+    76                        ;                   - Process a Bad Interrupt Vector - send code & Hang!
+    77                        ;
+    78                        ;
+    79                        ;  SPECIAL_CONSIDERATIONS:
+    80                        ;
+    81                        ;
+    82                        ;  SHARED_DATA:
+    83                        ;          None
+    84                        ;
+    85                        ;  GLOBAL_MODULES:
+    86                        ;          None
+    87                        ;
+    88                        ;  LOCAL_MODULES:
+    89                        ;          See above in "DEFINED FUNCTIONS"
+    90                        ;
+    91                        ;  AUTHOR: Jim Goodnow II
+    92                        ;
+    93                        ;  CREATION DATE: March 11,1997
+    94                        ;
+    95                        ;  REVISION HISTORY
+    96                        ;     Name           Date         Description
+    97                        ;     ------------   ----------   ------------------------------------------------
+    98                        ;     R. Greenthal   10/07/2003   1.01 Initial
+    99                        ;
+   100                        ;
+   101                        ;
+   102                        ; NOTE:
+   103                        ;    Change the lines for each version - current version is 1.01
+  Mon Jul 27 2020  8:34                                                                                                Page 3
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   104                        ;    See - 
+   105                        ;         title  "WDC 'C' Startup Program V 1.01 for Large Model W65C816 - WDC_CStartup_816.asm"
+   106                        ;
+   107                        ;
+   108                        ;***************************************************************************
+   109                        ;endpkhdr
+   110                        
+   111                        
+   112                        ;***************************************************************************
+   113                        ;                             Include Files
+   114                        ;***************************************************************************
+   115                        ;None
+   116                        
+   117                        
+   118                        ;***************************************************************************
+   119                        ;                              Global Modules
+   120                        ;***************************************************************************
+   121                        ;None
+   122                        
+   123                        ;***************************************************************************
+   124                        ;                              External Modules
+   125                        ;***************************************************************************
+   126                        ;None
+   127                        
+   128                        ;***************************************************************************
+   129                        ;                              External Variables
+   130                        ;***************************************************************************
+   131                        ;None
+   132                        
+   133                        
+   134                        ;***************************************************************************
+   135                        ;                               Local Constants
+   136                        ;***************************************************************************
+   137                        ;
+   138                        
+   139                        
+   140                        ;	.page
+   141                        
+   142                        ;***************************************************************************
+   143                        ;                          RAM Section
+   144                        ;***************************************************************************
+   145                        ;   
+   146                        
+   147                        
+   148                        
+   149                                sttl "WDC_CStartup_816 Code"
+   150                        	.page
+   151                        
+  Mon Jul 27 2020  8:34                                                                                                Page 4
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   152                        ;***************************************************************************
+   153                        ;***************************************************************************
+   154                        ;                    WDC_CStartup_816 Code Section
+   155                        ;***************************************************************************
+   156                        ;***************************************************************************
+   157                        
+   158                        	INCLUDE page_00_inc.asm
+     1                        ; page_00.asm
+     2                        ; Direct Page Addresses
+     3                        ;
+     4                        ;* Addresses are the byte AFTER the block. Use this to confirm block locations and check for overl
+                    aps
+     5             00000000   BANK0_BEGIN       EQU  $000000 ;Start of bank 0 and Direct page
+     6             00000000   unused_0000       EQU  $000000 ;12 Bytes unused
+     7             00000008   OPL2_ADDY_PTR_LO  EQU  $000008  ; THis Points towards the Instruments Database
+     8             00000009   OPL2_ADDY_PTR_MD  EQU  $000009
+     9             0000000A   OPL2_ADDY_PTR_HI  EQU  $00000A
+    10             0000000C   SCREENBEGIN       EQU  $00000C ;3 Bytes Start of screen in video RAM. This is the upper-left corrn
+                    er of the current video page being written to. This may not be what's being displayed by VICKY. Update this 
+                    if you change VICKY's display page.
+    11             0000000F   COLS_VISIBLE      EQU  $00000F ;2 Bytes Columns visible per screen line. A virtual line can be lon
+                    ger than displayed, up to COLS_PER_LINE long. Default  EQU  80
+    12             00000011   COLS_PER_LINE     EQU  $000011 ;2 Bytes Columns in memory per screen line. A virtual line can be t
+                    his long. Default EQU 128
+    13             00000013   LINES_VISIBLE     EQU  $000013 ;2 Bytes The number of rows visible on the screen. Default EQU 25
+    14             00000015   LINES_MAX         EQU  $000015 ;2 Bytes The number of rows in memory for the screen. Default EQU 6
+                    4
+    15             00000017   CURSORPOS         EQU  $000017 ;3 Bytes The next character written to the screen will be written i
+                    n this location.
+    16             0000001A   CURSORX           EQU  $00001A ;2 Bytes This is where the blinking cursor sits. Do not edit this d
+                    ireectly. Call LOCATE to update the location and handle moving the cursor correctly.
+    17             0000001C   CURSORY           EQU  $00001C ;2 Bytes This is where the blinking cursor sits. Do not edit this d
+                    ireectly. Call LOCATE to update the location and handle moving the cursor correctly.
+    18             0000001E   CURCOLOR          EQU  $00001E ;2 Bytes Color of next character to be printed to the screen.
+    19             00000020   CURATTR           EQU  $000020 ;2 Bytes Attribute of next character to be printed to the screen.
+    20             00000022   STACKBOT          EQU  $000022 ;2 Bytes Lowest location the stack should be allowed to write to. I
+                    f SP falls below this value, the runtime should generate STACK OVERFLOW error and abort.
+    21             00000024   STACKTOP          EQU  $000024 ;2 Bytes Highest location the stack can occupy. If SP goes above th
+                    is value, the runtime should generate STACK OVERFLOW error and abort.
+    22                        ; OPL2 Library Variable (Can be shared if Library is not used)
+    23                        ; THis will need to move eventually
+    24             00000026   OPL2_OPERATOR     EQU  $000026 ;
+    25             00000027   OPL2_CHANNEL      EQU  $000027 ;
+    26             00000028   OPL2_REG_REGION   EQU  $000028 ; Offset to the Group of Registers
+    27             0000002A   OPL2_REG_OFFSET   EQU  $00002A ; 2 Bytes (16Bits)
+    28             0000002C   OPL2_IND_ADDY_LL  EQU  $00002C ; 2 Bytes Reserved (Only need 3)
+    29             0000002E   OPL2_IND_ADDY_HL  EQU  $00002E ; 2 Bytes Reserved (Only need 3)
+    30             00000030   OPL2_NOTE         EQU  $000030 ; 1 Byte
+    31             00000031   OPL2_OCTAVE       EQU  $000031 ; 1 Byte
+    32             00000032   OPL2_PARAMETER0   EQU  $000032 ; 1 Byte - Key On/Feedback
+    33             00000033   OPL2_PARAMETER1   EQU  $000033 ; 1 Byte
+    34             00000034   OPL2_PARAMETER2   EQU  $000034 ; 1 Byte
+    35             00000035   OPL2_PARAMETER3   EQU  $000035 ; 1 Byte
+    36             00000036   OPL2_LOOP         EQU  $000036 ;
+    37             00000036   OPL2_BLOCK        EQU  $000036
+  Mon Jul 27 2020  8:34                                                                                                Page 5
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+    38                        ; SD Card (CH376S) Variables
+    39             00000038   SDCARD_FILE_PTR   EQU  $000038 ; 3 Bytes Pointer to Filename to open
+    40             0000003C   SDCARD_BYTE_NUM   EQU  $00003C ; 2Bytes
+    41             0000003F   SDCARD_PRSNT_MNT  EQU  $00003F ; 1 Byte, Indicate that the SDCard is Present and that it is Mounte
+                    d
+    42                        ; Command Line Parser Variables
+    43             00000040   CMD_PARSER_TMPX   EQU  $000040 ; <<< Command Parser 2Bytes
+    44             00000042   CMD_PARSER_TMPY   EQU  $000042 ; <<< Command Parser 2Bytes
+    45             00000044   CMD_LIST_PTR      EQU  $000044 ; <<< Command Parser 3 Bytes
+    46             00000048   CMD_PARSER_PTR    EQU  $000048 ; <<< Command Parser 3 Bytes
+    47             0000004B   CMD_ATTRIBUTE     EQU  $00004B ; <<< Command Parser 2 Bytes (16bits Attribute Field)
+    48             0000004D   CMD_EXEC_ADDY     EQU  $00004D ; <<< Command Parser 3 Bytes 24 Bits Address Jump to execute the Co
+                    mmand
+    49             00000050   KEY_BUFFER_RPOS   EQU  $000050 ;
+    50             00000052   KEY_BUFFER_WPOS   EQU  $000052 ;
+    51             00000054   CMD_VARIABLE_TMP  EQU  $000054 ;
+    52             00000056   CMD_ARG_DEV       EQU  $000056 ;
+    53             00000057   CMD_ARG_SA        EQU  $000057 ;
+    54             0000005A   CMD_ARG_EA        EQU  $00005A ;
+    55             0000005D   CMD_VALID         EQU  $00005D ;
+    56                        
+    57                        
+    58                        ; Bitmap Clear Routine
+    59             00000040   BM_CLEAR_SCRN_X   EQU  $000040
+    60             00000042   BM_CLEAR_SCRN_Y   EQU  $000042
+    61                        ; RAD File Player
+    62             00000040   RAD_STARTLINE     EQU  $000040 ; 1 Byte
+    63             00000041   RAD_PATTERN_IDX   EQU  $000041 ; 1 Byte
+    64             00000042   RAD_LINE          EQU  $000042 ; 1 Byte
+    65             00000043   RAD_LINENUMBER    EQU  $000043 ; 1 Byte
+    66             00000044   RAD_CHANNEL_NUM   EQU  $000044 ; 1 Byte
+    67             00000045   RAD_ISLASTCHAN    EQU  $000045 ; 1 Byte
+    68             00000046   RAD_Y_POINTER     EQU  $000046 ; 2 Bytes
+    69             00000048   RAD_TICK          EQU  $000048
+    70             0000004A   RAD_CHANNEL_DATA  EQU  $00004A ; 2 Bytes
+    71             0000004C   RAD_CHANNE_EFFCT  EQU  $00004C
+    72             0000004D   RAD_TEMP          EQU  $00004D
+    73                        
+    74                        ; BMP File Parser Variables (Can be shared if BMP Parser not used)
+    75                        ; Used for Command Parser Mainly
+    76             00000040   BMP_X_SIZE        EQU  $000040 ; 2 Bytes
+    77             00000042   BMP_Y_SIZE        EQU  $000042 ; 2 Bytes
+    78             00000044   BMP_PRSE_SRC_PTR  EQU  $000044 ; 3 Bytes
+    79             00000048   BMP_PRSE_DST_PTR  EQU  $000048 ; 3 Bytes
+    80             0000004C   BMP_COLOR_PALET   EQU  $00004C ; 2 Bytes
+    81             0000004E   SCRN_X_STRIDE     EQU  $00004E ; 2 Bytes, Basically How many Pixel Accross in Bitmap Mode
+    82             00000050   BMP_FILE_SIZE     EQU  $000050 ; 4 Bytes
+    83             00000054   BMP_POSITION_X    EQU  $000054 ; 2 Bytes Where, the BMP will be position on the X Axis
+    84             00000056   BMP_POSITION_Y    EQU  $000056 ; 2 Bytes Where, the BMP will be position on the Y Axis
+    85             00000058   BMP_PALET_CHOICE  EQU  $000058 ;
+    86                        ;Empty Region
+    87                        ;XXX              EQU  $000060
+    88                        ;..
+    89                        ;..
+    90                        ;..
+  Mon Jul 27 2020  8:34                                                                                                Page 6
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+    91                        ;YYY              EQU  $0000EE
+    92                        
+    93             000000E0   MOUSE_PTR         EQU  $0000E0
+    94             000000E1   MOUSE_POS_X_LO    EQU  $0000E1
+    95             000000E2   MOUSE_POS_X_HI    EQU  $0000E2
+    96             000000E3   MOUSE_POS_Y_LO    EQU  $0000E3
+    97             000000E4   MOUSE_POS_Y_HI    EQU  $0000E4
+    98                        
+    99             000000F0   USER_TEMP         EQU  $0000F0 ;32 Bytes Temp space for user programs
+   100                        ;;///////////////////////////////////////////////////////////////
+   101                        ;;; NO CODE or Variable ought to be Instatied in this REGION
+   102                        ;; BEGIN
+   103                        ;;///////////////////////////////////////////////////////////////
+   104             00000100   GAVIN_BLOCK       EQU  $000100 ;256 Bytes Gavin reserved, overlaps debugging registers at $1F0
+   105                        
+   106             00000100   MULTIPLIER_0      EQU  $000100 ;0 Byte  Unsigned multiplier
+   107             00000100   M0_OPERAND_A      EQU  $000100 ;2 Bytes Operand A (ie: A x B)
+   108             00000102   M0_OPERAND_B      EQU  $000102 ;2 Bytes Operand B (ie: A x B)
+   109             00000104   M0_RESULT         EQU  $000104 ;4 Bytes Result of A x B
+   110                        
+   111             00000108   MULTIPLIER_1      EQU  $000108 ;0 Byte  Signed Multiplier
+   112             00000108   M1_OPERAND_A      EQU  $000108 ;2 Bytes Operand A (ie: A x B)
+   113             0000010A   M1_OPERAND_B      EQU  $00010A ;2 Bytes Operand B (ie: A x B)
+   114             0000010C   M1_RESULT         EQU  $00010C ;4 Bytes Result of A x B
+   115                        
+   116             00000108   DIVIDER_0         EQU  $000108 ;0 Byte  Unsigned divider
+   117             00000108   D0_OPERAND_A      EQU  $000108 ;2 Bytes Divider 0 Dividend ex: A in  A/B
+   118             0000010A   D0_OPERAND_B      EQU  $00010A ;2 Bytes Divider 0 Divisor ex B in A/B
+   119             0000010C   D0_RESULT         EQU  $00010C ;2 Bytes Quotient result of A/B ex: 7/2  EQU  3 r 1
+   120             0000010E   D0_REMAINDER      EQU  $00010E ;2 Bytes Remainder of A/B ex: 1 in 7/2 EQU 3 r 1
+   121                        
+   122             00000110   DIVIDER_1         EQU  $000110 ;0 Byte  Signed divider
+   123             00000110   D1_OPERAND_A      EQU  $000110 ;2 Bytes Divider 1 Dividend ex: A in  A/B
+   124             00000112   D1_OPERAND_B      EQU  $000112 ;2 Bytes Divider 1 Divisor ex B in A/B
+   125             00000114   D1_RESULT         EQU  $000114 ;2 Bytes Signed quotient result of A/B ex: 7/2  EQU  3 r 1
+   126             00000116   D1_REMAINDER      EQU  $000116 ;2 Bytes Signed remainder of A/B ex: 1 in 7/2 EQU 3 r 1
+   127                        ; Reserved
+   128             00000120   ADDER_SIGNED_32   EQU  $000120 ; The 32 Bit Adders takes 12Byte that are NOT RAM Location
+   129                        ; Reserved
+   130             00000140   INT_CONTROLLER    EQU  $000140 ; $000140...$00015F Interrupt Controller
+   131                        
+   132             00000160   TIMER_CONTROLLER  EQU  $000160 ; $000160...$00017F Timer0/Timer1/Timer2 Block
+   133             00000160   TIMER_CTRL_REGLL  EQU  $000160 ;
+   134             00000161   TIMER_CTRL_REGLH  EQU  $000161 ;
+   135             00000162   TIMER_CTRL_REGHL  EQU  $000162 ;
+   136             00000163   TIMER_CTRL_REGHH  EQU  $000163 ;
+   137                        ;;///////////////////////////////////////////////////////////////
+   138                        ;;; NO CODE or Variable ought to be Instatied in this REGION
+   139                        ;; END
+   140                        ;;///////////////////////////////////////////////////////////////
+   141             00000240   CPU_REGISTERS     EQU  $000240 ; Byte
+   142             00000240   CPUPC             EQU  $000240 ;2 Bytes Program Counter (PC)
+   143             00000242   CPUPBR            EQU  $000242 ;2 Bytes Program Bank Register (K)
+   144             00000244   CPUA              EQU  $000244 ;2 Bytes Accumulator (A)
+   145             00000246   CPUX              EQU  $000246 ;2 Bytes X Register (X)
+  Mon Jul 27 2020  8:34                                                                                                Page 7
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   146             00000248   CPUY              EQU  $000248 ;2 Bytes Y Register (Y)
+   147             0000024A   CPUSTACK          EQU  $00024A ;2 Bytes Stack Pointer (S)
+   148             0000024C   CPUDP             EQU  $00024C ;2 Bytes Direct Page Register (D)
+   149             0000024E   CPUDBR            EQU  $00024E ;1 Byte  Data Bank Register (B)
+   150             0000024F   CPUFLAGS          EQU  $00024F ;1 Byte  Flags (P)
+   151                        
+   152             00000250   MONITOR_VARS      EQU  $000250 ; Byte  MONITOR Variables. BASIC variables may overlap this space
+   153             00000250   MCMDADDR          EQU  $000250 ;3 Bytes Address of the current line of text being processed by the
+                     command parser. Can be in display memory or a variable in memory. MONITOR will parse up to MTEXTLEN charact
+                    ers or to a null character.
+   154             00000253   MCMP_TEXT         EQU  $000253 ;3 Bytes Address of symbol being evaluated for COMPARE routine
+   155             00000256   MCMP_LEN          EQU  $000256 ;2 Bytes Length of symbol being evaluated for COMPARE routine
+   156             00000258   MCMD              EQU  $000258 ;3 Bytes Address of the current command/function string
+   157             0000025B   MCMD_LEN          EQU  $00025B ;2 Bytes Length of the current command/function string
+   158             0000025D   MARG1             EQU  $00025D ;4 Bytes First command argument. May be data or address, depending 
+                    on command
+   159             00000261   MARG2             EQU  $000261 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   160             00000265   MARG3             EQU  $000265 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   161             00000269   MARG4             EQU  $000269 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   162             0000026D   MARG5             EQU  $00026D ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   163             00000271   MARG6             EQU  $000271 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   164             00000275   MARG7             EQU  $000275 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   165             00000279   MARG8             EQU  $000279 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   166                        
+   167             00000300   LOADFILE_VARS     EQU  $000300 ; Byte
+   168             00000300   LOADFILE_NAME     EQU  $000300 ;3 Bytes (addr) Name of file to load. Address in Data Page
+   169             00000303   LOADFILE_LEN      EQU  $000303 ;1 Byte  Length of filename. 0 EQU Null Terminated
+   170             00000304   LOADPBR           EQU  $000304 ;1 Byte  First Program Bank of loaded file ($05 segment)
+   171             00000305   LOADPC            EQU  $000305 ;2 Bytes Start address of loaded file ($05 segment)
+   172             00000307   LOADDBR           EQU  $000307 ;1 Byte  First data bank of loaded file ($06 segment)
+   173             00000308   LOADADDR          EQU  $000308 ;2 Bytes FIrst data address of loaded file ($06 segment)
+   174             0000030A   LOADFILE_TYPE     EQU  $00030A ;3 Bytes (addr) File type string in loaded data file. Actual string
+                     data will be in Bank 1. Valid values are BIN, PRG, P16
+   175             0000030D   BLOCK_LEN         EQU  $00030D ;2 Bytes Length of block being loaded
+   176             0000030F   BLOCK_ADDR        EQU  $00030F ;2 Bytes (temp) Address of block being loaded
+   177             00000311   BLOCK_BANK        EQU  $000311 ;1 Byte  (temp) Bank of block being loaded
+   178             00000312   BLOCK_COUNT       EQU  $000312 ;2 Bytes (temp) Counter of bytes read as file is loaded
+   179                        
+   180                        ; $00:0320 to $00:06FF - Reserved for CH376S SDCard Controller
+   181             00000320   SDOS_BLOCK_BEGIN  EQU  $000320 ;
+   182             00000324   SDOS_LOAD_ADDY    EQU  $000324 ; 4 Bytes (Uses 3 Only)
+   183             00000328   SDOS_FILE_SIZE    EQU  $000328 ;
+   184             0000032C   SDOS_BYTE_NUMBER  EQU  $00032C ; Number of Byte to Read or Write before changing the Pointer
+   185             00000330   SDOS_REG_WR32_AD  EQU  $000330 ; 4 Bytes (Used to read and Write Values in/from CH376S)
+   186             00000334   SDOS_BYTE_PTR     EQU  $000334
+   187             00000380   SDOS_FILE_NAME    EQU  $000380 ; // Max of 128 Chars
+   188             00000400   SDOS_BLK_BEGIN    EQU  $000400 ; 512 Bytes to Store SD Card Incoming or Outcoming Block
+   189             000006FF   SDOS_BLK_END      EQU  $0006FF ;
+  Mon Jul 27 2020  8:34                                                                                                Page 8
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   190                        
+   191             00000700   TASKSS_STACK_LO	  EQU  $000700;
+   192             00000701   TASKSS_STACK_HI	  EQU  $000701;
+   193             00000702   TASKSS_CALLER_LO  EQU  $000702;
+   194             00000703   TASKSS_CALLER_HI  EQU  $000703;
+   195             00000704   TASKSS_SOS_LO	  EQU  $000704;
+   196             00000705   TASKSS_SOS_HI	  EQU  $000705;
+   197                        
+   198             000007F0   CURRUART	  	  EQU  $0007F0;
+   199                        
+   200                        ; COMMAND PARSER Variables
+   201                        ; Command Parser Stuff between $000F00 -> $000F84 (see CMD_Parser.asm)
+   202             00000F00   KEY_BUFFER        EQU  $000F00 ;64 Bytes keyboard buffer
+   203             00000080   KEY_BUFFER_SIZE   EQU  $0080 ;128 Bytes (constant) keyboard buffer length
+   204             00000F7F   KEY_BUFFER_END    EQU  $000F7F ;1 Byte  Last byte of keyboard buffer
+   205             00000F83   KEY_BUFFER_CMD    EQU  $000F83 ;1 Byte  Indicates the Command Process Status
+   206             00000F84   COMMAND_SIZE_STR  EQU  $000F84 ; 1 Byte
+   207             00000F86   COMMAND_COMP_TMP  EQU  $000F86 ; 2 Bytes
+   208             00000F87   KEYBOARD_SC_FLG   EQU  $000F87 ;1 Bytes that indicate the Status of Left Shift, Left CTRL, Left AL
+                    T, Right Shift
+   209             00000F88   KEYBOARD_SC_TMP   EQU  $000F88 ;1 Byte, Interrupt Save Scan Code while Processing
+   210                        
+   211                        
+   212                        
+   213             00001000   TEST_BEGIN        EQU  $001000 ;28672 Bytes Test/diagnostic code for prototype.
+   214             00007FFF   TEST_END          EQU  $007FFF ;0 Byte
+   215                        
+   216             00008000   STACK_BEGIN       EQU  $008000 ;32512 Bytes The default beginning of stack space
+   217             0000FEFF   STACK_END         EQU  $00FEFF ;0 Byte  End of stack space. Everything below this is I/O space
+   218                        
+   219             0018FF00   ISR_BEGIN         EQU  $18FF00 ; Byte  Beginning of CPU vectors in Direct page
+   220             0018FF00   HRESET            EQU  $18FF00 ;16 Bytes Handle RESET asserted. Reboot computer and re-initialize 
+                    the kernel.
+   221             0018FF10   HCOP              EQU  $18FF10 ;16 Bytes Handle the COP instruction. Program use; not used by OS
+   222             0018FF20   HBRK              EQU  $18FF20 ;16 Bytes Handle the BRK instruction. Returns to BASIC Ready prompt
+                    .
+   223             0018FF30   HABORT            EQU  $18FF30 ;16 Bytes Handle ABORT asserted. Return to Ready prompt with an err
+                    or message.
+   224             0018FF40   HNMI              EQU  $18FF40 ;32 Bytes Handle NMI
+   225             0018FF60   HIRQ              EQU  $18FF60 ;32 Bytes Handle IRQ
+   226             0018FF80   Unused_FF80       EQU  $18FF80 ;End of direct page Interrrupt handlers
+   227                        
+   228             0018FFE0   VECTORS_BEGIN     EQU  $18FFE0 ;0 Byte  Interrupt vectors
+   229             0000FFE0   JMP_READY         EQU  $00FFE0 ;4 Bytes Jumps to ROM READY routine. Modified whenever alternate co
+                    mmand interpreter is loaded.
+   230             0000FFE4   VECTOR_COP        EQU  $00FFE4 ;2 Bytes Native COP Interrupt vector
+   231             0000FFE6   VECTOR_BRK        EQU  $00FFE6 ;2 Bytes Native BRK Interrupt vector
+   232             0000FFE8   VECTOR_ABORT      EQU  $00FFE8 ;2 Bytes Native ABORT Interrupt vector
+   233             0000FFEA   VECTOR_NMI        EQU  $00FFEA ;2 Bytes Native NMI Interrupt vector
+   234             0000FFEC   VECTOR_RESET      EQU  $00FFEC ;2 Bytes Unused (Native RESET vector)
+   235             0000FFEE   VECTOR_IRQ        EQU  $00FFEE ;2 Bytes Native IRQ Vector
+   236             0000FFF0   RETURN            EQU  $00FFF0 ;4 Bytes RETURN key handler. Points to BASIC or MONITOR subroutine 
+                    to execute when RETURN is pressed.
+   237             0000FFF4   VECTOR_ECOP       EQU  $00FFF4 ;2 Bytes Emulation mode interrupt handler
+   238             0000FFF6   VECTOR_EBRK       EQU  $00FFF6 ;2 Bytes Emulation mode interrupt handler
+  Mon Jul 27 2020  8:34                                                                                                Page 9
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   239             0000FFF8   VECTOR_EABORT     EQU  $00FFF8 ;2 Bytes Emulation mode interrupt handler
+   240             0000FFFA   VECTOR_ENMI       EQU  $00FFFA ;2 Bytes Emulation mode interrupt handler
+   241             0000FFFC   VECTOR_ERESET     EQU  $00FFFC ;2 Bytes Emulation mode interrupt handler
+   242             0000FFFE   VECTOR_EIRQ       EQU  $00FFFE ;2 Bytes Emulation mode interrupt handler
+   243             00200000   VECTORS_END       EQU  $200000 ;*End of vector space
+   244             0000FFFF   BANK0_END         EQU  $00FFFF ;End of Bank 00 and Direct page
+   245                        ;
+   159                        
+   160                        ****************************************************************
+   161                        *                                                              *
+   162                        *   Define a special section in case most of the               *
+   163                        *      code is not in bank 0.                                  *
+   164                        *                                                              *
+   165                        ****************************************************************
+   166                        ;           Large   Model Function Calls use module Function_Name  and xdef ~~Function_Name
+   167                        
+   168                        ;STACK   EQU   $EF00     ;CHANGE THIS FOR YOUR SYSTEM
+   169                        
+   170                        STARTUP SECTION OFFSET $01000
+   171                        
+   172                        _~START:
+   173                        
+   174                        ; MUST BE CALLED LONG A AND LONG X WITH STACK POINTER IN A REGISTER
+   175                        
+   176                        START:
+   177 00:1000: 78           		SEI
+   178 00:1001: E2 20                SEP   #$20         ;8 bit accum
+   179                                LONGA OFF
+   180 00:1003: A9 47                LDA #$47
+   181 00:1005: 8F 10 07 00  		STA >$000710
+   182                        		;CLC                ;clear carry
+   183                                ;XCE                ;clear emulation-Now in Native 16 bit Mode
+   184 00:1009: C2 20                REP   #$20         ;16 bit registers and Clear Decimal mode
+   185                                LONGA ON
+   186                                ;LDA   #STACK       ;get the stack address
+   187                                
+   188                        		;STA >$000706
+   189 00:100B: AF 00 07 00  		LDA >$000700
+   190 00:100F: 8F 06 07 00  		STA >$000706
+   191 00:1013: 1B           		TCS                ;and set the stack to it
+   192                        
+   193                        ****************************************************************
+   194                        *                                                              *
+   195                        *   Set up the data bank register. We assume that the data     *
+   196                        *       section is where we want to point at.                  *
+   197                        *                                                              *
+   198                        ****************************************************************
+   199                        
+   200 00:1014: E2 20                SEP   #$20         ;8 bit accum
+   201                                LONGA OFF
+   202                        
+   203                                ;LDA   #^_BEG_DATA  ;get bank of data
+   204                                ;PHA
+   205                                ;PLB                ;set data bank register
+   206                                ;REP   #$20         ;back to 16 bit mode
+  Mon Jul 27 2020  8:34                                                                                                Page 10
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   207                                ;LONGA ON
+   208                        
+   209                        ****************************************************************
+   210                        *                                                              *
+   211                        *    Next, we want to copy the initialized data from           *
+   212                        *      ROM to RAM.                                             *
+   213                        *                                                              *
+   214                        ****************************************************************
+   215                        
+   216                                ;LDA   #_END_DATA-_BEG_DATA ;number of bytes to copy
+   217                                ;BEQ   SKIP         ;if none, just skip
+   218                                ;DEC   A            ;less one for MVN instruction
+   219                                ;LDX   #<_ROM_BEG_DATA ;get source into X
+   220                                ;LDY   #<_BEG_DATA  ;get dest into Y
+   221                                ;MVN   #^_ROM_BEG_DATA,#^_BEG_DATA ;copy bytes
+   222                        SKIP:
+   223                        
+   224                        ****************************************************************
+   225                        *                                                              *
+   226                        *   Now, clear out the uninitialized data area.                *
+   227                        *    We assume that it is in the same bank as DATA.            *
+   228                        *                                                              *
+   229                        ****************************************************************
+   230                        
+   231                                ;LDX   #_END_UDATA-_BEG_UDATA  ;get number of bytes to clear
+   232                                ;BEQ   DONE         ;nothing to do
+   233                                ;LDA   #0           ;get a zero for storing
+   234                                ;SEP   #$20         ;do byte at a time
+   235                                ;LDY   #_BEG_UDATA  ;get beginning of zeros
+   236                        
+   237                        ;LOOP    STA   |0,Y         ;clear memory
+   238                                ;INY                ;bump pointer
+   239                                ;DEX                ;decrement count
+   240                                ;BNE   LOOP         ;continue till done
+   241                                ;REP   #$20         ;16 bit memory reg
+   242                        DONE:
+   243                        
+   244                        ****************************************************************
+   245                        *                                                              *
+   246                        *   Finally, transfer control to the real program.             *
+   247                        *                                                              *
+   248                        ****************************************************************
+   249                        ;           Small   Model Function Calls use module Function_Name  and xdef __Function_Name
+   250                        ;           Medium  Model Function Calls use module Function_Name  and xdef ~_Function_Name
+   251                        ;           Large   Model Function Calls use module Function_Name  and xdef ~~Function_Name
+   252                        ;           Compact Model Function Calls use module Function_Name  and xdef _~Function_Name	
+                    	
+   253                        		;CLI
+   254 00:1016: E2 20                SEP   #$20         ;8 bit accum
+   255                                LONGA OFF
+   256                        
+   257 00:1018: A9 45        		LDA #$45
+   258 00:101A: 8F 10 07 00  		STA >$000710
+   259                               
+   260 00:101E: C2 20                REP   #$20         ;16 bit registers and Clear Decimal mode
+  Mon Jul 27 2020  8:34                                                                                                Page 11
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Code"
+
+   261                                LONGA ON
+   262                        
+   263                        		XREF  _~main      ;change MYSTART to yours
+   264 00:1020: 20 xx xx             JSR   _~main     ;long jump in case not bank 0
+   265 00:1023: 6B           		RTL
+   266                        
+   267                        	XDEF _~_exit
+   268                        _~_exit:
+   269 00:1024: 00 00                BRK
+   270                        
+   271                        
+   272                                sttl "WDC_CStartup_816 IRQ - Interrupt Handler Code"
+   273                        	.page
+   274                        
+  Mon Jul 27 2020  8:34                                                                                                Page 12
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 IRQ - Interrupt Handler Code"
+
+   275                        
+   276                        
+   277                        
+   278                                XREF  _BEG_DATA
+   279                                XREF  _END_DATA
+   280                                XREF  _ROM_BEG_DATA
+   281                                XREF  _BEG_UDATA
+   282                                XREF  _END_UDATA
+   283                        
+   284                        
+   285 00:1026:              	ends
+   286                        
+   287                        
+   288                                DATA
+   289                                XDEF  _~heap_start,_~heap_end
+   290                        _~heap_start:
+   291 00:0000: 00 60                WORD  $6000
+   292                        _~heap_end:
+   293 00:0002: F0 7C                WORD  $7CF0
+   294                        
+   295 00:0004:                      ENDS
+   296                        
+   297                        
+   298                                sttl "WDC_CStartup_816 Shadow Vector Defines"
+   299                        	.page
+   300                        
+  Mon Jul 27 2020  8:34                                                                                                Page 13
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    "WDC_CStartup_816 Shadow Vector Defines"
+
+   301                        
+   302                        	        end
+
+
+      Lines assembled: 547
+      Errors: 0

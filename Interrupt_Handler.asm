@@ -117,8 +117,19 @@ FXOS_MOUSE_STATUS		  EQU $00150D
 
                 ;IRQ1 - Not Implemented Yet
                 ;IRQ6
+
                 setas
-				BRL SERVICE_PENDING_REG1
+                ;BRL SERVICE_PENDING_REG1
+
+				LDA >INT_PENDING_REG1
+                CMP #$00
+                BRL SERVICE_PENDING_REG1
+
+				LDA >INT_PENDING_REG2
+                CMP #$00
+                BRL SERVICE_PENDING_REG2
+
+
 
 ;CHECK_PENDING_REG1
 ;                setas
@@ -297,18 +308,33 @@ SERVICE_NEXT_IRQ14
                 LDA >INT_PENDING_REG1
                 AND #FNX1_INT06_LPT
                 CMP #FNX1_INT06_LPT
-                BNE SERVICE_NEXT_IRQ15
+                BNE SERVICE_PENDING_REG2
                 STA >INT_PENDING_REG1
                 ; Serial Port Com1 Interrupt
                 JSR LPT1_INTERRUPT
-SERVICE_NEXT_IRQ15
-                ;LDA >INT_PENDING_REG1
-                ;AND #FNX1_INT07_SDCARD
-                ;CMP #FNX1_INT07_SDCARD
-                ;BNE EXIT_IRQ_HANDLE
-                ;STA >INT_PENDING_REG1
-				
-				;JSR SDCARD_INTERRUPT
+;SERVICE_NEXT_IRQ15
+;                LDA >INT_PENDING_REG1
+;                AND #FNX1_INT07_SDCARD
+;                CMP #FNX1_INT07_SDCARD
+;                BNE SERVICE_NEXT_IRQ15_2
+;                STA >INT_PENDING_REG1
+;
+;				JSR SDCARD_INTERRUPT
+
+
+SERVICE_PENDING_REG2
+
+
+;SERVICE_NEXT_IRQ15_2
+;                LDA >INT_PENDING_REG2
+;                AND #FNX2_INT07_SDCARD
+;                CMP #FNX2_INT07_SDCARD
+;                BNE EXIT_IRQ_HANDLE
+;                STA >INT_PENDING_REG2
+;				 JSR SDCARD_INS_INTERRUPT
+
+
+
 EXIT_IRQ_HANDLE
                 ; Exit Interrupt Handler
 
@@ -778,9 +804,24 @@ LPT1_INTERRUPT  setas
 ; ///
 ; ///////////////////////////////////////////////////////////////////
 SDCARD_INTERRUPT  setas
-                ;LDA >INT_PENDING_REG1
-                ;AND #FNX1_INT07_SDCARD
-                ;STA >INT_PENDING_REG1
+                LDA >INT_PENDING_REG1
+                AND #FNX1_INT07_SDCARD
+                STA >INT_PENDING_REG1
+
+				;PHX
+				;PHA
+				;LDA #'S'
+				;JSL IPUTC
+				;PLX
+				;PLA
+
+
+                RTS
+
+SDCARD_INS_INTERRUPT  setas
+                LDA >INT_PENDING_REG2
+                AND #FNX1_INT07_SDCARD
+                STA >INT_PENDING_REG2
 
 				;PHX
 				;PHA

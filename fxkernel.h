@@ -3,10 +3,12 @@
 #define __FX_KERNEL_
 
 #include "fxos.h"
+#include "fxnode.h"
 
 #define MEM_SYSTEM_MIN	 (0x010000 * 3)
 #define MEM_USER_CEILING 0xAF0000
-#define MEM_USER_FLOOR 	 0x060000
+//#define MEM_USER_FLOOR 	 0x060000
+#define MEM_USER_FLOOR 	 0x190000
 
 #define ZEROPAGE_VERSION_B2 		  ((unsigned char FAR*)0x001500)
 #define ZEROPAGE_VERSION_CX 		  ((unsigned char FAR*)0x001500)
@@ -16,6 +18,9 @@
 #else
 #define ZEROPAGE ZEROPAGE_VERSION_B2
 #endif
+
+// kernel trap call
+typedef VOID (*KERNELTRAPCALL)(VOID);
 
 typedef struct _fx_zero_page
 {
@@ -47,6 +52,12 @@ typedef struct _fx_zero_page
 	unsigned long availableMemoryK;
 	unsigned long availableHeapMemory;
 	unsigned long availableHeapMemoryK;
+
+	unsigned int  kernelFunctionCallId;
+	UCHAR  		  kernelFunctionCallBank;
+	UCHAR  		  kernelFunctionCallReserved;
+	void FAR *    kernelFunctionCallParameter;
+	void FAR *    kernelFunctionCallReturn;
 
 }FXZERPOPAGE;
 typedef FXZERPOPAGE FAR* PFXZERPOPAGE;
@@ -105,8 +116,21 @@ typedef struct _fx_environment
 }FXENVIRONMENT;
 typedef FXENVIRONMENT FAR* PFXENVIRONMENT;
 
+typedef struct _debug_byte_bits
+{
+    UCHAR bit7 : 1;
+    UCHAR bit6 : 1;
+    UCHAR bit5 : 1;
+    UCHAR bit4 : 1;
+    UCHAR bit3 : 1;
+    UCHAR bit2 : 1;
+    UCHAR bit1 : 1;
+    UCHAR bit0 : 1;
+}DEBUGBYTEBITS;
+typedef DEBUGBYTEBITS FAR* PDEBUGBYTEBITS;
 
 PFXZERPOPAGE k_getZeroPage(void);
+KERNELTRAPCALL FAR *k_getKernelTrapTable(VOID);
 VOID k_initializeZeroPage(VOID);
 
 void k_delay_nop(void);
@@ -140,18 +164,23 @@ void k_debug_integer_array(char FAR* debugString,UINT FAR *n,UINT size);
 void k_debug_long(char FAR* debugString, ULONG n);
 void k_debug_hex(PFAR debugString, UCHAR n);
 void k_debug_hexchar(PFAR debugString, UCHAR n);
-void k_debug_byte_array(char FAR* debugString,BYTE FAR *n,UINT size);
+void k_debug_bits(PFAR debugString, UCHAR n);
+void k_debug_on(UCHAR n);
+void k_debug_byte_array(char FAR* debugString,BYTE FAR *n,ULONG size);
 void k_debug_message(char FAR* debugString,char FAR *message);
 void k_debug_strings(char FAR* debugString,char FAR *message);
+void k_debug_nmessage(char FAR* debugString,char FAR *message,UINT size);
+void k_debug_nstrings(char FAR* debugString,char FAR *message,UINT size);
+
 void k_debug_rect(LPCSTR message,PRECT prect);
 void k_debug_crlf();
 
 void k_debug_integers(char FAR* format, int nHowMany, ...);
 
-//void k_debug_node(PFXNODE node);
-//void k_debug_nodelist(PFXNODE head);
-//void k_debug_nodelist_list(PFXNODELIST list,FOREACHNODE handler);
-//void k_debug_nodelist_with_data(PFXNODE head,FOREACHNODE handler);
+void k_debug_node(PFXNODE node);
+void k_debug_nodelist(PFXNODE head);
+void k_debug_nodelist_list(PFXNODELIST list,FOREACHNODE handler);
+void k_debug_nodelist_with_data(PFXNODE head,FOREACHNODE handler);
 
 void k_debug_uart_status_com1(int lc);
 void k_debug_uart_status_com2(int lc);
@@ -173,5 +202,69 @@ void k_get_fpga_date_month(char *buffer);
 void k_get_fpga_date_year(char *buffer);
 void k_get_c256_major_version(char *buffer);
 void k_get_c256_minor_version(char *buffer);
+
+//////////////////////////
+// KERNEL/USER INTERFACE
+//////////////////////////
+
+enum KERNALTRAPINDEX
+{
+	KT_DOS_GETDIRECTORY = 1,
+
+	KT_DBG_STRING 		= 50,
+
+	KT_OS_CALL_END	    = 511
+};
+
+VOID k_DebugOutString(VOID);
+
+//VOID k_GetDirectory(VOID);
+
+#define DRIVER_TYPE_CONSOLE  (0x00)
+#define DRIVER_TYPE_MOUSE    (0x01)
+#define DRIVER_TYPE_COM      (0x02)
+#define DRIVER_TYPE_DIP      (0x03)
+#define DRIVER_TYPE_KEYBOARD (0x04)
+#define DRIVER_TYPE_SDCARD	 (0x05)
+#define DRIVER_TYPE_FDCARD	 (0x06)
+#define DRIVER_TYPE_HDCARD	 (0x07)
+#define DRIVER_TYPE_SOUND	 (0xA0)
+#define DRIVER_TYPE_EXTENDED (0xF0)
+
+typedef struct _fx_device_driver
+{
+	char   name[64];
+	char   version[64];
+	char   hmajor[16];
+	char   hminor[16];
+	BYTE   type;
+	LPVOID f_driver_load;
+	LPVOID f_driver_read;
+	LPVOID f_driver_write;
+	LPVOID f_driver_unload;
+}FX_DEVICE_DRIVER;
+typedef FX_DEVICE_DRIVER FAR* PFX_DEVICE_DRIVER;
+
+
+typedef struct _fx_block_device_driver
+{
+	char   name[64];
+	char   version[64];
+	char   hmajor[16];
+	char   hminor[16];
+	BYTE   type;
+	LPVOID f_driver_load;
+	LPVOID f_driver_read;
+	LPVOID f_driver_write;
+	LPVOID f_driver_unload;
+	LPVOID f_driver_command;
+}FX_BLOCK_DEVICE_DRIVER;
+typedef FX_BLOCK_DEVICE_DRIVER FAR* PFX_BLOCK_DEVICE_DRIVER;
+
+typedef BOOL (*DEVICEDRIVER_LOAD)(VOID);
+typedef UINT (*DEVICEDRIVER_READ)(LPVOID buffer);
+typedef UINT (*DEVICEDRIVER_WRITE)(UINT size,LPVOID buffer);
+typedef BOOL (*DEVICEDRIVER_UNLOAD)(VOID);
+typedef UINT (*DEVICEDRIVER_COMMAND)(UINT command,LPVOID buffer);
 
 #endif

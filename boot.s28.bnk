@@ -1,0 +1,23 @@
+
+Section: ORG:    ROM ORG:  SIZE:
+CODE     010000  010000     EA52H ( 59986)
+DATA     020000  020000     808EH ( 32910)
+UDATA    02808E  ------     749BH ( 29851)
+b2consol 08C000  08C000       7CH (   124)
+ffdos    080000  080000     582EH ( 22574)
+heapfar  190000  190000       19H (    25)
+heapnear 060000  060000       19H (    25)
+fxhdd    037FFF  037FFF     2DA4H ( 11684)
+dtop     077FFF  077FFF     23D4H (  9172)
+winman   040000  040000     5E1BH ( 24091)
+fxdos    087FFF  087FFF     19FCH (  6652)
+gui      030000  030000     7492H ( 29842)
+entry    04F000  04F000      79DH (  1949)
+evtman   050000  050000     1E20H (  7712)
+startup  007D00  007D00      1CBH (   459)
+vectors  00FFE4  00FFE4       1CH (    28)
+fonts    0A0000  0A0000     DAD0H ( 56016)
+nodeman  05B000  05B000     150FH (  5391)
+concmd   070000  070000      C9EH (  3230)
+Total                      49A99H (301721)
+

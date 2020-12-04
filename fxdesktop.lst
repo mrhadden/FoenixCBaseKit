@@ -1,0 +1,1956 @@
+  Sat Sep 21 2019 15:27                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.c",0
+     7                        ;
+     8                        ;#include "fxdesktop.h"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.h",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+    11                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    12                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    13                        	.line	88
+    14                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    15                        	.stag	fake1_,32,1
+    16                        	.member	quot,0,5,8,16
+    17                        	.member	rem,16,5,8,16
+    18                        	.eos
+    19                        	.stag	fake2_,64,2
+    20                        	.member	quot,0,7,8,32
+    21                        	.member	rem,32,7,8,32
+    22                        	.eos
+    23                        	.stag	int_sqrt,32,3
+    24                        	.member	sqrt,0,16,8,16
+    25                        	.member	frac,16,16,8,16
+    26                        	.eos
+    27                        	.line	205
+    28                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",4
+    29                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    30                        	.line	134
+    31                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",5
+    32                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    33                        	.line	103
+    34                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",6
+    35                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+    36                        	.stag	_fx_node,376,4
+    37                        	.member	type,0,14,8,8
+    38                        	.member	data,8,129,8,32
+    39                        	.member	last,40,138,8,32,4
+    40                        	.member	next,72,138,8,32,4
+  Sat Sep 21 2019 15:27                                                Page 2
+
+
+    41                        	.member	name,104,110,8,0,32
+    42                        	.member	Reserved1,360,16,8,16
+    43                        	.eos
+    44                        	.stag	_fx_nodelist,96,5
+    45                        	.member	listhead,0,138,8,32,4
+    46                        	.member	listData,32,129,8,32
+    47                        	.member	deallocator,64,641,8,32
+    48                        	.eos
+    49                        	.stag	_fx_queue,80,6
+    50                        	.member	count,0,5,8,16
+    51                        	.member	front,16,138,8,32,4
+    52                        	.member	rear,48,138,8,32,4
+    53                        	.eos
+    54                        	.stag	_fx_semaphore,16,7
+    55                        	.member	reserved,0,5,8,16
+    56                        	.eos
+    57                        	.stag	_fx_fileBlock,552,8
+    58                        	.member	openCount,0,16,8,16
+    59                        	.member	lockCount,16,16,8,16
+    60                        	.member	dirty,32,14,8,8
+    61                        	.member	fileBuffer,40,110,8,0,64
+    62                        	.eos
+    63                        	.stag	_fx_eventMessage,304,9
+    64                        	.member	src,0,18,8,32
+    65                        	.member	dest,32,18,8,32
+    66                        	.member	type,64,16,8,16
+    67                        	.member	hwnd,80,129,8,32
+    68                        	.member	pheap,112,129,8,32
+    69                        	.member	msgTime,144,18,8,32
+    70                        	.member	data,176,110,8,0,16
+    71                        	.eos
+    72                        	.stag	_fx_console_ctl,448,10
+    73                        	.member	maxCols,0,5,8,16
+    74                        	.member	maxRows,16,5,8,16
+    75                        	.member	curX,32,5,8,16
+    76                        	.member	curY,48,5,8,16
+    77                        	.member	fgColor,64,5,8,16
+    78                        	.member	bgColor,80,5,8,16
+    79                        	.member	mode,96,14,8,8
+    80                        	.member	kbBuffer,104,101,8,0,16
+    81                        	.member	screenBuffer,360,142,8,32
+    82                        	.member	desktopMode,392,14,8,8
+    83                        	.member	lastMouseButton,400,5,8,16
+    84                        	.member	lastMouseX,416,5,8,16
+    85                        	.member	lastMouseY,432,5,8,16
+    86                        	.eos
+    87                        	.stag	_fx_desktop_ctl,328,11
+    88                        	.member	desktopMode,0,14,8,8
+    89                        	.member	backgroundColor,8,5,8,16
+    90                        	.member	foregroundColor,24,5,8,16
+    91                        	.member	menuMode,40,5,8,16
+    92                        	.member	lastMouseButton,56,5,8,16
+    93                        	.member	lastMouseX,72,5,8,16
+    94                        	.member	lastMouseY,88,5,8,16
+    95                        	.member	currentDiskName,104,142,8,32
+    96                        	.member	diskNodes,136,129,8,32
+    97                        	.member	titleNodes,168,129,8,32
+    98                        	.member	menuNodes,200,129,8,32
+  Sat Sep 21 2019 15:27                                                Page 3
+
+
+    99                        	.member	iconNodes,232,129,8,32
+   100                        	.member	windowNodes,264,129,8,32
+   101                        	.member	fontNodes,296,129,8,32
+   102                        	.eos
+   103                        	.stag	_fx_process,632,12
+   104                        	.member	cbSize,0,5,8,16
+   105                        	.member	procId,16,18,8,32
+   106                        	.member	ctx,48,129,8,32
+   107                        	.member	userId,80,16,8,16
+   108                        	.member	status,96,16,8,16
+   109                        	.member	foregroundActive,112,14,8,8
+   110                        	.member	tls,120,1121,8,32,8
+   111                        	.member	commandLine,376,142,8,32
+   112                        	.member	semaphores,408,138,8,32,5
+   113                        	.member	fileHandles,440,138,8,32,5
+   114                        	.member	pathList,472,138,8,32,5
+   115                        	.member	resources,504,138,8,32,5
+   116                        	.member	consoleCtl,536,138,8,32,10
+   117                        	.member	desktopCtl,568,138,8,32,11
+   118                        	.member	execProc,600,641,8,32
+   119                        	.eos
+   120                        	.stag	_fxProcessMessage,112,13
+   121                        	.member	src,0,18,8,32
+   122                        	.member	dest,32,18,8,32
+   123                        	.member	type,64,16,8,16
+   124                        	.member	processInfo,80,138,8,32,12
+   125                        	.eos
+   126                        	.stag	_fx_property,384,14
+   127                        	.member	name,0,110,8,0,16
+   128                        	.member	value,128,110,8,0,32
+   129                        	.eos
+   130                        	.utag	_24bitPointer,32,15
+   131                        	.member	address,0,142,11,32
+   132                        	.member	bytes,0,110,11,0,4
+   133                        	.eos
+   134                        	.stag	_PointStruct,32,16
+   135                        	.member	x,0,5,8,16
+   136                        	.member	y,16,5,8,16
+   137                        	.eos
+   138                        	.stag	_RectStruct,64,17
+   139                        	.member	x,0,5,8,16
+   140                        	.member	y,16,5,8,16
+   141                        	.member	width,32,5,8,16
+   142                        	.member	height,48,5,8,16
+   143                        	.eos
+   144                        	.stag	_k_WindowClass,256,18
+   145                        	.member	cbSize,0,16,8,16
+   146                        	.member	style,16,16,8,16
+   147                        	.member	pWndProc,32,654,8,32
+   148                        	.member	hInstance,64,129,8,32
+   149                        	.member	hIcon,96,129,8,32
+   150                        	.member	hCursor,128,129,8,32
+   151                        	.member	hbrBackground,160,129,8,32
+   152                        	.member	lpszMenuName,192,142,8,32
+   153                        	.member	lpszClassName,224,142,8,32
+   154                        	.eos
+   155                        	.stag	_k_WindowStruct,640,19
+   156                        	.member	cbSize,0,16,8,16
+  Sat Sep 21 2019 15:27                                                Page 4
+
+
+   157                        	.member	win_id,16,5,8,16
+   158                        	.member	win_x,32,5,8,16
+   159                        	.member	win_y,48,5,8,16
+   160                        	.member	win_width,64,5,8,16
+   161                        	.member	win_height,80,5,8,16
+   162                        	.member	clickable,96,129,8,32
+   163                        	.member	win_title,128,110,8,0,32
+   164                        	.member	win_class,384,110,8,0,16
+   165                        	.member	procid,512,18,8,32
+   166                        	.member	pWndClass,544,138,8,32,18
+   167                        	.member	pParentWindow,576,129,8,32
+   168                        	.member	pChildWindows,608,138,8,32,5
+   169                        	.eos
+   170                        	.stag	_FontMetric,32,20
+   171                        	.member	width,0,5,8,16
+   172                        	.member	height,16,5,8,16
+   173                        	.eos
+   174                        	.stag	_ctl_Textbox,112,21
+   175                        	.member	win_id,0,5,8,16
+   176                        	.member	win_x,16,5,8,16
+   177                        	.member	win_y,32,5,8,16
+   178                        	.member	win_width,48,5,8,16
+   179                        	.member	win_height,64,5,8,16
+   180                        	.member	content,80,1166,8,32
+   181                        	.eos
+   182                        	.stag	_ClickableRect,80,22
+   183                        	.member	area,0,10,8,64,17
+   184                        	.member	enabled,64,14,8,8
+   185                        	.member	depth,72,14,8,8
+   186                        	.eos
+   187                        	.stag	_MenuStruct,168,23
+   188                        	.member	cx,0,5,8,16
+   189                        	.member	cy,16,5,8,16
+   190                        	.member	width,32,5,8,16
+   191                        	.member	height,48,5,8,16
+   192                        	.member	fcolor,64,14,8,8
+   193                        	.member	bcolor,72,14,8,8
+   194                        	.member	chromeLeft,80,14,8,8
+   195                        	.member	chromeRight1,88,14,8,8
+   196                        	.member	chromeRight2,96,14,8,8
+   197                        	.member	pCaption,104,142,8,32
+   198                        	.member	subMenus,136,1153,8,32
+   199                        	.eos
+   200                        	.stag	_SubMenuStruct,64,24
+   201                        	.member	caption,0,142,8,32
+   202                        	.member	action,32,641,8,32
+   203                        	.eos
+   204                        	.stag	_SubMenuListStruct,40,25
+   205                        	.member	cMenus,0,14,8,8
+   206                        	.member	psubmenus,8,9354,8,32,24
+   207                        	.eos
+   208                        	.stag	_fx_ComBuffer,2080,26
+   209                        	.member	cbSize,0,16,8,16
+   210                        	.member	cbBuffer,16,16,8,16
+   211                        	.member	buffer,32,110,8,0,256
+   212                        	.eos
+   213                        	.line	406
+   214                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:27                                                Page 5
+
+
+                    space\FXOSv1\src\fxos.h",8
+   215                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstringtable.h",0
+   216                        	.line	89
+   217                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",9
+   218                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",0
+   219                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   220                        	.line	406
+   221                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",5
+   222                        	.line	802
+   223                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",10
+   224                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+   225                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   226                        	.line	17
+   227                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",5
+   228                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   229                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   230                        	.line	406
+   231                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",5
+   232                        	.line	49
+   233                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",6
+   234                        	.stag	_fx_zero_page,288,27
+   235                        	.member	fxos_mouse_byte_0,0,14,8,8
+   236                        	.member	fxos_mouse_byte_1,8,14,8,8
+   237                        	.member	fxos_mouse_byte_2,16,14,8,8
+   238                        	.member	fxos_mouse_byte_t,24,14,8,8
+   239                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+   240                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+   241                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+   242                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+   243                        	.member	fxos_key_byte_0,64,14,8,8
+   244                        	.member	fxos_key_byte_1,72,14,8,8
+   245                        	.member	fxos_key_byte_2,80,14,8,8
+   246                        	.member	fxos_mouse_ctl,88,14,8,8
+   247                        	.member	fxos_mouse_index,96,14,8,8
+   248                        	.member	fxos_mouse_status,104,14,8,8
+   249                        	.member	VersionMajor,112,16,8,16
+   250                        	.member	VersionMinor,128,16,8,16
+   251                        	.member	VersionRelease,144,16,8,16
+   252                        	.member	topMemory,160,18,8,32
+   253                        	.member	bottomMemory,192,18,8,32
+   254                        	.member	availableMemory,224,18,8,32
+   255                        	.member	availableMemoryK,256,18,8,32
+   256                        	.eos
+   257                        	.stag	_fx_environment,96,28
+   258                        	.member	variables,0,142,8,32
+  Sat Sep 21 2019 15:27                                                Page 6
+
+
+   259                        	.member	reserved1,32,5,8,16
+   260                        	.member	reserved2,48,5,8,16
+   261                        	.member	reserved3,64,5,8,16
+   262                        	.member	reserved4,80,5,8,16
+   263                        	.eos
+   264                        	.line	153
+   265                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",11
+   266                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   267                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   268                        	.line	134
+   269                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",5
+   270                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   271                        	.line	205
+   272                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",6
+   273                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   274                        	.line	406
+   275                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",7
+   276                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",0
+   277                        	.line	802
+   278                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",8
+   279                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   280                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   281                        	.line	205
+   282                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",5
+   283                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   284                        	.line	406
+   285                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",6
+   286                        	.stag	_fx_string,64,29
+   287                        	.member	size,0,16,8,16
+   288                        	.member	pos,16,16,8,16
+   289                        	.member	buffer,32,142,8,32
+   290                        	.eos
+   291                        	.line	62
+   292                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",9
+   293                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   294                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   295                        	.line	17
+   296                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",5
+   297                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:27                                                Page 7
+
+
+                    space\FXOSv1\src\fxexec.h",0
+   298                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   299                        	.line	406
+   300                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",5
+   301                        	.line	25
+   302                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",6
+   303                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   304                        	.line	49
+   305                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",7
+   306                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   307                        	.line	149
+   308                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",8
+   309                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",0
+   310                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   311                        	.line	406
+   312                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",5
+   313                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   314                        	.line	17
+   315                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",6
+   316                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   317                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   318                        	.line	17
+   319                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",5
+   320                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",0
+   321                        	.line	22
+   322                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",6
+   323                        	.stag	_fx_memory_map,2072,30
+   324                        	.member	availableMemory,0,18,8,32
+   325                        	.member	valid_segments,32,110,8,0,255
+   326                        	.eos
+   327                        	.line	31
+   328                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",7
+   329                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   330                        	.line	633
+   331                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",8
+   332                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   333                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:27                                                Page 8
+
+
+                    space\FXOSv1\src\fxfont.h",0
+   334                        	.line	44
+   335                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",4
+   336                        	.stag	_click_detected,64,31
+   337                        	.member	window,0,138,8,32,19
+   338                        	.member	handler,32,641,8,32
+   339                        	.eos
+   340                        	.stag	_current_palette_map,400,32
+   341                        	.member	CUR_DESKTOP,0,5,8,16
+   342                        	.member	CUR_BACKGROUND,16,5,8,16
+   343                        	.member	CUR_FONT,32,5,8,16
+   344                        	.member	CUR_SELECTED_FONT,48,5,8,16
+   345                        	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+   346                        	.member	CUR_WINDOWFRAME,80,5,8,16
+   347                        	.member	CUR_WINDOWBORDER,96,5,8,16
+   348                        	.member	CUR_WINDOWSHADOW,112,5,8,16
+   349                        	.member	CUR_MENU,128,5,8,16
+   350                        	.member	CUR_GADGET,144,5,8,16
+   351                        	.member	CUR_COLOR,160,101,8,0,15
+   352                        	.eos
+   353                        	.line	167
+   354                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",9
+   355                        	.line	92
+   356                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",9
+   357                        	.stag	_fx_main_loopvars,16,33
+   358                        	.member	dummy,0,5,8,16
+   359                        	.eos
+   360                        	.stag	_fxMouseMessageData,64,34
+   361                        	.member	button1,0,14,8,8
+   362                        	.member	button2,8,14,8,8
+   363                        	.member	button3,16,14,8,8
+   364                        	.member	button4,24,14,8,8
+   365                        	.member	x,32,16,8,16
+   366                        	.member	y,48,16,8,16
+   367                        	.eos
+   368                        	.stag	_fx_eventProcess,64,35
+   369                        	.member	process,0,138,8,32,12
+   370                        	.member	eventProc,32,641,8,32
+   371                        	.eos
+   372                        	.stag	_mouse_msg_state,184,36
+   373                        	.member	lastEvent,0,18,8,32
+   374                        	.member	buttonLeftDown,32,14,8,8
+   375                        	.member	lastLeftDown,40,18,8,32
+   376                        	.member	buttonRightDown,72,14,8,8
+   377                        	.member	lastRightDown,80,18,8,32
+   378                        	.member	buttonMiddleDown,112,14,8,8
+   379                        	.member	lastMiddleDown,120,18,8,32
+   380                        	.member	lastX,152,16,8,16
+   381                        	.member	lastY,168,16,8,16
+   382                        	.eos
+   383                        	data
+   384                        ~~_k_keyCodesSet:
+   385 00:0000: 00 1B 31 32  	db	$0,$1B,$31,$32,$33,$34,$35,$36,$37,$38
+       00:0004: 33 34 35 36 
+       00:0008: 37 38 
+  Sat Sep 21 2019 15:27                                                Page 9
+
+
+   386 00:000A: 39 30 2D 3D  	db	$39,$30,$2D,$3D,$8,$9,$71,$77,$65,$72
+       00:000E: 08 09 71 77 
+       00:0012: 65 72 
+   387 00:0014: 74 79 75 69  	db	$74,$79,$75,$69,$6F,$70,$5B,$5D,$D,$0
+       00:0018: 6F 70 5B 5D 
+       00:001C: 0D 00 
+   388 00:001E: 61 73 64 66  	db	$61,$73,$64,$66,$67,$68,$6A,$6B,$6C,$3B
+       00:0022: 67 68 6A 6B 
+       00:0026: 6C 3B 
+   389 00:0028: 27 60 00 5C  	db	$27,$60,$0,$5C,$7A,$78,$63,$76,$62,$6E
+       00:002C: 7A 78 63 76 
+       00:0030: 62 6E 
+   390 00:0032: 6D 2C 2E 2F  	db	$6D,$2C,$2E,$2F,$0,$2A,$0,$20,$0,$0
+       00:0036: 00 2A 00 20 
+       00:003A: 00 00 
+   391 00:003C: 00 00 00 00  	db	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+       00:0040: 00 00 00 00 
+       00:0044: 00 00 
+   392 00:0046: 00 37 38 39  	db	$0,$37,$38,$39,$2D,$34,$35,$36,$2B,$31
+       00:004A: 2D 34 35 36 
+       00:004E: 2B 31 
+   393 00:0050: 32 33 30 2E  	db	$32,$33,$30,$2E,$0,$0,$0,$0,$0
+       00:0054: 00 00 00 00 
+       00:0058: 00 
+   394 00:0059:              	ends
+   395                        	data
+   396                        ~~_k_keyCodesShiftSet:
+   397 00:0059: 00 1B 21 40  	db	$0,$1B,$21,$40,$23,$24,$25,$5E,$26,$2A
+       00:005D: 23 24 25 5E 
+       00:0061: 26 2A 
+   398 00:0063: 28 29 5F 2B  	db	$28,$29,$5F,$2B,$8,$9,$51,$57,$45,$52
+       00:0067: 08 09 51 57 
+       00:006B: 45 52 
+   399 00:006D: 54 59 55 49  	db	$54,$59,$55,$49,$4F,$50,$7B,$7D,$D,$0
+       00:0071: 4F 50 7B 7D 
+       00:0075: 0D 00 
+   400 00:0077: 41 53 44 46  	db	$41,$53,$44,$46,$47,$48,$4A,$4B,$4C,$3A
+       00:007B: 47 48 4A 4B 
+       00:007F: 4C 3A 
+   401 00:0081: 22 7E 00 7C  	db	$22,$7E,$0,$7C,$5A,$58,$43,$56,$42,$4E
+       00:0085: 5A 58 43 56 
+       00:0089: 42 4E 
+   402 00:008B: 4D 3C 3E 3F  	db	$4D,$3C,$3E,$3F,$0,$2A,$0,$20,$0,$0
+       00:008F: 00 2A 00 20 
+       00:0093: 00 00 
+   403 00:0095: 00 00 00 00  	db	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+       00:0099: 00 00 00 00 
+       00:009D: 00 00 
+   404 00:009F: 00 37 38 39  	db	$0,$37,$38,$39,$2D,$34,$35,$36,$2B,$31
+       00:00A3: 2D 34 35 36 
+       00:00A7: 2B 31 
+   405 00:00A9: 32 33 30 2E  	db	$32,$33,$30,$2E,$0,$0,$0,$0,$0
+       00:00AD: 00 00 00 00 
+       00:00B1: 00 
+   406 00:00B2:              	ends
+   407                        	data
+   408                        ~~_k_keyCodesExtSet:
+   409 00:00B2: 00           	db	$0
+  Sat Sep 21 2019 15:27                                                Page 10
+
+
+   410 00:00B3:              	ends
+   411                        	.line	633
+   412                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",10
+   413                        	.stag	_fx_spinner_ctx,48,37
+   414                        	.member	index,0,5,8,16
+   415                        	.member	spinner,16,142,8,32
+   416                        	.eos
+   417                        	.stag	_fx_console_ctx,1144,38
+   418                        	.member	lineBufferIndex,0,5,8,16
+   419                        	.member	lineBuffer,16,110,8,0,128
+   420                        	.member	isShifted,1040,14,8,8
+   421                        	.member	userData,1048,129,8,32
+   422                        	.member	screenBuffer,1080,129,8,32
+   423                        	.member	Reserved1,1112,129,8,32
+   424                        	.eos
+   425                        	.stag	_token,64,39
+   426                        	.member	type,0,5,8,16
+   427                        	.member	depth,16,16,8,16
+   428                        	.member	text,32,142,8,32
+   429                        	.eos
+   430                        	.stag	_command_args,64,40
+   431                        	.member	proc,0,656,8,32
+   432                        	.member	tokens,32,138,8,32,4
+   433                        	.eos
+   434                        	.line	149
+   435                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",12
+   436                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   437                        	.line	62
+   438                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",13
+   439                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   440                        	.line	49
+   441                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",14
+   442                        	.line	17
+   443                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.h",5
+   444                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\basicfont.h",0
+   445                        	.line	38
+   446                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.h",7
+   447                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   448                        	.line	633
+   449                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.h",8
+   450                        	.line	14
+   451                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxdesktop.c",2
+   452                        ;
+   453                        ;void TestProc(PFXOSMESSAGE pMsg)
+   454                        ;{
+   455                        	.line	4
+  Sat Sep 21 2019 15:27                                                Page 11
+
+
+   456                        	.line	5
+   457                        	code
+   458                        	xdef	~~TestProc
+   459                        	func
+   460                        	.function	5
+   461                        ~~TestProc:
+   462                        	longa	on
+   463                        	longi	on
+   464 00:0000: 3B           	tsc
+   465 00:0001: 38           	sec
+   466 00:0002: E9 00 00     	sbc	#L2
+   467 00:0005: 1B           	tcs
+   468 00:0006: 0B           	phd
+   469 00:0007: 5B           	tcd
+   470             00000004   pMsg_0	set	4
+   471                        	.block	5
+   472                        ;	k_debug_string("TestProc Enter\r\n");
+   473                        	.sym	pMsg,4,138,6,32,9
+   474                        	.line	6
+   475 00:0008: F4 xx xx     	pea	#^L1
+   476 00:000B: F4 xx xx     	pea	#<L1
+477: ***ERROR - Undefined symbol - <~~k_debug_string>
+
+   477 00:000E: 22 xx xx xx  	jsl	~~k_debug_string
+   478                        ;	return;
+   479                        	.line	7
+   480                        L5:
+   481 00:0012: A5 02        	lda	<L2+2
+   482 00:0014: 85 06        	sta	<L2+2+4
+   483 00:0016: A5 01        	lda	<L2+1
+   484 00:0018: 85 05        	sta	<L2+1+4
+   485 00:001A: 2B           	pld
+   486 00:001B: 3B           	tsc
+   487 00:001C: 18           	clc
+   488 00:001D: 69 04 00     	adc	#L2+4
+   489 00:0020: 1B           	tcs
+   490 00:0021: 6B           	rtl
+   491                        ;}
+   492                        	.line	8
+   493                        	.endblock	8
+   494             00000000   L2	equ	0
+   495             00000001   L3	equ	1
+   496                        	ends
+   497                        	efunc
+   498                        	.endfunc	8,1,0
+   499                        	.line	8
+   500                        	data
+   501                        L1:
+   502 00:00B3: 54 65 73 74  	db	$54,$65,$73,$74,$50,$72,$6F,$63,$20,$45,
+                    $6E,$74,$65,$72,$0D
+       00:00B7: 50 72 6F 63 
+       00:00BB: 20 45 6E 74 
+       00:00BF: 65 72 0D 
+   503 00:00C2: 0A 00        	db	$0A,$00
+   504 00:00C4:              	ends
+   505                        ;
+   506                        ;void k_start_desktop(void)
+  Sat Sep 21 2019 15:27                                                Page 12
+
+
+   507                        ;{
+   508                        	.line	10
+   509                        	.line	11
+   510                        	code
+   511                        	xdef	~~k_start_desktop
+   512                        	func
+   513                        	.function	11
+   514                        ~~k_start_desktop:
+   515                        	longa	on
+   516                        	longi	on
+   517 00:0022: 3B           	tsc
+   518 00:0023: 38           	sec
+519: ***ERROR - Undefined symbol - <L7>
+
+   519 00:0024: E9 xx xx     	sbc	#L7
+   520 00:0027: 1B           	tcs
+   521 00:0028: 0B           	phd
+   522 00:0029: 5B           	tcd
+   523                        	.block	11
+   524                        ;	char bg[12] = {0x30,0x40,0x50,0x60,0x70,0x80,0xA
+                    0,0xB0,0xC0,0xD0,0xE0,0xF0};
+   525                        	data
+   526                        L10:
+   527 00:00C4: 30 40 50 60  	db	$30,$40,$50,$60,$70,$80,$A0,$B0,$C0,$D0
+       00:00C8: 70 80 A0 B0 
+       00:00CC: C0 D0 
+   528 00:00CE: E0 F0        	db	$E0,$F0
+   529 00:00D0:              	ends
+   530                        ;	int delay = 0;
+   531                        ;	char fcolor = 0x01;
+   532                        ;	char dcolor = 0x01;
+   533                        ;	int i = 0;
+   534                        ;	int offset = 0;
+   535                        ;	char c = 0;
+   536                        ;	char color = 0;
+   537                        ;	int x = 0;
+   538                        ;	int y = 200;
+   539                        ;	int index = 0;
+   540                        ;	int pixelLocation = 0;
+   541                        ;	long bankAddress = 0L;
+   542                        ;	//char bf = 0;
+   543                        ;	//char bc = 0;
+   544                        ;	//int bx = 0;
+   545                        ;	//int by = 0;
+   546                        ;	long fill = 0L;
+   547                        ;	int mx = 0;
+   548                        ;	int my = 0;
+   549                        ;	int zx = 0;
+   550                        ;	char vfill = 0;
+   551                        ;	volatile unsigned char * videoBank = NULL;
+   552                        ;
+   553                        ;	int bx = 5;
+   554                        ;	int by = 5;
+   555                        ;	int bh = 35;
+   556                        ;	int bw = 45;
+   557                        ;	int pos = 0;
+   558                        ;
+  Sat Sep 21 2019 15:27                                                Page 13
+
+
+   559                        ;	k_init_keyboard();
+   560             00000000   bg_1	set	0
+   561             0000000C   delay_1	set	12
+   562             0000000E   fcolor_1	set	14
+   563             0000000F   dcolor_1	set	15
+   564             00000010   i_1	set	16
+   565             00000012   offset_1	set	18
+   566             00000014   c_1	set	20
+   567             00000015   color_1	set	21
+   568             00000016   x_1	set	22
+   569             00000018   y_1	set	24
+   570             0000001A   index_1	set	26
+   571             0000001C   pixelLocation_1	set	28
+   572             0000001E   bankAddress_1	set	30
+   573             00000022   fill_1	set	34
+   574             00000026   mx_1	set	38
+   575             00000028   my_1	set	40
+   576             0000002A   zx_1	set	42
+   577             0000002C   vfill_1	set	44
+   578             0000002D   videoBank_1	set	45
+   579             00000031   bx_1	set	49
+   580             00000033   by_1	set	51
+   581             00000035   bh_1	set	53
+   582             00000037   bw_1	set	55
+   583             00000039   pos_1	set	57
+   584                        	.sym	bg,0,110,1,0,12
+   585                        	.sym	delay,12,5,1,16
+   586                        	.sym	fcolor,14,14,1,8
+   587                        	.sym	dcolor,15,14,1,8
+   588                        	.sym	i,16,5,1,16
+   589                        	.sym	offset,18,5,1,16
+   590                        	.sym	c,20,14,1,8
+   591                        	.sym	color,21,14,1,8
+   592                        	.sym	x,22,5,1,16
+   593                        	.sym	y,24,5,1,16
+   594                        	.sym	index,26,5,1,16
+   595                        	.sym	pixelLocation,28,5,1,16
+   596                        	.sym	bankAddress,30,7,1,32
+   597                        	.sym	fill,34,7,1,32
+   598                        	.sym	mx,38,5,1,16
+   599                        	.sym	my,40,5,1,16
+   600                        	.sym	zx,42,5,1,16
+   601                        	.sym	vfill,44,14,1,8
+   602                        	.sym	videoBank,45,142,1,32
+   603                        	.sym	bx,49,5,1,16
+   604                        	.sym	by,51,5,1,16
+   605                        	.sym	bh,53,5,1,16
+   606                        	.sym	bw,55,5,1,16
+   607                        	.sym	pos,57,5,1,16
+   608 00:002A: F4 xx xx     	pea	#^L10
+   609 00:002D: F4 xx xx     	pea	#<L10
+   610 00:0030: 18           	clc
+   611 00:0031: 7B           	tdc
+612: ***ERROR - Undefined symbol - <L8>
+
+   612 00:0032: 69 xx xx     	adc	#<L8+bg_1
+   613 00:0035: 85 01        	sta	<R0
+  Sat Sep 21 2019 15:27                                                Page 14
+
+
+   614 00:0037: A9 00 00     	lda	#$0
+   615 00:003A: 85 03        	sta	<R0+2
+   616 00:003C: D4 03        	pei	<R0+2
+   617 00:003E: D4 01        	pei	<R0
+   618 00:0040: A9 0C 00     	lda	#$c
+   619                        	xref	~~~fmov
+   620 00:0043: 22 xx xx xx  	jsl	~~~fmov
+621: ***ERROR - Undefined symbol - <L8>
+
+   621 00:0047: 64 xx        	stz	<L8+delay_1
+   622 00:0049: E2 20        	sep	#$20
+   623                        	longa	off
+   624 00:004B: A9 01        	lda	#$1
+625: ***ERROR - Undefined symbol - <L8>
+
+   625 00:004D: 85 xx        	sta	<L8+fcolor_1
+   626 00:004F: C2 20        	rep	#$20
+   627                        	longa	on
+   628 00:0051: E2 20        	sep	#$20
+   629                        	longa	off
+   630 00:0053: A9 01        	lda	#$1
+631: ***ERROR - Undefined symbol - <L8>
+
+   631 00:0055: 85 xx        	sta	<L8+dcolor_1
+   632 00:0057: C2 20        	rep	#$20
+   633                        	longa	on
+634: ***ERROR - Undefined symbol - <L8>
+
+   634 00:0059: 64 xx        	stz	<L8+i_1
+635: ***ERROR - Undefined symbol - <L8>
+
+   635 00:005B: 64 xx        	stz	<L8+offset_1
+   636 00:005D: E2 20        	sep	#$20
+   637                        	longa	off
+638: ***ERROR - Undefined symbol - <L8>
+
+   638 00:005F: 64 xx        	stz	<L8+c_1
+   639 00:0061: C2 20        	rep	#$20
+   640                        	longa	on
+   641 00:0063: E2 20        	sep	#$20
+   642                        	longa	off
+643: ***ERROR - Undefined symbol - <L8>
+
+   643 00:0065: 64 xx        	stz	<L8+color_1
+   644 00:0067: C2 20        	rep	#$20
+   645                        	longa	on
+646: ***ERROR - Undefined symbol - <L8>
+
+   646 00:0069: 64 xx        	stz	<L8+x_1
+   647 00:006B: A9 C8 00     	lda	#$c8
+  Sat Sep 21 2019 15:27                                                Page 15
+
+
+648: ***ERROR - Undefined symbol - <L8>
+
+   648 00:006E: 85 xx        	sta	<L8+y_1
+649: ***ERROR - Undefined symbol - <L8>
+
+   649 00:0070: 64 xx        	stz	<L8+index_1
+650: ***ERROR - Undefined symbol - <L8>
+
+   650 00:0072: 64 xx        	stz	<L8+pixelLocation_1
+651: ***ERROR - Undefined symbol - <L8>
+
+   651 00:0074: 64 xx        	stz	<L8+bankAddress_1
+652: ***ERROR - Undefined symbol - <L8>
+
+   652 00:0076: 64 xx        	stz	<L8+bankAddress_1+2
+653: ***ERROR - Undefined symbol - <L8>
+
+   653 00:0078: 64 xx        	stz	<L8+fill_1
+654: ***ERROR - Undefined symbol - <L8>
+
+   654 00:007A: 64 xx        	stz	<L8+fill_1+2
+655: ***ERROR - Undefined symbol - <L8>
+
+   655 00:007C: 64 xx        	stz	<L8+mx_1
+656: ***ERROR - Undefined symbol - <L8>
+
+   656 00:007E: 64 xx        	stz	<L8+my_1
+657: ***ERROR - Undefined symbol - <L8>
+
+   657 00:0080: 64 xx        	stz	<L8+zx_1
+   658 00:0082: E2 20        	sep	#$20
+   659                        	longa	off
+660: ***ERROR - Undefined symbol - <L8>
+
+   660 00:0084: 64 xx        	stz	<L8+vfill_1
+   661 00:0086: C2 20        	rep	#$20
+   662                        	longa	on
+663: ***ERROR - Undefined symbol - <L8>
+
+   663 00:0088: 64 xx        	stz	<L8+videoBank_1
+664: ***ERROR - Undefined symbol - <L8>
+
+   664 00:008A: 64 xx        	stz	<L8+videoBank_1+2
+   665 00:008C: A9 05 00     	lda	#$5
+  Sat Sep 21 2019 15:27                                                Page 16
+
+
+666: ***ERROR - Undefined symbol - <L8>
+
+   666 00:008F: 85 xx        	sta	<L8+bx_1
+   667 00:0091: A9 05 00     	lda	#$5
+668: ***ERROR - Undefined symbol - <L8>
+
+   668 00:0094: 85 xx        	sta	<L8+by_1
+   669 00:0096: A9 23 00     	lda	#$23
+670: ***ERROR - Undefined symbol - <L8>
+
+   670 00:0099: 85 xx        	sta	<L8+bh_1
+   671 00:009B: A9 2D 00     	lda	#$2d
+672: ***ERROR - Undefined symbol - <L8>
+
+   672 00:009E: 85 xx        	sta	<L8+bw_1
+673: ***ERROR - Undefined symbol - <L8>
+
+   673 00:00A0: 64 xx        	stz	<L8+pos_1
+   674                        	.line	42
+675: ***ERROR - Undefined symbol - <~~k_init_keyboard>
+
+   675 00:00A2: 22 xx xx xx  	jsl	~~k_init_keyboard
+   676                        ;	k_uart_enableirq_ports();
+   677                        	.line	43
+678: ***ERROR - Undefined symbol - <~~k_uart_enableirq_ports>
+
+   678 00:00A6: 22 xx xx xx  	jsl	~~k_uart_enableirq_ports
+   679                        ;
+   680                        ;	k_debug_string("********************************
+                    **\r\n");
+   681                        	.line	45
+682: ***ERROR - Undefined symbol - <L6>
+
+   682 00:00AA: F4 xx xx     	pea	#^L6
+683: ***ERROR - Undefined symbol - <L6>
+
+   683 00:00AD: F4 xx xx     	pea	#<L6
+684: ***ERROR - Undefined symbol - <~~k_debug_string>
+
+   684 00:00B0: 22 xx xx xx  	jsl	~~k_debug_string
+   685                        ;	k_debug_string("******   k_start_desktop   *****
+                    **\r\n");
+   686                        	.line	46
+687: ***ERROR - Undefined symbol - <L6>
+
+   687 00:00B4: F4 xx xx     	pea	#^L6+37
+688: ***ERROR - Undefined symbol - <L6>
+  Sat Sep 21 2019 15:27                                                Page 17
+
+
+
+   688 00:00B7: F4 xx xx     	pea	#<L6+37
+689: ***ERROR - Undefined symbol - <~~k_debug_string>
+
+   689 00:00BA: 22 xx xx xx  	jsl	~~k_debug_string
+   690                        ;	k_debug_string("********************************
+                    **\r\n");
+   691                        	.line	47
+692: ***ERROR - Undefined symbol - <L6>
+
+   692 00:00BE: F4 xx xx     	pea	#^L6+74
+693: ***ERROR - Undefined symbol - <L6>
+
+   693 00:00C1: F4 xx xx     	pea	#<L6+74
+694: ***ERROR - Undefined symbol - <~~k_debug_string>
+
+   694 00:00C4: 22 xx xx xx  	jsl	~~k_debug_string
+   695                        ;
+   696                        ;	k_getevents(TestProc);
+   697                        	.line	49
+   698 00:00C8: F4 xx xx     	pea	#^~~TestProc
+   699 00:00CB: F4 xx xx     	pea	#<~~TestProc
+700: ***ERROR - Undefined symbol - <~~k_getevents>
+
+   700 00:00CE: 22 xx xx xx  	jsl	~~k_getevents
+   701                        ;
+   702                        ;	k_create_window(bx,by,bw,bh,"CONSOLE WINDOW");
+   703                        	.line	51
+704: ***ERROR - Undefined symbol - <L6>
+
+   704 00:00D2: F4 xx xx     	pea	#^L6+111
+705: ***ERROR - Undefined symbol - <L6>
+
+   705 00:00D5: F4 xx xx     	pea	#<L6+111
+706: ***ERROR - Undefined symbol - <L8>
+
+   706 00:00D8: D4 xx        	pei	<L8+bh_1
+707: ***ERROR - Undefined symbol - <L8>
+
+   707 00:00DA: D4 xx        	pei	<L8+bw_1
+708: ***ERROR - Undefined symbol - <L8>
+
+   708 00:00DC: D4 xx        	pei	<L8+by_1
+709: ***ERROR - Undefined symbol - <L8>
+
+   709 00:00DE: D4 xx        	pei	<L8+bx_1
+  Sat Sep 21 2019 15:27                                                Page 18
+
+
+710: ***ERROR - Undefined symbol - <~~k_create_window>
+
+   710 00:00E0: 22 xx xx xx  	jsl	~~k_create_window
+   711                        ;
+   712                        ;	k_put_string(bx+1,by + 3,"LOADING GRAPHICAL WORK
+                    BENCH...",15,0);
+   713                        	.line	53
+   714 00:00E4: F4 00 00     	pea	#<$0
+   715 00:00E7: F4 0F 00     	pea	#<$f
+716: ***ERROR - Undefined symbol - <L6>
+
+   716 00:00EA: F4 xx xx     	pea	#^L6+126
+717: ***ERROR - Undefined symbol - <L6>
+
+   717 00:00ED: F4 xx xx     	pea	#<L6+126
+   718 00:00F0: 18           	clc
+   719 00:00F1: A9 03 00     	lda	#$3
+720: ***ERROR - Undefined symbol - <L8>
+
+   720 00:00F4: 65 xx        	adc	<L8+by_1
+   721 00:00F6: 48           	pha
+722: ***ERROR - Undefined symbol - <L8>
+
+   722 00:00F7: A5 xx        	lda	<L8+bx_1
+   723 00:00F9: 1A           	ina
+   724 00:00FA: 48           	pha
+725: ***ERROR - Undefined symbol - <~~k_put_string>
+
+   725 00:00FB: 22 xx xx xx  	jsl	~~k_put_string
+   726                        ;
+   727                        ;	pos = 0;
+   728                        	.line	55
+729: ***ERROR - Undefined symbol - <L8>
+
+   729 00:00FF: 64 xx        	stz	<L8+pos_1
+   730                        ;	for(i=0;i<30;i++)
+   731                        	.line	56
+732: ***ERROR - Undefined symbol - <L8>
+
+   732 00:0101: 64 xx        	stz	<L8+i_1
+   733                        L10003:
+   734                        ;	{
+   735                        	.line	57
+   736                        ;	   k_put_char(bx+1,by + 4,spinner[pos],15,0);
+   737                        	.line	58
+   738 00:0103: F4 00 00     	pea	#<$0
+   739 00:0106: F4 0F 00     	pea	#<$f
+740: ***ERROR - Undefined symbol - <L8>
+
+   740 00:0109: A6 xx        	ldx	<L8+pos_1
+  Sat Sep 21 2019 15:27                                                Page 19
+
+
+741: ***ERROR - Undefined symbol - <~~spinner>
+
+   741 00:010B: BF xx xx xx  	lda	>~~spinner,X
+   742 00:010F: 48           	pha
+   743 00:0110: 18           	clc
+   744 00:0111: A9 04 00     	lda	#$4
+745: ***ERROR - Undefined symbol - <L8>
+
+   745 00:0114: 65 xx        	adc	<L8+by_1
+   746 00:0116: 48           	pha
+747: ***ERROR - Undefined symbol - <L8>
+
+   747 00:0117: A5 xx        	lda	<L8+bx_1
+   748 00:0119: 1A           	ina
+   749 00:011A: 48           	pha
+750: ***ERROR - Undefined symbol - <~~k_put_char>
+
+   750 00:011B: 22 xx xx xx  	jsl	~~k_put_char
+   751                        ;	   k_delay(500);
+   752                        	.line	59
+   753 00:011F: F4 F4 01     	pea	#<$1f4
+754: ***ERROR - Undefined symbol - <~~k_delay>
+
+   754 00:0122: 22 xx xx xx  	jsl	~~k_delay
+   755                        ;	   pos++;
+   756                        	.line	60
+757: ***ERROR - Undefined symbol - <L8>
+
+   757 00:0126: E6 xx        	inc	<L8+pos_1
+   758                        ;	   if(pos > 3)
+   759                        	.line	61
+   760                        ;			pos = 0;
+   761 00:0128: 38           	sec
+   762 00:0129: A9 03 00     	lda	#$3
+763: ***ERROR - Undefined symbol - <L8>
+
+   763 00:012C: E5 xx        	sbc	<L8+pos_1
+   764 00:012E: 70 03        	bvs	L11
+   765 00:0130: 49 00 80     	eor	#$8000
+   766                        L11:
+   767 00:0133: 10 03        	bpl	L12
+   768 00:0135: 82 02 00     	brl	L10004
+   769                        L12:
+   770                        	.line	62
+771: ***ERROR - Undefined symbol - <L8>
+
+   771 00:0138: 64 xx        	stz	<L8+pos_1
+   772                        ;	}
+   773                        L10004:
+   774                        	.line	63
+  Sat Sep 21 2019 15:27                                                Page 20
+
+
+   775                        L10001:
+776: ***ERROR - Undefined symbol - <L8>
+
+   776 00:013A: E6 xx        	inc	<L8+i_1
+   777 00:013C: 38           	sec
+778: ***ERROR - Undefined symbol - <L8>
+
+   778 00:013D: A5 xx        	lda	<L8+i_1
+   779 00:013F: E9 1E 00     	sbc	#<$1e
+   780 00:0142: 70 03        	bvs	L13
+   781 00:0144: 49 00 80     	eor	#$8000
+   782                        L13:
+   783 00:0147: 30 03        	bmi	L14
+   784 00:0149: 82 B7 FF     	brl	L10003
+   785                        L14:
+   786                        L10002:
+   787                        ;
+   788                        ;
+   789                        ;	VDMA_CONTROL_REG[0] = VDMA_CTRL_ENABLE;
+   790                        	.line	66
+   791 00:014C: E2 20        	sep	#$20
+   792                        	longa	off
+   793 00:014E: A9 01        	lda	#$1
+   794 00:0150: 8F 00 04 AF  	sta	>11469824
+   795 00:0154: C2 20        	rep	#$20
+   796                        	longa	on
+   797                        ;
+   798                        ;	*BM_START_ADDY_L = 0x00;
+   799                        	.line	68
+   800 00:0156: E2 20        	sep	#$20
+   801                        	longa	off
+   802 00:0158: A9 00        	lda	#$0
+   803 00:015A: 8F 41 01 AF  	sta	>11469121
+   804 00:015E: C2 20        	rep	#$20
+   805                        	longa	on
+   806                        ;	*BM_START_ADDY_M = 0x00;
+   807                        	.line	69
+   808 00:0160: E2 20        	sep	#$20
+   809                        	longa	off
+   810 00:0162: A9 00        	lda	#$0
+   811 00:0164: 8F 42 01 AF  	sta	>11469122
+   812 00:0168: C2 20        	rep	#$20
+   813                        	longa	on
+   814                        ;	*BM_START_ADDY_H = 0x00;
+   815                        	.line	70
+   816 00:016A: E2 20        	sep	#$20
+   817                        	longa	off
+   818 00:016C: A9 00        	lda	#$0
+   819 00:016E: 8F 43 01 AF  	sta	>11469123
+   820 00:0172: C2 20        	rep	#$20
+   821                        	longa	on
+   822                        ;	*((char far*)0xAF1F80) = 0x02;
+   823                        	.line	71
+   824 00:0174: E2 20        	sep	#$20
+   825                        	longa	off
+   826 00:0176: A9 02        	lda	#$2
+  Sat Sep 21 2019 15:27                                                Page 21
+
+
+   827 00:0178: 8F 80 1F AF  	sta	>11476864
+   828 00:017C: C2 20        	rep	#$20
+   829                        	longa	on
+   830                        ;
+   831                        ;	*BM_X_SIZE_L = 0x80;
+   832                        	.line	73
+   833 00:017E: E2 20        	sep	#$20
+   834                        	longa	off
+   835 00:0180: A9 80        	lda	#$80
+   836 00:0182: 8F 44 01 AF  	sta	>11469124
+   837 00:0186: C2 20        	rep	#$20
+   838                        	longa	on
+   839                        ;	*BM_X_SIZE_H = 0x02;
+   840                        	.line	74
+   841 00:0188: E2 20        	sep	#$20
+   842                        	longa	off
+   843 00:018A: A9 02        	lda	#$2
+   844 00:018C: 8F 45 01 AF  	sta	>11469125
+   845 00:0190: C2 20        	rep	#$20
+   846                        	longa	on
+   847                        ;	*BM_Y_SIZE_L = 0xE0;
+   848                        	.line	75
+   849 00:0192: E2 20        	sep	#$20
+   850                        	longa	off
+   851 00:0194: A9 E0        	lda	#$e0
+   852 00:0196: 8F 46 01 AF  	sta	>11469126
+   853 00:019A: C2 20        	rep	#$20
+   854                        	longa	on
+   855                        ;	*BM_Y_SIZE_H = 0x01;
+   856                        	.line	76
+   857 00:019C: E2 20        	sep	#$20
+   858                        	longa	off
+   859 00:019E: A9 01        	lda	#$1
+   860 00:01A0: 8F 47 01 AF  	sta	>11469127
+   861 00:01A4: C2 20        	rep	#$20
+   862                        	longa	on
+   863                        ;
+   864                        ;	*FG_CHAR_LUT_PTR    = 0x00;
+   865                        	.line	78
+   866 00:01A6: E2 20        	sep	#$20
+   867                        	longa	off
+   868 00:01A8: A9 00        	lda	#$0
+   869 00:01AA: 8F 40 1F AF  	sta	>11476800
+   870 00:01AE: C2 20        	rep	#$20
+   871                        	longa	on
+   872                        ;	*BG_CHAR_LUT_PTR    = 0x00;
+   873                        	.line	79
+   874 00:01B0: E2 20        	sep	#$20
+   875                        	longa	off
+   876 00:01B2: A9 00        	lda	#$0
+   877 00:01B4: 8F 80 1F AF  	sta	>11476864
+   878 00:01B8: C2 20        	rep	#$20
+   879                        	longa	on
+   880                        ;	*BM_CONTROL_REG 	= 0x08;
+   881                        	.line	80
+   882 00:01BA: E2 20        	sep	#$20
+   883                        	longa	off
+   884 00:01BC: A9 08        	lda	#$8
+  Sat Sep 21 2019 15:27                                                Page 22
+
+
+   885 00:01BE: 8F 40 01 AF  	sta	>11469120
+   886 00:01C2: C2 20        	rep	#$20
+   887                        	longa	on
+   888                        ;	*MASTER_CTRL_REG_L 	= 0x0C;
+   889                        	.line	81
+   890 00:01C4: E2 20        	sep	#$20
+   891                        	longa	off
+   892 00:01C6: A9 0C        	lda	#$c
+   893 00:01C8: 8F 00 00 AF  	sta	>11468800
+   894 00:01CC: C2 20        	rep	#$20
+   895                        	longa	on
+   896                        ;
+   897                        ;	k_set_border_color(0xAA,0xAA,0xAA);
+   898                        	.line	83
+   899 00:01CE: F4 AA 00     	pea	#<$aa
+   900 00:01D1: F4 AA 00     	pea	#<$aa
+   901 00:01D4: F4 AA 00     	pea	#<$aa
+902: ***ERROR - Undefined symbol - <~~k_set_border_color>
+
+   902 00:01D7: 22 xx xx xx  	jsl	~~k_set_border_color
+   903                        ;
+   904                        ;	setColors();
+   905                        	.line	85
+906: ***ERROR - Undefined symbol - <~~setColors>
+
+   906 00:01DB: 22 xx xx xx  	jsl	~~setColors
+   907                        ;	
+   908                        ;	k_disable_border();
+   909                        	.line	87
+910: ***ERROR - Undefined symbol - <~~k_disable_border>
+
+   910 00:01DF: 22 xx xx xx  	jsl	~~k_disable_border
+   911                        ;	
+   912                        ;	while(1)
+   913                        	.line	89
+   914                        L10005:
+   915                        ;	{
+   916                        	.line	90
+   917                        ;		offset = 0;
+   918                        	.line	91
+919: ***ERROR - Undefined symbol - <L8>
+
+   919 00:01E3: 64 xx        	stz	<L8+offset_1
+   920                        ;
+   921                        ;
+   922                        ;		k_fill_bank(0,dcolor + 0);
+   923                        	.line	94
+924: ***ERROR - Undefined symbol - <L8>
+
+   924 00:01E5: A5 xx        	lda	<L8+dcolor_1
+   925 00:01E7: 29 FF 00     	and	#$ff
+   926 00:01EA: 48           	pha
+   927 00:01EB: F4 00 00     	pea	#<$0
+  Sat Sep 21 2019 15:27                                                Page 23
+
+
+928: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   928 00:01EE: 22 xx xx xx  	jsl	~~k_fill_bank
+   929                        ;		k_fill_bank(1,dcolor + 1);
+   930                        	.line	95
+931: ***ERROR - Undefined symbol - <L8>
+
+   931 00:01F2: A5 xx        	lda	<L8+dcolor_1
+   932 00:01F4: 29 FF 00     	and	#$ff
+   933 00:01F7: 85 01        	sta	<R0
+   934 00:01F9: A5 01        	lda	<R0
+   935 00:01FB: 1A           	ina
+   936 00:01FC: 48           	pha
+   937 00:01FD: F4 01 00     	pea	#<$1
+938: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   938 00:0200: 22 xx xx xx  	jsl	~~k_fill_bank
+   939                        ;		k_fill_bank(2,dcolor + 2);
+   940                        	.line	96
+941: ***ERROR - Undefined symbol - <L8>
+
+   941 00:0204: A5 xx        	lda	<L8+dcolor_1
+   942 00:0206: 29 FF 00     	and	#$ff
+   943 00:0209: 85 01        	sta	<R0
+   944 00:020B: 18           	clc
+   945 00:020C: A9 02 00     	lda	#$2
+   946 00:020F: 65 01        	adc	<R0
+   947 00:0211: 48           	pha
+   948 00:0212: F4 02 00     	pea	#<$2
+949: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   949 00:0215: 22 xx xx xx  	jsl	~~k_fill_bank
+   950                        ;		k_fill_bank(3,dcolor + 3);
+   951                        	.line	97
+952: ***ERROR - Undefined symbol - <L8>
+
+   952 00:0219: A5 xx        	lda	<L8+dcolor_1
+   953 00:021B: 29 FF 00     	and	#$ff
+   954 00:021E: 85 01        	sta	<R0
+   955 00:0220: 18           	clc
+   956 00:0221: A9 03 00     	lda	#$3
+   957 00:0224: 65 01        	adc	<R0
+   958 00:0226: 48           	pha
+   959 00:0227: F4 03 00     	pea	#<$3
+960: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   960 00:022A: 22 xx xx xx  	jsl	~~k_fill_bank
+   961                        ;		k_fill_bank(4,dcolor + 4);
+   962                        	.line	98
+963: ***ERROR - Undefined symbol - <L8>
+  Sat Sep 21 2019 15:27                                                Page 24
+
+
+
+   963 00:022E: A5 xx        	lda	<L8+dcolor_1
+   964 00:0230: 29 FF 00     	and	#$ff
+   965 00:0233: 85 01        	sta	<R0
+   966 00:0235: 18           	clc
+   967 00:0236: A9 04 00     	lda	#$4
+   968 00:0239: 65 01        	adc	<R0
+   969 00:023B: 48           	pha
+   970 00:023C: F4 04 00     	pea	#<$4
+971: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   971 00:023F: 22 xx xx xx  	jsl	~~k_fill_bank
+   972                        ;		k_fill_bank(5,dcolor + 5);
+   973                        	.line	99
+974: ***ERROR - Undefined symbol - <L8>
+
+   974 00:0243: A5 xx        	lda	<L8+dcolor_1
+   975 00:0245: 29 FF 00     	and	#$ff
+   976 00:0248: 85 01        	sta	<R0
+   977 00:024A: 18           	clc
+   978 00:024B: A9 05 00     	lda	#$5
+   979 00:024E: 65 01        	adc	<R0
+   980 00:0250: 48           	pha
+   981 00:0251: F4 05 00     	pea	#<$5
+982: ***ERROR - Undefined symbol - <~~k_fill_bank>
+
+   982 00:0254: 22 xx xx xx  	jsl	~~k_fill_bank
+   983                        ;
+   984                        ;
+   985                        ;
+   986                        ;		for(fill=0x0000;fill<=0xFFFF;fill++)
+   987                        	.line	103
+988: ***ERROR - Undefined symbol - <L8>
+
+   988 00:0258: 64 xx        	stz	<L8+fill_1
+989: ***ERROR - Undefined symbol - <L8>
+
+   989 00:025A: 64 xx        	stz	<L8+fill_1+2
+   990                        L10009:
+   991                        ;		{
+   992                        	.line	104
+   993                        ;			((unsigned char far *)BITMAP_BAN
+                    K_0)[fill] = (char)dcolor + 0;
+   994                        	.line	105
+   995 00:025C: 18           	clc
+   996 00:025D: A9 00 00     	lda	#$0
+997: ***ERROR - Undefined symbol - <L8>
+
+   997 00:0260: 65 xx        	adc	<L8+fill_1
+   998 00:0262: 85 01        	sta	<R0
+   999 00:0264: A9 B0 00     	lda	#$b0
+  Sat Sep 21 2019 15:27                                                Page 25
+
+
+1000: ***ERROR - Undefined symbol - <L8>
+
+  1000 00:0267: 65 xx        	adc	<L8+fill_1+2
+  1001 00:0269: 85 03        	sta	<R0+2
+  1002 00:026B: E2 20        	sep	#$20
+  1003                        	longa	off
+1004: ***ERROR - Undefined symbol - <L8>
+
+  1004 00:026D: A5 xx        	lda	<L8+dcolor_1
+  1005 00:026F: 87 01        	sta	[<R0]
+  1006 00:0271: C2 20        	rep	#$20
+  1007                        	longa	on
+  1008                        ;
+  1009                        ;			((unsigned char far *)BITMAP_BAN
+                    K_1)[fill] = (char)dcolor + 1;
+  1010                        	.line	107
+  1011 00:0273: 18           	clc
+  1012 00:0274: A9 00 00     	lda	#$0
+1013: ***ERROR - Undefined symbol - <L8>
+
+  1013 00:0277: 65 xx        	adc	<L8+fill_1
+  1014 00:0279: 85 01        	sta	<R0
+  1015 00:027B: A9 B1 00     	lda	#$b1
+1016: ***ERROR - Undefined symbol - <L8>
+
+  1016 00:027E: 65 xx        	adc	<L8+fill_1+2
+  1017 00:0280: 85 03        	sta	<R0+2
+  1018 00:0282: E2 20        	sep	#$20
+  1019                        	longa	off
+1020: ***ERROR - Undefined symbol - <L8>
+
+  1020 00:0284: A5 xx        	lda	<L8+dcolor_1
+  1021 00:0286: 1A           	ina
+  1022 00:0287: C2 20        	rep	#$20
+  1023                        	longa	on
+  1024 00:0289: E2 20        	sep	#$20
+  1025                        	longa	off
+  1026 00:028B: 87 01        	sta	[<R0]
+  1027 00:028D: C2 20        	rep	#$20
+  1028                        	longa	on
+  1029                        ;
+  1030                        ;			((unsigned char far *)BITMAP_BAN
+                    K_2)[fill] = (char)dcolor + 2;
+  1031                        	.line	109
+  1032 00:028F: 18           	clc
+  1033 00:0290: A9 00 00     	lda	#$0
+1034: ***ERROR - Undefined symbol - <L8>
+
+  1034 00:0293: 65 xx        	adc	<L8+fill_1
+  1035 00:0295: 85 01        	sta	<R0
+  1036 00:0297: A9 B2 00     	lda	#$b2
+1037: ***ERROR - Undefined symbol - <L8>
+  Sat Sep 21 2019 15:27                                                Page 26
+
+
+
+  1037 00:029A: 65 xx        	adc	<L8+fill_1+2
+  1038 00:029C: 85 03        	sta	<R0+2
+  1039 00:029E: E2 20        	sep	#$20
+  1040                        	longa	off
+  1041 00:02A0: 18           	clc
+  1042 00:02A1: A9 02        	lda	#$2
+1043: ***ERROR - Undefined symbol - <L8>
+
+  1043 00:02A3: 65 xx        	adc	<L8+dcolor_1
+  1044 00:02A5: C2 20        	rep	#$20
+  1045                        	longa	on
+  1046 00:02A7: E2 20        	sep	#$20
+  1047                        	longa	off
+  1048 00:02A9: 87 01        	sta	[<R0]
+  1049 00:02AB: C2 20        	rep	#$20
+  1050                        	longa	on
+  1051                        ;
+  1052                        ;			((unsigned char far *)BITMAP_BAN
+                    K_3)[fill] = (char)dcolor + 3;
+  1053                        	.line	111
+  1054 00:02AD: 18           	clc
+  1055 00:02AE: A9 00 00     	lda	#$0
+1056: ***ERROR - Undefined symbol - <L8>
+
+  1056 00:02B1: 65 xx        	adc	<L8+fill_1
+  1057 00:02B3: 85 01        	sta	<R0
+  1058 00:02B5: A9 B3 00     	lda	#$b3
+1059: ***ERROR - Undefined symbol - <L8>
+
+  1059 00:02B8: 65 xx        	adc	<L8+fill_1+2
+  1060 00:02BA: 85 03        	sta	<R0+2
+  1061 00:02BC: E2 20        	sep	#$20
+  1062                        	longa	off
+  1063 00:02BE: 18           	clc
+  1064 00:02BF: A9 03        	lda	#$3
+1065: ***ERROR - Undefined symbol - <L8>
+
+  1065 00:02C1: 65 xx        	adc	<L8+dcolor_1
+  1066 00:02C3: C2 20        	rep	#$20
+  1067                        	longa	on
+  1068 00:02C5: E2 20        	sep	#$20
+  1069                        	longa	off
+  1070 00:02C7: 87 01        	sta	[<R0]
+  1071 00:02C9: C2 20        	rep	#$20
+  1072                        	longa	on
+  1073                        ;
+  1074                        ;			((unsigned char far *)BITMAP_BAN
+                    K_4)[fill] = (char)dcolor + 4;
+  1075                        	.line	113
+  1076 00:02CB: 18           	clc
+  1077 00:02CC: A9 00 00     	lda	#$0
+1078: ***ERROR - Undefined symbol - <L8>
+  Sat Sep 21 2019 15:27                                                Page 27
+
+
+
+  1078 00:02CF: 65 xx        	adc	<L8+fill_1
+  1079 00:02D1: 85 01        	sta	<R0
+  1080 00:02D3: A9 B4 00     	lda	#$b4
+1081: ***ERROR - Undefined symbol - <L8>
+
+  1081 00:02D6: 65 xx        	adc	<L8+fill_1+2
+  1082 00:02D8: 85 03        	sta	<R0+2
+  1083 00:02DA: E2 20        	sep	#$20
+  1084                        	longa	off
+  1085 00:02DC: 18           	clc
+  1086 00:02DD: A9 04        	lda	#$4
+1087: ***ERROR - Undefined symbol - <L8>
+
+  1087 00:02DF: 65 xx        	adc	<L8+dcolor_1
+  1088 00:02E1: C2 20        	rep	#$20
+  1089                        	longa	on
+  1090 00:02E3: E2 20        	sep	#$20
+  1091                        	longa	off
+  1092 00:02E5: 87 01        	sta	[<R0]
+  1093 00:02E7: C2 20        	rep	#$20
+  1094                        	longa	on
+  1095                        ;
+  1096                        ;			((unsigned char far *)BITMAP_BAN
+                    K_5)[fill] = (char)dcolor + 5;
+  1097                        	.line	115
+  1098 00:02E9: 18           	clc
+  1099 00:02EA: A9 00 00     	lda	#$0
+1100: ***ERROR - Undefined symbol - <L8>
+
+  1100 00:02ED: 65 xx        	adc	<L8+fill_1
+  1101 00:02EF: 85 01        	sta	<R0
+  1102 00:02F1: A9 B5 00     	lda	#$b5
+1103: ***ERROR - Undefined symbol - <L8>
+
+  1103 00:02F4: 65 xx        	adc	<L8+fill_1+2
+  1104 00:02F6: 85 03        	sta	<R0+2
+  1105 00:02F8: E2 20        	sep	#$20
+  1106                        	longa	off
+  1107 00:02FA: 18           	clc
+  1108 00:02FB: A9 05        	lda	#$5
+1109: ***ERROR - Undefined symbol - <L8>
+
+  1109 00:02FD: 65 xx        	adc	<L8+dcolor_1
+  1110 00:02FF: C2 20        	rep	#$20
+  1111                        	longa	on
+  1112 00:0301: E2 20        	sep	#$20
+  1113                        	longa	off
+  1114 00:0303: 87 01        	sta	[<R0]
+  1115 00:0305: C2 20        	rep	#$20
+  1116                        	longa	on
+  1117                        ;		}
+  1118                        	.line	116
+  Sat Sep 21 2019 15:27                                                Page 28
+
+
+  1119                        L10007:
+1120: ***ERROR - Undefined symbol - <L8>
+
+  1120 00:0307: E6 xx        	inc	<L8+fill_1
+  1121 00:0309: D0 02        	bne	L15
+1122: ***ERROR - Undefined symbol - <L8>
+
+  1122 00:030B: E6 xx        	inc	<L8+fill_1+2
+  1123                        L15:
+  1124 00:030D: 38           	sec
+  1125 00:030E: A9 FF FF     	lda	#$ffff
+1126: ***ERROR - Undefined symbol - <L8>
+
+  1126 00:0311: E5 xx        	sbc	<L8+fill_1
+  1127 00:0313: A9 00 00     	lda	#$0
+1128: ***ERROR - Undefined symbol - <L8>
+
+  1128 00:0316: E5 xx        	sbc	<L8+fill_1+2
+  1129 00:0318: 70 03        	bvs	L16
+  1130 00:031A: 49 00 80     	eor	#$8000
+  1131                        L16:
+  1132 00:031D: 10 03        	bpl	L17
+  1133 00:031F: 82 3A FF     	brl	L10009
+  1134                        L17:
+  1135                        L10008:
+  1136                        ;
+  1137                        ;		for(fill=0x0000;fill<=0xFFFF;fill++)
+  1138                        	.line	118
+1139: ***ERROR - Undefined symbol - <L8>
+
+  1139 00:0322: 64 xx        	stz	<L8+fill_1
+1140: ***ERROR - Undefined symbol - <L8>
+
+  1140 00:0324: 64 xx        	stz	<L8+fill_1+2
+  1141                        L10012:
+  1142                        ;		{
+  1143                        	.line	119
+  1144                        ;			((unsigned char far *)BITMAP_BAN
+                    K_0)[fill] = (char)0;
+  1145                        	.line	120
+  1146 00:0326: 18           	clc
+  1147 00:0327: A9 00 00     	lda	#$0
+1148: ***ERROR - Undefined symbol - <L8>
+
+  1148 00:032A: 65 xx        	adc	<L8+fill_1
+  1149 00:032C: 85 01        	sta	<R0
+  1150 00:032E: A9 B0 00     	lda	#$b0
+1151: ***ERROR - Undefined symbol - <L8>
+
+  1151 00:0331: 65 xx        	adc	<L8+fill_1+2
+  Sat Sep 21 2019 15:27                                                Page 29
+
+
+  1152 00:0333: 85 03        	sta	<R0+2
+  1153 00:0335: E2 20        	sep	#$20
+  1154                        	longa	off
+  1155 00:0337: A9 00        	lda	#$0
+  1156 00:0339: 87 01        	sta	[<R0]
+  1157 00:033B: C2 20        	rep	#$20
+  1158                        	longa	on
+  1159                        ;
+  1160                        ;			((unsigned char far *)BITMAP_BAN
+                    K_1)[fill] = (char)0;
+  1161                        	.line	122
+  1162 00:033D: 18           	clc
+  1163 00:033E: A9 00 00     	lda	#$0
+1164: ***ERROR - Undefined symbol - <L8>
+
+  1164 00:0341: 65 xx        	adc	<L8+fill_1
+  1165 00:0343: 85 01        	sta	<R0
+  1166 00:0345: A9 B1 00     	lda	#$b1
+1167: ***ERROR - Undefined symbol - <L8>
+
+  1167 00:0348: 65 xx        	adc	<L8+fill_1+2
+  1168 00:034A: 85 03        	sta	<R0+2
+  1169 00:034C: E2 20        	sep	#$20
+  1170                        	longa	off
+  1171 00:034E: A9 00        	lda	#$0
+  1172 00:0350: 87 01        	sta	[<R0]
+  1173 00:0352: C2 20        	rep	#$20
+  1174                        	longa	on
+  1175                        ;
+  1176                        ;			((unsigned char far *)BITMAP_BAN
+                    K_2)[fill] = (char)0;
+  1177                        	.line	124
+  1178 00:0354: 18           	clc
+  1179 00:0355: A9 00 00     	lda	#$0
+1180: ***ERROR - Undefined symbol - <L8>
+
+  1180 00:0358: 65 xx        	adc	<L8+fill_1
+  1181 00:035A: 85 01        	sta	<R0
+  1182 00:035C: A9 B2 00     	lda	#$b2
+1183: ***ERROR - Undefined symbol - <L8>
+
+  1183 00:035F: 65 xx        	adc	<L8+fill_1+2
+  1184 00:0361: 85 03        	sta	<R0+2
+  1185 00:0363: E2 20        	sep	#$20
+  1186                        	longa	off
+  1187 00:0365: A9 00        	lda	#$0
+  1188 00:0367: 87 01        	sta	[<R0]
+  1189 00:0369: C2 20        	rep	#$20
+  1190                        	longa	on
+  1191                        ;
+  1192                        ;			((unsigned char far *)BITMAP_BAN
+                    K_3)[fill] = (char)0;
+  1193                        	.line	126
+  1194 00:036B: 18           	clc
+  Sat Sep 21 2019 15:27                                                Page 30
+
+
+  1195 00:036C: A9 00 00     	lda	#$0
+1196: ***ERROR - Undefined symbol - <L8>
+
+  1196 00:036F: 65 xx        	adc	<L8+fill_1
+  1197 00:0371: 85 01        	sta	<R0
+  1198 00:0373: A9 B3 00     	lda	#$b3
+1199: ***ERROR - Undefined symbol - <L8>
+
+  1199 00:0376: 65 xx        	adc	<L8+fill_1+2
+  1200 00:0378: 85 03        	sta	<R0+2
+  1201 00:037A: E2 20        	sep	#$20
+  1202                        	longa	off
+  1203 00:037C: A9 00        	lda	#$0
+  1204 00:037E: 87 01        	sta	[<R0]
+  1205 00:0380: C2 20        	rep	#$20
+  1206                        	longa	on
+  1207                        ;
+  1208                        ;			((unsigned char far *)BITMAP_BAN
+                    K_4)[fill] = (char)0;
+  1209                        	.line	128
+  1210 00:0382: 18           	clc
+  1211 00:0383: A9 00 00     	lda	#$0
+1212: ***ERROR - Undefined symbol - <L8>
+
+  1212 00:0386: 65 xx        	adc	<L8+fill_1
+  1213 00:0388: 85 01        	sta	<R0
+  1214 00:038A: A9 B4 00     	lda	#$b4
+1215: ***ERROR - Undefined symbol - <L8>
+
+  1215 00:038D: 65 xx        	adc	<L8+fill_1+2
+  1216 00:038F: 85 03        	sta	<R0+2
+  1217 00:0391: E2 20        	sep	#$20
+  1218                        	longa	off
+  1219 00:0393: A9 00        	lda	#$0
+  1220 00:0395: 87 01        	sta	[<R0]
+  1221 00:0397: C2 20        	rep	#$20
+  1222                        	longa	on
+  1223                        ;
+  1224                        ;			((unsigned char far *)BITMAP_BAN
+                    K_5)[fill] = (char)0;
+  1225                        	.line	130
+  1226 00:0399: 18           	clc
+  1227 00:039A: A9 00 00     	lda	#$0
+1228: ***ERROR - Undefined symbol - <L8>
+
+  1228 00:039D: 65 xx        	adc	<L8+fill_1
+  1229 00:039F: 85 01        	sta	<R0
+  1230 00:03A1: A9 B5 00     	lda	#$b5
+1231: ***ERROR - Undefined symbol - <L8>
+
+  1231 00:03A4: 65 xx        	adc	<L8+fill_1+2
+  1232 00:03A6: 85 03        	sta	<R0+2
+  Sat Sep 21 2019 15:27                                                Page 31
+
+
+  1233 00:03A8: E2 20        	sep	#$20
+  1234                        	longa	off
+  1235 00:03AA: A9 00        	lda	#$0
+  1236 00:03AC: 87 01        	sta	[<R0]
+  1237 00:03AE: C2 20        	rep	#$20
+  1238                        	longa	on
+  1239                        ;		}
+  1240                        	.line	131
+  1241                        L10010:
+1242: ***ERROR - Undefined symbol - <L8>
+
+  1242 00:03B0: E6 xx        	inc	<L8+fill_1
+  1243 00:03B2: D0 02        	bne	L18
+1244: ***ERROR - Undefined symbol - <L8>
+
+  1244 00:03B4: E6 xx        	inc	<L8+fill_1+2
+  1245                        L18:
+  1246 00:03B6: 38           	sec
+  1247 00:03B7: A9 FF FF     	lda	#$ffff
+1248: ***ERROR - Undefined symbol - <L8>
+
+  1248 00:03BA: E5 xx        	sbc	<L8+fill_1
+  1249 00:03BC: A9 00 00     	lda	#$0
+1250: ***ERROR - Undefined symbol - <L8>
+
+  1250 00:03BF: E5 xx        	sbc	<L8+fill_1+2
+  1251 00:03C1: 70 03        	bvs	L19
+  1252 00:03C3: 49 00 80     	eor	#$8000
+  1253                        L19:
+  1254 00:03C6: 10 03        	bpl	L20
+  1255 00:03C8: 82 5B FF     	brl	L10012
+  1256                        L20:
+  1257                        L10011:
+  1258                        ;
+  1259                        ;
+  1260                        ;		k_vdma_fill_rect(0,0,639,479,0x03);
+  1261                        	.line	134
+  1262 00:03CB: F4 03 00     	pea	#<$3
+  1263 00:03CE: F4 DF 01     	pea	#<$1df
+  1264 00:03D1: F4 7F 02     	pea	#<$27f
+  1265 00:03D4: F4 00 00     	pea	#^$0
+  1266 00:03D7: F4 00 00     	pea	#<$0
+  1267 00:03DA: F4 00 00     	pea	#^$0
+  1268 00:03DD: F4 00 00     	pea	#<$0
+1269: ***ERROR - Undefined symbol - <~~k_vdma_fill_rect>
+
+  1269 00:03E0: 22 xx xx xx  	jsl	~~k_vdma_fill_rect
+  1270                        ;		k_delay(1000);
+  1271                        	.line	135
+  1272 00:03E4: F4 E8 03     	pea	#<$3e8
+1273: ***ERROR - Undefined symbol - <~~k_delay>
+
+  Sat Sep 21 2019 15:27                                                Page 32
+
+
+  1273 00:03E7: 22 xx xx xx  	jsl	~~k_delay
+  1274                        ;
+  1275                        ;		k_draw_text("TEST 2D VDMA",1,1,15);
+  1276                        	.line	137
+  1277 00:03EB: F4 0F 00     	pea	#<$f
+  1278 00:03EE: F4 01 00     	pea	#<$1
+  1279 00:03F1: F4 01 00     	pea	#<$1
+1280: ***ERROR - Undefined symbol - <L6>
+
+  1280 00:03F4: F4 xx xx     	pea	#^L6+157
+1281: ***ERROR - Undefined symbol - <L6>
+
+  1281 00:03F7: F4 xx xx     	pea	#<L6+157
+1282: ***ERROR - Undefined symbol - <~~k_draw_text>
+
+  1282 00:03FA: 22 xx xx xx  	jsl	~~k_draw_text
+  1283                        ;		for(zx=0;zx<10;zx++)
+  1284                        	.line	138
+1285: ***ERROR - Undefined symbol - <L8>
+
+  1285 00:03FE: 64 xx        	stz	<L8+zx_1
+  1286                        L10015:
+  1287                        ;		{
+  1288                        	.line	139
+  1289                        ;			for(vfill=1;vfill<15;vfill++)
+  1290                        	.line	140
+  1291 00:0400: E2 20        	sep	#$20
+  1292                        	longa	off
+  1293 00:0402: A9 01        	lda	#$1
+1294: ***ERROR - Undefined symbol - <L8>
+
+  1294 00:0404: 85 xx        	sta	<L8+vfill_1
+  1295 00:0406: C2 20        	rep	#$20
+  1296                        	longa	on
+  1297 00:0408: 82 55 00     	brl	L10019
+  1298                        L10018:
+  1299                        ;			{
+  1300                        	.line	141
+  1301                        ;				//k_vdma_fill_rect((char
+                     far *)0x019060,100,100,vfill);
+  1302                        ;				k_vdma_fill_rect(25,25,5
+                    0,50,vfill);
+  1303                        	.line	143
+1304: ***ERROR - Undefined symbol - <L8>
+
+  1304 00:040B: D4 xx        	pei	<L8+vfill_1
+  1305 00:040D: F4 32 00     	pea	#<$32
+  1306 00:0410: F4 32 00     	pea	#<$32
+  1307 00:0413: F4 00 00     	pea	#^$19
+  1308 00:0416: F4 19 00     	pea	#<$19
+  1309 00:0419: F4 00 00     	pea	#^$19
+  1310 00:041C: F4 19 00     	pea	#<$19
+  Sat Sep 21 2019 15:27                                                Page 33
+
+
+1311: ***ERROR - Undefined symbol - <~~k_vdma_fill_rect>
+
+  1311 00:041F: 22 xx xx xx  	jsl	~~k_vdma_fill_rect
+  1312                        ;				k_vdma_fill_rect(100,100
+                    ,100,100,vfill);
+  1313                        	.line	144
+1314: ***ERROR - Undefined symbol - <L8>
+
+  1314 00:0423: D4 xx        	pei	<L8+vfill_1
+  1315 00:0425: F4 64 00     	pea	#<$64
+  1316 00:0428: F4 64 00     	pea	#<$64
+  1317 00:042B: F4 00 00     	pea	#^$64
+  1318 00:042E: F4 64 00     	pea	#<$64
+  1319 00:0431: F4 00 00     	pea	#^$64
+  1320 00:0434: F4 64 00     	pea	#<$64
+1321: ***ERROR - Undefined symbol - <~~k_vdma_fill_rect>
+
+  1321 00:0437: 22 xx xx xx  	jsl	~~k_vdma_fill_rect
+  1322                        ;				k_vdma_fill_rect(300,50,
+                    200,100,vfill);
+  1323                        	.line	145
+1324: ***ERROR - Undefined symbol - <L8>
+
+  1324 00:043B: D4 xx        	pei	<L8+vfill_1
+  1325 00:043D: F4 64 00     	pea	#<$64
+  1326 00:0440: F4 C8 00     	pea	#<$c8
+  1327 00:0443: F4 00 00     	pea	#^$32
+  1328 00:0446: F4 32 00     	pea	#<$32
+  1329 00:0449: F4 00 00     	pea	#^$12c
+  1330 00:044C: F4 2C 01     	pea	#<$12c
+1331: ***ERROR - Undefined symbol - <~~k_vdma_fill_rect>
+
+  1331 00:044F: 22 xx xx xx  	jsl	~~k_vdma_fill_rect
+  1332                        ;
+  1333                        ;				k_delay(100);
+  1334                        	.line	147
+  1335 00:0453: F4 64 00     	pea	#<$64
+1336: ***ERROR - Undefined symbol - <~~k_delay>
+
+  1336 00:0456: 22 xx xx xx  	jsl	~~k_delay
+  1337                        ;				//k_draw_text("VDMA...",
+                    1,1,15);
+  1338                        ;			}
+  1339                        	.line	149
+  1340                        L10016:
+  1341 00:045A: E2 20        	sep	#$20
+  1342                        	longa	off
+1343: ***ERROR - Undefined symbol - <L8>
+
+  1343 00:045C: E6 xx        	inc	<L8+vfill_1
+  1344 00:045E: C2 20        	rep	#$20
+  Sat Sep 21 2019 15:27                                                Page 34
+
+
+  1345                        	longa	on
+  1346                        L10019:
+  1347 00:0460: E2 20        	sep	#$20
+  1348                        	longa	off
+1349: ***ERROR - Undefined symbol - <L8>
+
+  1349 00:0462: A5 xx        	lda	<L8+vfill_1
+  1350 00:0464: C9 0F        	cmp	#<$f
+  1351 00:0466: C2 20        	rep	#$20
+  1352                        	longa	on
+  1353 00:0468: B0 03        	bcs	L21
+  1354 00:046A: 82 9E FF     	brl	L10018
+  1355                        L21:
+  1356                        L10017:
+  1357                        ;		}
+  1358                        	.line	150
+  1359                        L10013:
+1360: ***ERROR - Undefined symbol - <L8>
+
+  1360 00:046D: E6 xx        	inc	<L8+zx_1
+  1361 00:046F: 38           	sec
+1362: ***ERROR - Undefined symbol - <L8>
+
+  1362 00:0470: A5 xx        	lda	<L8+zx_1
+  1363 00:0472: E9 0A 00     	sbc	#<$a
+  1364 00:0475: 70 03        	bvs	L22
+  1365 00:0477: 49 00 80     	eor	#$8000
+  1366                        L22:
+  1367 00:047A: 30 03        	bmi	L23
+  1368 00:047C: 82 81 FF     	brl	L10015
+  1369                        L23:
+  1370                        L10014:
+  1371                        ;
+  1372                        ;		k_vdma_fill_rect(0,0,639,479,0x04);
+  1373                        	.line	152
+  1374 00:047F: F4 04 00     	pea	#<$4
+  1375 00:0482: F4 DF 01     	pea	#<$1df
+  1376 00:0485: F4 7F 02     	pea	#<$27f
+  1377 00:0488: F4 00 00     	pea	#^$0
+  1378 00:048B: F4 00 00     	pea	#<$0
+  1379 00:048E: F4 00 00     	pea	#^$0
+  1380 00:0491: F4 00 00     	pea	#<$0
+1381: ***ERROR - Undefined symbol - <~~k_vdma_fill_rect>
+
+  1381 00:0494: 22 xx xx xx  	jsl	~~k_vdma_fill_rect
+  1382                        ;		k_delay(1000);
+  1383                        	.line	153
+  1384 00:0498: F4 E8 03     	pea	#<$3e8
+1385: ***ERROR - Undefined symbol - <~~k_delay>
+
+  1385 00:049B: 22 xx xx xx  	jsl	~~k_delay
+  1386                        ;		k_draw_text("TEST SCALED FONTS...",1,1,1
+                    5);
+  Sat Sep 21 2019 15:27                                                Page 35
+
+
+  1387                        	.line	154
+  1388 00:049F: F4 0F 00     	pea	#<$f
+  1389 00:04A2: F4 01 00     	pea	#<$1
+  1390 00:04A5: F4 01 00     	pea	#<$1
+1391: ***ERROR - Undefined symbol - <L6>
+
+  1391 00:04A8: F4 xx xx     	pea	#^L6+170
+1392: ***ERROR - Undefined symbol - <L6>
+
+  1392 00:04AB: F4 xx xx     	pea	#<L6+170
+1393: ***ERROR - Undefined symbol - <~~k_draw_text>
+
+  1393 00:04AE: 22 xx xx xx  	jsl	~~k_draw_text
+  1394                        ;		//k_draw_char_scaled_point(0x01,10,10,15
+                    ,1);
+  1395                        ;		k_draw_char_scaled_point(0x01,20,20,15,2
+                    );
+  1396                        	.line	156
+  1397 00:04B2: F4 02 00     	pea	#<$2
+  1398 00:04B5: F4 0F 00     	pea	#<$f
+  1399 00:04B8: F4 14 00     	pea	#<$14
+  1400 00:04BB: F4 14 00     	pea	#<$14
+  1401 00:04BE: F4 01 00     	pea	#<$1

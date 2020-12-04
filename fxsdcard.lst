@@ -1,0 +1,1011 @@
+  Thu Dec  3 2020 22:25                                                                                                    Page 1
+
+
+                                               ***************************************
+                                               **      WDC 65C816 Macro Assembler   **
+                                               **                                   **
+                                               **     Version 3.49.1- Feb  6 2006    **
+                                               ***************************************
+
+     1                        
+     2                        		pw      132
+     3                        		inclist on
+     4                        		chip    65816
+     5                        
+     6                        
+     7                        	module init_sd_card
+     8                        	xdef ~~k_sd_init
+     9                        	xdef ~~k_sd_ismounted
+    10                        	xdef ~~k_sd_dir
+    11                        	
+    12                        	INCLUDE 	macros_inc.asm
+    13                        	INCLUDE 	io_def.asm
+    14                        	INCLUDE 	ch376s_inc.asm
+    15                        	INCLUDE 	interrupt_def.asm
+    16                        	INCLUDE 	math_def.asm
+    17                        
+    18                        ; $00:0320 to $00:06FF - Reserved for CH376S SDCard Controller
+    19             00000320   SDOS_BLOCK_BEGIN EQU $000320 ;
+    20             00000324   SDOS_LOAD_ADDY   EQU $000324 ; 4 Bytes (Uses 3 Only)
+    21             00000328   SDOS_FILE_SIZE   EQU $000328 ;
+    22             0000032C   SDOS_BYTE_NUMBER EQU $00032C ; Number of Byte to Read or Write before changing the Pointer
+    23             00000330   SDOS_REG_WR32_AD EQU $000330 ; 4 Bytes (Used to read and Write Values in/from CH376S)
+    24             00000334   SDOS_BYTE_PTR    EQU $000334
+    25             00000380   SDOS_FILE_NAME   EQU $000380 ; // Max of 128 Chars
+    26             00000400   SDOS_BLK_BEGIN   EQU $000400 ; 512 Bytes to Store SD Card Incoming or Outcoming Block
+    27             000006FF   SDOS_BLK_END     EQU $0006FF ;
+    28                        ; SD Card (CH376S) Variables
+    29             00000038   SDCARD_FILE_PTR  EQU $000038 ; 3 Bytes Pointer to Filename to open
+    30             0000003C   SDCARD_BYTE_NUM  EQU $00003C ; 2Bytes
+    31             0000003F   SDCARD_PRSNT_MNT EQU $00003F ; 1 Byte, Indicate that the SDCard is Present and that it is Mounted
+    32                        
+    33                        
+    34             0000FF7F   MASK_INT07_SDCARD	EQU 	$FF7F
+    35                        
+    36                        ~~k_sd_init:
+    37                        
+    38                        	;/////////////////////////////////////////////////////////
+    39                        	;////////////////////////////////////////////////////////
+    40                        	; ISDOS_INIT
+    41                        	; Init the SDCARD
+    42                        	; Inputs:
+    43                        	;  None
+    44                        	; Affects:
+    45                        	
+    46 00:0000: 48           		PHA
+    47                        
+    48 00:0001: A9 57 00     		LDA #'W'
+    49 00:0004: 8F 00 A0 AF  		STA $AFA000
+    50                        	
+    51                        
+    52                        
+  Thu Dec  3 2020 22:25                                                                                                    Page 2
+
+
+    53                        	;   None
+    54                        ISDOS_INIT    
+    55                        		
+    56                        		;setal
+    57                        		;setas	
+    58                        		
+    59                        
+    60                        		;LDA >INT_PENDING_REG1  ; Read the Pending Register &
+    61                        		;AND #MASK_INT07_SDCARD   ; Enable
+    62                        		;STA >INT_PENDING_REG1
+    63                        
+    64 00:0008: A9 58 00     		LDA #'X'
+    65 00:000B: 8F 00 A0 AF  		STA $AFA000
+    66                        
+    67                        
+    68 00:000F: E2 20        		SEP #$20
+    69                        		LONGA OFF
+    70                        		
+    71 00:0011: A9 06        		LDA #$06
+    72 00:0013: 8F 09 E8 AF  		STA >SDCARD_CMD
+    73 00:0017: 20 xx xx     		JSR DLYCMD_2_DTA
+    74 00:001A: A9 A8        		LDA #$A8
+    75 00:001C: 8F 08 E8 AF  		STA >SDCARD_DATA
+    76 00:0020: 20 xx xx     		JSR DLYDTA_2_DTA
+    77 00:0023: 20 xx xx     		JSR DLYDTA_2_DTA
+    78 00:0026: 20 xx xx     		JSR DLYDTA_2_DTA
+    79 00:0029: AF 08 E8 AF  		LDA >SDCARD_DATA
+    80 00:002D: 20 xx xx     		JSR DLYCMD_2_DTA
+    81                        
+    82                        
+    83 00:0030: A9 15        		LDA #CH_CMD_SET_MODE
+    84 00:0032: 8F 09 E8 AF  		STA >SDCARD_CMD
+    85 00:0036: 20 xx xx     		JSR DLYCMD_2_DTA
+    86 00:0039: 20 xx xx     		JSR DLYCMD_2_DTA
+    87 00:003C: A9 03        		LDA #$03            ; Mode 3 - SDCARD
+    88 00:003E: 8F 08 E8 AF  		STA >SDCARD_DATA     ; Write the MODE and Wait for around ~10us
+    89                        
+    90 00:0042: A9 5A        		LDA #'Z'
+    91 00:0044: 8F 00 A0 AF  		STA $AFA000
+    92                        
+    93                        
+    94                        		;LDA #'A'
+    95 00:0048: A2 00 00     		LDX #$00
+    96                        		
+    97                        ISDOS_WAIT_FOR_MODE_SW
+    98 00:004B: E8           		INX
+    99 00:004C: 8A           		TXA
+   100 00:004D: C9 64        		CMP #100
+   101 00:004F: F0 19        		BEQ SD_EXIT 
+   102                        		
+   103                        		;STA $AFA000
+   104                        			
+   105 00:0051: 20 xx xx     		JSR DLYDTA_2_DTA ; Wait 0.6us
+   106 00:0054: AF 08 E8 AF  		LDA >SDCARD_DATA
+   107                        		;STA $AFA0A0
+   108 00:0058: C9 51        		CMP #$51   ; CMD_RET_SUCCESS		EQU		051H, CMD_RET_ABORT		EQU	
+                    	05FH
+   109 00:005A: D0 EF        		BNE ISDOS_WAIT_FOR_MODE_SW
+  Thu Dec  3 2020 22:25                                                                                                    Page 3
+
+
+   110                        
+   111 00:005C: A9 42        		LDA #'B'
+   112 00:005E: 8F 00 A0 AF  		STA $AFA000
+   113                        		
+   114 00:0062: AF 08 E8 AF  		LDA >SDCARD_DATA     ; See the Status Output
+   115 00:0066: 8F A2 A0 AF  		STA $AFA0A2
+   116                        
+   117                        SD_EXIT
+   118 00:006A: A9 31        		LDA #'1'
+   119 00:006C: 8F 01 A0 AF  		STA $AFA001
+   120                        
+   121                        
+   122                        		SETAL
++  122 00:0070: C2 20                        REP #$20        ; set A long 
++  122                                        LONGA ON
+   123                        		LONGA ON
+   124                        
+   125 00:0072: 68           		PLA
+   126 00:0073: 6B           		RTL
+   127                        ;
+   128                        ; 1.5us Delay inbetween the time the Cmd is Sent and Data is either Read or Writen
+   129                        ; NOP takes 2 Cycles Now
+   130                        DLYCMD_2_DTA
+   131 00:0074: EA                         NOP
+   132 00:0075: EA                         NOP
+   133 00:0076: EA                         NOP
+   134 00:0077: EA                         NOP
+   135 00:0078: EA                         NOP
+   136                        ; 0.6us Delay inbetween the time the Cmd is Sent and Data is either Read or Writen
+   137                        DLYDTA_2_DTA
+   138 00:0079: EA                         NOP
+   139 00:007A: EA                         NOP
+   140 00:007B: EA                         NOP
+   141 00:007C: EA                         NOP
+   142 00:007D: EA                         NOP
+   143 00:007E: 60                         RTS;
+   144                        
+   145                        ;////////////////////////////////////////////////////////
+   146                        ; ISDOS_DIR
+   147                        ; Check to see if Card exist, then Mount the SDCArd
+   148                        ; Inputs:
+   149                        ;   Pointer to the ASCII File name by
+   150                        ; Located @ $000030..$000032 - SDCARD_FLNMPTR_L
+   151                        ; Affects:
+   152                        ;   None
+   153                        ; Upon the Call of this Routine Display the Files on the SDCARD
+   154                        ~~k_sd_dir:
+   155                        ISDOS_DIR
+   156                                      SETAS
++  156 00:007F: E2 20                        SEP #$20        ; set A short 
++  156                                        LONGA OFF
+   157                                      LONGA OFF
+   158                                      ;setxl
+   159 00:0081: A9 32                      LDA #'2'
+   160 00:0083: 8F 00 A0 AF  			  STA $AFA000
+   161                        
+   162 00:0087: A9 41                      LDA #'A'
+   163 00:0089: 8F 01 A0 AF  			  STA $AFA001
+  Thu Dec  3 2020 22:25                                                                                                    Page 4
+
+
+   164 00:008D: 22 xx xx xx                JSL ISDOS_MOUNT_CARD;     First to See if the Card is Present
+   165                        ;              LDA SDCARD_PRSNT_MNT;
+   166                        ;              BEQ NO_SDCARD_PRESENT     ; No SD Card Present
+   167                                      ; Transfer the "/*\0" String
+   168 00:0091: A2 00 00                   LDX #$0000
+   169                        ISDOS_DIR_TRF
+   170 00:0094: BD xx xx                   LDA sd_card_dir_string,X    ; /
+   171 00:0097: 9F 80 03 00                STA >SDOS_FILE_NAME,X
+   172 00:009B: E8                         INX
+   173 00:009C: E0 03 00                   CPX #$0003
+   174 00:009F: D0 F3                      BNE ISDOS_DIR_TRF
+   175                        
+   176 00:00A1: 20 xx xx                   JSR SDOS_FILE_OPEN         ; Now that the file name is set, go open File
+   177 00:00A4: C9 1D                      CMP #CH376S_STAT_DSK_RD
+   178 00:00A6: F0 03                      BEQ ISDOS_DIR_CONT0
+   179 00:00A8: 82 81 00                   BRL ISDOS_MISS_FILE
+   180                        ISDOS_DIR_CONT0
+   181                        
+   182 00:00AB: A2 xx xx                   LDX #<>sd_card_msg4         ; Print Screen the Message "FILE OPENED"
+   183 00:00AE: 22 xx xx xx                JSL IPRINT       ; print the first line
+   184                        ISDOS_NEXT_ENTRY
+   185 00:00B2: A9 27                      LDA #CH_CMD_RD_DATA0
+   186 00:00B4: 8D 09 E8                   STA SDCARD_CMD
+   187 00:00B7: 20 xx xx                   JSR DLYCMD_2_DTA;
+   188 00:00BA: AD 08 E8                   LDA SDCARD_DATA  ;  Load First Data
+   189 00:00BD: A0 00 00                   LDY #$0000
+   190 00:00C0: A2 00 00                   LDX #$0000
+   191 00:00C3: A8                         TAY              ; GET Size (Save in Case we need it)
+   192                        ;#1 Display File Name @ Empty the buffer, since we don't need info for now.
+   193                        ISDOS_DIR_GET_CHAR
+   194 00:00C4: 20 xx xx                   JSR DLYDTA_2_DTA ; Wait 0.6us
+   195 00:00C7: AD 08 E8                   LDA SDCARD_DATA  ;
+   196 00:00CA: 22 xx xx xx                JSL IPUTC        ; Print the character
+   197 00:00CE: E8                         INX
+   198 00:00CF: E0 08 00                   CPX #$0008
+   199 00:00D2: D0 03                      BNE ISDOS_DIR_CONT1
+   200 00:00D4: 20 xx xx                   JSR ISDOS_DISPLAY_DOT
+   201                        ISDOS_DIR_CONT1
+   202 00:00D7: E0 0B 00                   CPX #$000B          ; the First 11th Character is the file name
+   203 00:00DA: D0 E8                      BNE ISDOS_DIR_GET_CHAR
+   204 00:00DC: A9 20                      LDA #$20
+   205 00:00DE: 22 xx xx xx                JSL IPUTC        ; Print the character
+   206 00:00E2: A9 28                      LDA #'('
+   207 00:00E4: 22 xx xx xx                JSL IPUTC        ; Print the character
+   208 00:00E8: AD 08 E8                   LDA SDCARD_DATA  ;
+   209 00:00EB: 29 10                      AND #$10
+   210 00:00ED: C9 10                      CMP #$10
+   211 00:00EF: F0 04                      BEQ ISDOS_DIR_ATTR0
+   212 00:00F1: A9 46                      LDA #'F'
+   213 00:00F3: 80 02                      BRA ISDOS_DIR_ATTR1
+   214                        ISDOS_DIR_ATTR0
+   215 00:00F5: A9 44                      LDA #'D'
+   216                        ISDOS_DIR_ATTR1
+   217 00:00F7: 22 xx xx xx                JSL IPUTC        ; Print the character
+   218 00:00FB: A9 29                      LDA #')'
+   219 00:00FD: 22 xx xx xx                JSL IPUTC        ; Print the character
+   220 00:0101: A9 0D                      LDA #$0D         ; Carriage Return
+   221 00:0103: 22 xx xx xx                JSL IPUTC        ; Print the character
+  Thu Dec  3 2020 22:25                                                                                                    Page 5
+
+
+   222                        ISDOS_DIR_GET_CHAR_FINISH
+   223 00:0107: 20 xx xx                   JSR DLYDTA_2_DTA ; Wait 0.6us
+   224 00:010A: AD 08 E8                   LDA SDCARD_DATA  ; After the name Just empty the buffer
+   225                        ;             JSL IPUTC        ; Print the character
+   226 00:010D: E8                         INX
+   227 00:010E: E0 20 00                   CPX #$0020
+   228 00:0111: D0 F4                      BNE ISDOS_DIR_GET_CHAR_FINISH
+   229 00:0113: 20 xx xx                   JSR DLYCMD_2_DTA
+   230                                      ; Ask Controller to go fetch the next entry in the Directory
+   231 00:0116: A9 33                      LDA #CH_CMD_FILE_ENUM_GO
+   232 00:0118: 8D 09 E8                   STA SDCARD_CMD
+   233 00:011B: 20 xx xx                   JSR SDCARD_WAIT_4_INT       ; Go Wait for Interrupt
+   234 00:011E: C9 1D                      CMP #CH376S_STAT_DSK_RD
+   235 00:0120: F0 90                      BEQ ISDOS_NEXT_ENTRY
+   236 00:0122: C9 42                      CMP #CH376S_ERR_MISS_FIL
+   237 00:0124: D0 06                      BNE  ISDOS_MISS_FILE
+   238 00:0126: A2 xx xx                   LDX #<>sd_card_msg5   ; End of File
+   239 00:0129: 82 09 00                   BRL ISDOS_DIR_DONE
+   240                        ISDOS_MISS_FILE
+   241 00:012C: A2 xx xx                   LDX #<>sd_card_err0
+   242 00:012F: 82 03 00                   BRL ISDOS_DIR_DONE
+   243                        NO_SDCARD_PRESENT
+   244 00:0132: A2 xx xx                   LDX #<>sd_no_card_msg
+   245                        ISDOS_DIR_DONE
+   246 00:0135: 22 xx xx xx                JSL IPRINT       ; print the first line
+   247                                      ; There should be an Error Code Displayed here...
+   248                        
+   249 00:0139: A9 32        			  LDA #'2'
+   250 00:013B: 8F 01 A0 AF  			  STA $AFA001
+   251                        
+   252                          			  SETAL
++  252 00:013F: C2 20                        REP #$20        ; set A long 
++  252                                        LONGA ON
+   253                        			  LONGA ON
+   254                        
+   255 00:0141: 68           			  PLA
+   256 00:0142: 6B           			  RTL
+   257                        
+   258                        ISDOS_DISPLAY_DOT
+   259 00:0143: A9 2E 00                   LDA #'.'
+   260 00:0146: 22 xx xx xx                JSL IPUTC        ; Print the character
+   261 00:014A: 60                         RTS;
+   262                        
+   263                        
+   264                        ;/////////////////////////////////////////////////////////
+   265                        ;////////////////////////////////////////////////////////
+   266                        ; ISDOS_LOAD
+   267                        ; Load a File to Memory
+   268                        ; Inputs:
+   269                        ;  None
+   270                        ; Affects:
+   271                        ;   None
+   272                        ~~k_sd_load:
+   273                        ISDOS_LOAD
+   274 00:014B: 20 xx xx                   JSR SDOS_READ_FILE;
+   275 00:014E: 6B                         RTL;
+   276                        
+   277                        ; Upon the Call of this Routine this will Save a file defined by the given name and Location
+  Thu Dec  3 2020 22:25                                                                                                    Page 6
+
+
+   278 00:014F: 00 00        ISDOS_SAVE    BRK;
+   279                        
+   280                        ; Load a File ".FNX" and execute it
+   281 00:0151: 00 00        ISDOS_EXEC    BRK;
+   282                        
+   283                        ;/////////////////////////////////////////////////////////
+   284                        ;////////////////////////////////////////////////////////
+   285                        ; ISDOS_MOUNT_CARD
+   286                        ; Check to see if Card exist, then Mount the SDCArd
+   287                        ; Inputs:
+   288                        ;   Pointer to the ASCII File name by
+   289                        ; Located @ $000030..$000032 - SDCARD_FLNMPTR_L
+   290                        ; Affects:
+   291                        ;   None
+   292                        ~~k_sd_ismounted:
+   293                        ISDOS_MOUNT_CARD
+   294 00:0153: A9 33 00     			  LDA #'3'
+   295 00:0156: 8F 00 A0 AF  			  STA $AFA000
+   296 00:015A: A9 31 00     			  LDA #'1'
+   297 00:015D: 8F 01 A0 AF  			  STA $AFA001
+   298                        
+   299 00:0161: 6B           			  RTL
+   300                        
+   301                                      SETAS
++  301 00:0162: E2 20                        SEP #$20        ; set A short 
++  301                                        LONGA OFF
+   302                                      LONGA OFF
+   303                        ;              JSR ISDOS_CHK_CD            ; Check to See if a Card is present
+   304                        ;              BCC ISDOS_NO_CARD           ;
+   305                                      SETXL
++  305 00:0164: C2 10                        REP #$10        ; set X long 
++  305                                        LONGI ON
+   306                        
+   307 00:0166: A9 32        			  LDA #'2'
+   308 00:0168: 8F 01 A0 AF  			  STA $AFA001
+   309                        
+   310 00:016C: A2 xx xx                   LDX #<>sd_card_msg1         ; Print Screen the Message "Card Detected"
+   311 00:016F: 22 xx xx xx                JSL IPRINT       ; print the first line
+   312                        ;              LDA SDCARD_PRSNT_MNT        ; Load Presence Status
+   313                        ;              AND #$05
+   314                        ;              CMP #$05
+   315                        ;              BEQ ISDOS_MOUNTED
+   316 00:0173: A0 00 00                   LDY #$0000
+   317 00:0176: A9 01                      LDA #$01
+   318 00:0178: 8D 3F 00                   STA SDCARD_PRSNT_MNT        ; Bit[0] = Card Present
+   319                        TRY_MOUNT_AGAIN
+   320                        
+   321 00:017B: A9 33        			  LDA #'3'
+   322 00:017D: 8F 01 A0 AF  			  STA $AFA001
+   323                        
+   324 00:0181: A9 31                      LDA #CH_CMD_DISK_MOUNT      ; If Present, go Mount it.
+   325 00:0183: 8D 09 E8                   STA SDCARD_CMD              ;
+   326 00:0186: 20 xx xx                   JSR SDCARD_WAIT_4_INT       ;
+   327 00:0189: C9 14                      CMP #CH376S_STAT_SUCCESS    ;
+   328 00:018B: F0 09                      BEQ ISDOS_MOUNTED
+   329 00:018D: C8                         INY
+   330 00:018E: C0 F0 00                   CPY #$00F0
+   331 00:0191: D0 E8                      BNE TRY_MOUNT_AGAIN
+  Thu Dec  3 2020 22:25                                                                                                    Page 7
+
+
+   332 00:0193: 4C xx xx                   JMP SDCARD_ERROR_MOUNT
+   333                        ISDOS_MOUNTED ; The Card is already mounted
+   334                        
+   335 00:0196: A9 34        			  LDA #'4'
+   336 00:0198: 8F 01 A0 AF  			  STA $AFA001
+   337                        
+   338 00:019C: A2 xx xx                   LDX #<>sd_card_msg2         ; Print Screen the Message "Card Detected"
+   339 00:019F: 22 xx xx xx                JSL IPRINT       ; print the first line
+   340                        
+   341 00:01A3: AD 3F 00                   LDA SDCARD_PRSNT_MNT
+   342 00:01A6: 29 FB                      AND #$FB;#~SDCARD_PRSNT_MNTED
+   343 00:01A8: 09 04                      ORA #SDCARD_PRSNT_MNTED     ; Set Bit to Indicate that is mounted
+   344 00:01AA: 6B                         RTL
+   345                        
+   346                        SDCARD_ERROR_MOUNT
+   347                        
+   348 00:01AB: A9 35        			  LDA #'5'
+   349 00:01AD: 8F 01 A0 AF  			  STA $AFA001
+   350                        
+   351 00:01B1: A2 xx xx                   LDX #<>sd_card_msg3         ; Print Screen the Message "Card Detected"
+   352 00:01B4: 22 xx xx xx                JSL IPRINT       ; print the first line
+   353 00:01B8: 6B                         RTL
+   354                        
+   355                        ISDOS_NO_CARD
+   356 00:01B9: A9 36        			  LDA #'6'
+   357 00:01BB: 8F 01 A0 AF  			  STA $AFA001
+   358                        
+   359 00:01BF: A9 00        			  LDA #SDCARD_PRSNT_NO_CARD
+   360 00:01C1: 8D 3F 00                   STA SDCARD_PRSNT_MNT
+   361 00:01C4: 6B                         RTL
+   362                        
+   363                        ;
+   364                        ; ISDOS_FILE_OPEN
+   365                        ; Open the File
+   366                        ; Inputs:
+   367                        ; File Name ought to be here: SDOS_FILE_NAME and be terminated by NULL.
+   368                        ; Affects:
+   369                        ;   A
+   370                        ; Outputs:
+   371                        ; A = Interrupt Status
+   372                        ~~k_sd_file_open
+   373                        SDOS_FILE_OPEN
+   374 00:01C5: 20 xx xx                   JSR SDOS_SET_FILE_NAME ; Make Sure the Pointer to the File Name is properly
+   375 00:01C8: 20 xx xx                   JSR DLYCMD_2_DTA
+   376 00:01CB: A9 32                      LDA #CH_CMD_FILE_OPEN ;
+   377 00:01CD: 8D 09 E8                   STA SDCARD_CMD          ; Go Request to open the File
+   378 00:01D0: 20 xx xx                   JSR SDCARD_WAIT_4_INT   ; A Interrupt is Generated, so go polling it
+   379 00:01D3: 6B                         RTL
+   380                        
+   381                        ; SDOS_SET_FILE_NAME
+   382                        ; Set the Filename to the Controller CH376D
+   383                        ; Inputs:
+   384                        ; File Name ought to reside here: SDOS_FILE_NAME
+   385                        ; Affects:
+   386                        ;   None
+   387                        ~~k_sd_file_name
+   388                        SDOS_SET_FILE_NAME
+   389 00:01D4: A9 2F                      LDA #CH_CMD_SET_FILENAME
+  Thu Dec  3 2020 22:25                                                                                                    Page 8
+
+
+   390 00:01D6: 8D 09 E8                   STA SDCARD_CMD
+   391 00:01D9: 20 xx xx                   JSR DLYCMD_2_DTA
+   392 00:01DC: A2 00 00                   LDX #$0000
+   393                        SDOS_SET_FILE_LOOP
+   394 00:01DF: BF 80 03 00                LDA >SDOS_FILE_NAME, X   ; This is where the FileName ought to be.
+   395 00:01E3: 8D 08 E8                   STA SDCARD_DATA         ; Store into the Data Register of the CH376s
+   396 00:01E6: 20 xx xx                   JSR DLYDTA_2_DTA
+   397 00:01E9: E8                         INX
+   398 00:01EA: C9 00                      CMP #$00              ; Check end of Line
+   399 00:01EC: D0 F1                      BNE SDOS_SET_FILE_LOOP
+   400 00:01EE: 6B                         RTL
+   401                        
+   402                        
+   403                        ;
+   404                        ; SDCARD_WAIT_4_INT
+   405                        ; Blocking - Wait for the CH376S Interrupt
+   406                        ; Inputs:
+   407                        ;
+   408                        ; Outputs:
+   409                        ;   A = Interrupt Status
+   410                        SDCARD_WAIT_4_INT
+   411                                      setas             ; This is for security
++  411 00:01EF: E2 20                        SEP #$20        ; set A short 
++  411                                        LONGA OFF
+   412 00:01F1: 78                         SEI                 ; There is no time out on this, so let's
+   413                                                          ; make sure it is not going to be interrupted
+   414                        SDCARD_BUSY_INT
+   415 00:01F2: AD 09 E8                   LDA SDCARD_CMD    ; Read Status of Interrupt and
+   416 00:01F5: 29 80                      AND #$80          ; Bit[7] = !INT if Zero = Busy
+   417 00:01F7: C9 80                      CMP #$80          ;
+   418 00:01F9: F0 F7                      BEQ SDCARD_BUSY_INT
+   419 00:01FB: 58                         CLI
+   420                                      ; Fetch the Status
+   421                        SDCARD_BUSY_DONE
+   422 00:01FC: 20 xx xx                   JSR DLYCMD_2_DTA ;
+   423 00:01FF: 20 xx xx                   JSR DLYCMD_2_DTA ;
+   424 00:0202: A9 22                      LDA #CH_CMD_GET_STATUS
+   425 00:0204: 8D 09 E8                   STA SDCARD_CMD;
+   426 00:0207: 20 xx xx                   JSR DLYCMD_2_DTA;   ; 1.5us Delay to get the Value Return
+   427 00:020A: AD 08 E8                   LDA SDCARD_DATA;
+   428 00:020D: 60                         RTS           ;
+   429                        ;
+   430                        ; ISDOS_CHK_CD
+   431                        ; Return the Value of SD Card Present Status
+   432                        ; Inputs:
+   433                        ;   None
+   434                        ; Affects:
+   435                        ;   Carry - If Card Present -> Carry = 1
+   436                        ISDOS_CHK_CD  setas
++  436 00:020E: E2 20                        SEP #$20        ; set A short 
++  436                                        LONGA OFF
+   437 00:0210: 18                         CLC
+   438 00:0211: AD 10 E8                   LDA SDCARD_STAT;  BIT[0] = Cd, BIT[1] = WP
+   439 00:0214: 29 01                      AND #$01
+   440 00:0216: C9 01                      CMP #$01
+   441 00:0218: F0 01                      BEQ SDCD_NOT_PRST;
+   442 00:021A: 38                         SEC
+   443 00:021B: 60           SDCD_NOT_PRST RTS
+  Thu Dec  3 2020 22:25                                                                                                    Page 9
+
+
+   444                        ;
+   445                        ; ISDOS_CHK_WP
+   446                        ; Return the Value of WP Card Present Status
+   447                        ; Inputs:
+   448                        ;   None
+   449                        ; Affects:
+   450                        ;   Carry - If Card Write Protect -> Carry = 1
+   451                        ISDOS_CHK_WP  setas
++  451 00:021C: E2 20                        SEP #$20        ; set A short 
++  451                                        LONGA OFF
+   452 00:021E: 18                         CLC
+   453 00:021F: AD 10 E8                   LDA SDCARD_STAT;  BIT[0] = Cd, BIT[1] = WP
+   454 00:0222: 29 02                      AND #$02
+   455 00:0224: D0 01                      BNE SDCD_NOT_WP;
+   456 00:0226: 38                         SEC
+   457 00:0227: 60           SDCD_NOT_WP   RTS
+   458                        
+   459                        ISDOS_GET_FILE_SIZE
+   460                                      setas
++  460 00:0228: E2 20                        SEP #$20        ; set A short 
++  460                                        LONGA OFF
+   461 00:022A: A9 0C                      LDA #CH_CMD_RD_VAR32
+   462 00:022C: 8D 09 E8                   STA SDCARD_CMD;
+   463 00:022F: 20 xx xx                   JSR DLYCMD_2_DTA;   ; 3us Delay to get the Value Return
+   464 00:0232: A9 68                      LDA #CH_VAR_FILE_SIZE
+   465 00:0234: 8D 08 E8                   STA SDCARD_DATA;
+   466 00:0237: 20 xx xx                   JSR DLYCMD_2_DTA
+   467 00:023A: AD 08 E8                   LDA SDCARD_DATA         ;LSB First
+   468 00:023D: 8F 28 03 00                STA >SDOS_FILE_SIZE+0
+   469 00:0241: 8F 20 01 00                STA >ADDER32_A_LL;     ; Store in ADDER32 REgister A
+   470 00:0245: 20 xx xx                   JSR DLYDTA_2_DTA
+   471 00:0248: AD 08 E8                   LDA SDCARD_DATA
+   472 00:024B: 8F 29 03 00                STA >SDOS_FILE_SIZE+1
+   473 00:024F: 8F 21 01 00                STA >ADDER32_A_LH;     ; Store in ADDER32 REgister A
+   474 00:0253: 20 xx xx                   JSR DLYDTA_2_DTA
+   475 00:0256: AD 08 E8                   LDA SDCARD_DATA
+   476 00:0259: 8F 2A 03 00                STA >SDOS_FILE_SIZE+2
+   477 00:025D: 8F 22 01 00                STA >ADDER32_A_HL;     ; Store in ADDER32 REgister A
+   478 00:0261: 20 xx xx                   JSR DLYDTA_2_DTA
+   479 00:0264: AD 08 E8                   LDA SDCARD_DATA
+   480 00:0267: 8F 2B 03 00                STA >SDOS_FILE_SIZE+3   ;MSB Last
+   481 00:026B: 8F 23 01 00                STA >ADDER32_A_HH;     ; Store in ADDER32 REgister A
+   482 00:026F: 20 xx xx                   JSR DLYDTA_2_DTA
+   483 00:0272: AF 28 01 00                LDA >ADDER32_R_LL;
+   484 00:0276: AF 29 01 00                LDA >ADDER32_R_LH;
+   485 00:027A: AF 2A 01 00                LDA >ADDER32_R_HL;
+   486 00:027E: AF 2B 01 00                LDA >ADDER32_R_HH;
+   487 00:0282: 60                         RTS
+   488                        
+   489                        
+   490                        ; ISDOS_READ_FILE
+   491                        ; Go Open and Read a file and store it to prefedined address
+   492                        ; Inputs:
+   493                        ;  Name @ SDOS_FILE_NAME, Pointer to Store the DATA: @ SDCARD_FILE_PTR ($00:00030)
+   494                        ; Affects:
+   495                        ;   A, X probably Y and CC and the whole thing... So don't asume anything...
+   496                        ; Returns:
+   497                        ; Well, you ought to have your file loaded where you asked it.
+  Thu Dec  3 2020 22:25                                                                                                    Page 10
+
+
+   498                        SDOS_READ_FILE
+   499                                      setaxl
++  499 00:0283: C2 30                        REP #$30        ; set A&X long 
++  499                                        LONGA ON
++  499                                        LONGI ON
+   500 00:0285: 20 xx xx                   JSR SDOS_SETUP_ADDER_B;
+   501                                      ; First Let's Setup the file Name and Open the File
+   502                                      ; First Step, Let's find and open the file we want to load.
+   503                                      setas
++  503 00:0288: E2 20                        SEP #$20        ; set A short 
++  503                                        LONGA OFF
+   504 00:028A: 20 xx xx                   JSR SDOS_FILE_OPEN
+   505                                      ; If successful, get the file sizeof
+   506 00:028D: C9 14                      CMP #CH376S_STAT_SUCCESS ; if the file open successfully, let's go on.
+   507 00:028F: F0 03                      BEQ SDOS_READ_FILE_KEEP_GOING
+   508 00:0291: 82 93 00                   BRL SDOS_READ_END
+   509                        SDOS_READ_FILE_KEEP_GOING
+   510                                      ; Then go read the file
+   511 00:0294: A2 xx xx                   LDX #<>sd_card_msg6         ; Print Screen the Message "FILE FOUND, LOADING..."
+   512 00:0297: 22 xx xx xx                JSL IPRINT       ; print the first line
+   513                                      ;
+   514 00:029B: 20 xx xx                   JSR ISDOS_GET_FILE_SIZE   ; Get the File Size in 32Bits
+   515                                      setal
++  515 00:029E: C2 20                        REP #$20        ; set A long 
++  515                                        LONGA ON
+   516                        ;              JSR SDOS_LOAD_ADDER_A_WITH_SIZE;  Load the Size in the Signed Adder
+   517 00:02A0: 20 xx xx                   JSR SDOS_SETUP_CH376S_BUFFER_SIZE;
+   518 00:02A3: A9 00 00                   LDA #$0000
+   519 00:02A6: 8F 3C 00 00                STA >SDCARD_BYTE_NUM; Just make sure the High Part of the Size is Zero
+   520 00:02AA: 8F 34 03 00                STA >SDOS_BYTE_PTR   ; Clear the Byte Pointer 32 Bytes Register
+   521 00:02AE: 8F 36 03 00                STA >SDOS_BYTE_PTR+2 ; This is to Relocated the Pointer after you passed the 64K Boundary
+   522                                      ; Second Step, Setup the Amount of Data to Send
+   523                                      ; Set the Transfer Size, I will try 256 bytes
+   524                                      setas
++  524 00:02B2: E2 20                        SEP #$20        ; set A short 
++  524                                        LONGA OFF
+   525                        SDOS_READ_FILE_GO_FETCH_A_NEW_64KBlock
+   526 00:02B4: A9 3A                      LDA #CH_CMD_BYTE_READ
+   527 00:02B6: 8D 09 E8                   STA SDCARD_CMD;
+   528 00:02B9: 20 xx xx                   JSR DLYCMD_2_DTA;   ; 3us Delay to get the Value Return
+   529 00:02BC: AF 2C 03 00                LDA >SDOS_BYTE_NUMBER
+   530 00:02C0: 8D 08 E8                   STA SDCARD_DATA
+   531 00:02C3: 20 xx xx                   JSR DLYDTA_2_DTA;   ; 1.5us Delay to get the Value Return
+   532 00:02C6: AF 2D 03 00                LDA >SDOS_BYTE_NUMBER+1
+   533 00:02CA: 8D 08 E8                   STA SDCARD_DATA
+   534 00:02CD: 20 xx xx                   JSR SDCARD_WAIT_4_INT
+   535 00:02D0: C9 1D                      CMP #CH376S_STAT_DSK_RD ;
+   536 00:02D2: F0 03                      BEQ SDOS_READ_FILE_GO_FETCH_A_NEW_BLOCK
+   537 00:02D4: 82 50 00                   BRL SDOS_READ_END
+   538                        SDOS_READ_FILE_GO_FETCH_A_NEW_BLOCK
+   539                                      ; Go Read 1 Block and Store it @ ($00:0030)
+   540 00:02D7: 20 xx xx                   JSR SDOS_READ_BLOCK
+   541 00:02DA: A9 3B                      LDA #CH_CMD_BYTE_RD_GO
+   542 00:02DC: 8D 09 E8                   STA SDCARD_CMD
+   543                                      ;Now let's go to Poll the INTERRUPT and wait for
+   544 00:02DF: 20 xx xx                   JSR SDCARD_WAIT_4_INT
+   545 00:02E2: C9 1D                      CMP #CH376S_STAT_DSK_RD ;
+   546 00:02E4: D0 05                      BNE SDOS_READ_PROC_DONE
+  Thu Dec  3 2020 22:25                                                                                                    Page 11
+
+
+   547 00:02E6: 20 xx xx                   JSR SDOS_ADJUST_POINTER  ; Go Adjust the Address
+   548 00:02E9: 80 EC                      BRA SDOS_READ_FILE_GO_FETCH_A_NEW_BLOCK
+   549                        SDOS_READ_PROC_DONE
+   550                                      setal
++  550 00:02EB: C2 20                        REP #$20        ; set A long 
++  550                                        LONGA ON
+   551 00:02ED: AF 2C 03 00                LDA >SDOS_BYTE_NUMBER  ; Load the Previously number of Byte
+   552 00:02F1: C9 FF FF                   CMP #$FFFF
+   553 00:02F4: D0 24                      BNE SDOS_READ_DONE1                  ; if it equal 64K, then the file is bugger than 64K
+   554                                      ; Now let's go compute the Nu Value for the Next Batch
+   555 00:02F6: AF 28 01 00                LDA >ADDER32_R_LL
+   556 00:02FA: 8F 20 01 00                STA >ADDER32_A_LL
+   557 00:02FE: AF 2A 01 00                LDA >ADDER32_R_HL
+   558 00:0302: 8F 22 01 00                STA >ADDER32_A_HL
+   559 00:0306: 20 xx xx                   JSR SDOS_SETUP_CH376S_BUFFER_SIZE ;
+   560 00:0309: 20 xx xx                   JSR SDOS_COMPUTE_LOCATE_POINTER
+   561                                      setas
++  561 00:030C: E2 20                        SEP #$20        ; set A short 
++  561                                        LONGA OFF
+   562 00:030E: 20 xx xx                   JSR SDOS_BYTE_LOCATE    ; Apply the new location for the CH376S
+   563 00:0311: 20 xx xx                   JSR SDCARD_WAIT_4_INT
+   564 00:0314: C9 14                      CMP #CH376S_STAT_SUCCESS ;
+   565 00:0316: D0 0F                      BNE SDOS_READ_END
+   566                                      ; Check to see that we have Loaded all the bytes.
+   567 00:0318: 80 9A                      BRA SDOS_READ_FILE_GO_FETCH_A_NEW_64KBlock ; Let's go fetch a new block of 64K or less
+   568                        ;SDOS_READ_DONE
+   569                        ;              CMP #CH376S_STAT_SUCCESS
+   570                        ;              BNE SDOS_READ_END
+   571                        SDOS_READ_DONE1
+   572 00:031A: A9 02        			  LDA #$02
+   573 00:031C: 8F xx xx xx  			  STA >sd_card_msg7
+   574 00:0320: A9 00                      LDA #$00
+   575 00:0322: A2 xx xx                   LDX #<>sd_card_msg7         ; Print Screen the Message "FILE LOADED"
+   576 00:0325: 80 0B                      BRA SDOS_READ_PROC_DONE1
+   577                        SDOS_READ_END
+   578 00:0327: A9 01        			  LDA #$01
+   579 00:0329: 8F xx xx xx  			  STA >sd_card_msg7
+   580 00:032D: A9 FF                      LDA #$FF
+   581 00:032F: A2 xx xx                   LDX #<>sd_card_err1         ;"ERROR LOADING FILE"
+   582                        SDOS_READ_PROC_DONE1
+   583 00:0332: 22 xx xx xx                JSL IPRINT       ; print the first line
+   584                        
+   585 00:0336: 60                         RTS;
+   586                        
+   587                        SDOS_ADJUST_POINTER
+   588                                      setal
++  588 00:0337: C2 20                        REP #$20        ; set A long 
++  588                                        LONGA ON
+   589 00:0339: 18                         CLC
+   590 00:033A: AD 38 00                   LDA SDCARD_FILE_PTR ;Load the Pointer
+   591 00:033D: 6D 3C 00                   ADC SDCARD_BYTE_NUM
+   592 00:0340: 8D 38 00                   STA SDCARD_FILE_PTR;
+   593                                      setas
++  593 00:0343: E2 20                        SEP #$20        ; set A short 
++  593                                        LONGA OFF
+   594 00:0345: AD 3A 00                   LDA SDCARD_FILE_PTR+2;
+   595 00:0348: 69 00                      ADC #$00          ; This is just add up the Carry
+   596 00:034A: 8D 3A 00                   STA SDCARD_FILE_PTR+2;
+  Thu Dec  3 2020 22:25                                                                                                    Page 12
+
+
+   597                        SDOS_ADJ_DONE
+   598 00:034D: 60                         RTS
+   599                        
+   600                        SDOS_BYTE_LOCATE  ; Reposition the Pointer of the CH376S when the File is > 64K
+   601                                      setas
++  601 00:034E: E2 20                        SEP #$20        ; set A short 
++  601                                        LONGA OFF
+   602 00:0350: A9 39                      LDA #CH_CMD_BYTE_LOCATE
+   603 00:0352: 8D 09 E8                   STA SDCARD_CMD
+   604 00:0355: 20 xx xx                   JSR DLYCMD_2_DTA
+   605 00:0358: AF 34 03 00                LDA >SDOS_BYTE_PTR
+   606 00:035C: 8D 08 E8                   STA SDCARD_DATA
+   607 00:035F: 20 xx xx                   JSR DLYDTA_2_DTA
+   608 00:0362: AF 35 03 00                LDA >SDOS_BYTE_PTR+1
+   609 00:0366: 8D 08 E8                   STA SDCARD_DATA
+   610 00:0369: 20 xx xx                   JSR DLYDTA_2_DTA
+   611 00:036C: AF 36 03 00                LDA >SDOS_BYTE_PTR+2
+   612 00:0370: 8D 08 E8                   STA SDCARD_DATA
+   613 00:0373: 20 xx xx                   JSR DLYDTA_2_DTA
+   614 00:0376: AF 37 03 00                LDA >SDOS_BYTE_PTR+3
+   615 00:037A: 8D 08 E8                   STA SDCARD_DATA
+   616 00:037D: 60                         RTS
+   617                        ; This will increment the pointer for the CH376S
+   618                        SDOS_COMPUTE_LOCATE_POINTER
+   619                                      setal
++  619 00:037E: C2 20                        REP #$20        ; set A long 
++  619                                        LONGA ON
+   620 00:0380: 18                         CLC
+   621 00:0381: AF 34 03 00                LDA >SDOS_BYTE_PTR ; $00330
+   622 00:0385: 69 FF FF                   ADC #$FFFF
+   623 00:0388: 8F 34 03 00                STA >SDOS_BYTE_PTR
+   624 00:038C: AF 36 03 00                LDA >SDOS_BYTE_PTR+2
+   625 00:0390: 69 00 00                   ADC #$0000          ; this is to Add the Carry
+   626 00:0393: 8F 36 03 00                STA >SDOS_BYTE_PTR+2
+   627 00:0397: 60                         RTS
+   628                        ; Load Register B of the 32Bit Adder with the Value -65535 (size of the CH376S Buffer)
+   629                        SDOS_SETUP_ADDER_B
+   630                                      setal
++  630 00:0398: C2 20                        REP #$20        ; set A long 
++  630                                        LONGA ON
+   631 00:039A: A9 01 00                   LDA #$0001
+   632 00:039D: 8F 24 01 00                STA >ADDER32_B_LL
+   633 00:03A1: A9 FF FF                   LDA #$FFFF
+   634 00:03A4: 8F 26 01 00                STA >ADDER32_B_HL
+   635 00:03A8: 60                         RTS
+   636                        ; Load Register A with the Size of the File
+   637                        SDOS_LOAD_ADDER_A_WITH_SIZE
+   638                                      setal
++  638 00:03A9: C2 20                        REP #$20        ; set A long 
++  638                                        LONGA ON
+   639 00:03AB: AF 28 03 00                LDA >SDOS_FILE_SIZE;
+   640 00:03AF: 8F 20 01 00                STA >ADDER32_A_LL;
+   641 00:03B3: AF 2A 03 00                LDA >SDOS_FILE_SIZE+2;
+   642 00:03B7: 8F 22 01 00                STA >ADDER32_A_HL;
+   643 00:03BB: 60                         RTS
+   644                        
+   645                        SDOS_SETUP_CH376S_BUFFER_SIZE
+   646                                      setal
+  Thu Dec  3 2020 22:25                                                                                                    Page 13
+
+
++  646 00:03BC: C2 20                        REP #$20        ; set A long 
++  646                                        LONGA ON
+   647 00:03BE: AF 2A 01 00                LDA  >ADDER32_R_HL
+   648 00:03C2: 29 00 80                   AND #$8000          ; Check if it is negative
+   649 00:03C5: C9 00 80                   CMP #$8000          ; if it is then just put the Size of the file in ByteNumber
+   650 00:03C8: F0 08                      BEQ SDOS_SETUP_SMALLR_THAN64K
+   651 00:03CA: A9 FF FF                   LDA #$FFFF
+   652 00:03CD: 8F 2C 03 00                STA >SDOS_BYTE_NUMBER
+   653 00:03D1: 60                         RTS
+   654                        SDOS_SETUP_SMALLR_THAN64K
+   655 00:03D2: AF 20 01 00                LDA >ADDER32_A_LL
+   656 00:03D6: 8F 2C 03 00                STA >SDOS_BYTE_NUMBER
+   657 00:03DA: 60                         RTS
+   658                        ; SDOS_READ_BLOCK (A needs to be short)
+   659                        ; Read a Block of Data from Controller
+   660                        ; Inputs:
+   661                        ;  None
+   662                        ; Affects:
+   663                        ;   A, X
+   664                        ; Returns:
+   665                        ;   A = Number of byte Fetched
+   666                        ;  Buffer @ SDOS_SECTOR_BEGIN
+   667                        SDOS_READ_BLOCK
+   668                                      setas
++  668 00:03DB: E2 20                        SEP #$20        ; set A short 
++  668                                        LONGA OFF
+   669 00:03DD: A9 27                      LDA #CH_CMD_RD_DATA0
+   670 00:03DF: 8D 09 E8                   STA SDCARD_CMD;
+   671 00:03E2: 20 xx xx                   JSR DLYCMD_2_DTA;   ; 3us Delay to get the Value Return
+   672 00:03E5: 20 xx xx     			  JSR DLYCMD_2_DTA;   ; mtb
+   673 00:03E8: 20 xx xx     			  JSR DLYCMD_2_DTA;   ; mtb
+   674 00:03EB: AD 08 E8                   LDA SDCARD_DATA     ; Read First Byte for Number of Byte to Read
+   675 00:03EE: 8D 3C 00                   STA SDCARD_BYTE_NUM  ; Store the Number of byte to be read
+   676 00:03F1: 20 xx xx                   JSR DLYDTA_2_DTA;   ; 3us Delay to get the Value Return
+   677 00:03F4: A0 00 00                   LDY #$0000
+   678                        SDOS_READ_MORE
+   679 00:03F7: AD 08 E8                   LDA SDCARD_DATA
+   680 00:03FA: 97 38                      STA [SDCARD_FILE_PTR], Y        ; Store Block Data Sector Begin
+   681 00:03FC: C8                         INY
+   682 00:03FD: CC 3C 00                   CPY SDCARD_BYTE_NUM
+   683 00:0400: D0 F5                      BNE SDOS_READ_MORE
+   684 00:0402: A9 58                      LDA #'X'
+   685 00:0404: 22 xx xx xx                JSL IPUTC        ; Print the character
+   686 00:0408: AD 3C 00                   LDA SDCARD_BYTE_NUM  ; Reload the Number of Byte Read
+   687 00:040B: 60                         RTS
+   688                        
+   689                        ;////////////////////////////////////////////////////////
+   690                        ; ISDOS_INIT_EX
+   691                        ; Check to see if Card exist, then Mount the SDCArd
+   692                        ; Inputs:
+   693                        ;   Pointer to the ASCII File name by
+   694                        ; Located @ $000030..$000032 - SDCARD_FLNMPTR_L
+   695                        ; Affects:
+   696                        ;   None
+   697                        ; Upon the Call of this Routine Display the Files on the SDCARD
+   698                        ISDOS_INIT_EX
+   699                                      setas
++  699 00:040C: E2 20                        SEP #$20        ; set A short 
+  Thu Dec  3 2020 22:25                                                                                                    Page 14
+
+
++  699                                        LONGA OFF
+   700                                      ;setxl
+   701 00:040E: 20 xx xx                   JSR ISDOS_MOUNT_CARD;     First to See if the Card is Present
+   702 00:0411: A2 00 00                   LDX #$0000
+   703                        XISDOS_DIR_TRF
+   704 00:0414: BD xx xx                   LDA sd_card_dir_string,X    ; /
+   705 00:0417: 9F 80 03 00                STA >SDOS_FILE_NAME,X
+   706 00:041B: E8                         INX
+   707 00:041C: E0 03 00                   CPX #$0003
+   708 00:041F: D0 F3                      BNE XISDOS_DIR_TRF
+   709                        
+   710 00:0421: 20 xx xx                   JSR SDOS_FILE_OPEN         ; Now that the file name is set, go open File
+   711 00:0424: C9 1D                      CMP #CH376S_STAT_DSK_RD
+   712 00:0426: F0 03                      BEQ XISDOS_DIR_CONT0
+   713 00:0428: 82 50 00                   BRL XISDOS_MISS_FILE
+   714                        XISDOS_DIR_CONT0
+   715                        
+   716                        XISDOS_NEXT_ENTRY
+   717 00:042B: A9 27                      LDA #CH_CMD_RD_DATA0
+   718 00:042D: 8D 09 E8                   STA SDCARD_CMD
+   719 00:0430: 20 xx xx                   JSR DLYCMD_2_DTA;
+   720 00:0433: AD 08 E8                   LDA SDCARD_DATA  ;  Load First Data
+   721 00:0436: A0 00 00                   LDY #$0000
+   722 00:0439: A2 00 00                   LDX #$0000
+   723 00:043C: A8                         TAY              ; GET Size (Save in Case we need it)
+   724                        ;#1 Display File Name @ Empty the buffer, since we don't need info for now.
+   725                        XISDOS_DIR_GET_CHAR
+   726 00:043D: 20 xx xx                   JSR DLYDTA_2_DTA ; Wait 0.6us
+   727 00:0440: AD 08 E8                   LDA SDCARD_DATA  ;
+   728                                      ;JSL IPUTC        ; Print the character
+   729 00:0443: E8                         INX
+   730 00:0444: E0 08 00                   CPX #$0008
+   731 00:0447: D0 03                      BNE XISDOS_DIR_CONT1
+   732 00:0449: 20 xx xx                   JSR XISDOS_DISPLAY_DOT
+   733                        XISDOS_DIR_CONT1
+   734 00:044C: E0 0B 00                   CPX #$000B          ; the First 11th Character is the file name
+   735 00:044F: D0 EC                      BNE XISDOS_DIR_GET_CHAR
+   736                                      ;LDA #$20
+   737                                      ;JSL IPUTC        ; Print the character
+   738                                      ;LDA #'('
+   739                                      ;JSL IPUTC        ; Print the character
+   740 00:0451: AD 08 E8                   LDA SDCARD_DATA  ;
+   741 00:0454: 29 10                      AND #$10
+   742 00:0456: C9 10                      CMP #$10
+   743 00:0458: F0 02                      BEQ XISDOS_DIR_ATTR0
+   744                                      ;LDA #'F'
+   745 00:045A: 80 00                      BRA XISDOS_DIR_ATTR1
+   746                        XISDOS_DIR_ATTR0
+   747                                      ;LDA #'D'
+   748                        XISDOS_DIR_ATTR1
+   749                                      ;JSL IPUTC        ; Print the character
+   750                                      ;LDA #')'
+   751                                      ;JSL IPUTC        ; Print the character
+   752                                      ;LDA #$0D         ; Carriage Return
+   753                                      ;JSL IPUTC        ; Print the character
+   754                        XISDOS_DIR_GET_CHAR_FINISH
+   755 00:045C: 20 xx xx                   JSR DLYDTA_2_DTA ; Wait 0.6us
+   756 00:045F: AD 08 E8                   LDA SDCARD_DATA  ; After the name Just empty the buffer
+  Thu Dec  3 2020 22:25                                                                                                    Page 15
+
+
+   757                        ;             JSL IPUTC        ; Print the character
+   758 00:0462: E8                         INX
+   759 00:0463: E0 20 00                   CPX #$0020
+   760 00:0466: D0 F4                      BNE XISDOS_DIR_GET_CHAR_FINISH
+   761 00:0468: 20 xx xx                   JSR DLYCMD_2_DTA
+   762                                      ; Ask Controller to go fetch the next entry in the Directory
+   763 00:046B: A9 33                      LDA #CH_CMD_FILE_ENUM_GO
+   764 00:046D: 8D 09 E8                   STA SDCARD_CMD
+   765 00:0470: 20 xx xx                   JSR SDCARD_WAIT_4_INT       ; Go Wait for Interrupt
+   766 00:0473: C9 1D                      CMP #CH376S_STAT_DSK_RD
+   767 00:0475: F0 B4                      BEQ XISDOS_NEXT_ENTRY
+   768 00:0477: C9 42                      CMP #CH376S_ERR_MISS_FIL
+   769 00:0479: D0 00                      BNE  XISDOS_MISS_FILE
+   770                                      ;LDX #<>sd_card_msg5   ; End of File
+   771                                      ;BRL ISDOS_DIR_DONE
+   772                        XISDOS_MISS_FILE
+   773                                      ;LDX #<>sd_card_err0
+   774 00:047B: 82 00 00                   BRL XISDOS_DIR_DONE
+   775                        XNO_SDCARD_PRESENT
+   776                                      ;LDX #<>sd_no_card_msg
+   777                        XISDOS_DIR_DONE
+   778                                      ;JSL IPRINT       ; print the first line
+   779                                      ; There should be an Error Code Displayed here...
+   780 00:047E: 6B                         RTL;
+   781                        XISDOS_DISPLAY_DOT
+   782                                      ;LDA #'.'
+   783                                      ;JSL IPUTC        ; Print the character
+   784 00:047F: 60                         RTS;
+   785                        
+   786                        ;
+   787                        ; IPRINT
+   788                        ; Print a string, followed by a carriage return
+   789                        ; DBR: bank containing string
+   790                        ; X: address of the string in data bank
+   791                        ; Modifies: X
+   792                        ;
+   793                        IPRINT          ;JSL IPUTS
+   794                                        ;JSL IPRINTCR
+   795                        
+   796                        
+   797                        
+   798 00:0480: 6B                           RTL
+   799                        
+   800                        ; IPUTS
+   801                        ; Print a null terminated string
+   802                        ; DBR: bank containing string
+   803                        ; X: address of the string in data bank
+   804                        ; Modifies: X.
+   805                        ;  X will be set to the location of the byte following the string
+   806                        ;  So you can print multiple, contiguous strings by simply calling
+   807                        ;  IPUTS multiple times.
+   808 00:0481: 48           IPUTS           PHA
+   809 00:0482: 08                           PHP
+   810                                        ;setas
+   811                                        ;setxl
+   812                        iputs1          ;LDA $0,b,x      ; read from the string
+   813                                        ;BEQ iputs_done
+   814                        iputs2          ;JSL IPUTC
+  Thu Dec  3 2020 22:25                                                                                                    Page 16
+
+
+   815                        iputs3          ;INX
+   816                                        ;JMP iputs1
+   817                        iputs_done      ;INX
+   818 00:0483: 28                           PLP
+   819 00:0484: 68                           PLA
+   820 00:0485: 6B                           RTL
+   821                        
+   822                        ;
+   823                        ;IPUTC
+   824                        ; Print a single character to a channel.
+   825                        ; Handles terminal sequences, based on the selected text mode
+   826                        ; Modifies: none
+   827                        ;
+   828 00:0486: 0B           IPUTC           PHD
+   829 00:0487: 08                           PHP             ; stash the flags (we'll be changing M)
+   830                                        ;setdp 0
+   831                                        ;setas
+   832                                        ;CMP #$0D        ; handle CR
+   833                                        ;BNE iputc_bs
+   834                                        ;JSL IPRINTCR
+   835                                        ;bra iputc_done
+   836                        iputc_bs        ;CMP #$08        ; backspace
+   837                                        ;BNE iputc_print
+   838                                        ;JSL IPRINTBS
+   839                                        ;BRA iputc_done
+   840                        iputc_print     ;STA [CURSORPOS] ; Save the character on the screen
+   841                                        ;JSL ICSRRIGHT
+   842                        iputc_done	;sim_refresh
+   843 00:0488: 28                           PLP
+   844 00:0489: 2B                           PLD
+   845 00:048A: 6B                           RTL
+   846                        
+   847 00:048B: 2F 2A        sd_card_dir_string  BYTE $2F, $2A ,$00
+   848 00:048D: 4E 4F 20 53  sd_no_card_msg      BYTE "NO SDCARD PRESENT", $0D, $00
+       00:0491: 44 43 41 52 
+       00:0495: 44 20 50 52 
+       00:0499: 45 53 45 4E 
+       00:049D: 54 0D 00 
+   849 00:04A0: 45 52 52 4F  sd_card_err0        BYTE "ERROR IN READIND CARD", $00
+       00:04A4: 52 20 49 4E 
+       00:04A8: 20 52 45 41 
+       00:04AC: 44 49 4E 44 
+       00:04B0: 20 43 41 52 
+       00:04B4: 44 00 
+   850 00:04B6: 45 52 52 4F  sd_card_err1        BYTE "ERROR LOADING FILE", $00
+       00:04BA: 52 20 4C 4F 
+       00:04BE: 41 44 49 4E 
+       00:04C2: 47 20 46 49 
+       00:04C6: 4C 45 00 
+   851 00:04C9: 4E 61 6D 65  sd_card_msg0        BYTE "Name: ", $0D,$00
+       00:04CD: 3A 20 0D 00 
+   852 00:04D1: 53 44 43 41  sd_card_msg1        BYTE "SDCARD DETECTED", $00
+       00:04D5: 52 44 20 44 
+       00:04D9: 45 54 45 43 
+       00:04DD: 54 45 44 00 
+   853 00:04E1: 53 44 43 41  sd_card_msg2        BYTE "SDCARD MOUNTED", $00
+       00:04E5: 52 44 20 4D 
+       00:04E9: 4F 55 4E 54 
+  Thu Dec  3 2020 22:25                                                                                                    Page 17
+
+
+       00:04ED: 45 44 00 
+   854 00:04F0: 46 41 49 4C  sd_card_msg3        BYTE "FAILED TO MOUNT SDCARD", $0D, $00
+       00:04F4: 45 44 20 54 
+       00:04F8: 4F 20 4D 4F 
+       00:04FC: 55 4E 54 20 
+       00:0500: 53 44 43 41 
+       00:0504: 52 44 0D 00 
+   855 00:0508: 46 49 4C 45  sd_card_msg4        BYTE "FILE OPENED", $0D, $00
+       00:050C: 20 4F 50 45 
+       00:0510: 4E 45 44 0D 
+       00:0514: 00 
+   856 00:0515: 45 4E 44 20  sd_card_msg5        BYTE "END OF LINE...", $00
+       00:0519: 4F 46 20 4C 
+       00:051D: 49 4E 45 2E 
+       00:0521: 2E 2E 00 
+   857 00:0524: 46 49 4C 45  sd_card_msg6        BYTE "FILE FOUND, LOADING...", $00
+       00:0528: 20 46 4F 55 
+       00:052C: 4E 44 2C 20 
+       00:0530: 4C 4F 41 44 
+       00:0534: 49 4E 47 2E 
+       00:0538: 2E 2E 00 
+   858 00:053B: 46 49 4C 45  sd_card_msg7        BYTE "FILE LOADED", $00
+       00:053F: 20 4C 4F 41 
+       00:0543: 44 45 44 00 
+   859                        
+   860                        
+   861                        	endmod
+   862                        
+
+
+      Lines assembled: 1184
+      Errors: 0

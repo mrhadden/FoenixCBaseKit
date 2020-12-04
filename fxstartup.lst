@@ -1,0 +1,2858 @@
+  Sat Sep 21 2019 15:24                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstartup.c",0
+     7                        ;
+     8                        ;#include "fxstartup.h"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstartup.h",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+    11                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    12                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    13                        	.line	88
+    14                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    15                        	.stag	fake1_,32,1
+    16                        	.member	quot,0,5,8,16
+    17                        	.member	rem,16,5,8,16
+    18                        	.eos
+    19                        	.stag	fake2_,64,2
+    20                        	.member	quot,0,7,8,32
+    21                        	.member	rem,32,7,8,32
+    22                        	.eos
+    23                        	.stag	int_sqrt,32,3
+    24                        	.member	sqrt,0,16,8,16
+    25                        	.member	frac,16,16,8,16
+    26                        	.eos
+    27                        	.line	205
+    28                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",4
+    29                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    30                        	.line	134
+    31                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",5
+    32                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    33                        	.line	103
+    34                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",6
+    35                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+    36                        	.stag	_fx_node,376,4
+    37                        	.member	type,0,14,8,8
+    38                        	.member	data,8,129,8,32
+    39                        	.member	last,40,138,8,32,4
+    40                        	.member	next,72,138,8,32,4
+  Sat Sep 21 2019 15:24                                                Page 2
+
+
+    41                        	.member	name,104,110,8,0,32
+    42                        	.member	Reserved1,360,16,8,16
+    43                        	.eos
+    44                        	.stag	_fx_nodelist,96,5
+    45                        	.member	listhead,0,138,8,32,4
+    46                        	.member	listData,32,129,8,32
+    47                        	.member	deallocator,64,641,8,32
+    48                        	.eos
+    49                        	.stag	_fx_queue,80,6
+    50                        	.member	count,0,5,8,16
+    51                        	.member	front,16,138,8,32,4
+    52                        	.member	rear,48,138,8,32,4
+    53                        	.eos
+    54                        	.stag	_fx_semaphore,16,7
+    55                        	.member	reserved,0,5,8,16
+    56                        	.eos
+    57                        	.stag	_fx_fileBlock,552,8
+    58                        	.member	openCount,0,16,8,16
+    59                        	.member	lockCount,16,16,8,16
+    60                        	.member	dirty,32,14,8,8
+    61                        	.member	fileBuffer,40,110,8,0,64
+    62                        	.eos
+    63                        	.stag	_fx_eventMessage,304,9
+    64                        	.member	src,0,18,8,32
+    65                        	.member	dest,32,18,8,32
+    66                        	.member	type,64,16,8,16
+    67                        	.member	hwnd,80,129,8,32
+    68                        	.member	pheap,112,129,8,32
+    69                        	.member	msgTime,144,18,8,32
+    70                        	.member	data,176,110,8,0,16
+    71                        	.eos
+    72                        	.stag	_fx_console_ctl,448,10
+    73                        	.member	maxCols,0,5,8,16
+    74                        	.member	maxRows,16,5,8,16
+    75                        	.member	curX,32,5,8,16
+    76                        	.member	curY,48,5,8,16
+    77                        	.member	fgColor,64,5,8,16
+    78                        	.member	bgColor,80,5,8,16
+    79                        	.member	mode,96,14,8,8
+    80                        	.member	kbBuffer,104,101,8,0,16
+    81                        	.member	screenBuffer,360,142,8,32
+    82                        	.member	desktopMode,392,14,8,8
+    83                        	.member	lastMouseButton,400,5,8,16
+    84                        	.member	lastMouseX,416,5,8,16
+    85                        	.member	lastMouseY,432,5,8,16
+    86                        	.eos
+    87                        	.stag	_fx_desktop_ctl,328,11
+    88                        	.member	desktopMode,0,14,8,8
+    89                        	.member	backgroundColor,8,5,8,16
+    90                        	.member	foregroundColor,24,5,8,16
+    91                        	.member	menuMode,40,5,8,16
+    92                        	.member	lastMouseButton,56,5,8,16
+    93                        	.member	lastMouseX,72,5,8,16
+    94                        	.member	lastMouseY,88,5,8,16
+    95                        	.member	currentDiskName,104,142,8,32
+    96                        	.member	diskNodes,136,129,8,32
+    97                        	.member	titleNodes,168,129,8,32
+    98                        	.member	menuNodes,200,129,8,32
+  Sat Sep 21 2019 15:24                                                Page 3
+
+
+    99                        	.member	iconNodes,232,129,8,32
+   100                        	.member	windowNodes,264,129,8,32
+   101                        	.member	fontNodes,296,129,8,32
+   102                        	.eos
+   103                        	.stag	_fx_process,632,12
+   104                        	.member	cbSize,0,5,8,16
+   105                        	.member	procId,16,18,8,32
+   106                        	.member	ctx,48,129,8,32
+   107                        	.member	userId,80,16,8,16
+   108                        	.member	status,96,16,8,16
+   109                        	.member	foregroundActive,112,14,8,8
+   110                        	.member	tls,120,1121,8,32,8
+   111                        	.member	commandLine,376,142,8,32
+   112                        	.member	semaphores,408,138,8,32,5
+   113                        	.member	fileHandles,440,138,8,32,5
+   114                        	.member	pathList,472,138,8,32,5
+   115                        	.member	resources,504,138,8,32,5
+   116                        	.member	consoleCtl,536,138,8,32,10
+   117                        	.member	desktopCtl,568,138,8,32,11
+   118                        	.member	execProc,600,641,8,32
+   119                        	.eos
+   120                        	.stag	_fxProcessMessage,112,13
+   121                        	.member	src,0,18,8,32
+   122                        	.member	dest,32,18,8,32
+   123                        	.member	type,64,16,8,16
+   124                        	.member	processInfo,80,138,8,32,12
+   125                        	.eos
+   126                        	.stag	_fx_property,384,14
+   127                        	.member	name,0,110,8,0,16
+   128                        	.member	value,128,110,8,0,32
+   129                        	.eos
+   130                        	.utag	_24bitPointer,32,15
+   131                        	.member	address,0,142,11,32
+   132                        	.member	bytes,0,110,11,0,4
+   133                        	.eos
+   134                        	.stag	_PointStruct,32,16
+   135                        	.member	x,0,5,8,16
+   136                        	.member	y,16,5,8,16
+   137                        	.eos
+   138                        	.stag	_RectStruct,64,17
+   139                        	.member	x,0,5,8,16
+   140                        	.member	y,16,5,8,16
+   141                        	.member	width,32,5,8,16
+   142                        	.member	height,48,5,8,16
+   143                        	.eos
+   144                        	.stag	_k_WindowClass,256,18
+   145                        	.member	cbSize,0,16,8,16
+   146                        	.member	style,16,16,8,16
+   147                        	.member	pWndProc,32,654,8,32
+   148                        	.member	hInstance,64,129,8,32
+   149                        	.member	hIcon,96,129,8,32
+   150                        	.member	hCursor,128,129,8,32
+   151                        	.member	hbrBackground,160,129,8,32
+   152                        	.member	lpszMenuName,192,142,8,32
+   153                        	.member	lpszClassName,224,142,8,32
+   154                        	.eos
+   155                        	.stag	_k_WindowStruct,640,19
+   156                        	.member	cbSize,0,16,8,16
+  Sat Sep 21 2019 15:24                                                Page 4
+
+
+   157                        	.member	win_id,16,5,8,16
+   158                        	.member	win_x,32,5,8,16
+   159                        	.member	win_y,48,5,8,16
+   160                        	.member	win_width,64,5,8,16
+   161                        	.member	win_height,80,5,8,16
+   162                        	.member	clickable,96,129,8,32
+   163                        	.member	win_title,128,110,8,0,32
+   164                        	.member	win_class,384,110,8,0,16
+   165                        	.member	procid,512,18,8,32
+   166                        	.member	pWndClass,544,138,8,32,18
+   167                        	.member	pParentWindow,576,129,8,32
+   168                        	.member	pChildWindows,608,138,8,32,5
+   169                        	.eos
+   170                        	.stag	_FontMetric,32,20
+   171                        	.member	width,0,5,8,16
+   172                        	.member	height,16,5,8,16
+   173                        	.eos
+   174                        	.stag	_ctl_Textbox,112,21
+   175                        	.member	win_id,0,5,8,16
+   176                        	.member	win_x,16,5,8,16
+   177                        	.member	win_y,32,5,8,16
+   178                        	.member	win_width,48,5,8,16
+   179                        	.member	win_height,64,5,8,16
+   180                        	.member	content,80,1166,8,32
+   181                        	.eos
+   182                        	.stag	_ClickableRect,80,22
+   183                        	.member	area,0,10,8,64,17
+   184                        	.member	enabled,64,14,8,8
+   185                        	.member	depth,72,14,8,8
+   186                        	.eos
+   187                        	.stag	_MenuStruct,168,23
+   188                        	.member	cx,0,5,8,16
+   189                        	.member	cy,16,5,8,16
+   190                        	.member	width,32,5,8,16
+   191                        	.member	height,48,5,8,16
+   192                        	.member	fcolor,64,14,8,8
+   193                        	.member	bcolor,72,14,8,8
+   194                        	.member	chromeLeft,80,14,8,8
+   195                        	.member	chromeRight1,88,14,8,8
+   196                        	.member	chromeRight2,96,14,8,8
+   197                        	.member	pCaption,104,142,8,32
+   198                        	.member	subMenus,136,1153,8,32
+   199                        	.eos
+   200                        	.stag	_SubMenuStruct,64,24
+   201                        	.member	caption,0,142,8,32
+   202                        	.member	action,32,641,8,32
+   203                        	.eos
+   204                        	.stag	_SubMenuListStruct,40,25
+   205                        	.member	cMenus,0,14,8,8
+   206                        	.member	psubmenus,8,9354,8,32,24
+   207                        	.eos
+   208                        	.stag	_fx_ComBuffer,2080,26
+   209                        	.member	cbSize,0,16,8,16
+   210                        	.member	cbBuffer,16,16,8,16
+   211                        	.member	buffer,32,110,8,0,256
+   212                        	.eos
+   213                        	.line	406
+   214                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:24                                                Page 5
+
+
+                    space\FXOSv1\src\fxos.h",8
+   215                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstringtable.h",0
+   216                        	.line	89
+   217                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",9
+   218                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",0
+   219                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   220                        	.line	406
+   221                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",5
+   222                        	.line	802
+   223                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",10
+   224                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+   225                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   226                        	.line	17
+   227                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",5
+   228                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   229                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   230                        	.line	406
+   231                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",5
+   232                        	.line	49
+   233                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",6
+   234                        	.stag	_fx_zero_page,288,27
+   235                        	.member	fxos_mouse_byte_0,0,14,8,8
+   236                        	.member	fxos_mouse_byte_1,8,14,8,8
+   237                        	.member	fxos_mouse_byte_2,16,14,8,8
+   238                        	.member	fxos_mouse_byte_t,24,14,8,8
+   239                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+   240                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+   241                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+   242                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+   243                        	.member	fxos_key_byte_0,64,14,8,8
+   244                        	.member	fxos_key_byte_1,72,14,8,8
+   245                        	.member	fxos_key_byte_2,80,14,8,8
+   246                        	.member	fxos_mouse_ctl,88,14,8,8
+   247                        	.member	fxos_mouse_index,96,14,8,8
+   248                        	.member	fxos_mouse_status,104,14,8,8
+   249                        	.member	VersionMajor,112,16,8,16
+   250                        	.member	VersionMinor,128,16,8,16
+   251                        	.member	VersionRelease,144,16,8,16
+   252                        	.member	topMemory,160,18,8,32
+   253                        	.member	bottomMemory,192,18,8,32
+   254                        	.member	availableMemory,224,18,8,32
+   255                        	.member	availableMemoryK,256,18,8,32
+   256                        	.eos
+   257                        	.stag	_fx_environment,96,28
+   258                        	.member	variables,0,142,8,32
+  Sat Sep 21 2019 15:24                                                Page 6
+
+
+   259                        	.member	reserved1,32,5,8,16
+   260                        	.member	reserved2,48,5,8,16
+   261                        	.member	reserved3,64,5,8,16
+   262                        	.member	reserved4,80,5,8,16
+   263                        	.eos
+   264                        	.line	153
+   265                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",11
+   266                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   267                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   268                        	.line	134
+   269                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",5
+   270                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   271                        	.line	205
+   272                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",6
+   273                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   274                        	.line	406
+   275                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",7
+   276                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256.h",0
+   277                        	.line	802
+   278                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",8
+   279                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   280                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   281                        	.line	205
+   282                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",5
+   283                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   284                        	.line	406
+   285                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",6
+   286                        	.stag	_fx_string,64,29
+   287                        	.member	size,0,16,8,16
+   288                        	.member	pos,16,16,8,16
+   289                        	.member	buffer,32,142,8,32
+   290                        	.eos
+   291                        	.line	62
+   292                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",9
+   293                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   294                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   295                        	.line	17
+   296                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",5
+   297                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:24                                                Page 7
+
+
+                    space\FXOSv1\src\fxexec.h",0
+   298                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   299                        	.line	406
+   300                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",5
+   301                        	.line	25
+   302                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",6
+   303                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   304                        	.line	49
+   305                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",7
+   306                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   307                        	.line	149
+   308                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",8
+   309                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",0
+   310                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   311                        	.line	406
+   312                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",5
+   313                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   314                        	.line	17
+   315                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",6
+   316                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   317                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   318                        	.line	17
+   319                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",5
+   320                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",0
+   321                        	.line	22
+   322                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",6
+   323                        	.stag	_fx_memory_map,2072,30
+   324                        	.member	availableMemory,0,18,8,32
+   325                        	.member	valid_segments,32,110,8,0,255
+   326                        	.eos
+   327                        	.line	31
+   328                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",7
+   329                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   330                        	.line	633
+   331                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",8
+   332                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   333                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+  Sat Sep 21 2019 15:24                                                Page 8
+
+
+                    space\FXOSv1\src\fxfont.h",0
+   334                        	.line	44
+   335                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",4
+   336                        	.stag	_click_detected,64,31
+   337                        	.member	window,0,138,8,32,19
+   338                        	.member	handler,32,641,8,32
+   339                        	.eos
+   340                        	.stag	_current_palette_map,400,32
+   341                        	.member	CUR_DESKTOP,0,5,8,16
+   342                        	.member	CUR_BACKGROUND,16,5,8,16
+   343                        	.member	CUR_FONT,32,5,8,16
+   344                        	.member	CUR_SELECTED_FONT,48,5,8,16
+   345                        	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+   346                        	.member	CUR_WINDOWFRAME,80,5,8,16
+   347                        	.member	CUR_WINDOWBORDER,96,5,8,16
+   348                        	.member	CUR_WINDOWSHADOW,112,5,8,16
+   349                        	.member	CUR_MENU,128,5,8,16
+   350                        	.member	CUR_GADGET,144,5,8,16
+   351                        	.member	CUR_COLOR,160,101,8,0,15
+   352                        	.eos
+   353                        	.line	167
+   354                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindows.h",9
+   355                        	.line	92
+   356                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",9
+   357                        	.stag	_fx_main_loopvars,16,33
+   358                        	.member	dummy,0,5,8,16
+   359                        	.eos
+   360                        	.stag	_fxMouseMessageData,64,34
+   361                        	.member	button1,0,14,8,8
+   362                        	.member	button2,8,14,8,8
+   363                        	.member	button3,16,14,8,8
+   364                        	.member	button4,24,14,8,8
+   365                        	.member	x,32,16,8,16
+   366                        	.member	y,48,16,8,16
+   367                        	.eos
+   368                        	.stag	_fx_eventProcess,64,35
+   369                        	.member	process,0,138,8,32,12
+   370                        	.member	eventProc,32,641,8,32
+   371                        	.eos
+   372                        	.stag	_mouse_msg_state,184,36
+   373                        	.member	lastEvent,0,18,8,32
+   374                        	.member	buttonLeftDown,32,14,8,8
+   375                        	.member	lastLeftDown,40,18,8,32
+   376                        	.member	buttonRightDown,72,14,8,8
+   377                        	.member	lastRightDown,80,18,8,32
+   378                        	.member	buttonMiddleDown,112,14,8,8
+   379                        	.member	lastMiddleDown,120,18,8,32
+   380                        	.member	lastX,152,16,8,16
+   381                        	.member	lastY,168,16,8,16
+   382                        	.eos
+   383                        	data
+   384                        ~~_k_keyCodesSet:
+   385 00:0000: 00 1B 31 32  	db	$0,$1B,$31,$32,$33,$34,$35,$36,$37,$38
+       00:0004: 33 34 35 36 
+       00:0008: 37 38 
+  Sat Sep 21 2019 15:24                                                Page 9
+
+
+   386 00:000A: 39 30 2D 3D  	db	$39,$30,$2D,$3D,$8,$9,$71,$77,$65,$72
+       00:000E: 08 09 71 77 
+       00:0012: 65 72 
+   387 00:0014: 74 79 75 69  	db	$74,$79,$75,$69,$6F,$70,$5B,$5D,$D,$0
+       00:0018: 6F 70 5B 5D 
+       00:001C: 0D 00 
+   388 00:001E: 61 73 64 66  	db	$61,$73,$64,$66,$67,$68,$6A,$6B,$6C,$3B
+       00:0022: 67 68 6A 6B 
+       00:0026: 6C 3B 
+   389 00:0028: 27 60 00 5C  	db	$27,$60,$0,$5C,$7A,$78,$63,$76,$62,$6E
+       00:002C: 7A 78 63 76 
+       00:0030: 62 6E 
+   390 00:0032: 6D 2C 2E 2F  	db	$6D,$2C,$2E,$2F,$0,$2A,$0,$20,$0,$0
+       00:0036: 00 2A 00 20 
+       00:003A: 00 00 
+   391 00:003C: 00 00 00 00  	db	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+       00:0040: 00 00 00 00 
+       00:0044: 00 00 
+   392 00:0046: 00 37 38 39  	db	$0,$37,$38,$39,$2D,$34,$35,$36,$2B,$31
+       00:004A: 2D 34 35 36 
+       00:004E: 2B 31 
+   393 00:0050: 32 33 30 2E  	db	$32,$33,$30,$2E,$0,$0,$0,$0,$0
+       00:0054: 00 00 00 00 
+       00:0058: 00 
+   394 00:0059:              	ends
+   395                        	data
+   396                        ~~_k_keyCodesShiftSet:
+   397 00:0059: 00 1B 21 40  	db	$0,$1B,$21,$40,$23,$24,$25,$5E,$26,$2A
+       00:005D: 23 24 25 5E 
+       00:0061: 26 2A 
+   398 00:0063: 28 29 5F 2B  	db	$28,$29,$5F,$2B,$8,$9,$51,$57,$45,$52
+       00:0067: 08 09 51 57 
+       00:006B: 45 52 
+   399 00:006D: 54 59 55 49  	db	$54,$59,$55,$49,$4F,$50,$7B,$7D,$D,$0
+       00:0071: 4F 50 7B 7D 
+       00:0075: 0D 00 
+   400 00:0077: 41 53 44 46  	db	$41,$53,$44,$46,$47,$48,$4A,$4B,$4C,$3A
+       00:007B: 47 48 4A 4B 
+       00:007F: 4C 3A 
+   401 00:0081: 22 7E 00 7C  	db	$22,$7E,$0,$7C,$5A,$58,$43,$56,$42,$4E
+       00:0085: 5A 58 43 56 
+       00:0089: 42 4E 
+   402 00:008B: 4D 3C 3E 3F  	db	$4D,$3C,$3E,$3F,$0,$2A,$0,$20,$0,$0
+       00:008F: 00 2A 00 20 
+       00:0093: 00 00 
+   403 00:0095: 00 00 00 00  	db	$0,$0,$0,$0,$0,$0,$0,$0,$0,$0
+       00:0099: 00 00 00 00 
+       00:009D: 00 00 
+   404 00:009F: 00 37 38 39  	db	$0,$37,$38,$39,$2D,$34,$35,$36,$2B,$31
+       00:00A3: 2D 34 35 36 
+       00:00A7: 2B 31 
+   405 00:00A9: 32 33 30 2E  	db	$32,$33,$30,$2E,$0,$0,$0,$0,$0
+       00:00AD: 00 00 00 00 
+       00:00B1: 00 
+   406 00:00B2:              	ends
+   407                        	data
+   408                        ~~_k_keyCodesExtSet:
+   409 00:00B2: 00           	db	$0
+  Sat Sep 21 2019 15:24                                                Page 10
+
+
+   410 00:00B3:              	ends
+   411                        	.line	633
+   412                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",10
+   413                        	.stag	_fx_spinner_ctx,48,37
+   414                        	.member	index,0,5,8,16
+   415                        	.member	spinner,16,142,8,32
+   416                        	.eos
+   417                        	.stag	_fx_console_ctx,1144,38
+   418                        	.member	lineBufferIndex,0,5,8,16
+   419                        	.member	lineBuffer,16,110,8,0,128
+   420                        	.member	isShifted,1040,14,8,8
+   421                        	.member	userData,1048,129,8,32
+   422                        	.member	screenBuffer,1080,129,8,32
+   423                        	.member	Reserved1,1112,129,8,32
+   424                        	.eos
+   425                        	.stag	_token,64,39
+   426                        	.member	type,0,5,8,16
+   427                        	.member	depth,16,16,8,16
+   428                        	.member	text,32,142,8,32
+   429                        	.eos
+   430                        	.stag	_command_args,64,40
+   431                        	.member	proc,0,656,8,32
+   432                        	.member	tokens,32,138,8,32,4
+   433                        	.eos
+   434                        	.line	149
+   435                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",12
+   436                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   437                        	.line	62
+   438                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",13
+   439                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   440                        	.line	49
+   441                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",14
+   442                        	.line	17
+   443                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstartup.h",5
+   444                        	.stag	_fx_irq_data,48,41
+   445                        	.member	line,0,5,8,16
+   446                        	.member	keycode,16,142,8,32
+   447                        	.eos
+   448                        	.stag	_task,48,42
+   449                        	.member	SPL,0,14,8,8
+   450                        	.member	SPH,8,14,8,8
+   451                        	.member	pstack,16,142,8,32
+   452                        	.eos
+   453                        	.stag	_task_stack,32,43
+   454                        	.member	SS,0,142,8,32
+   455                        	.eos
+   456                        	.stag	int_regs,104,44
+   457                        	.member	PB,0,14,8,8
+   458                        	.member	PH,8,14,8,8
+   459                        	.member	PL,16,14,8,8
+   460                        	.member	PP,24,14,8,8
+  Sat Sep 21 2019 15:24                                                Page 11
+
+
+   461                        	.member	DB,32,14,8,8
+   462                        	.member	DH,40,14,8,8
+   463                        	.member	DL,48,14,8,8
+   464                        	.member	AH,56,14,8,8
+   465                        	.member	AL,64,14,8,8
+   466                        	.member	XH,72,14,8,8
+   467                        	.member	XL,80,14,8,8
+   468                        	.member	YH,88,14,8,8
+   469                        	.member	YL,96,14,8,8
+   470                        	.eos
+   471                        	.line	198
+   472                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstartup.c",2
+   473                        ;
+   474                        ;//#pragma section CODE=FCODE,OFFSET $15:0000
+   475                        ;//extern char _END_UDATA;
+   476                        ;//void *heap_start=(void*)&_END_UDATA,*heap_end=(
+                    void*)(&_END_UDATA + 0x1000);
+   477                        ;
+   478                        ;
+   479                        ;
+   480                        ;char cc = 0;
+   481                        	data
+   482                        	xdef	~~cc
+   483                        ~~cc:
+   484 00:00B3: 00           	db	$0
+   485 00:00B4:              	ends
+   486                        ;
+   487                        ;static char scirq0 = 0;
+   488                        	data
+   489                        ~~scirq0:
+   490 00:00B4: 00           	db	$0
+   491 00:00B5:              	ends
+   492                        ;static char scirq00 = 0;
+   493                        	data
+   494                        ~~scirq00:
+   495 00:00B5: 00           	db	$0
+   496 00:00B6:              	ends
+   497                        ;static char scirq01 = 0;
+   498                        	data
+   499                        ~~scirq01:
+   500 00:00B6: 00           	db	$0
+   501 00:00B7:              	ends
+   502                        ;static char scirq02 = 0;
+   503                        	data
+   504                        ~~scirq02:
+   505 00:00B7: 00           	db	$0
+   506 00:00B8:              	ends
+   507                        ;static char scirq03 = 0;
+   508                        	data
+   509                        ~~scirq03:
+   510 00:00B8: 00           	db	$0
+   511 00:00B9:              	ends
+   512                        ;static char scirq04 = 0;
+   513                        	data
+   514                        ~~scirq04:
+   515 00:00B9: 00           	db	$0
+   516 00:00BA:              	ends
+  Sat Sep 21 2019 15:24                                                Page 12
+
+
+   517                        ;static char scirq05 = 0;
+   518                        	data
+   519                        ~~scirq05:
+   520 00:00BA: 00           	db	$0
+   521 00:00BB:              	ends
+   522                        ;static char scirq06 = 0;
+   523                        	data
+   524                        ~~scirq06:
+   525 00:00BB: 00           	db	$0
+   526 00:00BC:              	ends
+   527                        ;static char scirq07 = 0;
+   528                        	data
+   529                        ~~scirq07:
+   530 00:00BC: 00           	db	$0
+   531 00:00BD:              	ends
+   532                        ;
+   533                        ;static char scirq1 = 0;
+   534                        	data
+   535                        ~~scirq1:
+   536 00:00BD: 00           	db	$0
+   537 00:00BE:              	ends
+   538                        ;static char scirq10 = 0;
+   539                        	data
+   540                        ~~scirq10:
+   541 00:00BE: 00           	db	$0
+   542 00:00BF:              	ends
+   543                        ;static char scirq11 = 0;
+   544                        	data
+   545                        ~~scirq11:
+   546 00:00BF: 00           	db	$0
+   547 00:00C0:              	ends
+   548                        ;static char scirq12 = 0;
+   549                        	data
+   550                        ~~scirq12:
+   551 00:00C0: 00           	db	$0
+   552 00:00C1:              	ends
+   553                        ;static char scirq13 = 0;
+   554                        	data
+   555                        ~~scirq13:
+   556 00:00C1: 00           	db	$0
+   557 00:00C2:              	ends
+   558                        ;static char scirq14 = 0;
+   559                        	data
+   560                        ~~scirq14:
+   561 00:00C2: 00           	db	$0
+   562 00:00C3:              	ends
+   563                        ;static char scirq15 = 0;
+   564                        	data
+   565                        ~~scirq15:
+   566 00:00C3: 00           	db	$0
+   567 00:00C4:              	ends
+   568                        ;static char scirq16 = 0;
+   569                        	data
+   570                        ~~scirq16:
+   571 00:00C4: 00           	db	$0
+   572 00:00C5:              	ends
+   573                        ;static char scirq17 = 0;
+   574                        	data
+  Sat Sep 21 2019 15:24                                                Page 13
+
+
+   575                        ~~scirq17:
+   576 00:00C5: 00           	db	$0
+   577 00:00C6:              	ends
+   578                        ;
+   579                        ;static char scirq2 = 0;
+   580                        	data
+   581                        ~~scirq2:
+   582 00:00C6: 00           	db	$0
+   583 00:00C7:              	ends
+   584                        ;static char scirq20 = 0;
+   585                        	data
+   586                        ~~scirq20:
+   587 00:00C7: 00           	db	$0
+   588 00:00C8:              	ends
+   589                        ;static char scirq21 = 0;
+   590                        	data
+   591                        ~~scirq21:
+   592 00:00C8: 00           	db	$0
+   593 00:00C9:              	ends
+   594                        ;static char scirq22 = 0;
+   595                        	data
+   596                        ~~scirq22:
+   597 00:00C9: 00           	db	$0
+   598 00:00CA:              	ends
+   599                        ;static char scirq23 = 0;
+   600                        	data
+   601                        ~~scirq23:
+   602 00:00CA: 00           	db	$0
+   603 00:00CB:              	ends
+   604                        ;static char scirq24 = 0;
+   605                        	data
+   606                        ~~scirq24:
+   607 00:00CB: 00           	db	$0
+   608 00:00CC:              	ends
+   609                        ;static char scirq25 = 0;
+   610                        	data
+   611                        ~~scirq25:
+   612 00:00CC: 00           	db	$0
+   613 00:00CD:              	ends
+   614                        ;static char scirq26 = 0;
+   615                        	data
+   616                        ~~scirq26:
+   617 00:00CD: 00           	db	$0
+   618 00:00CE:              	ends
+   619                        ;static char scirq27 = 0;
+   620                        	data
+   621                        ~~scirq27:
+   622 00:00CE: 00           	db	$0
+   623 00:00CF:              	ends
+   624                        ;
+   625                        ;static char scts = 0;
+   626                        	data
+   627                        ~~scts:
+   628 00:00CF: 00           	db	$0
+   629 00:00D0:              	ends
+   630                        ;static char sct1 = 0;
+   631                        	data
+   632                        ~~sct1:
+  Sat Sep 21 2019 15:24                                                Page 14
+
+
+   633 00:00D0: 00           	db	$0
+   634 00:00D1:              	ends
+   635                        ;static char sct2 = 0;
+   636                        	data
+   637                        ~~sct2:
+   638 00:00D1: 00           	db	$0
+   639 00:00D2:              	ends
+   640                        ;static char taskindex = 0;
+   641                        	data
+   642                        ~~taskindex:
+   643 00:00D2: 00           	db	$0
+   644 00:00D3:              	ends
+   645                        ;
+   646                        ;static char scsof = 0;
+   647                        	data
+   648                        ~~scsof:
+   649 00:00D3: 00           	db	$0
+   650 00:00D4:              	ends
+   651                        ;
+   652                        ;static char sc = 0;
+   653                        	data
+   654                        ~~sc:
+   655 00:00D4: 00           	db	$0
+   656 00:00D5:              	ends
+   657                        ;static char sct = 0;
+   658                        	data
+   659                        ~~sct:
+   660 00:00D5: 00           	db	$0
+   661 00:00D6:              	ends
+   662                        ;static char scto = 0;
+   663                        	data
+   664                        ~~scto:
+   665 00:00D6: 00           	db	$0
+   666 00:00D7:              	ends
+   667                        ;
+   668                        ;static char sccop = 0;
+   669                        	data
+   670                        ~~sccop:
+   671 00:00D7: 00           	db	$0
+   672 00:00D8:              	ends
+   673                        ;static char scbrk = 0;
+   674                        	data
+   675                        ~~scbrk:
+   676 00:00D8: 00           	db	$0
+   677 00:00D9:              	ends
+   678                        ;static long eirq = 1L;  
+   679                        	data
+   680                        ~~eirq:
+   681 00:00D9: 01 00 00 00  	dl	$1
+   682 00:00DD:              	ends
+   683                        ;static char irqspinner[] = {'|','/','-','\\'};
+   684                        	data
+   685                        ~~irqspinner:
+   686 00:00DD: 7C 2F 2D 5C  	db	$7C,$2F,$2D,$5C
+   687 00:00E1:              	ends
+   688                        ;static char qbuffer[32];
+   689                        ;
+   690                        ;static int irqPos      		= 10;
+  Sat Sep 21 2019 15:24                                                Page 15
+
+
+   691                        	data
+   692                        ~~irqPos:
+   693 00:00E1: 0A 00        	dw	$A
+   694 00:00E3:              	ends
+   695                        ;static int irqSpinPos  		= 0;
+   696                        	data
+   697                        ~~irqSpinPos:
+   698 00:00E3: 00 00        	dw	$0
+   699 00:00E5:              	ends
+   700                        ;static int irqMousePos 		= 0;
+   701                        	data
+   702                        ~~irqMousePos:
+   703 00:00E5: 00 00        	dw	$0
+   704 00:00E7:              	ends
+   705                        ;static int irqKeyPos   		= 0;
+   706                        	data
+   707                        ~~irqKeyPos:
+   708 00:00E7: 00 00        	dw	$0
+   709 00:00E9:              	ends
+   710                        ;static int irqSpinnerPos 	= 20;
+   711                        	data
+   712                        ~~irqSpinnerPos:
+   713 00:00E9: 14 00        	dw	$14
+   714 00:00EB:              	ends
+   715                        ;static int irqCOPPos     	= 0;
+   716                        	data
+   717                        ~~irqCOPPos:
+   718 00:00EB: 00 00        	dw	$0
+   719 00:00ED:              	ends
+   720                        ;
+   721                        ;//static char keyboardBuffer[21] = {'0','0','0','
+                    0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','
+                    0','0','0'};
+   722                        ;//static char keyboardBufferIndex = 0;
+   723                        ;
+   724                        ;unsigned char currentKeyPress = 0;
+   725                        	data
+   726                        	xdef	~~currentKeyPress
+   727                        ~~currentKeyPress:
+   728 00:00ED: 00           	db	$0
+   729 00:00EE:              	ends
+   730                        ;unsigned char isIRQOn = 1;
+   731                        	data
+   732                        	xdef	~~isIRQOn
+   733                        ~~isIRQOn:
+   734 00:00EE: 01           	db	$1
+   735 00:00EF:              	ends
+   736                        ;long 		  irqCount = 0;
+   737                        	data
+   738                        	xdef	~~irqCount
+   739                        ~~irqCount:
+   740 00:00EF: 00 00 00 00  	dl	$0
+   741 00:00F3:              	ends
+   742                        ;
+   743                        ;unsigned char serialChar = 65;
+   744                        	data
+   745                        	xdef	~~serialChar
+   746                        ~~serialChar:
+  Sat Sep 21 2019 15:24                                                Page 16
+
+
+   747 00:00F3: 41           	db	$41
+   748 00:00F4:              	ends
+   749                        ;
+   750                        ;long ctick = 0;
+   751                        	data
+   752                        	xdef	~~ctick
+   753                        ~~ctick:
+   754 00:00F4: 00 00 00 00  	dl	$0
+   755 00:00F8:              	ends
+   756                        ;//long ktick = 0;
+   757                        ;
+   758                        ;int timeout = 0; 
+   759                        	data
+   760                        	xdef	~~timeout
+   761                        ~~timeout:
+   762 00:00F8: 00 00        	dw	$0
+   763 00:00FA:              	ends
+   764                        ;int keyboardTimeout = 0;
+   765                        	data
+   766                        	xdef	~~keyboardTimeout
+   767                        ~~keyboardTimeout:
+   768 00:00FA: 00 00        	dw	$0
+   769 00:00FC:              	ends
+   770                        ;
+   771                        ;int taskSwitchCount = 0;
+   772                        	data
+   773                        	xdef	~~taskSwitchCount
+   774                        ~~taskSwitchCount:
+   775 00:00FC: 00 00        	dw	$0
+   776 00:00FE:              	ends
+   777                        ;
+   778                        ;//static TASK_STACK stacks[2] = {{0x00,0x40,0x00,
+                    0x40,NULL},{0x00,0x41,0x00,0x41,NULL}};
+   779                        ;static TASK_STACK stacks[2] = {{(unsigned char fa
+                    r*)0x004000},{(unsigned char far*)0x004100}};
+   780                        	data
+   781                        ~~stacks:
+   782 00:00FE: 00 40 00 00  	dl	$4000,$4100
+       00:0102: 00 41 00 00 
+   783 00:0106:              	ends
+   784                        ;
+   785                        ;
+   786                        ;static task_type mtasks[2] = {NULL,NULL};
+   787                        	data
+   788                        ~~mtasks:
+   789 00:0106: 00 00 00 00  	dl	$0,$0
+       00:010A: 00 00 00 00 
+   790 00:010E:              	ends
+   791                        ;static TASK tasks[2];
+   792                        ;
+   793                        ;
+   794                        ;//static char k16buffer[16]; // moved to kernel
+   795                        ;static char itoaBuffer[16];
+   796                        ;//static char bytetohex[] = {'0','1','2','3','4',
+                    '5','6','7','8','9','A','B','C','D','E','F'};
+   797                        ;//static char bytetodec[] = {'0','1','2','3','4',
+                    '5','6','7','8','9'};
+   798                        ;
+  Sat Sep 21 2019 15:24                                                Page 17
+
+
+   799                        ;
+   800                        ;static unsigned char statusReg = 0x00;
+   801                        	data
+   802                        ~~statusReg:
+   803 00:010E: 00           	db	$0
+   804 00:010F:              	ends
+   805                        ;
+   806                        ;//#define CHK_KEYMOUSE_CTL  (0x02)
+   807                        ;
+   808                        ;
+   809                        ;void disable(void)
+   810                        ;{
+   811                        	.line	102
+   812                        	.line	103
+   813                        	code
+   814                        	xdef	~~disable
+   815                        	func
+   816                        	.function	103
+   817                        ~~disable:
+   818                        	longa	on
+   819                        	longi	on
+   820 00:0000: 3B           	tsc
+   821 00:0001: 38           	sec
+   822 00:0002: E9 00 00     	sbc	#L2
+   823 00:0005: 1B           	tcs
+   824 00:0006: 0B           	phd
+   825 00:0007: 5B           	tcd
+   826                        	.block	103
+   827                        ;	asm sei;
+   828                        	.line	104
+   829                        	asmstart
+   830 00:0008: 78           	sei
+   831                        	asmend
+   832                        ;	//k_set_border_color(255,0,0);
+   833                        ;}
+   834                        	.line	106
+   835                        L5:
+   836 00:0009: 2B           	pld
+   837 00:000A: 3B           	tsc
+   838 00:000B: 18           	clc
+   839 00:000C: 69 00 00     	adc	#L2
+   840 00:000F: 1B           	tcs
+   841 00:0010: 6B           	rtl
+   842                        	.endblock	106
+   843             00000000   L2	equ	0
+   844             00000001   L3	equ	1
+   845                        	ends
+   846                        	efunc
+   847                        	.endfunc	106,1,0
+   848                        	.line	106
+   849                        ;
+   850                        ;void enable(void)
+   851                        ;{
+   852                        	.line	108
+   853                        	.line	109
+   854                        	code
+   855                        	xdef	~~enable
+   856                        	func
+  Sat Sep 21 2019 15:24                                                Page 18
+
+
+   857                        	.function	109
+   858                        ~~enable:
+   859                        	longa	on
+   860                        	longi	on
+   861 00:0011: 3B           	tsc
+   862 00:0012: 38           	sec
+   863 00:0013: E9 00 00     	sbc	#L6
+   864 00:0016: 1B           	tcs
+   865 00:0017: 0B           	phd
+   866 00:0018: 5B           	tcd
+   867                        	.block	109
+   868                        ;	asm cli;
+   869                        	.line	110
+   870                        	asmstart
+   871 00:0019: 58           	cli
+   872                        	asmend
+   873                        ;	//k_set_border_color(0,255,0);
+   874                        ;}
+   875                        	.line	112
+   876                        L9:
+   877 00:001A: 2B           	pld
+   878 00:001B: 3B           	tsc
+   879 00:001C: 18           	clc
+   880 00:001D: 69 00 00     	adc	#L6
+   881 00:0020: 1B           	tcs
+   882 00:0021: 6B           	rtl
+   883                        	.endblock	112
+   884             00000000   L6	equ	0
+   885             00000001   L7	equ	1
+   886                        	ends
+   887                        	efunc
+   888                        	.endfunc	112,1,0
+   889                        	.line	112
+   890                        ;
+   891                        ;
+   892                        ;
+   893                        ;void k_init_multitasking(void)
+   894                        ;{
+   895                        	.line	116
+   896                        	.line	117
+   897                        	code
+   898                        	xdef	~~k_init_multitasking
+   899                        	func
+   900                        	.function	117
+   901                        ~~k_init_multitasking:
+   902                        	longa	on
+   903                        	longi	on
+   904 00:0022: 3B           	tsc
+   905 00:0023: 38           	sec
+   906 00:0024: E9 00 00     	sbc	#L10
+   907 00:0027: 1B           	tcs
+   908 00:0028: 0B           	phd
+   909 00:0029: 5B           	tcd
+   910                        	.block	117
+   911                        ;	
+   912                        ;}
+   913                        	.line	119
+   914                        L13:
+  Sat Sep 21 2019 15:24                                                Page 19
+
+
+   915 00:002A: 2B           	pld
+   916 00:002B: 3B           	tsc
+   917 00:002C: 18           	clc
+   918 00:002D: 69 00 00     	adc	#L10
+   919 00:0030: 1B           	tcs
+   920 00:0031: 6B           	rtl
+   921                        	.endblock	119
+   922             00000000   L10	equ	0
+   923             00000001   L11	equ	1
+   924                        	ends
+   925                        	efunc
+   926                        	.endfunc	119,1,0
+   927                        	.line	119
+   928                        ;
+   929                        ;void k_task_switch(void)
+   930                        ;{
+   931                        	.line	121
+   932                        	.line	122
+   933                        	code
+   934                        	xdef	~~k_task_switch
+   935                        	func
+   936                        	.function	122
+   937                        ~~k_task_switch:
+   938                        	longa	on
+   939                        	longi	on
+   940 00:0032: 3B           	tsc
+   941 00:0033: 38           	sec
+   942 00:0034: E9 00 00     	sbc	#L14
+   943 00:0037: 1B           	tcs
+   944 00:0038: 0B           	phd
+   945 00:0039: 5B           	tcd
+   946                        	.block	122
+   947                        ;	/*
+   948                        ;	k_put_char(9,8,irqspinner[scts++],15,0);	
+   949                        ;	if(scts>3) scts = 0;
+   950                        ;	
+   951                        ;	taskindex=!taskindex;
+   952                        ;	*/
+   953                        ;}
+   954                        	.line	129
+   955                        L17:
+   956 00:003A: 2B           	pld
+   957 00:003B: 3B           	tsc
+   958 00:003C: 18           	clc
+   959 00:003D: 69 00 00     	adc	#L14
+   960 00:0040: 1B           	tcs
+   961 00:0041: 6B           	rtl
+   962                        	.endblock	129
+   963             00000000   L14	equ	0
+   964             00000001   L15	equ	1
+   965                        	ends
+   966                        	efunc
+   967                        	.endfunc	129,1,0
+   968                        	.line	129
+   969                        ;
+   970                        ;/*
+   971                        ;
+   972                        ;typedef struct _task
+  Sat Sep 21 2019 15:24                                                Page 20
+
+
+   973                        ;{
+   974                        ;	unsigned char SPL;
+   975                        ;	unsigned char SPH;
+   976                        ;	char far *pstack;
+   977                        ;}TASK;
+   978                        ;
+   979                        ;typedef struct int_regs
+   980                        ;{
+   981                        ;	unsigned char PB;
+   982                        ;	unsigned char PH;
+   983                        ;	unsigned char PL;
+   984                        ;	unsigned char PP;
+   985                        ;	unsigned char DB;
+   986                        ;	unsigned char DH;
+   987                        ;	unsigned char DL;	
+   988                        ;	unsigned char AH;
+   989                        ;	unsigned char AL;
+   990                        ;	unsigned char XH;
+   991                        ;	unsigned char XL;
+   992                        ;	unsigned char YH;
+   993                        ;	unsigned char YL;		
+   994                        ;}INT_REGS;
+   995                        ;*/
+   996                        ;
+   997                        ;void t_make_task(task_type task,unsigned int ssiz
+                    e,int id)
+   998                        ;{
+   999                        	.line	158
+  1000                        	.line	159
+  1001                        	code
+  1002                        	xdef	~~t_make_task
+  1003                        	func
+  1004                        	.function	159
+  1005                        ~~t_make_task:
+  1006                        	longa	on
+  1007                        	longi	on
+  1008 00:0042: 3B           	tsc
+  1009 00:0043: 38           	sec
+  1010 00:0044: E9 08 00     	sbc	#L18
+  1011 00:0047: 1B           	tcs
+  1012 00:0048: 0B           	phd
+  1013 00:0049: 5B           	tcd
+  1014             00000004   task_0	set	4
+  1015             00000008   ssize_0	set	8
+  1016             0000000A   id_0	set	10
+  1017                        	.block	159
+  1018                        ;	int line = 9;
+  1019                        ;	int tpos = 0;
+  1020                        ;	
+  1021                        ;	PINT_REGS r = NULL;
+  1022                        ;	
+  1023                        ;	disable();
+  1024             00000000   line_1	set	0
+  1025             00000002   tpos_1	set	2
+  1026             00000004   r_1	set	4
+  1027                        	.sym	line,0,5,1,16
+  1028                        	.sym	tpos,2,5,1,16
+  1029                        	.sym	r,4,138,1,32,44
+  Sat Sep 21 2019 15:24                                                Page 21
+
+
+  1030                        	.sym	task,4,641,6,32
+  1031                        	.sym	ssize,8,16,6,16
+  1032                        	.sym	id,10,5,6,16
+  1033                        	.line	165
+  1034                        ;	
+  1035                        ;	mtasks[id] = task;
+  1036                        	.line	167
+  1037                        ;	tasks[id].pstack = stacks[id].SS;
+  1038                        	.line	168
+  1039                        ;	
+  1040                        ;	k_debug_pointer("t_make_task:0x",task);
+  1041                        	.line	170
+  1042                        ;
+  1043                        ;	/*
+  1044                        ;	tpos = k_put_string((20*id),line,"@:",15,0);	
+  1045                        ;	tpos = k_put_string(tpos,line,k_bytetohex(H24BYT
+                    E((void far*)task),k16buffer),15,0);
+  1046                        ;	tpos = k_put_string(tpos,line,k_bytetohex(M24BYT
+                    E((void far*)task),k16buffer),15,0);
+  1047                        ;	tpos = k_put_string(tpos,line,k_bytetohex(L24BYT
+                    E((void far*)task),k16buffer),15,0);
+  1048                        ;	tpos++;
+  1049                        ;	tpos = k_put_string(tpos,line,"S:",15,0);
+  1050                        ;	tpos = k_put_string(tpos,line,k_bytetohex(H24BYT
+                    E((void far*)tasks[id].pstack),k16buffer),15,0);
+  1051                        ;	tpos = k_put_string(tpos,line,k_bytetohex(M24BYT
+                    E((void far*)tasks[id].pstack),k16buffer),15,0);
+  1052                        ;	tpos = k_put_string(tpos,line,k_bytetohex(L24BYT
+                    E((void far*)tasks[id].pstack),k16buffer),15,0);
+  1053                        ;	*/
+  1054                        ;	
+  1055                        ;	//tpos = k_put_string(tpos,line,k_itoa(H24BYTE(t
+                    ask),tbuffer,16),15,0);
+  1056                        ;	//tpos = k_put_string(tpos,line,k_itoa(M24BYTE(t
+                    ask),tbuffer,16),15,0);
+  1057                        ;	//tpos = k_put_string(tpos,line,k_itoa(L24BYTE(t
+                    ask),tbuffer,16),15,0);
+  1058                        ;
+  1059                        ;
+  1060                        ;	/*
+  1061                        ;	tpos++;
+  1062                        ;	tpos = k_put_string(tpos,line,"S:",15,0);	
+  1063                        ;	k_pad_string(strbuf,k_itoa(H24BYTE((char far*)ta
+                    sks[id].pstack),tbuffer,16),'0',2);
+  1064                        ;	tpos = k_put_string(tpos,line,strbuf,15,0);
+  1065                        ;	k_pad_string(strbuf,k_itoa(M24BYTE((char far*)ta
+                    sks[id].pstack),tbuffer,16),'0',2);
+  1066                        ;	tpos = k_put_string(tpos,line,strbuf,15,0);
+  1067                        ;	k_pad_string(strbuf,k_itoa(L24BYTE((char far*)ta
+                    sks[id].pstack),tbuffer,16),'0',2);
+  1068                        ;	tpos = k_put_string(tpos,line,strbuf,15,0);
+  1069                        ;	*/
+  1070                        ;	
+  1071                        ;	tasks[id].SPL = offsetof(struct int_regs,PP);
+  1072                        	.line	200
+  1073                        ;	tasks[id].SPH = 0x00;
+  1074                        	.line	201
+  1075                        ;	
+  Sat Sep 21 2019 15:24                                                Page 22
+
+
+  1076                        ;	r = (PINT_REGS)tasks[id].pstack;
+  1077                        	.line	203
+  1078                        ;	r->PB = H24BYTE((void far*)task);
+  1079                        	.line	204
+  1080                        ;	r->PH = M24BYTE((void far*)task);
+  1081                        	.line	205
+  1082                        ;	r->PL = L24BYTE((void far*)task);
+  1083                        	.line	206
+  1084                        ;	r->PP = 0x00; // will have irqs enabled
+  1085                        	.line	207
+  1086                        ;
+  1087                        ;	r->DB = 0x00;
+  1088                        	.line	209
+  1089                        ;	r->DH = 0x00;
+  1090                        	.line	210
+  1091                        ;	r->DL = 0x00;
+  1092                        	.line	211
+  1093                        ;	r->AH = 0x00;
+  1094                        	.line	212
+  1095                        ;	r->AL = 0x00;
+  1096                        	.line	213
+  1097                        ;	r->XH = 0x00;
+  1098                        	.line	214
+  1099                        ;	r->XL = 0x00;
+  1100                        	.line	215
+  1101                        ;	r->YH = 0x00;
+  1102                        	.line	216
+  1103                        ;	r->YL = 0x00;
+  1104                        	.line	217
+  1105                        ;
+  1106                        ;	enable();
+  1107                        	.line	219
+  1108                        ;}
+  1109                        	.line	220
+  1110                        L21:
+  1111 00:004A: A5 0A        	lda	<L18+2
+  1112 00:004C: 85 12        	sta	<L18+2+8
+  1113 00:004E: A5 09        	lda	<L18+1
+  1114 00:0050: 85 11        	sta	<L18+1+8
+  1115 00:0052: 2B           	pld
+  1116 00:0053: 3B           	tsc
+  1117 00:0054: 18           	clc
+  1118 00:0055: 69 10 00     	adc	#L18+8
+  1119 00:0058: 1B           	tcs
+  1120 00:0059: 6B           	rtl
+  1121                        	.endblock	220
+  1122             00000008   L18	equ	8
+  1123             00000001   L19	equ	1
+  1124                        	ends
+  1125                        	efunc
+  1126                        	.endfunc	220,1,8
+  1127                        	.line	220
+  1128                        	data
+  1129                        L1:
+  1130 00:010F: 74 5F 6D 61  	db	$74,$5F,$6D,$61,$6B,$65,$5F,$74,$61,$73,
+                    $6B,$3A,$30,$78,$00
+       00:0113: 6B 65 5F 74 
+       00:0117: 61 73 6B 3A 
+  Sat Sep 21 2019 15:24                                                Page 23
+
+
+       00:011B: 30 78 00 
+  1131 00:011E:              	ends
+  1132                        ;
+  1133                        ;void t0(void)
+  1134                        ;{
+  1135                        	.line	222
+  1136                        	.line	223
+  1137                        	code
+  1138                        	xdef	~~t0
+  1139                        	func
+  1140                        	.function	223
+  1141                        ~~t0:
+  1142                        	longa	on
+  1143                        	longi	on
+  1144 00:005A: 3B           	tsc
+  1145 00:005B: 38           	sec
+  1146 00:005C: E9 00 00     	sbc	#L23
+  1147 00:005F: 1B           	tcs
+  1148 00:0060: 0B           	phd
+  1149 00:0061: 5B           	tcd
+  1150                        	.block	223
+  1151                        ;	k_put_char(11,8,irqspinner[sct1++],15,0);	
+  1152                        	.line	224
+  1153                        ;	if(sct1>3) sct1 = 0;	
+  1154                        	.line	225
+  1155                        	.line	225
+  1156                        ;	return;
+  1157                        L10001:
+  1158                        	.line	226
+  1159                        L26:
+  1160 00:0062: 2B           	pld
+  1161 00:0063: 3B           	tsc
+  1162 00:0064: 18           	clc
+  1163 00:0065: 69 00 00     	adc	#L23
+  1164 00:0068: 1B           	tcs
+  1165 00:0069: 6B           	rtl
+  1166                        ;}
+  1167                        	.line	227
+  1168                        	.endblock	227
+  1169             00000000   L23	equ	0
+  1170             00000001   L24	equ	1
+  1171                        	ends
+  1172                        	efunc
+  1173                        	.endfunc	227,1,0
+  1174                        	.line	227
+  1175                        ;
+  1176                        ;void t1(void)
+  1177                        ;{
+  1178                        	.line	229
+  1179                        	.line	230
+  1180                        	code
+  1181                        	xdef	~~t1
+  1182                        	func
+  1183                        	.function	230
+  1184                        ~~t1:
+  1185                        	longa	on
+  1186                        	longi	on
+  1187 00:006A: 3B           	tsc
+  Sat Sep 21 2019 15:24                                                Page 24
+
+
+  1188 00:006B: 38           	sec
+  1189 00:006C: E9 00 00     	sbc	#L27
+  1190 00:006F: 1B           	tcs
+  1191 00:0070: 0B           	phd
+  1192 00:0071: 5B           	tcd
+  1193                        	.block	230
+  1194                        ;	k_put_char(13,8,irqspinner[sct2++],15,0);	
+  1195                        	.line	231
+  1196                        ;	if(sct2>3) sct2 = 0;	
+  1197                        	.line	232
+  1198                        	.line	232
+  1199                        ;	return;
+  1200                        L10002:
+  1201                        	.line	233
+  1202                        L30:
+  1203 00:0072: 2B           	pld
+  1204 00:0073: 3B           	tsc
+  1205 00:0074: 18           	clc
+  1206 00:0075: 69 00 00     	adc	#L27
+  1207 00:0078: 1B           	tcs
+  1208 00:0079: 6B           	rtl
+  1209                        ;}
+  1210                        	.line	234
+  1211                        	.endblock	234
+  1212             00000000   L27	equ	0
+  1213             00000001   L28	equ	1
+  1214                        	ends
+  1215                        	efunc
+  1216                        	.endfunc	234,1,0
+  1217                        	.line	234
+  1218                        ;
+  1219                        ;void k_run_loop(void)
+  1220                        ;{
+  1221                        	.line	236
+  1222                        	.line	237
+  1223                        	code
+  1224                        	xdef	~~k_run_loop
+  1225                        	func
+  1226                        	.function	237
+  1227                        ~~k_run_loop:
+  1228                        	longa	on
+  1229                        	longi	on
+  1230 00:007A: 3B           	tsc
+  1231 00:007B: 38           	sec
+  1232 00:007C: E9 00 00     	sbc	#L31
+  1233 00:007F: 1B           	tcs
+  1234 00:0080: 0B           	phd
+  1235 00:0081: 5B           	tcd
+  1236                        	.block	237
+  1237                        ;	t_make_task((task_type)t1,100,0);
+  1238                        	.line	238
+  1239                        ;	t_make_task((task_type)t0,100,1);
+  1240                        	.line	239
+  1241                        ;
+  1242                        ;	
+  1243                        ;	asm cli;
+  1244                        	.line	242
+  1245                        	asmstart
+  Sat Sep 21 2019 15:24                                                Page 25
+
+
+  1246 00:0082: 58           	cli
+  1247                        	asmend
+  1248                        ;
+  1249                        ;	k_init_keyboard();
+  1250                        	.line	244
+  1251                        ;	k_uart_enableirq_ports();
+  1252                        	.line	245
+  1253                        ;
+  1254                        ;	//k_print_uart_status_com1(30);
+  1255                        ;	//k_print_uart_status_com2(31);
+  1256                        ;
+  1257                        ;	
+  1258                        ;	statusReg&=CHK_KEYMOUSE_CTL;
+  1259                        	.line	251
+  1260                        ;	
+  1261                        ;	k_debug_string("enter run loop\r\n");
+  1262                        	.line	253
+  1263                        ;
+  1264                        ;	while(TRUE)
+  1265                        	.line	255
+  1266                        L10003:
+  1267                        ;	{
+  1268                        	.line	256
+  1269                        ;		asm sei;
+  1270                        	.line	257
+  1271                        	asmstart
+  1272 00:0083: 78           	sei
+  1273                        	asmend
+  1274                        ;		k_put_char(9,irqSpinPos,irqspinner[sc++]
+                    ,15,0);	
+  1275                        	.line	258
+  1276                        ;		if(sc>3) sc = 0;
+  1277                        	.line	259
+  1278                        	.line	259
+  1279                        ;
+  1280                        ;		if(mtasks[taskindex]!=NULL && isIRQOn !=
+                     0)
+  1281                        L10005:
+  1282                        	.line	261
+  1283                        ;		{
+  1284                        	.line	262
+  1285                        ;			//disable();
+  1286                        ;			//asm sei;
+  1287                        ;			//mtasks[taskindex]();
+  1288                        ;			//enable();
+  1289                        ;			//asm cli;
+  1290                        ;		}
+  1291                        	.line	268
+  1292                        ;		if(currentKeyPress == 0x1F)
+  1293                        L10006:
+  1294                        	.line	269
+  1295                        ;		{
+  1296                        	.line	270
+  1297                        ;			currentKeyPress = 0;
+  1298                        	.line	271
+  1299                        ;			
+  1300                        ;			k_set_border_color(0,0,128);
+  1301                        	.line	273
+  Sat Sep 21 2019 15:24                                                Page 26
+
+
+  1302                        ;
+  1303                        ;			while(!(UART1_BASE[5] & 0x20))
+  1304                        	.line	275
+  1305                        L10008:
+  1306                        ;			{
+  1307                        	.line	276
+  1308                        ;					// waiting;
+  1309                        ;			}
+  1310                        	.line	278
+  1311 00:0084: 82 FD FF     	brl	L10008
+  1312                        L10009:
+  1313                        ;			
+  1314                        ;			while(!(UART2_BASE[5] & 0x20))
+  1315                        	.line	280
+  1316                        L10010:
+  1317                        ;			{
+  1318                        	.line	281
+  1319                        ;					// waiting;
+  1320                        ;			}
+  1321                        	.line	283
+  1322 00:0087: 82 FD FF     	brl	L10010
+  1323                        L10011:
+  1324                        ;			
+  1325                        ;			//UART1_BASE[0] = serialChar;
+  1326                        ;			//k_print_uart_status_com1(30);
+  1327                        ;			UART1_BASE[0] = serialChar++;
+  1328                        	.line	287
+  1329                        ;			UART2_BASE[0] = serialChar++;
+  1330                        	.line	288
+  1331                        ;			//k_print_uart_status_com2(31);
+  1332                        ;			
+  1333                        ;			
+  1334                        ;			//UART1_BASE[0] = 'A';
+  1335                        ;			//asm LDA #'A'			
+  1336                        ;			//k_uart_putbyte();
+  1337                        ;			
+  1338                        ;			k_set_border_color(0,0,255);
+  1339                        	.line	296
+  1340                        ;		}
+  1341                        	.line	297
+  1342                        ;		if(currentKeyPress == 0x2E)
+  1343                        L10007:
+  1344                        	.line	298
+  1345                        ;		{
+  1346                        	.line	299
+  1347                        ;			cc+=10;
+  1348                        	.line	300
+  1349                        ;			k_set_border_color(cc,cc,cc);
+  1350                        	.line	301
+  1351                        ;		}
+  1352                        	.line	302
+  1353                        ;		else if(currentKeyPress == 0x0C)
+  1354 00:008A: 82 01 00     	brl	L10013
+  1355                        L10012:
+  1356                        	.line	303
+  1357                        ;		{
+  1358                        	.line	304
+  1359                        ;			asm sei;
+  Sat Sep 21 2019 15:24                                                Page 27
+
+
+  1360                        	.line	305
+  1361                        	asmstart
+  1362 00:008D: 78           	sei
+  1363                        	asmend
+  1364                        ;			k_set_border_color(255,0,0);
+  1365                        	.line	306
+  1366                        ;			isIRQOn = 0;
+  1367                        	.line	307
+  1368                        ;		}
+  1369                        	.line	308
+  1370                        ;		
+  1371                        ;		if(isIRQOn == 0)
+  1372                        L10014:
+  1373                        L10013:
+  1374                        	.line	310
+  1375                        ;		{
+  1376                        	.line	311
+  1377                        ;			irqCount++;
+  1378                        	.line	312
+  1379                        ;			if(irqCount > 65535)
+  1380                        	.line	313
+  1381                        ;			{
+  1382                        	.line	314
+  1383                        ;				irqCount = 0;
+  1384                        	.line	315
+  1385                        ;				isIRQOn = 1;
+  1386                        	.line	316
+  1387                        ;				asm cli;
+  1388                        	.line	317
+  1389                        	asmstart
+  1390 00:008E: 58           	cli
+  1391                        	asmend
+  1392                        ;				k_set_border_color(0,255
+                    ,0);
+  1393                        	.line	318
+  1394                        ;			}
+  1395                        	.line	319
+  1396                        ;		}
+  1397                        L10016:
+  1398                        	.line	320
+  1399                        ;		/*
+  1400                        ;		timeout++;
+  1401                        ;		if(timeout == 0)
+  1402                        ;		{
+  1403                        ;			if(!statusReg & CHK_KEYMOUSE_CTL
+                    )
+  1404                        ;			{
+  1405                        ;				k_put_char(9,0,irqspinne
+                    r[scto++],15,0);	
+  1406                        ;				if(scto>3) scto = 0;
+  1407                        ;				k_init_keyboard();
+  1408                        ;				timeout = 0;
+  1409                        ;				
+  1410                        ;				statusReg &= ~CHK_KEYMOU
+                    SE_CTL;
+  1411                        ;			}
+  1412                        ;		}
+  1413                        ;		*/
+  Sat Sep 21 2019 15:24                                                Page 28
+
+
+  1414                        ;		/*
+  1415                        ;		eirq++;			
+  1416                        ;		if(eirq > 0xFF)
+  1417                        ;		{
+  1418                        ;			asm COP;
+  1419                        ;			eirq = 0;
+  1420                        ;		}	
+  1421                        ;		*/
+  1422                        ;		asm cli;
+  1423                        L10015:
+  1424                        	.line	344
+  1425                        	asmstart
+  1426 00:008F: 58           	cli
+  1427                        	asmend
+  1428                        ;	}
+  1429                        	.line	345
+  1430 00:0090: 82 F0 FF     	brl	L10003
+  1431                        ;}
+  1432                        	.line	346
+  1433                        	.endblock	346
+  1434             00000000   L31	equ	0
+  1435             00000001   L32	equ	1
+  1436                        	ends
+  1437                        	efunc
+  1438                        	.endfunc	346,1,0
+  1439                        	.line	346
+  1440                        	data
+  1441                        L22:
+  1442 00:011E: 65 6E 74 65  	db	$65,$6E,$74,$65,$72,$20,$72,$75,$6E,$20,
+                    $6C,$6F,$6F,$70,$0D
+       00:0122: 72 20 72 75 
+       00:0126: 6E 20 6C 6F 
+       00:012A: 6F 70 0D 
+  1443 00:012D: 0A 00        	db	$0A,$00
+  1444 00:012F:              	ends
+  1445                        ;
+  1446                        ;int k_system_call(char far* data)
+  1447                        ;{
+  1448                        	.line	348
+  1449                        	.line	349
+  1450                        	code
+  1451                        	xdef	~~k_system_call
+  1452                        	func
+  1453                        	.function	349
+  1454                        ~~k_system_call:
+  1455                        	longa	on
+  1456                        	longi	on
+  1457 00:0093: 3B           	tsc
+  1458 00:0094: 38           	sec
+  1459 00:0095: E9 00 00     	sbc	#L35
+  1460 00:0098: 1B           	tcs
+  1461 00:0099: 0B           	phd
+  1462 00:009A: 5B           	tcd
+  1463             00000004   data_0	set	4
+  1464                        	.block	349
+  1465                        ;	asm COP;
+  1466                        	.sym	data,4,142,6,32
+  1467                        	.line	350
+  Sat Sep 21 2019 15:24                                                Page 29
+
+
+  1468                        	asmstart
+  1469 00:009B: 02 00        	COP
+  1470                        	asmend
+  1471                        ;	
+  1472                        ;	return 0;
+  1473                        	.line	352
+  1474                        L38:
+  1475 00:009D: A8           	tay
+  1476 00:009E: A5 02        	lda	<L35+2
+  1477 00:00A0: 85 06        	sta	<L35+2+4
+  1478 00:00A2: A5 01        	lda	<L35+1
+  1479 00:00A4: 85 05        	sta	<L35+1+4
+  1480 00:00A6: 2B           	pld
+  1481 00:00A7: 3B           	tsc
+  1482 00:00A8: 18           	clc
+  1483 00:00A9: 69 04 00     	adc	#L35+4
+  1484 00:00AC: 1B           	tcs
+  1485 00:00AD: 98           	tya
+  1486 00:00AE: 6B           	rtl
+  1487                        ;}
+  1488                        	.line	353
+  1489                        	.endblock	353
+  1490             00000000   L35	equ	0
+  1491             00000001   L36	equ	1
+  1492                        	ends
+  1493                        	efunc
+  1494                        	.endfunc	353,1,0
+  1495                        	.line	353
+  1496                        ;
+  1497                        ;void k_query_environment(void)
+  1498                        ;{
+  1499                        	.line	355
+  1500                        	.line	356
+  1501                        	code
+  1502                        	xdef	~~k_query_environment
+  1503                        	func
+  1504                        	.function	356
+  1505                        ~~k_query_environment:
+  1506                        	longa	on
+  1507                        	longi	on
+  1508 00:00AF: 3B           	tsc
+  1509 00:00B0: 38           	sec
+  1510 00:00B1: E9 04 00     	sbc	#L39
+  1511 00:00B4: 1B           	tcs
+  1512 00:00B5: 0B           	phd
+  1513 00:00B6: 5B           	tcd
+  1514                        	.block	356
+  1515                        ;	int pos = 0;
+  1516                        ;	int line = 1;
+  1517                        ;
+  1518                        ;	k_put_string(pos,line,"IRQ REGISTER DISPLAY TOOL
+                    ",15,0);
+  1519             00000000   pos_1	set	0
+  1520             00000002   line_1	set	2
+  1521                        	.sym	pos,0,5,1,16
+  1522                        	.sym	line,2,5,1,16
+  1523                        	.line	360
+  1524                        ;
+  Sat Sep 21 2019 15:24                                                Page 30
+
+
+  1525                        ;
+  1526                        ;	pos = 0;
+  1527                        	.line	363
+  1528                        ;	line = 5;
+  1529                        	.line	364
+  1530                        ;
+  1531                        ;	
+  1532                        ;	pos = k_put_string(pos,line,"C256 Version:",15,0
+                    );
+  1533                        	.line	367
+  1534                        ;	k_get_c256_major_version(qbuffer);
+  1535                        	.line	368
+  1536                        ;	pos = k_put_string(pos,line,qbuffer,15,0);
+  1537                        	.line	369
+  1538                        ;	k_get_c256_minor_version(qbuffer);
+  1539                        	.line	370
+  1540                        ;	pos = k_put_string(pos,line,qbuffer,15,0);
+  1541                        	.line	371
+  1542                        ;
+  1543                        ;	pos  = 0;
+  1544                        	.line	373
+  1545                        ;	line = 6;
+  1546                        	.line	374
+  1547                        ;
+  1548                        ;	pos = k_put_string(pos,line,"FPGA Version:",15,0
+                    );
+  1549                        	.line	376
+  1550                        ;	k_get_fpga_date_month(qbuffer);
+  1551                        	.line	377
+  1552                        ;	pos = k_put_string(pos,line,qbuffer,15,0);
+  1553                        	.line	378
+  1554                        ;	pos = k_put_string(pos,line,"/",15,0);
+  1555                        	.line	379
+  1556                        ;	k_get_fpga_date_day(qbuffer);
+  1557                        	.line	380
+  1558                        ;	pos = k_put_string(pos,line,qbuffer,15,0);
+  1559                        	.line	381
+  1560                        ;	pos = k_put_string(pos,line,"/",15,0);;
+  1561                        	.line	382
+  1562                        	.line	382
+  1563                        ;	k_get_fpga_date_year(qbuffer);
+  1564                        	.line	383
+  1565                        ;	pos = k_put_string(pos,line,qbuffer,15,0);
+  1566                        	.line	384
+  1567                        ;
+  1568                        ;	pos  = 0;
+  1569                        	.line	386
+  1570                        ;	line = 8;
+  1571                        	.line	387
+  1572                        ;	pos = k_put_string(pos,line,"TASKTICK:",15,0);
+  1573                        	.line	388
+  1574                        ;	
+  1575                        ;	
+  1576                        ;	
+  1577                        ;	pos  = 0;
+  1578                        	.line	392
+  1579                        ;	line = irqPos;
+  1580                        	.line	393
+  Sat Sep 21 2019 15:24                                                Page 31
+
+
+  1581                        ;	line++;
+  1582                        	.line	394
+  1583                        ;	
+  1584                        ;	irqMousePos = line;	
+  1585                        	.line	396
+  1586                        ;	pos = k_put_string(0,line++,"MOUSE   :",15,0);
+  1587                        	.line	397
+  1588                        ;	
+  1589                        ;	irqKeyPos = line;	
+  1590                        	.line	399
+  1591                        ;	pos = k_put_string(0,line++,"KEYCODE :",15,0);
+  1592                        	.line	400
+  1593                        ;	line++;
+  1594                        	.line	401
+  1595                        ;	
+  1596                        ;	irqSpinPos = line;
+  1597                        	.line	403
+  1598                        ;	
+  1599                        ;	pos = k_put_string(0,line++,"CPU     :",15,0);
+  1600                        	.line	405
+  1601                        ;	pos = k_put_string(0,line++,"BRK     :",15,0);
+  1602                        	.line	406
+  1603                        ;	
+  1604                        ;	irqCOPPos = line;
+  1605                        	.line	408
+  1606                        ;	
+  1607                        ;	pos = k_put_string(0,line++,"COP     :",15,0);	
+  1608                        	.line	410
+  1609                        ;	line++;
+  1610                        	.line	411
+  1611                        ;	//pos = //k_put_string(17,47," > ODD SOF COUNT T
+                    RIGGER COP",15,0);	
+  1612                        ;	
+  1613                        ;	pos = k_put_string(0,irqSpinnerPos-1,"IRQ     :*
+                    01234567",15,0);
+  1614                        	.line	414
+  1615                        ;	
+  1616                        ;	//irqSpinnerPos = line;
+  1617                        ;	line = irqSpinnerPos;
+  1618                        	.line	417
+  1619                        ;	
+  1620                        ;	pos = k_put_string(0,line++,"REG0    :",15,0);
+  1621                        	.line	419
+  1622                        ;	pos = k_put_string(0,line++,"REG1    :",15,0);
+  1623                        	.line	420
+  1624                        ;	pos = k_put_string(0,line++,"REG2    :",15,0);
+  1625                        	.line	421
+  1626                        ;	
+  1627                        ;	
+  1628                        ;}
+  1629                        	.line	424
+  1630                        L42:
+  1631 00:00B7: 2B           	pld
+  1632 00:00B8: 3B           	tsc
+  1633 00:00B9: 18           	clc
+  1634 00:00BA: 69 04 00     	adc	#L39
+  1635 00:00BD: 1B           	tcs
+  1636 00:00BE: 6B           	rtl
+  Sat Sep 21 2019 15:24                                                Page 32
+
+
+  1637                        	.endblock	424
+  1638             00000004   L39	equ	4
+  1639             00000001   L40	equ	1
+  1640                        	ends
+  1641                        	efunc
+  1642                        	.endfunc	424,1,4
+  1643                        	.line	424
+  1644                        	data
+  1645                        L34:
+  1646 00:012F: 49 52 51 20  	db	$49,$52,$51,$20,$52,$45,$47,$49,$53,$54,
+                    $45,$52,$20,$44,$49
+       00:0133: 52 45 47 49 
+       00:0137: 53 54 45 52 
+       00:013B: 20 44 49 
+  1647 00:013E: 53 50 4C 41  	db	$53,$50,$4C,$41,$59,$20,$54,$4F,$4F,$4C,
+                    $00,$43,$32,$35,$36
+       00:0142: 59 20 54 4F 
+       00:0146: 4F 4C 00 43 
+       00:014A: 32 35 36 
+  1648 00:014D: 20 56 65 72  	db	$20,$56,$65,$72,$73,$69,$6F,$6E,$3A,$00,
+                    $46,$50,$47,$41,$20
+       00:0151: 73 69 6F 6E 
+       00:0155: 3A 00 46 50 
+       00:0159: 47 41 20 
+  1649 00:015C: 56 65 72 73  	db	$56,$65,$72,$73,$69,$6F,$6E,$3A,$00,$2F,
+                    $00,$2F,$00,$54,$41
+       00:0160: 69 6F 6E 3A 
+       00:0164: 00 2F 00 2F 
+       00:0168: 00 54 41 
+  1650 00:016B: 53 4B 54 49  	db	$53,$4B,$54,$49,$43,$4B,$3A,$00,$4D,$4F,
+                    $55,$53,$45,$20,$20
+       00:016F: 43 4B 3A 00 
+       00:0173: 4D 4F 55 53 
+       00:0177: 45 20 20 
+  1651 00:017A: 20 3A 00 4B  	db	$20,$3A,$00,$4B,$45,$59,$43,$4F,$44,$45,
+                    $20,$3A,$00,$43,$50
+       00:017E: 45 59 43 4F 
+       00:0182: 44 45 20 3A 
+       00:0186: 00 43 50 
+  1652 00:0189: 55 20 20 20  	db	$55,$20,$20,$20,$20,$20,$3A,$00,$42,$52,
+                    $4B,$20,$20,$20,$20
+       00:018D: 20 20 3A 00 
+       00:0191: 42 52 4B 20 
+       00:0195: 20 20 20 
+  1653 00:0198: 20 3A 00 43  	db	$20,$3A,$00,$43,$4F,$50,$20,$20,$20,$20,
+                    $20,$3A,$00,$49,$52
+       00:019C: 4F 50 20 20 
+       00:01A0: 20 20 20 3A 
+       00:01A4: 00 49 52 
+  1654 00:01A7: 51 20 20 20  	db	$51,$20,$20,$20,$20,$20,$3A,$2A,$30,$31,
+                    $32,$33,$34,$35,$36
+       00:01AB: 20 20 3A 2A 
+       00:01AF: 30 31 32 33 
+       00:01B3: 34 35 36 
+  1655 00:01B6: 37 00 52 45  	db	$37,$00,$52,$45,$47,$30,$20,$20,$20,$20,
+                    $3A,$00,$52,$45,$47
+       00:01BA: 47 30 20 20 
+       00:01BE: 20 20 3A 00 
+  Sat Sep 21 2019 15:24                                                Page 33
+
+
+       00:01C2: 52 45 47 
+  1656 00:01C5: 31 20 20 20  	db	$31,$20,$20,$20,$20,$3A,$00,$52,$45,$47,
+                    $32,$20,$20,$20,$20
+       00:01C9: 20 3A 00 52 
+       00:01CD: 45 47 32 20 
+       00:01D1: 20 20 20 
+  1657 00:01D4: 3A 00        	db	$3A,$00
+  1658 00:01D6:              	ends
+  1659                        ;
+  1660                        ;void k_tickManagement(long far *pktick)
+  1661                        ;{
+  1662                        	.line	426
+  1663                        	.line	427
+  1664                        	code
+  1665                        	xdef	~~k_tickManagement
+  1666                        	func
+  1667                        	.function	427
+  1668                        ~~k_tickManagement:
+  1669                        	longa	on
+  1670                        	longi	on
+  1671 00:00BF: 3B           	tsc
+  1672 00:00C0: 38           	sec
+  1673 00:00C1: E9 00 00     	sbc	#L44
+  1674 00:00C4: 1B           	tcs
+  1675 00:00C5: 0B           	phd
+  1676 00:00C6: 5B           	tcd
+  1677             00000004   pktick_0	set	4
+  1678                        	.block	427
+  1679                        ;	currentKeyPress = 0;
+  1680                        	.sym	pktick,4,135,6,32
+  1681                        	.line	428
+  1682                        ;	
+  1683                        ;	//if(*pktick > 0)
+  1684                        ;	//	*pktick=*pktick-1;
+  1685                        ;	
+  1686                        ;	if(taskSwitchCount > 2)	
+  1687                        	.line	433
+  1688                        ;	{
+  1689                        	.line	434
+  1690                        ;		k_task_switch();
+  1691                        	.line	435
+  1692                        ;		taskSwitchCount = 0;
+  1693                        	.line	436
+  1694                        ;	}
+  1695                        	.line	437
+  1696                        ;	taskSwitchCount++;
+  1697                        L10017:
+  1698                        	.line	438
+  1699                        ;	
+  1700                        ;	//k_send_message(NULL,FX_TIMER,NULL,0);
+  1701                        ;	
+  1702                        ;	//k_print_uart_status_com1(30);
+  1703                        ;	//k_print_uart_status_com2(31);
+  1704                        ;}
+  1705                        	.line	444
+  1706                        L47:
+  1707 00:00C7: A5 02        	lda	<L44+2
+  1708 00:00C9: 85 06        	sta	<L44+2+4
+  Sat Sep 21 2019 15:24                                                Page 34
+
+
+  1709 00:00CB: A5 01        	lda	<L44+1
+  1710 00:00CD: 85 05        	sta	<L44+1+4
+  1711 00:00CF: 2B           	pld
+  1712 00:00D0: 3B           	tsc
+  1713 00:00D1: 18           	clc
+  1714 00:00D2: 69 04 00     	adc	#L44+4
+  1715 00:00D5: 1B           	tcs
+  1716 00:00D6: 6B           	rtl
+  1717                        	.endblock	444
+  1718             00000000   L44	equ	0
+  1719             00000001   L45	equ	1
+  1720                        	ends
+  1721                        	efunc
+  1722                        	.endfunc	444,1,0
+  1723                        	.line	444
+  1724                        ;
+  1725                        ;
+  1726                        ;
+  1727                        ;
+  1728                        ;
+  1729                        ;
+  1730                        ;/*
+  1731                        ;{
+  1732                        ;    char far* ptr  = result;
+  1733                        ;	char far* ptr1 = result;
+  1734                        ;	char tmp_char;
+  1735                        ;    int tmp_value;
+  1736                        ;
+  1737                        ;	char far *CHAR_LIST = "ZYXWVUTSRQPONMLKJIHGFEDCB
+                    A9876543210123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  1738                        ;
+  1739                        ;    // check that the base if valid
+  1740                        ;    if (base < 2 || base > 36)
+  1741                        ;	{	
+  1742                        ;		*result = '\0'; 
+  1743                        ;		return result; 
+  1744                        ;	}
+  1745                        ;
+  1746                        ;
+  1747                        ;    do 
+  1748                        ;	{
+  1749                        ;        tmp_value = value;
+  1750                        ;        value /= base;
+  1751                        ;        *ptr++ = CHAR_LIST [35 + (tmp_value - val
+                    ue * base)];
+  1752                        ;    }
+  1753                        ;	while ( value );
+  1754                        ;
+  1755                        ;    // Apply negative sign
+  1756                        ;    if (tmp_value < 0) *ptr++ = '-';
+  1757                        ;    *ptr-- = '\0';
+  1758                        ;    while (ptr1 < ptr) 
+  1759                        ;	{
+  1760                        ;        tmp_char = *ptr;
+  1761                        ;        *ptr--= *ptr1;
+  1762                        ;        *ptr1++ = tmp_char;
+  1763                        ;    }
+  1764                        ;    return result;
+  Sat Sep 21 2019 15:24                                                Page 35
+
+
+  1765                        ;}
+  1766                        ;*/
+  1767                        ;
+  1768                        ;
+  1769                        ;
+  1770                        ;
+  1771                        ;/*
+  1772                        ;
+  1773                        ;void BRKHandler(void)
+  1774                        ;{
+  1775                        ;	k_put_char(9,irqCOPPos - 1,irqspinner[scbrk++],1
+                    5,0);	
+  1776                        ;	if(scbrk>3) scbrk = 0;
+  1777                        ;	//asm sei;	
+  1778                        ;}
+  1779                        ;
+  1780                        ;void COPHandler(void)
+  1781                        ;{
+  1782                        ;	k_put_char(9,irqCOPPos,irqspinner[sccop++],15,0)
+                    ;	
+  1783                        ;	if(sccop>3) sccop = 0;
+  1784                        ;	//asm sei;	
+  1785                        ;}
+  1786                        ;
+  1787                        ;
+  1788                        ;void IRQHandler(void)
+  1789                        ;{
+  1790                        ;	char keyCode[16] = {0,0,0,0,0,0,0,0,
+  1791                        ;						0,0,0,0,
+                    0,0,0,0};	
+  1792                        ;	IRQDATA data;
+  1793                        ;		
+  1794                        ;	data.keycode = keyCode;	
+  1795                        ;	data.line    = irqSpinnerPos;
+  1796                        ;	
+  1797                        ;	if(INT_PENDING_REG0[0]!=0)
+  1798                        ;	{
+  1799                        ;		k_dispatch_reg0(&data);
+  1800                        ;	}
+  1801                        ;	
+  1802                        ;	if(INT_PENDING_REG1[0]!=0)
+  1803                        ;	{
+  1804                        ;		k_dispatch_reg1(&data);	
+  1805                        ;	}
+  1806                        ;	
+  1807                        ;	if(INT_PENDING_REG2[0]!=0)
+  1808                        ;	{
+  1809                        ;		k_dispatch_reg2(&data);
+  1810                        ;	}
+  1811                        ;	
+  1812                        ;	return;
+  1813                        ;}
+  1814                        ;
+  1815                        ;void k_dispatch_reg0(PIRQDATA pIRQ)
+  1816                        ;{
+  1817                        ;	unsigned char mptr = 0;
+  1818                        ;	unsigned char kbd = 0;
+  1819                        ;	char irq0buffer[8];
+  Sat Sep 21 2019 15:24                                                Page 36
+
+
+  1820                        ;	int line = pIRQ->line;
+  1821                        ;	
+  1822                        ;	char far *keyCode = pIRQ->keycode;
+  1823                        ;
+  1824                        ;	
+  1825                        ;	k_put_char(9,line,irqspinner[scirq0],15,0);	
+  1826                        ;	scirq0++;
+  1827                        ;	
+  1828                        ;	if(scirq0>3)
+  1829                        ;	{
+  1830                        ;		scirq0 = 0;
+  1831                        ;	}
+  1832                        ;	
+  1833                        ;	
+  1834                        ;	if(INT_PENDING_REG0[0] & FNX0_INT00_SOF)
+  1835                        ;	{
+  1836                        ;		k_put_char(10,line,irqspinner[scirq00++]
+                    ,15,0);	
+  1837                        ;		if(scirq00>3) scirq00 = 0;
+  1838                        ;
+  1839                        ;		INT_PENDING_REG0[0] &=  FNX0_INT00_SOF;
+  1840                        ;	}
+  1841                        ;	
+  1842                        ;	if(INT_PENDING_REG0[0] & FNX0_INT01_SOL)
+  1843                        ;	{
+  1844                        ;		k_put_char(11,line,irqspinner[scirq01++]
+                    ,15,0);	
+  1845                        ;		if(scirq01>3) scirq01 = 0;
+  1846                        ;		
+  1847                        ;		k_tickManagement();
+  1848                        ;		
+  1849                        ;		INT_PENDING_REG0[0] &= FNX0_INT01_SOL;
+  1850                        ;	}
+  1851                        ;	if(INT_PENDING_REG0[0] & FNX0_INT02_TMR0)
+  1852                        ;	{
+  1853                        ;		//k_put_char(3,0,'X',15,0);
+  1854                        ;		//k_put_char(3,0,'2',15,0);
+  1855                        ;
+  1856                        ;		k_put_char(12,line,irqspinner[scirq02++]
+                    ,15,0);	
+  1857                        ;		if(scirq02>3) scirq02 = 0;
+  1858                        ;
+  1859                        ;		k_put_string(10,27,k_bytetohex(STATUS_PO
+                    RT[0],irq0buffer),15,0);
+  1860                        ;
+  1861                        ;		keyboardTimeout++;	
+  1862                        ;		if((STATUS_PORT[0] & 0x01) && keyboardTi
+                    meout > 2)
+  1863                        ;		{
+  1864                        ;			
+  1865                        ;			k_put_string(10 ,26,k_bytetohex(
+                    STATUS_PORT[0],irq0buffer),15,0);			
+  1866                        ;			k_put_string(14,26,k_bytetohex(M
+                    OUSE_PTR[0],irq0buffer),15,0);
+  1867                        ;			k_put_string(18,26,k_bytetohex(M
+                    OUSE_PTR_BYTE0[0],irq0buffer),15,0);
+  1868                        ;			
+  1869                        ;			
+  Sat Sep 21 2019 15:24                                                Page 37
+
+
+  1870                        ;			MOUSE_PTR[0] = 0;
+  1871                        ;			keyboardTimeout = 0;
+  1872                        ;
+  1873                        ;			k_init_keyboard();		
+                    	
+  1874                        ;			if(STATUS_PORT[0] & 0x01)
+  1875                        ;			{
+  1876                        ;				k_init_keyboard();
+  1877                        ;			}
+  1878                        ;
+  1879                        ;		}
+  1880                        ;		else if(keyboardTimeout > 2)
+  1881                        ;		{
+  1882                        ;			keyboardTimeout = 0;
+  1883                        ;		}
+  1884                        ;
+  1885                        ;		k_put_string(0,26,k_inttodec(keyboardTim
+                    eout,irq0buffer),15,0);
+  1886                        ;		
+  1887                        ;
+  1888                        ;
+  1889                        ;		INT_PENDING_REG0[0] &=  FNX0_INT02_TMR0;
+  1890                        ;	}
+  1891                        ;	if(INT_PENDING_REG0[0] & FNX0_INT03_TMR1)
+  1892                        ;	{
+  1893                        ;		k_put_char(13,line,irqspinner[scirq03++]
+                    ,15,0);	
+  1894                        ;		if(scirq03>3) scirq03 = 0;
+  1895                        ;
+  1896                        ;
+  1897                        ;		//keyboardTimeout++;
+  1898                        ;		/if(keyboardTimeout > 120)
+  1899                        ;		//{
+  1900                        ;		//	keyboardTimeout = 0;
+  1901                        ;		//	k_init_keyboard();
+  1902                        ;		//}
+  1903                        ;
+  1904                        ;		//k_put_string(0,26,k_inttodec(keyboardT
+                    imeout,irq0buffer),15,0);
+  1905                        ;
+  1906                        ;		INT_PENDING_REG0[0] &=  FNX0_INT03_TMR1;
+  1907                        ;	}
+  1908                        ;	if(INT_PENDING_REG0[0] & FNX0_INT04_TMR2)
+  1909                        ;	{
+  1910                        ;		k_put_char(14,line,irqspinner[scirq04++]
+                    ,15,0);	
+  1911                        ;		if(scirq04>3) scirq04 = 0;
+  1912                        ;
+  1913                        ;
+  1914                        ;		//k_put_char(5,0,'X',15,0);
+  1915                        ;		//k_put_char(5,0,'4',15,0);
+  1916                        ;		INT_PENDING_REG0[0] &=  FNX0_INT04_TMR2;
+  1917                        ;	}
+  1918                        ;	if(INT_PENDING_REG0[0] & FNX0_INT05_RTC)
+  1919                        ;	{
+  1920                        ;		k_put_char(15,line,irqspinner[scirq05++]
+                    ,15,0);	
+  1921                        ;		if(scirq05>3) scirq05 = 0;
+  Sat Sep 21 2019 15:24                                                Page 38
+
+
+  1922                        ;
+  1923                        ;
+  1924                        ;		//k_put_char(6,0,'X',15,0);
+  1925                        ;		//k_put_char(6,0,'5',15,0);
+  1926                        ;		INT_PENDING_REG0[0]&=FNX0_INT05_RTC;
+  1927                        ;	}
+  1928                        ;	if(INT_PENDING_REG0[0] & FNX0_INT06_FDC)
+  1929                        ;	{
+  1930                        ;		k_put_char(16,line,irqspinner[scirq06++]
+                    ,15,0);	
+  1931                        ;		if(scirq06>3) scirq06 = 0;
+  1932                        ;
+  1933                        ;
+  1934                        ;		//k_put_char(7,0,'X',15,0);
+  1935                        ;		//k_put_char(7,0,'6',15,0);
+  1936                        ;		INT_PENDING_REG0[0]&=FNX0_INT06_FDC;
+  1937                        ;	}
+  1938                        ;	if(INT_PENDING_REG0[0] & FNX0_INT07_MOUSE)
+  1939                        ;	{
+  1940                        ;		keyboardTimeout = 0;
+  1941                        ;		
+  1942                        ;		k_put_char(17,line,irqspinner[scirq07++]
+                    ,15,0);	
+  1943                        ;		if(scirq07>3) scirq07 = 0;
+  1944                        ;
+  1945                        ;		//k_put_char(11,41,KBD_INPT_BUF[0],15,0)
+                    ;
+  1946                        ;		
+  1947                        ;		//k_itoa(KBD_INPT_BUF[0],keyCode,10);
+  1948                        ;		
+  1949                        ;		//k_put_string(11,irqMousePos,"     ",15
+                    ,0);
+  1950                        ;		//k_put_string(11,irqMousePos,keyCode,15
+                    ,0);
+  1951                        ;		
+  1952                        ;		while(STATUS_PORT[0] & 0x01)
+  1953                        ;		{
+  1954                        ;			mptr = MOUSE_PTR[0];
+  1955                        ;			kbd  = KBD_INPT_BUF[0];
+  1956                        ;
+  1957                        ;			MOUSE_PTR_BYTE0[mptr]   = kbd;	
+                    		
+  1958                        ;			FXOS_MOUSE_BYTE_0[mptr] = kbd;
+  1959                        ;				
+  1960                        ;			mptr++;	
+  1961                        ;				
+  1962                        ;			if(mptr >  2)
+  1963                        ;			{
+  1964                        ;				MOUSE_PTR[0] = 0;
+  1965                        ;				
+  1966                        ;				FXOS_MOUSE_BYTE_X_L[0] =
+                     MOUSE_PTR_X_POS_L[0];
+  1967                        ;				FXOS_MOUSE_BYTE_X_H[0] =
+                     MOUSE_PTR_X_POS_H[0];
+  1968                        ;				FXOS_MOUSE_BYTE_Y_L[0] =
+                     MOUSE_PTR_Y_POS_L[0];
+  1969                        ;				FXOS_MOUSE_BYTE_Y_H[0] =
+                     MOUSE_PTR_Y_POS_H[0];
+  Sat Sep 21 2019 15:24                                                Page 39
+
+
+  1970                        ;			}
+  1971                        ;			else
+  1972                        ;			{
+  1973                        ;				MOUSE_PTR[0] = mptr;
+  1974                        ;			}
+  1975                        ;		}
+  1976                        ;		
+  1977                        ;		
+  1978                        ;		INT_PENDING_REG0[0] &= FNX0_INT07_MOUSE;
+  1979                        ;	}
+  1980                        ;	//*INT_PENDING_REG0 = *INT_PENDING_REG0;
+  1981                        ;	INT_PENDING_REG0[0] = 0xFF;
+  1982                        ;	INT_PENDING_REG0[0] = 0x00;
+  1983                        ;	
+  1984                        ;}
+  1985                        ;
+  1986                        ;
+  1987                        ;void k_dispatch_reg1(PIRQDATA pIRQ)
+  1988                        ;{
+  1989                        ;	int line = pIRQ->line;
+  1990                        ;	
+  1991                        ;	char far *keyCode = pIRQ->keycode;
+  1992                        ;	char none = 0;
+  1993                        ;	unsigned char data = 0;
+  1994                        ;	//char null = 0;
+  1995                        ;	int dp = 20;
+  1996                        ;	
+  1997                        ;	line++;
+  1998                        ;	
+  1999                        ;	k_put_char(9,line,irqspinner[scirq1++],15,0);	
+  2000                        ;	if(scirq1>3)scirq1 = 0;
+  2001                        ;	
+  2002                        ;	if(irqKeyPos!=0)
+  2003                        ;	k_put_string(11,irqKeyPos,"    ",15,0);
+  2004                        ;	
+  2005                        ;	//k_put_char(0,1,'1',15,0);
+  2006                        ;	if(INT_PENDING_REG1[0] & FNX1_INT00_KBD)
+  2007                        ;	{
+  2008                        ;		keyboardTimeout = 0;
+  2009                        ;		
+  2010                        ;		k_put_char(10,line,irqspinner[scirq10++]
+                    ,15,0);	
+  2011                        ;		if(scirq10>3)scirq10 = 0;
+  2012                        ;
+  2013                        ;		if(ktick == 0)
+  2014                        ;		{
+  2015                        ;			ktick = 2;
+  2016                        ;
+  2017                        ;			//if(KBD_INPT_BUF[0]!=currentKey
+                    Press)
+  2018                        ;			//	currentKeyPress = KBD_IN
+                    PT_BUF[0];
+  2019                        ;			currentKeyPress = KBD_INPT_BUF[0
+                    ];
+  2020                        ;
+  2021                        ;			keyboardBuffer[keyboardBufferInd
+                    ex++] = currentKeyPress;//KBD_INPT_BUF[0];
+  2022                        ;			if(keyboardBufferIndex > 19)
+  Sat Sep 21 2019 15:24                                                Page 40
+
+
+  2023                        ;				keyboardBufferIndex = 0;
+  2024                        ;
+  2025                        ;			//k_itoa(KBD_INPT_BUF[0],keyCode
+                    ,16);
+  2026                        ;			k_bytetohex(currentKeyPress,keyC
+                    ode);
+  2027                        ;			
+  2028                        ;			//k_put_char(11,42,KBD_INPT_BUF[
+                    0],15,0);
+  2029                        ;			//k_put_string(11,42,"    ",15,0
+                    );
+  2030                        ;			k_put_string(16,irqKeyPos,keyboa
+                    rdBuffer,15,0);
+  2031                        ;			k_put_string(11,irqKeyPos,keyCod
+                    e,15,0);
+  2032                        ;		}				
+  2033                        ;		else
+  2034                        ;		{
+  2035                        ;			currentKeyPress = 0;
+  2036                        ;			none = KBD_INPT_BUF[0];
+  2037                        ;		}
+  2038                        ;	
+  2039                        ;		statusReg&=CHK_KEYMOUSE_CTL;
+  2040                        ;		
+  2041                        ;		INT_PENDING_REG1[0] &= FNX1_INT00_KBD;
+  2042                        ;	}
+  2043                        ;	
+  2044                        ;	if(INT_PENDING_REG1[0] & FNX1_INT01_SC0)
+  2045                        ;	{
+  2046                        ;		k_put_char(11,line,irqspinner[scirq11++]
+                    ,15,0);	
+  2047                        ;		if(scirq11>3)scirq11 = 0;
+  2048                        ;
+  2049                        ;		//k_put_char(2,1,' ',15,0);
+  2050                        ;		//k_put_char(2,1,'1',15,0);
+  2051                        ;		INT_PENDING_REG1[0]&=FNX1_INT01_SC0;
+  2052                        ;	}
+  2053                        ;	if(INT_PENDING_REG1[0] & FNX1_INT02_SC1)
+  2054                        ;	{
+  2055                        ;		k_put_char(12,line,irqspinner[scirq12++]
+                    ,15,0);	
+  2056                        ;		if(scirq12>3)scirq12 = 0;
+  2057                        ;		
+  2058                        ;		//k_put_char(3,1,' ',15,0);
+  2059                        ;		//k_put_char(3,1,'2',15,0);
+  2060                        ;		INT_PENDING_REG1[0]&=FNX1_INT02_SC1;
+  2061                        ;	}
+  2062                        ;	if(INT_PENDING_REG1[0] & FNX1_INT03_COM2)
+  2063                        ;	{
+  2064                        ;		k_put_char(13,line,irqspinner[scirq13++]
+                    ,15,0);	
+  2065                        ;		if(scirq13>3)scirq13 = 0;
+  2066                        ;		
+  2067                        ;		k_print_uart_status_com2(31);
+  2068                        ;		data = UART2_BASE[0];
+  2069                        ;		k_put_char(dp++,31,data,15,0);
+  2070                        ;		while(UART2_BASE[UART_LSR] & 0x01)
+  2071                        ;		{
+  Sat Sep 21 2019 15:24                                                Page 41
+
+
+  2072                        ;			data = UART2_BASE[0];
+  2073                        ;			k_put_char(dp++,31,data,15,0);
+  2074                        ;		}
+  2075                        ;		k_print_uart_status_com2(32);
+  2076                        ;		
+  2077                        ;		
+  2078                        ;		//k_put_char(20,31,data+64,15,0);
+  2079                        ;		//k_put_char(4,1,' ',15,0);
+  2080                        ;		//k_put_char(4,1,'3',15,0);
+  2081                        ;		INT_PENDING_REG1[0]&=FNX1_INT03_COM2;
+  2082                        ;	}
+  2083                        ;	if(INT_PENDING_REG1[0] & FNX1_INT04_COM1)
+  2084                        ;	{
+  2085                        ;
+  2086                        ;		k_put_char(14,line,irqspinner[scirq14++]
+                    ,15,0);	
+  2087                        ;		if(scirq14>3)scirq14 = 0;
+  2088                        ;		
+  2089                        ;		k_print_uart_status_com1(29);
+  2090                        ;		data = UART1_BASE[0];
+  2091                        ;		k_put_char(dp++,31,data+64,15,0);
+  2092                        ;		while(UART1_BASE[UART_LSR] & 0x01)
+  2093                        ;		{
+  2094                        ;			data = UART1_BASE[0];
+  2095                        ;			k_put_char(dp++,31,data+64,15,0)
+                    ;
+  2096                        ;		}
+  2097                        ;		k_print_uart_status_com1(30);
+  2098                        ;		
+  2099                        ;		//k_put_char(5,1,' ',15,0);
+  2100                        ;		//k_put_char(5,1,'4',15,0);
+  2101                        ;		INT_PENDING_REG1[0]&=FNX1_INT04_COM1;
+  2102                        ;	}
+  2103                        ;	if(INT_PENDING_REG1[0] & FNX1_INT05_MPU401)
+  2104                        ;	{
+  2105                        ;		k_put_char(15,line,irqspinner[scirq15++]
+                    ,15,0);	
+  2106                        ;		if(scirq15>3)scirq15 = 0;
+  2107                        ;
+  2108                        ;
+  2109                        ;		//k_put_char(6,1,' ',15,0);
+  2110                        ;		//k_put_char(6,1,'5',15,0);
+  2111                        ;		INT_PENDING_REG1[0]&=FNX1_INT05_MPU401;
+  2112                        ;	}
+  2113                        ;	if(INT_PENDING_REG1[0] & FNX1_INT06_LPT)
+  2114                        ;	{
+  2115                        ;		k_put_char(16,line,irqspinner[scirq16++]
+                    ,15,0);	
+  2116                        ;		if(scirq16>3)scirq16 = 0;
+  2117                        ;
+  2118                        ;		//k_put_char(6,1,' ',15,0);
+  2119                        ;		//k_put_char(6,1,'6',15,0);
+  2120                        ;		INT_PENDING_REG1[0]&=FNX1_INT06_LPT;
+  2121                        ;	}
+  2122                        ;	if(INT_PENDING_REG1[0] & FNX1_INT07_SDCARD)
+  2123                        ;	{
+  2124                        ;		k_put_char(17,line,irqspinner[scirq17++]
+                    ,15,0);	
+  Sat Sep 21 2019 15:24                                                Page 42
+
+
+  2125                        ;		if(scirq17>3)scirq17 = 0;
+  2126                        ;
+  2127                        ;
+  2128                        ;		//k_put_char(7,1,' ',15,0);
+  2129                        ;		//k_put_char(7,1,'7',15,0);
+  2130                        ;		INT_PENDING_REG1[0]&=FNX1_INT07_SDCARD;
+  2131                        ;	}
+  2132                        ;	//*INT_PENDING_REG1=*INT_PENDING_REG1;
+  2133                        ;	INT_PENDING_REG1[0]=0xFF;
+  2134                        ;	INT_PENDING_REG1[0]=0x00;
+  2135                        ;	
+  2136                        ;}
+  2137                        ;
+  2138                        ;void k_dispatch_reg2(PIRQDATA pIRQ)
+  2139                        ;{
+  2140                        ;	int line = pIRQ->line;
+  2141                        ;	
+  2142                        ;	char far *keyCode = pIRQ->keycode;
+  2143                        ;	
+  2144                        ;	line++;
+  2145                        ;	
+  2146                        ;	k_put_char(9,line,irqspinner[scirq2++],15,0);	
+  2147                        ;	if(scirq2>3) scirq2 = 0;
+  2148                        ;
+  2149                        ;	if(INT_PENDING_REG2[0] & FNX2_INT00_OPL2R)
+  2150                        ;	{
+  2151                        ;		k_put_char(10,line,irqspinner[scirq20++]
+                    ,15,0);	
+  2152                        ;		if(scirq20>3) scirq20 = 0;
+  2153                        ;		//k_put_char(2,2,' ',15,0);
+  2154                        ;		//k_put_char(2,2,'0',15,0);
+  2155                        ;		INT_PENDING_REG2[0]&=FNX2_INT00_OPL2R;
+  2156                        ;	}
+  2157                        ;	if(INT_PENDING_REG2[0] & FNX2_INT01_OPL2L)
+  2158                        ;	{
+  2159                        ;		k_put_char(11,line,irqspinner[scirq21++]
+                    ,15,0);	
+  2160                        ;		if(scirq21>3) scirq21 = 0;
+  2161                        ;		//k_put_char(3,2,' ',15,0);
+  2162                        ;		//k_put_char(3,2,'1',15,0);
+  2163                        ;		INT_PENDING_REG2[0]&=FNX2_INT01_OPL2L;
+  2164                        ;	}
+  2165                        ;	if(INT_PENDING_REG2[0] & FNX2_INT02_BTX_INT)
+  2166                        ;	{
+  2167                        ;		k_put_char(12,line,irqspinner[scirq22++]
+                    ,15,0);	
+  2168                        ;		if(scirq22>3) scirq22 = 0;
+  2169                        ;		//k_put_char(4,2,' ',15,0);
+  2170                        ;		//k_put_char(4,2,'2',15,0);
+  2171                        ;		INT_PENDING_REG2[0]&=FNX2_INT02_BTX_INT;
+  2172                        ;	}
+  2173                        ;	if(INT_PENDING_REG2[0] & FNX2_INT03_SDMA)
+  2174                        ;	{
+  2175                        ;		k_put_char(13,line,irqspinner[scirq23++]
+                    ,15,0);	
+  2176                        ;		if(scirq23>3) scirq23 = 0;
+  2177                        ;		//k_put_char(5,2,' ',15,0);
+  2178                        ;		//k_put_char(5,2,'3',15,0);
+  Sat Sep 21 2019 15:24                                                Page 43
+
+
+  2179                        ;		INT_PENDING_REG2[0]&=FNX2_INT03_SDMA;
+  2180                        ;	}
+  2181                        ;	if(INT_PENDING_REG2[0] & FNX2_INT04_VDMA)
+  2182                        ;	{
+  2183                        ;		k_put_char(14,line,irqspinner[scirq24++]
+                    ,15,0);	
+  2184                        ;		if(scirq24>3) scirq24 = 0;
+  2185                        ;		//k_put_char(6,2,' ',15,0);
+  2186                        ;		//k_put_char(6,2,'4',15,0);
+  2187                        ;		INT_PENDING_REG2[0]&=FNX2_INT04_VDMA;
+  2188                        ;	}
+  2189                        ;	if(INT_PENDING_REG2[0] & FNX1_INT06_LPT)
+  2190                        ;	{
+  2191                        ;		k_put_char(16,line,irqspinner[scirq26++]
+                    ,15,0);	
+  2192                        ;		if(scirq26>3) scirq26 = 0;
+  2193                        ;		//k_put_char(7,2,' ',15,0);
+  2194                        ;		//k_put_char(7,2,'6',15,0);
+  2195                        ;		INT_PENDING_REG2[0]&=FNX1_INT06_LPT;
+  2196                        ;	}
+  2197                        ;	
+  2198                        ;	INT_PENDING_REG2[0]=0xFF;
+  2199                        ;	INT_PENDING_REG2[0]=0x00;
+  2200                        ;	
+  2201                        ;}
+  2202                        ;*/
+  2203                        ;
+  2204                        ;
+  2205                        ;
+  2206                        	.line	925
+  2207                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstartup.c",426
+  2208                        	udata
+  2209                        ~~itoaBuffer
+  2210 00:0000:              	ds	16
+  2211 00:0010:              	ends
+  2212                        	udata
+  2213                        ~~tasks
+  2214 00:0010:              	ds	12
+  2215 00:001C:              	ends
+  2216                        	udata
+  2217                        ~~qbuffer
+  2218 00:001C:              	ds	32
+  2219 00:003C:              	ends
+  2220                        	.sym	~~statusReg,~~statusReg,14,3,8
+  2221                        	.sym	~~itoaBuffer,~~itoaBuffer,110,3,0,16
+  2222                        	.sym	~~tasks,~~tasks,106,3,0,42,2
+  2223                        	.sym	~~mtasks,~~mtasks,5217,3,32,2
+  2224                        	.sym	~~stacks,~~stacks,106,3,0,43,2
+  2225                        	.sym	~~taskSwitchCount,~~taskSwitchCount,5,2,
+                    16
+  2226                        	.sym	~~keyboardTimeout,~~keyboardTimeout,5,2,
+                    16
+  2227                        	.sym	~~timeout,~~timeout,5,2,16
+  2228                        	.sym	~~ctick,~~ctick,7,2,32
+  2229                        	.sym	~~serialChar,~~serialChar,14,2,8
+  2230                        	.sym	~~irqCount,~~irqCount,7,2,32
+  2231                        	.sym	~~isIRQOn,~~isIRQOn,14,2,8
+  Sat Sep 21 2019 15:24                                                Page 44
+
+
+  2232                        	.sym	~~currentKeyPress,~~currentKeyPress,14,2
+                    ,8
+  2233                        	.sym	~~irqCOPPos,~~irqCOPPos,5,3,16
+  2234                        	.sym	~~irqSpinnerPos,~~irqSpinnerPos,5,3,16
+  2235                        	.sym	~~irqKeyPos,~~irqKeyPos,5,3,16
+  2236                        	.sym	~~irqMousePos,~~irqMousePos,5,3,16
+  2237                        	.sym	~~irqSpinPos,~~irqSpinPos,5,3,16
+  2238                        	.sym	~~irqPos,~~irqPos,5,3,16
+  2239                        	.sym	~~qbuffer,~~qbuffer,110,3,0,32
+  2240                        	.sym	~~irqspinner,~~irqspinner,110,3,0,4
+  2241                        	.sym	~~eirq,~~eirq,7,3,32
+  2242                        	.sym	~~scbrk,~~scbrk,14,3,8
+  2243                        	.sym	~~sccop,~~sccop,14,3,8
+  2244                        	.sym	~~scto,~~scto,14,3,8
+  2245                        	.sym	~~sct,~~sct,14,3,8
+  2246                        	.sym	~~sc,~~sc,14,3,8
+  2247                        	.sym	~~scsof,~~scsof,14,3,8
+  2248                        	.sym	~~taskindex,~~taskindex,14,3,8
+  2249                        	.sym	~~sct2,~~sct2,14,3,8
+  2250                        	.sym	~~sct1,~~sct1,14,3,8
+  2251                        	.sym	~~scts,~~scts,14,3,8
+  2252                        	.sym	~~scirq27,~~scirq27,14,3,8
+  2253                        	.sym	~~scirq26,~~scirq26,14,3,8
+  2254                        	.sym	~~scirq25,~~scirq25,14,3,8
+  2255                        	.sym	~~scirq24,~~scirq24,14,3,8
+  2256                        	.sym	~~scirq23,~~scirq23,14,3,8
+  2257                        	.sym	~~scirq22,~~scirq22,14,3,8
+  2258                        	.sym	~~scirq21,~~scirq21,14,3,8
+  2259                        	.sym	~~scirq20,~~scirq20,14,3,8
+  2260                        	.sym	~~scirq2,~~scirq2,14,3,8
+  2261                        	.sym	~~scirq17,~~scirq17,14,3,8
+  2262                        	.sym	~~scirq16,~~scirq16,14,3,8
+  2263                        	.sym	~~scirq15,~~scirq15,14,3,8
+  2264                        	.sym	~~scirq14,~~scirq14,14,3,8
+  2265                        	.sym	~~scirq13,~~scirq13,14,3,8
+  2266                        	.sym	~~scirq12,~~scirq12,14,3,8
+  2267                        	.sym	~~scirq11,~~scirq11,14,3,8
+  2268                        	.sym	~~scirq10,~~scirq10,14,3,8
+  2269                        	.sym	~~scirq1,~~scirq1,14,3,8
+  2270                        	.sym	~~scirq07,~~scirq07,14,3,8
+  2271                        	.sym	~~scirq06,~~scirq06,14,3,8
+  2272                        	.sym	~~scirq05,~~scirq05,14,3,8
+  2273                        	.sym	~~scirq04,~~scirq04,14,3,8
+  2274                        	.sym	~~scirq03,~~scirq03,14,3,8
+  2275                        	.sym	~~scirq02,~~scirq02,14,3,8
+  2276                        	.sym	~~scirq01,~~scirq01,14,3,8
+  2277                        	.sym	~~scirq00,~~scirq00,14,3,8
+  2278                        	.sym	~~scirq0,~~scirq0,14,3,8
+  2279                        	.sym	~~cc,~~cc,14,2,8
+  2280                        	.sym	~~k_run_loop,~~k_run_loop,65,2,0
+  2281                        	.sym	~~k_query_environment,~~k_query_environm
+                    ent,65,2,0
+  2282                        	.sym	~~k_tickManagement,~~k_tickManagement,65
+                    ,2,0
+  2283                        	.sym	~~k_system_call,~~k_system_call,69,2,0
+  2284                        	.sym	~~t_make_task,~~t_make_task,65,2,0
+  2285                        	.sym	~~k_task_switch,~~k_task_switch,65,2,0
+  2286                        	.sym	~~k_init_multitasking,~~k_init_multitask
+  Sat Sep 21 2019 15:24                                                Page 45
+
+
+                    ing,65,2,0
+  2287                        	.sym	~~enable,~~enable,65,2,0
+  2288                        	.sym	~~disable,~~disable,65,2,0
+  2289                        	.sym	~~t1,~~t1,65,2,0
+  2290                        	.sym	~~t0,~~t0,65,2,0
+  2291                        	.sym	task_type,0,641,14,32
+  2292                        	.sym	C256Task,0,641,14,32
+  2293                        	.sym	PINT_REGS,0,138,14,32,44
+  2294                        	.sym	INT_REGS,0,10,14,104,44
+  2295                        	.sym	TASK_STACK,0,10,14,32,43
+  2296                        	.sym	TASK,0,10,14,48,42
+  2297                        	.sym	PIRQDATA,0,138,14,32,41
+  2298                        	.sym	IRQDATA,0,10,14,48,41
+  2299                        	.sym	PCOMMANDARGS,0,138,14,32,40
+  2300                        	.sym	COMMANDARGS,0,10,14,64,40
+  2301                        	.sym	PTOKENIZESTATE,0,133,14,32
+  2302                        	.sym	TOKENIZESTATE,0,5,14,16
+  2303                        	.sym	PTOKEN,0,138,14,32,39
+  2304                        	.sym	TOKEN,0,10,14,64,39
+  2305                        	.sym	PTOKENTYPE,0,133,14,32
+  2306                        	.sym	TOKENTYPE,0,5,14,16
+  2307                        	.sym	FXCommandHandler,0,656,14,32
+  2308                        	.sym	PCONSOLECTX,0,138,14,32,38
+  2309                        	.sym	CONSOLECTX,0,10,14,1144,38
+  2310                        	.sym	PSPINNERCTX,0,138,14,32,37
+  2311                        	.sym	SPINNERCTX,0,10,14,48,37
+  2312                        	.sym	~~_k_keyCodesExtSet,~~_k_keyCodesExtSet,
+                    110,3,0,1
+  2313                        	.sym	~~_k_keyCodesShiftSet,~~_k_keyCodesShift
+                    Set,110,3,0,89
+  2314                        	.sym	~~_k_keyCodesSet,~~_k_keyCodesSet,110,3,
+                    0,89
+  2315                        	.sym	PMOUSE_MSG_STATE,0,138,14,32,36
+  2316                        	.sym	MOUSE_MSG_STATE,0,10,14,184,36
+  2317                        	.sym	PFXEVENTPROCESS,0,138,14,32,35
+  2318                        	.sym	FXEVENTPROCESS,0,10,14,64,35
+  2319                        	.sym	FXEventProc,0,641,14,32
+  2320                        	.sym	PMOUSEMSGDATA,0,138,14,32,34
+  2321                        	.sym	MOUSEMSGDATA,0,10,14,64,34
+  2322                        	.sym	MSGIRQ,0,5,14,16
+  2323                        	.sym	MAINLOOPARGS,0,10,14,16,33
+  2324                        	.sym	PCUR_PALETTE_MAP,0,138,14,32,32
+  2325                        	.sym	CUR_PALETTE_MAP,0,10,14,400,32
+  2326                        	.sym	PCLICKDETECTED,0,138,14,32,31
+  2327                        	.sym	CLICKDETECTED,0,10,14,64,31
+  2328                        	.sym	OBJECTCLICKED,0,641,14,32
+  2329                        	.sym	MemoryCallback,0,641,14,32
+  2330                        	.sym	PFXMEMORYMAP,0,138,14,32,30
+  2331                        	.sym	FXMEMORYMAP,0,10,14,2072,30
+  2332                        	.sym	PFXSTRING,0,138,14,32,29
+  2333                        	.sym	FXSTRING,0,10,14,64,29
+  2334                        	.sym	PFXENVIRONMENT,0,138,14,32,28
+  2335                        	.sym	FXENVIRONMENT,0,10,14,96,28
+  2336                        	.sym	PFXZERPOPAGE,0,138,14,32,27
+  2337                        	.sym	FXZERPOPAGE,0,10,14,288,27
+  2338                        	.sym	FOREACHNODE,0,641,14,32
+  2339                        	.sym	PFXCOMBUFFER,0,138,14,32,26
+  2340                        	.sym	FXCOMBUFFER,0,10,14,2080,26
+  Sat Sep 21 2019 15:24                                                Page 46
+
+
+  2341                        	.sym	PSUBMENULIST,0,138,14,32,25
+  2342                        	.sym	SUBMENULIST,0,10,14,40,25
+  2343                        	.sym	HSUBMENU,0,7,14,32
+  2344                        	.sym	PSUBMENU,0,138,14,32,24
+  2345                        	.sym	SUBMENU,0,10,14,64,24
+  2346                        	.sym	MenuAction,0,641,14,32
+  2347                        	.sym	HMENU,0,129,14,32
+  2348                        	.sym	PMENU,0,138,14,32,23
+  2349                        	.sym	MENU,0,10,14,168,23
+  2350                        	.sym	HCLICKABLE,0,7,14,32
+  2351                        	.sym	PCLICKABLE,0,138,14,32,22
+  2352                        	.sym	CLICKABLE,0,10,14,80,22
+  2353                        	.sym	HTEXTBOX,0,7,14,32
+  2354                        	.sym	PTEXTBOX,0,138,14,32,21
+  2355                        	.sym	TEXTBOX,0,10,14,112,21
+  2356                        	.sym	FONTMETRIC,0,10,14,32,20
+  2357                        	.sym	TITLE,0,142,14,32
+  2358                        	.sym	PHANDLE,0,1153,14,32
+  2359                        	.sym	HANDLE,0,129,14,32
+  2360                        	.sym	PWINDOW,0,138,14,32,19
+  2361                        	.sym	WINDOW,0,10,14,640,19
+  2362                        	.sym	Window,0,10,14,640,19
+  2363                        	.sym	PWNDCLASS,0,138,14,32,18
+  2364                        	.sym	WNDCLASS,0,10,14,256,18
+  2365                        	.sym	HBRUSH,0,129,14,32
+  2366                        	.sym	HCURSOR,0,129,14,32
+  2367                        	.sym	HICON,0,129,14,32
+  2368                        	.sym	HINSTANCE,0,129,14,32
+  2369                        	.sym	FXWndProc,0,654,14,32
+  2370                        	.sym	PRECT,0,138,14,32,17
+  2371                        	.sym	RECT,0,10,14,64,17
+  2372                        	.sym	PPOINT,0,138,14,32,16
+  2373                        	.sym	POINT,0,10,14,32,16
+  2374                        	.sym	PFXPROPERTY,0,138,14,32,14
+  2375                        	.sym	FXPROPERTY,0,10,14,384,14
+  2376                        	.sym	SCANCODE,0,14,14,8
+  2377                        	.sym	KEYCODE,0,14,14,8
+  2378                        	.sym	PFXPROCESSMESSAGE,0,138,14,32,13
+  2379                        	.sym	FXPROCESSMESSAGE,0,10,14,112,13
+  2380                        	.sym	PFXPROCESS,0,138,14,32,12
+  2381                        	.sym	FXPROCESS,0,10,14,632,12
+  2382                        	.sym	PDESKTOP_CONTROL,0,138,14,32,11
+  2383                        	.sym	DESKTOP_CONTROL,0,10,14,328,11
+  2384                        	.sym	PCONSOLE_CONTROL,0,138,14,32,10
+  2385                        	.sym	CONSOLE_CONTROL,0,10,14,448,10
+  2386                        	.sym	FXProcessProc,0,641,14,32
+  2387                        	.sym	PFXOSMESSAGE,0,138,14,32,9
+  2388                        	.sym	FXOSMESSAGE,0,10,14,304,9
+  2389                        	.sym	HWND,0,129,14,32
+  2390                        	.sym	MSGDATA,0,14,14,8
+  2391                        	.sym	MSGDEST,0,18,14,32
+  2392                        	.sym	MSGSRC,0,18,14,32
+  2393                        	.sym	MSGTYPE,0,16,14,16
+  2394                        	.sym	PROCESS_RESOURCE_LIST,0,138,14,32,5
+  2395                        	.sym	PROCESS_TLS_LIST,0,138,14,32,5
+  2396                        	.sym	SEMAPHORE_LIST,0,138,14,32,5
+  2397                        	.sym	FILE_BLOCK_LIST,0,138,14,32,5
+  2398                        	.sym	FILE_PATH_LIST,0,138,14,32,5
+  Sat Sep 21 2019 15:24                                                Page 47
+
+
+  2399                        	.sym	PROCEDURE_LIST,0,138,14,32,5
+  2400                        	.sym	FILE_HANDLE,0,138,14,32,8
+  2401                        	.sym	FILE_BLOCK,0,10,14,552,8
+  2402                        	.sym	SEMAPHORE,0,10,14,16,7
+  2403                        	.sym	PROCESS_STATUS,0,16,14,16
+  2404                        	.sym	FILE_PATH_NAME,0,142,14,32
+  2405                        	.sym	PROCESS_RESOURCE,0,129,14,32
+  2406                        	.sym	PROCESS_TLS,0,129,14,32
+  2407                        	.sym	PROCESS_CTX,0,129,14,32
+  2408                        	.sym	USERID,0,16,14,16
+  2409                        	.sym	PROCESS_ID,0,18,14,32
+  2410                        	.sym	PROCESS_BANK,0,14,14,8
+  2411                        	.sym	PFXQUEUE,0,138,14,32,6
+  2412                        	.sym	FXQUEUE,0,10,14,80,6
+  2413                        	.sym	PFXNODELIST,0,138,14,32,5
+  2414                        	.sym	FXNODELIST,0,10,14,96,5
+  2415                        	.sym	NodeListDeallocator,0,641,14,32
+  2416                        	.sym	PFXNODE,0,138,14,32,4
+  2417                        	.sym	FXNODE,0,10,14,376,4
+  2418                        	.sym	PFAR,0,142,14,32
+  2419                        	.sym	LPBOOL,0,142,14,32
+  2420                        	.sym	BOOL,0,14,14,8
+  2421                        	.sym	ULONG,0,18,14,32
+  2422                        	.sym	LPLONG,0,135,14,32
+  2423                        	.sym	LONG,0,7,14,32
+  2424                        	.sym	UINT,0,16,14,16
+  2425                        	.sym	INT,0,5,14,16
+  2426                        	.sym	WORD,0,5,14,16
+  2427                        	.sym	UCHAR,0,14,14,8
+  2428                        	.sym	LPCSTR,0,142,14,32
+  2429                        	.sym	LPSTR,0,142,14,32
+  2430                        	.sym	LPCHAR,0,142,14,32
+  2431                        	.sym	CHAR,0,14,14,8
+  2432                        	.sym	BYTE,0,14,14,8
+  2433                        	.sym	LPVOID,0,129,14,32
+  2434                        	.sym	VOID,0,1,14,32
+  2435                        	.sym	Boolean_T,0,5,14,16
+  2436                        	.sym	ldiv_t,0,10,14,64,2
+  2437                        	.sym	div_t,0,10,14,32,1
+  2438                        	.sym	wctype_t,0,16,14,16
+  2439                        	.sym	wint_t,0,16,14,16
+  2440                        	.sym	wchar_t,0,14,14,8
+  2441                        	.sym	ptrdiff_t,0,7,14,32
+  2442                        	.sym	size_t,0,16,14,16
+  2443                        	end
+
+
+      Lines assembled: 2443
+      Errors: 0

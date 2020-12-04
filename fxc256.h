@@ -63,7 +63,8 @@
 #define FNX2_INT04_VDMA   0x10
 #define FNX2_INT05_DACHP  0x20
 #define FNX2_INT06_EXT    0x40
-#define FNX2_INT07_ALLONE 0x80
+#define FNX2_INT07_SDCARD 0x80
+//#define FNX2_INT07_ALLONE 0x80
 
 #define UART_TRHB 	( 0x00)
 //             ; Transmit/Receive Hold Buffer
@@ -89,7 +90,7 @@
 //               ; Scratch Register
 
 #define BM437_ATI_8X8_Font_Set ((VOLATILE unsigned char FAR*)0x1ff800)
-#define FONT_4_BANK0		   ((VOLATILE unsigned char FAR*)0x1ff000)
+#define FONT_4_BANK0		   ((VOLATILE unsigned char FAR*)0x1ff000)//3FF000
 #define FONT_MEMORY_BANK0	   ((VOLATILE unsigned char FAR*)0xaf8000)
 #define FONT_MEMORY_BANK1	   ((VOLATILE unsigned char FAR*)0xaf8800)
 
@@ -275,14 +276,14 @@
 #define BM_Y_SIZE_L               ((VOLATILE unsigned char FAR*)0xAF0146)
 #define BM_Y_SIZE_H               ((VOLATILE unsigned char FAR*)0xAF0147)
 
-#define ASM_BM_CONTROL_REG           $AF0140
-#define ASM_BM_START_ADDY_L          $AF0141
-#define ASM_BM_START_ADDY_M          $AF0142
-#define ASM_BM_START_ADDY_H          $AF0143
-#define ASM_BM_X_SIZE_L              $AF0144
-#define ASM_BM_X_SIZE_H              $AF0145
-#define ASM_BM_Y_SIZE_L              $AF0146
-#define ASM_BM_Y_SIZE_H              $AF0147
+//#define ASM_BM_CONTROL_REG           $AF0140
+//#define ASM_BM_START_ADDY_L          $AF0141
+//#define ASM_BM_START_ADDY_M          $AF0142
+//#define ASM_BM_START_ADDY_H          $AF0143
+//#define ASM_BM_X_SIZE_L              $AF0144
+//#define ASM_BM_X_SIZE_H              $AF0145
+//#define ASM_BM_Y_SIZE_L              $AF0146
+//#define ASM_BM_Y_SIZE_H              $AF0147
 
 #define BM_RESERVED_0             ((VOLATILE unsigned char FAR*)0xAF0148)
 #define BM_RESERVED_1             ((VOLATILE unsigned char FAR*)0xAF0149)
@@ -625,9 +626,9 @@
 
 #define MOUSE_PTR        		 ((VOLATILE unsigned char FAR*)0x0000E0)
 
-#define MOUSE_PTR_BYTE0_ASM         $AF0706
-#define MOUSE_PTR_BYTE1_ASM         $AF0707
-#define MOUSE_PTR_BYTE2_ASM         $AF0708
+//#define MOUSE_PTR_BYTE0_ASM         $AF0706
+//#define MOUSE_PTR_BYTE1_ASM         $AF0707
+//#define MOUSE_PTR_BYTE2_ASM         $AF0708
 
 #define MOUSE_POS_X_LO  ((VOLATILE unsigned char FAR*)0x0000E1)
 #define MOUSE_POS_X_HI  ((VOLATILE unsigned char FAR*)0x0000E2)
@@ -711,18 +712,53 @@
 #define	BITMAP_BANK_4       		 ((VOLATILE unsigned char FAR*)0xB40000)
 #define	BITMAP_BANK_5       		 ((VOLATILE unsigned char FAR*)0xB50000)
 
-#define	SHADOW_BANK_0       		 ((VOLATILE unsigned char FAR*)0x0A0000)
-#define	SHADOW_BANK_1       		 ((VOLATILE unsigned char FAR*)0x0B0000)
-#define	SHADOW_BANK_2       		 ((VOLATILE unsigned char FAR*)0x0C0000)
-#define	SHADOW_BANK_3       		 ((VOLATILE unsigned char FAR*)0x0D0000)
-#define	SHADOW_BANK_4       		 ((VOLATILE unsigned char FAR*)0x0E0000)
-#define	SHADOW_BANK_5       		 ((VOLATILE unsigned char FAR*)0x0F0000)
+#define	SHADOW_BANK_0       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_0)
+#define	SHADOW_BANK_1       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_1)
+#define	SHADOW_BANK_2       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_2)
+#define	SHADOW_BANK_3       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_3)
+#define	SHADOW_BANK_4       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_4)
+#define	SHADOW_BANK_5       		 ((VOLATILE unsigned char FAR*)FXOS_BUILD_SHADOW_BANK_5)
 
 
 
 
 #define	BITMAP_PAGE_START       	 (0xB00000)
 
+
+#define	CH_CMD_SET_MODE       (0x15)
+
+//    ; Get Interrupt Status
+#define	CH_CMD_GET_STATUS     (0x22)
+#define	CH_CMD_RD_DATA0       (0x27)
+#define	CH_CMD_SET_FILENAME   (0x2F)
+#define	CH_CMD_DISK_MOUNT     (0x31)
+#define	CH_CMD_FILE_OPEN      (0x32)
+#define	CH_CMD_FILE_ENUM_GO   (0x33)
+#define	CH_CMD_FILE_CLOSE     (0x36)
+#define	CH_CMD_BYTE_LOCATE    (0x39)
+#define	CH_CMD_BYTE_READ      (0x3A)
+#define	CH_CMD_BYTE_RD_GO     (0x3B)
+#define	CH_CMD_BYTE_WRITE     (0x3C)
+#define	CH_CMD_BYTE_WR_GO     (0x3D)
+
+//; Interruption state in SD card
+#define	CH376S_STAT_SUCCESS  (0x14)
+#define	CH376S_STAT_BUF_OVF  (0x17)
+#define	CH376S_STAT_DSK_RD   (0x1D)
+#define	CH376S_STAT_DSK_WR   (0x1E)
+//; File system notice code in SD card
+#define	CH376S_ERR_OPEN_DIR  (0x41)
+#define	CH376S_ERR_MISS_FIL  (0x42)
+#define	CH376S_ERR_FND_NAME  (0x43)
+//;File system error code in SD card
+#define	CH376S_ERR_DISK_DSC  (0x82)
+#define	CH376S_ERR_LRG_SEC   (0x84)
+#define	CH376S_ERR_PARTTION  (0x92)
+#define	CH376S_ERR_NOT_FORM  (0xA1)
+#define	CH376S_ERR_DSK_FULL  (0xB1)
+#define	CH376S_FDT_OVER      (0xB2)
+#define	CH376S_FILE_CLOSED   (0xB4)
+/*
 //
 // CH376S
 //
@@ -788,7 +824,7 @@
 #define	CH376S_ERR_DSK_FULL  (0xB1)
 #define	CH376S_FDT_OVER      (0xB2)
 #define	CH376S_FILE_CLOSED   (0xB4)
-
+*/
 #define	SDCARD_PRSNT_NO_CARD (0x00)
 #define	SDCARD_PRSNT_CD      (0x01)
 #define	SDCARD_PRSNT_WP      (0x02)

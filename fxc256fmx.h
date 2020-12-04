@@ -3,6 +3,7 @@
 #define __FX_C256_FMX_
 
 #include "fxtypes.h"
+#include "fmx_vicky.h"
 
 #define VOLATILE
 
@@ -63,7 +64,8 @@
 #define FNX2_INT04_VDMA   0x10
 #define FNX2_INT05_DACHP  0x20
 #define FNX2_INT06_EXT    0x40
-#define FNX2_INT07_ALLONE 0x80
+#define FNX2_INT07_SDCARD 0x80
+//#define FNX2_INT07_ALLONE 0x80
 
 #define UART_TRHB 	( 0x00)
 //             ; Transmit/Receive Hold Buffer
@@ -88,10 +90,13 @@
 #define UART_SR 	(0x07)
 //               ; Scratch Register
 
-#define BM437_ATI_8X8_Font_Set ((VOLATILE unsigned char FAR*)0x3ff800)
-#define FONT_4_BANK0		   ((VOLATILE unsigned char FAR*)0x3FF000)//3FF000
-#define FONT_MEMORY_BANK0	   ((VOLATILE unsigned char FAR*)0xaf8000)
-#define FONT_MEMORY_BANK1	   ((VOLATILE unsigned char FAR*)0xaf8800)
+//#define BM437_ATI_8X8_Font_Set ((VOLATILE unsigned char FAR*)0x3ff800)
+//#define BM437_ATI_8X8_Font_Set ((VOLATILE unsigned char FAR*)0x3F0000)
+//#define FONT_4_BANK0		   ((VOLATILE unsigned char FAR*)0x3FF000)//3FF000
+#define FONT_4_BANK0		   ((VOLATILE unsigned char FAR*)0x3F0000)
+#define FONT_MEMORY_BANK0	   ((VOLATILE unsigned char FAR*)0xAF0000)
+#define FONT_MEMORY_BANK1	   ((VOLATILE unsigned char FAR*)0xAF8800)
+
 
 
 //* Addresses are the byte AFTER the block. Use this to confirm block locations and check for overlaps
@@ -137,8 +142,13 @@
 #define MSTR_CTRL_SPRITE_EN       (0x20)
 #define MSTR_CTRL_GAMMA_EN        (0x40)
 #define MSTR_CTRL_DISABLE_VID     (0x80)
-#define MASTER_CTRL_REG_L	   ((VOLATILE unsigned char FAR*)0xAF0000)
-#define MASTER_CTRL_REG_H	   ((VOLATILE unsigned char FAR*)0xAF0001)
+#define MASTER_CTRL_REG_L	      ((LPSTR)0xAF0000)
+#define MASTER_CTRL_REG_H         ((LPSTR)0xAF0001)
+// 0 - 640x480 (Clock @ 25.175Mhz), 1 - 800x600 (Clock @ 40Mhz)
+#define MSTR_CTRL_VIDEO_MODE0   (0x01)
+// 0 - No Pixel Doubling, 1- Pixel Doubling (Reduce the Pixel Resolution by 2)
+#define MSTR_CTRL_VIDEO_MODE1   (0x02)
+
 
 #define VKY_RESERVED_00           ((VOLATILE unsigned char FAR*)0xAF0002)
 #define VKY_RESERVED_01           ((VOLATILE unsigned char FAR*)0xAF0003)
@@ -147,6 +157,8 @@
 #define BORDER_COLOR_B            ((VOLATILE unsigned char FAR*)0xAF0005)
 #define BORDER_COLOR_G            ((VOLATILE unsigned char FAR*)0xAF0006)
 #define BORDER_COLOR_R            ((VOLATILE unsigned char FAR*)0xAF0007)
+#define BORDER_X_SIZE             ((LPSTR)0xAF0008)
+#define BORDER_Y_SIZE             ((LPSTR)0xAF0009)
 
 #define VKY_TXT_CURSOR_CTRL_REG   ((VOLATILE unsigned char FAR*)0xAF0010)
 //   [0]  ENABLE TEXT MODE)
@@ -266,6 +278,7 @@
 //TL3_RESERVED_6            ((VOLATILE unsigned char FAR*)0xAF013E)
 //TL3_RESERVED_7            ((VOLATILE unsigned char FAR*)0xAF013F)
 //BITMAP REGISTERS)
+/*
 #define BM_CONTROL_REG            ((VOLATILE unsigned char FAR*)0xAF0140)
 #define BM_START_ADDY_L           ((VOLATILE unsigned char FAR*)0xAF0141)
 #define BM_START_ADDY_M           ((VOLATILE unsigned char FAR*)0xAF0142)
@@ -275,14 +288,14 @@
 #define BM_Y_SIZE_L               ((VOLATILE unsigned char FAR*)0xAF0146)
 #define BM_Y_SIZE_H               ((VOLATILE unsigned char FAR*)0xAF0147)
 
-#define ASM_BM_CONTROL_REG           $AF0140
-#define ASM_BM_START_ADDY_L          $AF0141
-#define ASM_BM_START_ADDY_M          $AF0142
-#define ASM_BM_START_ADDY_H          $AF0143
-#define ASM_BM_X_SIZE_L              $AF0144
-#define ASM_BM_X_SIZE_H              $AF0145
-#define ASM_BM_Y_SIZE_L              $AF0146
-#define ASM_BM_Y_SIZE_H              $AF0147
+//#define ASM_BM_CONTROL_REG           $AF0140
+//#define ASM_BM_START_ADDY_L          $AF0141
+//#define ASM_BM_START_ADDY_M          $AF0142
+//#define ASM_BM_START_ADDY_H          $AF0143
+//#define ASM_BM_X_SIZE_L              $AF0144
+//#define ASM_BM_X_SIZE_H              $AF0145
+//#define ASM_BM_Y_SIZE_L              $AF0146
+//#define ASM_BM_Y_SIZE_H              $AF0147
 
 #define BM_RESERVED_0             ((VOLATILE unsigned char FAR*)0xAF0148)
 #define BM_RESERVED_1             ((VOLATILE unsigned char FAR*)0xAF0149)
@@ -292,15 +305,16 @@
 #define BM_RESERVED_5             ((VOLATILE unsigned char FAR*)0xAF014D)
 #define BM_RESERVED_6             ((VOLATILE unsigned char FAR*)0xAF014E)
 #define BM_RESERVED_7             ((VOLATILE unsigned char FAR*)0xAF014F)
+*/
 //SPRITE REGISTERS)
 // BIT FIELD DEFINITION FOR THE CONTROL REGISTER)
-#define SPRITE_ENABLE               ((VOLATILE unsigned char FAR*)0x01)
-#define SPRITE_LUT0                 ((VOLATILE unsigned char FAR*)0x02)
-#define SPRITE_LUT1                 ((VOLATILE unsigned char FAR*)0x04)
-#define SPRITE_LUT2                 ((VOLATILE unsigned char FAR*)0x08)
-#define SPRITE_DEPTH0               ((VOLATILE unsigned char FAR*)0x10)
-#define SPRITE_DEPTH1               ((VOLATILE unsigned char FAR*)0x20)
-#define SPRITE_DEPTH2               ((VOLATILE unsigned char FAR*)0x40)
+#define SPRITE_ENABLE               (0x01)
+#define SPRITE_LUT0                 (0x02)
+#define SPRITE_LUT1                 (0x04)
+#define SPRITE_LUT2                 (0x08)
+#define SPRITE_DEPTH0               (0x10)
+#define SPRITE_DEPTH1               (0x20)
+#define SPRITE_DEPTH2               (0x40)
 
 // SPRITE 0 (HIGHEST PRIORITY))
 #define SP00_CONTROL_REG          ((VOLATILE unsigned char FAR*)0xAF0200)
@@ -564,7 +578,9 @@
 #define TILE_MAP3                 ((VOLATILE unsigned char FAR*)0xAF6800)
 
 #define FONT_MEMORY_BANK          ((VOLATILE unsigned char FAR*)0xAF8000)
+//#define CS_TEXT_MEM_PTR           ((VOLATILE unsigned char FAR*)0xAFA000)
 #define CS_TEXT_MEM_PTR           ((VOLATILE unsigned char FAR*)0xAFA000)
+//#define CS_COLOR_MEM_PTR          ((VOLATILE unsigned char FAR*)0xAFC000)
 #define CS_COLOR_MEM_PTR          ((VOLATILE unsigned char FAR*)0xAFC000)
 
 #define BMP_X_SIZE        ((VOLATILE unsigned char FAR*)0x000040)
@@ -625,9 +641,9 @@
 
 #define MOUSE_PTR        		 ((VOLATILE unsigned char FAR*)0x0000E0)
 
-#define MOUSE_PTR_BYTE0_ASM         $AF0706
-#define MOUSE_PTR_BYTE1_ASM         $AF0707
-#define MOUSE_PTR_BYTE2_ASM         $AF0708
+//#define MOUSE_PTR_BYTE0_ASM         $AF0706
+//#define MOUSE_PTR_BYTE1_ASM         $AF0707
+//#define MOUSE_PTR_BYTE2_ASM         $AF0708
 
 #define MOUSE_POS_X_LO  ((VOLATILE unsigned char FAR*)0x0000E1)
 #define MOUSE_POS_X_HI  ((VOLATILE unsigned char FAR*)0x0000E2)
@@ -696,13 +712,13 @@
 #define UART1_BASE    ((unsigned char FAR*)0xAF13F8)
 #define UART2_BASE 	  ((unsigned char FAR*)0xAF12F8)
 
-#define	STATUS_PORT 	         ((char FAR*)0xAF1064)
-#define	KBD_OUT_BUF 	         ((char FAR*)0xAF1060)
-#define	KBD_INPT_BUF	         ((char FAR*)0xAF1060)
-#define	KBD_CMD_BUF		         ((char FAR*)0xAF1064)
-#define	KBD_DATA_BUF	         ((char FAR*)0xAF1060)
-#define	PORT_A			         ((char FAR*)0xAF1060)
-#define	PORT_B			         ((char FAR*)0xAF1061)
+#define	STATUS_PORT 	         	((char FAR*)0xAF1064)
+#define	KBD_OUT_BUF 	         	((char FAR*)0xAF1060)
+#define	KBD_INPT_BUF	        	((char FAR*)0xAF1060)
+#define	KBD_CMD_BUF		         	((char FAR*)0xAF1064)
+#define	KBD_DATA_BUF	         	((char FAR*)0xAF1060)
+#define	PORT_A			         	((char FAR*)0xAF1060)
+#define	PORT_B			         	((char FAR*)0xAF1061)
 
 #define	BITMAP_BANK_0       		 ((VOLATILE unsigned char FAR*)0xB00000)
 #define	BITMAP_BANK_1       		 ((VOLATILE unsigned char FAR*)0xB10000)
@@ -990,6 +1006,27 @@
 
 // UNITY CHIPSET
 // CFP9307 Memory Map
+
+#define FX_ATA_REG_DATA       ((LPCHAR)0xAFE830)
+#define FX_ATA_REG_ERROR      ((LPCHAR)0xAFE831)
+#define FX_ATA_REG_FEATURES   ((LPCHAR)0xAFE831)
+#define FX_ATA_REG_SECCOUNT0  ((LPCHAR)0xAFE832)
+#define FX_ATA_REG_LBA0       ((LPCHAR)0xAFE833)
+#define FX_ATA_REG_LBA1       ((LPCHAR)0xAFE834)
+#define FX_ATA_REG_LBA2       ((LPCHAR)0xAFE835)
+#define FX_ATA_REG_HDDEVSEL   ((LPCHAR)0xAFE836)
+#define FX_ATA_REG_HDDEVCTL   ((LPCHAR)0xAFE836)
+#define FX_ATA_REG_ALTSTATUS  ((LPCHAR)0xAFE836)
+
+#define FX_ATA_REG_COMMAND    ((LPCHAR)0xAFE837)
+#define FX_ATA_REG_STATUS     ((LPCHAR)0xAFE837)
+#define FX_ATA_REG_SECCOUNT1  ((LPCHAR)0xAFE838)
+#define FX_ATA_REG_LBA3       ((LPCHAR)0xAFE839)
+//#define FX_ATA_REG_LBA4       0x0A
+//#define FX_ATA_REG_LBA5       0x0B
+//#define FX_ATA_REG_CONTROL    0x0C
+//#define FX_ATA_REG_ALTSTATUS  0x0C
+//#define FX_ATA_REG_DEVADDRESS 0x0D
 
 // IDE Interface
 #define IDE_DATA      ((LPCHAR)0xAFE830)
@@ -1281,6 +1318,8 @@
 
 #define outportb(a,b)	( ((LPCHAR)a)[0]=(b) )
 #define inportb(a)		( ((LPCHAR)a)[0] )
+
+
 
 
 #endif

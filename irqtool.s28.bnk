@@ -1,0 +1,9 @@
+
+Section: ORG:    ROM ORG:  SIZE:
+CODE     010000  010000     A79DH ( 42909)
+DATA     020000  020000     96B0H ( 38576)
+UDATA    0296B0  ------      5C0H (  1472)
+startup  007D00  007D00      1A3H (   419)
+vectors  00FFE4  00FFE4       1CH (    28)
+Total                      145CCH ( 83404)
+

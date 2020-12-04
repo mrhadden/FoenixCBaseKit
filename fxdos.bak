@@ -1,0 +1,3710 @@
+#include "fxos.h"
+#include "fxdos.h"
+#include "fxmemorymanager.h"
+#include "MINDRVR.H"
+#include "fxfloppy.h"
+
+
+
+/*
+UCHAR FAT12BOOT[512] = {0xEB,0x34,0x90,0x49,0x42,0x4D,0x20,0x20,0x33,0x2E,0x33,0x00,0x02,0x01,0x01,0x00,0x02,0xE0,0x00,0x40,0x0B,0xF0,0x09,0x00,0x12,0x00,0x02,0x00,
+		                0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x12,0x00,0x00,0x00,0x00,0x01,0x00,0xFA,0x33,
+						0xC0,0x8E,0xD0,0xBC,0x00,0x7C,0x16,0x07,0xBB,0x78,0x00,0x36,0xC5,0x37,0x1E,0x56,0x16,0x53,0xBF,0x2B,0x7C,0xB9,0x0B,0x00,0xFC,0xAC,0x26,0x80,
+						0x3D,0x00,0x74,0x03,0x26,0x8A,0x05,0xAA,0x8A,0xC4,0xE2,0xF1,0x06,0x1F,0x89,0x47,0x02,0xC7,0x07,0x2B,0x7C,0xFB,0xCD,0x13,0x72,0x67,0xA0,0x10,
+						0x7C,0x98,0xF7,0x26,0x16,0x7C,0x03,0x06,0x1C,0x7C,0x03,0x06,0x0E,0x7C,0xA3,0x3F,0x7C,0xA3,0x37,0x7C,0xB8,0x20,0x00,0xF7,0x26,0x11,0x7C,0x8B,
+						0x1E,0x0B,0x7C,0x03,0xC3,0x48,0xF7,0xF3,0x01,0x06,0x37,0x7C,0xBB,0x00,0x05,0xA1,0x3F,0x7C,0xE8,0x9F,0x00,0xB8,0x01,0x02,0xE8,0xB3,0x00,0x72,
+						0x19,0x8B,0xFB,0xB9,0x0B,0x00,0xBE,0xD6,0x7D,0xF3,0xA6,0x75,0x0D,0x8D,0x7F,0x20,0xBE,0xE1,0x7D,0xB9,0x0B,0x00,0xF3,0xA6,0x74,0x18,0xBE,0x77,
+						0x7D,0xE8,0x6A,0x00,0x32,0xE4,0xCD,0x16,0x5E,0x1F,0x8F,0x04,0x8F,0x44,0x02,0xCD,0x19,0xBE,0xC0,0x7D,0xEB,0xEB,0xA1,0x1C,0x05,0x33,0xD2,0xF7,
+						0x36,0x0B,0x7C,0xFE,0xC0,0xA2,0x3C,0x7C,0xA1,0x37,0x7C,0xA3,0x3D,0x7C,0xBB,0x00,0x07,0xA1,0x37,0x7C,0xE8,0x49,0x00,0xA1,0x18,0x7C,0x2A,0x06,
+						0x3B,0x7C,0x40,0x38,0x06,0x3C,0x7C,0x73,0x03,0xA0,0x3C,0x7C,0x50,0xE8,0x4E,0x00,0x58,0x72,0xC6,0x28,0x06,0x3C,0x7C,0x74,0x0C,0x01,0x06,0x37,
+						0x7C,0xF7,0x26,0x0B,0x7C,0x03,0xD8,0xEB,0xD0,0x8A,0x2E,0x15,0x7C,0x8A,0x16,0xFD,0x7D,0x8B,0x1E,0x3D,0x7C,0xEA,0x00,0x00,0x70,0x00,0xAC,0x0A,
+						0xC0,0x74,0x22,0xB4,0x0E,0xBB,0x07,0x00,0xCD,0x10,0xEB,0xF2,0x33,0xD2,0xF7,0x36,0x18,0x7C,0xFE,0xC2,0x88,0x16,0x3B,0x7C,0x33,0xD2,0xF7,0x36,
+						0x1A,0x7C,0x88,0x16,0x2A,0x7C,0xA3,0x39,0x7C,0xC3,0xB4,0x02,0x8B,0x16,0x39,0x7C,0xB1,0x06,0xD2,0xE6,0x0A,0x36,0x3B,0x7C,0x8B,0xCA,0x86,0xE9,
+						0x8A,0x16,0xFD,0x7D,0x8A,0x36,0x2A,0x7C,0xCD,0x13,0xC3,0x0D,0x0A,0x4E,0x6F,0x6E,0x2D,0x53,0x79,0x73,0x74,0x65,0x6D,0x20,0x64,0x69,0x73,0x6B,
+						0x20,0x6F,0x72,0x20,0x64,0x69,0x73,0x6B,0x20,0x65,0x72,0x72,0x6F,0x72,0x0D,0x0A,0x52,0x65,0x70,0x6C,0x61,0x63,0x65,0x20,0x61,0x6E,0x64,0x20,
+						0x73,0x74,0x72,0x69,0x6B,0x65,0x20,0x61,0x6E,0x79,0x20,0x6B,0x65,0x79,0x20,0x77,0x68,0x65,0x6E,0x20,0x72,0x65,0x61,0x64,0x79,0x0D,0x0A,0x00,
+						0x0D,0x0A,0x44,0x69,0x73,0x6B,0x20,0x42,0x6F,0x6F,0x74,0x20,0x66,0x61,0x69,0x6C,0x75,0x72,0x65,0x0D,0x0A,0x00,0x49,0x42,0x4D,0x42,0x49,0x4F,
+						0x20,0x20,0x43,0x4F,0x4D,0x49,0x42,0x4D,0x44,0x4F,0x53,0x20,0x20,0x43,0x4F,0x4D,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+						0x00,0x00,0x00,0x00,0x00,0x00,0x55,0xAA};
+
+UCHAR FAT12ROOT[512] = {
+						0x46,0x4F,0x45,0x4E,0x49,0x58,0x20,0x20,0x20,0x20,0x20,0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0xFA,0x43,
+						0x61,0x4F,0x00,0x00,0x00,0x00,0x00,0x00,0x44,0x52,0x41,0x4D,0x5F,0x49,0x4E,0x43,0x41,0x53,0x4D,0x20,0x18,0x83,0x31,0x44,
+						0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,0xB8,0x4E,0x02,0x00,0x9B,0x02,0x00,0x00,0x42,0x2E,0x00,0x61,0x00,0x73,0x00,0x6D,
+						0x00,0x00,0x00,0x0F,0x00,0xEE,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0xFF,0xFF,
+						0x01,0x69,0x00,0x6E,0x00,0x74,0x00,0x65,0x00,0x72,0x00,0x0F,0x00,0xEE,0x72,0x00,0x75,0x00,0x70,0x00,0x74,0x00,0x5F,0x00,
+						0x64,0x00,0x00,0x00,0x65,0x00,0x66,0x00,0x49,0x4E,0x54,0x45,0x52,0x52,0x7E,0x31,0x41,0x53,0x4D,0x20,0x00,0x25,0x33,0x44,
+						0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,0xB8,0x4E,0x04,0x00,0xA4,0x06,0x00,0x00,0x42,0x64,0x00,0x6C,0x00,0x65,0x00,0x72,
+						0x00,0x2E,0x00,0x0F,0x00,0x8F,0x61,0x00,0x73,0x00,0x6D,0x00,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0xFF,0xFF,
+						0x01,0x49,0x00,0x6E,0x00,0x74,0x00,0x65,0x00,0x72,0x00,0x0F,0x00,0x8F,0x72,0x00,0x75,0x00,0x70,0x00,0x74,0x00,0x5F,0x00,
+						0x48,0x00,0x00,0x00,0x61,0x00,0x6E,0x00,0x49,0x4E,0x54,0x45,0x52,0x52,0x7E,0x32,0x41,0x53,0x4D,0x20,0x00,0xBB,0x34,0x44,
+						0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,0xB8,0x4E,0x08,0x00,0x21,0x30,0x00,0x00,0x49,0x4F,0x5F,0x44,0x45,0x46,0x20,0x20,
+						0x41,0x53,0x4D,0x20,0x18,0x17,0x37,0x44,0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,0xB8,0x4E,0x21,0x00,0x86,0x03,0x00,0x00,
+						0x4B,0x45,0x52,0x4E,0x45,0x4C,0x20,0x20,0x41,0x53,0x4D,0x20,0x18,0x85,0x3A,0x44,0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,
+						0xB8,0x4E,0x23,0x00,0x0D,0x3F,0x01,0x00,0x42,0x6B,0x00,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x0F,0x00,0xDB,0xFF,0xFF,
+						0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00,0x00,0xFF,0xFF,0xFF,0xFF,0x01,0x6B,0x00,0x65,0x00,0x72,0x00,0x6E,
+						0x00,0x65,0x00,0x0F,0x00,0xDB,0x6C,0x00,0x2E,0x00,0x61,0x00,0x73,0x00,0x6D,0x00,0x2E,0x00,0x00,0x00,0x62,0x00,0x61,0x00,
+						0x4B,0x45,0x52,0x4E,0x45,0x4C,0x7E,0x31,0x42,0x41,0x4B,0x20,0x00,0x71,0x40,0x44,0x61,0x4F,0x61,0x4F,0x00,0x00,0x5A,0x6C,
+						0xB8,0x4E,0xC3,0x00,0x9D,0x42,0x00,0x00,0x4B,0x45,0x52,0x4E,0x45,0x4C,0x20,0x20,0x48,0x45,0x58,0x20,0x18,0x50,0x43,0x44,
+						0x61,0x4F,0x61,0x4F,0x00,0x00,0x5B,0x52,0xD9,0x4E,0xE5,0x00,0x18,0x9B,0x00,0x00,0x42,0x46,0x00,0x2E,0x00,0x61,0x00,0x73,
+						0x00,0x6D,0x00,0x0F,0x00,0x5F,0x2E,0x00,0x64,0x00,0x65,0x00,0x6C,0x00,0x65,0x00,0x74,0x00,0x00,0x00,0x65,0x00,0x00,0x00,
+						0x01,0x6B,0x00,0x65,0x00,0x72,0x00,0x6E,0x00,0x65,0x00,0x0F,0x00,0x5F,0x6C,0x00,0x5F,0x00,0x62,0x00,0x61,0x00,0x6E,0x00,
+};//0x6B,0x00,0x00,0x00,0x5F,0x00,0x46,0x00,0x4B,0x45,0x52,0x4E,0x45,0x4C,0x7E,0x31,0x44,0x45,0x4C,0x20,0x00,0x16,0x47,0x44};
+*/
+
+
+#pragma section CODE=FXDOS,offset $08:7FFF
+
+static CHAR sd_card_dir_string[] =
+{ 0x2F, 0x2A, 0x00 };
+//static LPCHAR sd_card_dir_string = "/*\0";
+static UINT8 buf[64];
+
+//static BOOL _mount_lock = FALSE;
+//static DISKINFO lastdiskInfo;
+//static PDISKINFO pdiskCache = NULL;
+
+static UCHAR sectorBuffer[512];
+//static UCHAR clusterBuffer[512];
+static UCHAR fatfileBuffer[512];
+static CHAR	 longnamecount;
+static UCHAR longnameBuffer[255];
+
+
+
+typedef struct tagBITMAPFILEHEADER
+{
+    WORD bfType;  //specifies the file type
+    DWORD bfSize;  //specifies the size in bytes of the bitmap file
+    WORD bfReserved1;  //reserved; must be 0
+    WORD bfReserved2;  //reserved; must be 0
+    DWORD bfOffBits;  //species the offset in bytes from the bitmapfileheader to the bitmap bits
+}BITMAPFILEHEADER;
+typedef BITMAPFILEHEADER FAR * PBITMAPFILEHEADER;
+
+typedef struct tagBITMAPINFOHEADER
+{
+    DWORD biSize;  //specifies the number of bytes required by the struct
+    LONG biWidth;  //specifies width in pixels
+    LONG biHeight;  //species height in pixels
+    WORD biPlanes; //specifies the number of color planes, must be 1
+    WORD biBitCount; //specifies the number of bit per pixel
+    DWORD biCompression;//spcifies the type of compression
+    DWORD biSizeImage;  //size of image in bytes
+    LONG biXPelsPerMeter;  //number of pixels per meter in x axis
+    LONG biYPelsPerMeter;  //number of pixels per meter in y axis
+    DWORD biClrUsed;  //number of colors used by th ebitmap
+    DWORD biClrImportant;  //number of colors that are important
+}BITMAPINFOHEADER;
+typedef BITMAPINFOHEADER FAR * PBITMAPINFOHEADER;
+
+
+#ifdef USE_FX256_FMX
+
+FXDOSDEVICE fxdosDevice;
+
+LPCHAR readBitmapData(LPCHAR bitmapBuffer);
+int floppy_present(void);
+
+
+BOOL k_dos_foreach_file(LPVOID ctx,LPVOID pdata)
+{
+	BOOL bBreak = FALSE;
+
+	PFAT16ENTRYLONG entry = (PFAT16ENTRYLONG)pdata;
+	if(pdata)
+	{
+		if(entry->plongfileName && ctx)
+		{
+			//k_debug_strings("k_dos_foreach_file:",entry->plongfileName);
+			//k_debug_strings("k_dos_foreach_file compare:",(LPSTR)ctx);
+
+			bBreak = (strcmp(ctx,entry->plongfileName) == 0);
+
+			//k_debug_integer("k_dos_foreach_file compare:",bBreak);
+		}
+	}
+
+	return bBreak;
+}
+
+
+ULONG getDeviceClusterLocationByIndex(PFXDOSDEVICE pfxdosDevice,ULONG starting_cluster)
+{
+	ULONG rootDirSectors = 0L;
+	ULONG cluster2SectorNumber = 0L;
+	ULONG clusterSectorNumber = 0L;
+	ULONG clusterByteNumber = 0L;
+
+	ULONG firstDataSector = 0L;
+
+	/*
+			k_debug_integer("***fxdosDevice bytes_per_sector:",(INT)pfxdosDevice->bootSector.bytes_per_sector);
+			k_debug_integer("***fxdosDevice sectors_per_cluster:",(INT)pfxdosDevice->bootSector.sectors_per_cluster);
+			k_debug_integer("***fxdosDevice reserved_sector_count:",(INT)pfxdosDevice->bootSector.reserved_sector_count);
+			k_debug_integer("***fxdosDevice table_count:",(INT)pfxdosDevice->bootSector.fat_table_count);
+			k_debug_integer("***fxdosDevice root_entry_count:",(INT)pfxdosDevice->bootSector.root_entry_count);
+			k_debug_integer("***fxdosDevice total_sectors_16:",(INT)pfxdosDevice->bootSector.total_sectors_16);
+			k_debug_integer("***fxdosDevice media_type:",(INT)pfxdosDevice->bootSector.media_type);
+			k_debug_integer("***fxdosDevice sectors_per_fat:",(INT)pfxdosDevice->bootSector.sectors_per_fat);
+			k_debug_integer("***fxdosDevice sectors_per_track:",(INT)pfxdosDevice->bootSector.sectors_per_track);
+			k_debug_integer("***fxdosDevice head_side_count:",(INT)pfxdosDevice->bootSector.head_side_count);
+			k_debug_integer("***fxdosDevice hidden_sector_count:",(INT)pfxdosDevice->bootSector.hidden_sector_count);
+			k_debug_integer("***fxdosDevice total_sectors_32:",(INT)pfxdosDevice->bootSector.total_sectors_32);
+	 */
+
+
+
+	firstDataSector = pfxdosDevice->bootSector.reserved_sector_count + (pfxdosDevice->bootSector.fat_table_count * 512) + pfxdosDevice->rootDirSectors;
+
+	k_debug_long("firstDataSector:",firstDataSector);
+
+	clusterSectorNumber = ((starting_cluster - 2) * pfxdosDevice->sectors_per_cluster) + firstDataSector;
+
+	k_debug_long("Cluster Offset Calculated:",clusterSectorNumber);
+
+	k_debug_long("FAT Entry:",((UINT*)(&pfxdosDevice->fileAllocationTable))[starting_cluster]);
+
+	rootDirSectors = (pfxdosDevice->bootSector.reserved_sector_count * pfxdosDevice->root_entry_count)  / pfxdosDevice->bootSector.bytes_per_sector;
+
+
+	cluster2SectorNumber =  8 + (2 * 240) + rootDirSectors;
+	clusterSectorNumber =  ((starting_cluster - 2) * 16) + cluster2SectorNumber;
+	k_debug_long("clusterSectorNumber:",clusterSectorNumber);
+
+	clusterByteNumber = clusterSectorNumber * 512;
+
+	return clusterByteNumber;
+}
+
+
+ULONG getClusterLocationByIndex(ULONG starting_cluster)
+{
+	ULONG rootDirSectors;
+	ULONG cluster2SectorNumber;
+	ULONG clusterSectorNumber;
+	ULONG clusterByteNumber = 0;
+
+	rootDirSectors = (32 * 512)  / 512;
+
+	cluster2SectorNumber = 8 + (2 * 240) + rootDirSectors;
+	clusterSectorNumber =  ((starting_cluster - 2) * 16) + cluster2SectorNumber;
+	clusterByteNumber = clusterSectorNumber * 512;
+
+	return clusterByteNumber;
+}
+
+
+UCHAR k_read_sd_sector(unsigned long offset,LPCHAR receiveBuffer)
+{
+	return readSDSector(offset,receiveBuffer);
+}
+
+UCHAR readSDSector(unsigned long offset,LPCHAR receiveBuffer)
+{
+	UINT8	errorCode;
+	UINT8	s;
+	UINT8	fifoLO;
+	UINT8	fifoHI;
+	UINT	size;
+	UINT	x;
+
+	k_debug_long("readSDSector offset:",offset);
+
+	*((unsigned long*)(&SDC_SD_ADDR_7_0_REG[0])) = offset;
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_READ_BLK;
+	SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+	s = SDC_TRANS_BUSY;
+	while(s & SDC_TRANS_BUSY)
+	{
+		s = SDC_TRANS_STATUS_REG[0];
+	}
+
+	errorCode = SDC_TRANS_ERROR_REG[0];
+
+	if(!errorCode)
+	{
+		fifoLO = SDC_RX_FIFO_DATA_CNT_LO[0];
+		fifoHI = SDC_RX_FIFO_DATA_CNT_HI[0];
+
+		size = MAKEWORD(fifoLO,fifoHI);
+
+		//k_debug_integer("readSDSector size:",size);
+
+		for(x=0;x<SDC_BUFFER_SIZE;x++)
+		{
+			receiveBuffer[x] = SDC_RX_FIFO_DATA_REG[0];
+		}
+	}
+
+	k_debug_integer("readSDSector errorCode:",errorCode);
+
+	return errorCode;
+}
+
+UINT8 writeSDSector(unsigned long offset,LPCHAR sendBuffer)
+{
+	UINT8	errorCode;
+	UINT8	s;
+	UINT	x;
+
+	SDC_TX_FIFO_CTRL_REG[0] = 0x01;
+
+	for(x=0;x<SDC_BUFFER_SIZE;x++)
+	{
+		SDC_TX_FIFO_DATA_REG[0] = sendBuffer[x];
+	}
+
+	*((unsigned long*)(&SDC_SD_ADDR_7_0_REG[0])) = offset;
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_WRITE_BLK;
+	SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+	s = SDC_TRANS_BUSY;
+	while(s & SDC_TRANS_BUSY)
+	{
+		s = SDC_TRANS_STATUS_REG[0];
+	}
+
+	errorCode = SDC_TRANS_ERROR_REG[0];
+
+	return errorCode;
+}
+
+
+UINT readCluster(unsigned long offset,UINT sectorsPerCluster,LPCHAR receiveBuffer,ULONG file_size)
+{
+	UINT c = 0;
+	ULONG read = 0;
+
+
+	k_debug_long("readCluster::offset:",offset);
+	for(c=0;c<sectorsPerCluster;c++)
+	{
+		readSDSector(offset + (sectorsPerCluster * c),receiveBuffer);
+		read+=512;
+		//k_debug_long("file_size:",file_size);
+		//k_debug_long("read:",read);
+		if(read > file_size)
+			k_debug_byte_array("SECTOR:",receiveBuffer,file_size);
+		else
+			k_debug_byte_array("SECTOR:",receiveBuffer,512);
+
+		if(read > file_size)
+		{
+			break;
+		}
+	}
+
+	return 0;
+}
+
+
+LPCHAR readClusterToMemory(unsigned long offset,UINT sectorsPerCluster,LPCHAR receiveBuffer,ULONG file_size)
+{
+	UINT c = 0;
+	ULONG read = 0;
+	PBITMAPFILEHEADER pheader = NULL;
+	PBITMAPINFOHEADER pinfo = NULL;
+	LPCHAR imageStart = NULL;
+
+	for(c=0;c<sectorsPerCluster;c++)
+	{
+		readSDSector(offset + (sectorsPerCluster * c) + read,receiveBuffer);
+		read+=512;
+		//k_debug_long("file_size:",file_size);
+		//k_debug_long("read:",read);
+		if(receiveBuffer == SHADOW_BANK_0)
+		{
+			pheader = (PBITMAPFILEHEADER)receiveBuffer;
+
+		    k_debug_integer("bfType:",pheader->bfType);
+			k_debug_long("bfSize:",pheader->bfSize);
+			k_debug_long("bfOffBits:",pheader->bfOffBits);
+
+
+			pinfo = (PBITMAPINFOHEADER)&receiveBuffer[sizeof(BITMAPFILEHEADER)];
+
+			k_debug_long("height:",pinfo->biHeight);
+			k_debug_long("width:",pinfo->biWidth);
+
+			k_debug_integer("biPlanes:",pinfo->biPlanes); //specifies the number of color planes, must be 1
+			k_debug_integer("biBitCount:",pinfo->biBitCount); //specifies the number of bit per pixel
+			k_debug_long("biCompression:",pinfo->biCompression);//spcifies the type of compression
+			k_debug_long("biSizeImage:",pinfo->biSizeImage);  //size of image in bytes
+			k_debug_long("biXPelsPerMeter:",pinfo->biXPelsPerMeter);  //number of pixels per meter in x axis
+			k_debug_long("biYPelsPerMeter:",pinfo->biYPelsPerMeter);  //number of pixels per meter in y axis
+
+			imageStart = &receiveBuffer[pheader->bfOffBits];
+		}
+
+		//receiveBuffer = &(receiveBuffer[read]);
+		//k_debug_byte_array("SECTOR:",receiveBuffer,512);
+		receiveBuffer+=512L;
+		//k_debug_pointer("readClusterToMemory::receiveBuffer:",receiveBuffer);
+
+		if(read > file_size)
+		{
+			break;
+		}
+	}
+
+	return receiveBuffer;
+}
+
+
+LPCHAR readBitmapData(LPCHAR bitmapBuffer)
+{
+	PBITMAPFILEHEADER pheader = NULL;
+	PBITMAPINFOHEADER pinfo = NULL;
+	LPCHAR imageStart = NULL;
+
+	if(bitmapBuffer)
+	{
+		pheader = (PBITMAPFILEHEADER)bitmapBuffer;
+
+		k_debug_integer("bfType:",pheader->bfType);
+		k_debug_long("bfSize:",pheader->bfSize);
+		k_debug_long("bfOffBits:",pheader->bfOffBits);
+
+		pinfo = (PBITMAPINFOHEADER)&bitmapBuffer[sizeof(BITMAPFILEHEADER)];
+
+		k_debug_long("height:",pinfo->biHeight);
+		k_debug_long("width:",pinfo->biWidth);
+
+		k_debug_integer("biPlanes:",pinfo->biPlanes); //specifies the number of color planes, must be 1
+		k_debug_integer("biBitCount:",pinfo->biBitCount); //specifies the number of bit per pixel
+		k_debug_long("biCompression:",pinfo->biCompression);//spcifies the type of compression
+		k_debug_long("biSizeImage:",pinfo->biSizeImage);  //size of image in bytes
+		k_debug_long("biXPelsPerMeter:",pinfo->biXPelsPerMeter);  //number of pixels per meter in x axis
+		k_debug_long("biYPelsPerMeter:",pinfo->biYPelsPerMeter);  //number of pixels per meter in y axis
+
+		imageStart = &bitmapBuffer[pheader->bfOffBits];
+	}
+
+	return imageStart;
+}
+
+
+BOOL k_read_volume_name(PFAT16ENTRY entry,PFXDOSDEVICE pdev)
+{
+	BOOL bRet = FALSE;
+
+	if(entry && pdev)
+	{
+    	if(entry->attributes == 0x08)
+		{
+    		memset(pdev->root_volume_name,0,12);
+
+    		strncpy(pdev->root_volume_name,entry->filename,8);
+    		strncpy(&pdev->root_volume_name[8],entry->ext,3);
+
+    		bRet = TRUE;
+		}
+	}
+
+	return bRet;
+}
+
+LPSTR k_dos_alloc_short_name(PFAT16ENTRYLONG entry)
+{
+	int i = 0;
+	// 01234567.901N
+	entry->plongfileName = k_mem_allocate_heap(14);
+	memset(entry->plongfileName,0,14);
+	/*
+	memcpy(entry->plongfileName,entry->filename,8);
+	memcpy(&(entry->plongfileName[9]),entry->ext,3);
+
+	entry->plongfileName[8] = '.';
+	entry->plongfileName[12] = 0;
+	*/
+
+	memcpy(entry->plongfileName,entry->filename,8);
+	for(i=0;i<8;i++)
+	{
+		if(entry->plongfileName[i] == ' ')
+			break;
+	}
+	//k_debug_strings("k_dos_alloc_short_name:filename:",entry->plongfileName);
+	//k_debug_integer("k_dos_alloc_short_name:i:",i);
+
+	if(entry->ext[0]!=' ')
+	{
+		entry->plongfileName[i] = '.';
+		memcpy(&(entry->plongfileName[i+1]),entry->ext,3);
+		for(i=0;i<14;i++)
+		{
+			if(entry->plongfileName[i] == ' ')
+				entry->plongfileName[i] = 0;
+		}
+	}
+	//entry->plongfileName[8] = '.';
+	//entry->plongfileName[12] = 0;
+
+	//k_debug_strings("k_dos_alloc_short_name:",entry->plongfileName);
+
+	return entry->plongfileName;
+}
+
+ULONG k_dos_get_name(PFAT16ENTRYLONG entry,LPCHAR pbuffer)
+{
+	ULONG fileOffset = 0L;
+
+	ULONG RootDirSectors;
+	ULONG Cluster2SectorNumber;
+	ULONG ClusterSectorNumber;
+	ULONG ClusterByteNumber = 0;
+
+
+	LFN* plfn = NULL;
+
+	CHAR mbsBuffer[15];
+
+
+	if(!pbuffer)
+		pbuffer = mbsBuffer;
+
+    switch(entry->filename[0])
+	{
+    case 0x00:
+    	//k_debug_string("Unused\r\n");
+        return 0; // unused entry
+    case 0xE5:
+    	/*
+    	k_debug_string("Deleted file:");
+    	k_debug_nstring(entry->filename+1,7);
+    	k_debug_nstring(entry->ext,3);
+    	k_debug_string("\r\n");
+        //printf("Deleted file: [?%.7s.%.3s]\n", entry->filename+1, entry->ext);
+
+         */
+        return 0;
+    case 0x05:
+    	//k_debug_string("File 0x05:");
+    	//k_debug_nstring(entry->filename+1,7);
+    	//k_debug_nstring(entry->ext,3);
+    	//k_debug_string("\r\n");
+        //printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, entry->filename+1, entry->ext);
+        break;
+    case 0x2E:
+    	//k_debug_string("DIR:");
+    	//k_debug_nstring(entry->filename+1,8);
+    	//k_debug_nstring(entry->ext,3);
+    	//k_debug_string("\r\n");
+        //printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->ext);
+    	k_dos_alloc_short_name(entry);
+        break;
+    default:
+    	if(entry->attributes == 0x10)
+    	{
+			//k_debug_string("DIRECTORY:");
+			//k_debug_nstring(entry->filename,8);
+			//k_debug_nstring(entry->ext,3);
+			//k_debug_string("\r\n");
+
+			k_dos_alloc_short_name(entry);
+
+			//k_debug_strings("plongfileName:",entry->plongfileName);
+
+    	}
+    	else if(entry->attributes == 0x08)
+		{
+			//k_debug_string("VOLUME NAME:");
+			//k_debug_nstring(entry->filename,8);
+			//k_debug_nstring(entry->ext,3);
+			//k_debug_string("\r\n");
+
+			k_dos_alloc_short_name(entry);
+
+			//k_debug_strings("plongfileName:",entry->plongfileName);
+
+		}
+    	else if(entry->attributes == 0x0F)
+		{
+			k_debug_string("LONG NAME:");
+			//k_debug_nstring(entry->filename,8);
+			//k_debug_nstring(entry->ext,3);
+
+			plfn = (LFN*)entry;
+
+			/*
+			k_debug_integer("SEQ:",plfn->sequenceNo);
+			k_debug_string("10:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+			k_debug_string("]\r\n");
+			k_debug_string("12:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+			k_debug_string("]\r\n");
+			k_debug_string("4:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+			k_debug_string("]\r\n");
+			*/
+			//k_debug_byte_array("LONG BYTES:",(BYTE FAR *)plfn,32);
+
+
+			if(plfn->sequenceNo & 0x40)
+			{
+				entry->plongfileName = (LPVOID)0xffffffff;
+				longnamecount = (plfn->sequenceNo - 0x41);
+				//k_debug_integer("longnamecount:",longnamecount);
+				k_debug_string("SEQ:0x40");
+
+				memset(longnameBuffer,0,255);
+				memcpy(&longnameBuffer[longnamecount * 13]     ,k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+				memcpy(&longnameBuffer[longnamecount * 13 + 5] ,k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+				memcpy(&longnameBuffer[longnamecount * 13 + 11],k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+			}
+			else
+			{
+				longnamecount = plfn->sequenceNo - 1 ;
+				//k_debug_integer("longnamecount:",longnamecount);
+				memcpy(&longnameBuffer[longnamecount * 13]     ,k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+				memcpy(&longnameBuffer[longnamecount * 13 + 5] ,k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+				memcpy(&longnameBuffer[longnamecount * 13 + 11],k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+
+				if(plfn->sequenceNo == 1)
+				{
+					//k_debug_string("Unicodename:");
+
+					entry->plongfileName = k_mem_allocate_heap(strlen(longnameBuffer) + 1);
+					strcpy(entry->plongfileName,(LPCSTR)longnameBuffer);
+
+					k_debug_string(entry->plongfileName);
+				}
+			}
+
+			k_debug_string("\r\n");
+		}
+    	else
+    	{
+			//k_debug_string("SHORT NAME:");
+			//k_debug_nstring(entry->filename,8);
+			//k_debug_nstring(entry->ext,3);
+			//k_debug_long(" SIZE:",entry->file_size);
+			//k_debug_hex("\tAttributes:",entry->attributes);
+			//k_debug_integer("\tStart Cluster:",entry->starting_cluster);
+			k_dos_alloc_short_name(entry);
+
+			//k_debug_strings("plongfileName:",entry->plongfileName);
+
+			ClusterByteNumber = getClusterLocationByIndex(entry->starting_cluster);
+    	}
+    }
+
+    return ClusterByteNumber;
+}
+
+
+ULONG print_file_info(PFAT16ENTRY entry)
+{
+	ULONG fileOffset = 0L;
+
+	ULONG RootDirSectors;
+	ULONG Cluster2SectorNumber;
+	ULONG ClusterSectorNumber;
+	ULONG ClusterByteNumber = 0;
+
+	CHAR mbsBuffer[15];
+
+
+	LFN* plfn = NULL;
+
+    switch(entry->filename[0])
+	{
+    case 0x00:
+    	//k_debug_string("Unused\r\n");
+        return 0; // unused entry
+    case 0xE5:
+    	/*
+    	k_debug_string("Deleted file:");
+    	k_debug_nstring(entry->filename+1,7);
+    	k_debug_nstring(entry->ext,3);
+    	k_debug_string("\r\n");
+        //printf("Deleted file: [?%.7s.%.3s]\n", entry->filename+1, entry->ext);
+
+         */
+        return 0;
+    case 0x05:
+    	k_debug_string("File 0x05:");
+    	k_debug_nstring(entry->filename+1,7);
+    	k_debug_nstring(entry->ext,3);
+    	k_debug_string("\r\n");
+        //printf("File starting with 0xE5: [%c%.7s.%.3s]\n", 0xE5, entry->filename+1, entry->ext);
+        break;
+    case 0x2E:
+    	k_debug_string("DIR:");
+    	k_debug_nstring(entry->filename+1,8);
+    	k_debug_nstring(entry->ext,3);
+    	k_debug_string("\r\n");
+        //printf("Directory: [%.8s.%.3s]\n", entry->filename, entry->ext);
+        break;
+    default:
+    	if(entry->attributes == 0x00)
+    	{
+			//k_debug_string("DIRECTORY:");
+    	}
+    	else if(entry->attributes == 0x10)
+    	{
+			k_debug_string("DIRECTORY:");
+			k_debug_nstring(entry->filename,8);
+			k_debug_nstring(entry->ext,3);
+			k_debug_string("\r\n");
+    	}
+    	else if(entry->attributes == 0x08)
+		{
+			k_debug_string("VOLUME NAME:");
+			k_debug_nstring(entry->filename,8);
+			k_debug_nstring(entry->ext,3);
+			k_debug_string("\r\n");
+		}
+    	else if(entry->attributes == 0x0F)
+		{
+			//k_debug_nstring(entry->filename,8);
+			//k_debug_nstring(entry->ext,3);
+
+			plfn = (LFN*)entry;
+
+			/*
+			k_debug_integer("SEQ:",plfn->sequenceNo);
+			k_debug_string("10:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+			k_debug_string("]\r\n");
+			k_debug_string("12:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+			k_debug_string("]\r\n");
+			k_debug_string("4:[");
+			k_debug_nstring(k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+			k_debug_string("]\r\n");
+			*/
+			//k_debug_byte_array("LONG BYTES:",(BYTE FAR *)plfn,32);
+
+
+			if(plfn->sequenceNo & 0x40)
+			{
+				k_debug_string("LONG NAME 0x40:");
+
+				longnamecount = (plfn->sequenceNo - 0x41);
+				//k_debug_integer("longnamecount:",longnamecount);
+
+				memset(longnameBuffer,0,255);
+				memcpy(&longnameBuffer[longnamecount * 13]     ,k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+				memcpy(&longnameBuffer[longnamecount * 13 + 5] ,k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+				memcpy(&longnameBuffer[longnamecount * 13 + 11],k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+			}
+			else
+			{
+				longnamecount = plfn->sequenceNo - 1 ;
+				//k_debug_integer("longnamecount:",longnamecount);
+				memcpy(&longnameBuffer[longnamecount * 13]     ,k_wcstombs(plfn->fileName_Part1,mbsBuffer,5),5);
+				memcpy(&longnameBuffer[longnamecount * 13 + 5] ,k_wcstombs(plfn->fileName_Part2,mbsBuffer,6),6);
+				memcpy(&longnameBuffer[longnamecount * 13 + 11],k_wcstombs(plfn->fileName_Part3,mbsBuffer,2),2);
+
+				if(plfn->sequenceNo == 1)
+				{
+					//k_debug_string("Unicodename:");
+					k_debug_strings("Long File Name:",longnameBuffer);
+				}
+			}
+
+			k_debug_string("\r\n");
+		}
+    	else
+    	{
+			//k_debug_string("SHORT NAME:");
+			k_debug_nstring(entry->filename,8);
+			k_debug_nstring(entry->ext,3);
+			k_debug_long(" SIZE:",entry->file_size);
+			k_debug_hex("\tAttributes:",entry->attributes);
+			k_debug_integer("\tStart Cluster:",entry->starting_cluster);
+
+
+			ClusterByteNumber = getClusterLocationByIndex(entry->starting_cluster);
+			k_debug_long(" ClusterByteNumber:",ClusterByteNumber);
+
+
+			RootDirSectors = (32 * 512)  / 512;
+
+			//Cluster2SectorNumber = BPB.ReservedSectors + BPB.NumberOfFats * BPB.SectorsPerFat + RootDirSectors;
+			Cluster2SectorNumber = 8 + (2 * 240) + RootDirSectors;
+
+			//ClusterSectorNumber =  Cluster2SectorNumber + (cluster_idx - 2) * BPB.SectorsPerCluster
+			ClusterSectorNumber =  Cluster2SectorNumber + (entry->starting_cluster - 2) * 16;
+
+			//ClusterByteNumber = ClusterSectorNumber * BPB.BytesPerSector;
+			ClusterByteNumber = ClusterSectorNumber * 512;
+
+			fileOffset = ((entry->starting_cluster - 2) * 16) + (8 + (2 * 240)  + ( ((512 * 32) + (512 - 1)) / 512 ));
+			k_debug_long("fileOffset:",fileOffset);
+
+    	}
+
+    	//k_debug_string("\r\n");
+    	//printf("File: [%.8s.%.3s]\n", entry->filename, entry->ext);
+    }
+
+    /*
+    printf("  Modified: %04d-%02d-%02d %02d:%02d.%02d    Start: [%04X]    Size: %d\n",
+        1980 + (entry->modify_date >> 9), (entry->modify_date >> 5) & 0xF, entry->modify_date & 0x1F,
+        (entry->modify_time >> 11), (entry->modify_time >> 5) & 0x3F, entry->modify_time & 0x1F,
+        entry->starting_cluster, entry->file_size);
+        */
+
+    return ClusterByteNumber;
+}
+
+
+BOOL k_pc_initialize(void)
+{
+	return FALSE;
+}
+
+UINT8 k_sd_initialize(void)
+{
+	UINT8 s;
+	UINT8 errorCode;
+
+	k_debug_string("***k_sd_initialize 1\r\n");
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_INIT_SD;
+    SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+    s = SDC_TRANS_BUSY;
+    while(s & SDC_TRANS_BUSY)
+    {
+    	s = SDC_TRANS_STATUS_REG[0];
+   	}
+
+    errorCode = SDC_TRANS_ERROR_REG[0];
+
+    k_debug_integer("***k_sd_initialize errorCode:",errorCode);
+
+    return errorCode;
+}
+
+#ifdef TRUE
+
+UINT8 k_sd_full_test(VOID)
+{
+	INT x = 0;
+	INT i = 0;
+	INT size = 0;
+
+	UINT8	errorCode;
+	CHAR	byte;
+
+	//UINT8	fifoLO;
+	//UINT8	fifoHI;
+	UINT8	s;
+
+	ULONG next = -1;
+	INT root_entry_count     = 0;
+	INT rootEntriesPerPage	 = 0;
+	INT sectors_per_cluster  = 0;
+
+	PFATBOOTSECTOR pFATBS = NULL;
+	PPARTITIONTABLE pPartTable = NULL;
+	PFAT16ENTRY  pentry = NULL;
+	PUINT pFAT1 = NULL;
+
+	unsigned long offset = 0L;
+	unsigned long bsOffset = 0L;
+	unsigned long fatTable = 0L;
+	unsigned long rootDirSectors = 0L;// 0x010000D2;
+	unsigned long data = 0L;// 0x010000D2;
+
+	unsigned long firstDataSector = 0L;// 0x010000D2;
+
+	k_debug_string("***k_sd_full_test 1\r\n");
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_INIT_SD;
+    SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+    s = SDC_TRANS_BUSY;
+    while(s & SDC_TRANS_BUSY)
+    {
+    	s = SDC_TRANS_STATUS_REG[0];
+   	}
+
+    errorCode = SDC_TRANS_ERROR_REG[0];
+
+    k_debug_integer("***k_sd_reset errorCode:",errorCode);
+
+    if(!errorCode)
+    {
+		GABE_MSTR_CTRL[0] |= GABE_CTRL_SDC_LED;
+
+		errorCode = readSDSector(0,sectorBuffer);
+
+		for(x=0;x<4;x++)
+		{
+			pPartTable = (PPARTITIONTABLE)&sectorBuffer[FAT_PARTITION_TABLE_1 + (0x10 * x)];
+
+			k_debug_hex ("***k_sd_reset first_byte:",pPartTable->first_byte);
+			k_debug_hex ("***k_sd_reset start_chs0:",pPartTable->start_chs[0]);
+			k_debug_hex ("***k_sd_reset start_chs1:",pPartTable->start_chs[1]);
+			k_debug_hex ("***k_sd_reset start_chs2:",pPartTable->start_chs[2]);
+			k_debug_hex ("***k_sd_reset partition_type:",(INT)pPartTable->partition_type);
+			k_debug_hex ("***k_sd_reset end_chs0:",pPartTable->end_chs[0]);
+			k_debug_hex ("***k_sd_reset end_chs1:",pPartTable->end_chs[1]);
+			k_debug_hex ("***k_sd_reset end_chs2:",pPartTable->end_chs[2]);
+			k_debug_long("***k_sd_reset start_sector:",pPartTable->start_sector);
+			k_debug_long("***k_sd_reset length_sectors:",pPartTable->length_sectors);
+
+			if(pPartTable->partition_type == FAT_PARTITION_TYPE_DOS30 ||
+			   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS33 ||
+			   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS70)
+			{
+				k_debug_hex("FAT16 filesystem found from partition:", pPartTable->partition_type);
+				break;
+			}
+		}
+
+		memcpy(&fxdosDevice.partitionTable,&sectorBuffer[FAT_PARTITION_TABLE_1 + (0x10 * x)],sizeof(PARTITIONTABLE));
+		k_debug_hex ("***fxdosDevice first_byte:",fxdosDevice.partitionTable.first_byte);
+		k_debug_hex ("***fxdosDevice start_chs0:",fxdosDevice.partitionTable.start_chs[0]);
+		k_debug_hex ("***fxdosDevice start_chs1:",fxdosDevice.partitionTable.start_chs[1]);
+		k_debug_hex ("***fxdosDevice start_chs2:",fxdosDevice.partitionTable.start_chs[2]);
+		k_debug_hex ("***fxdosDevice partition_type:",(INT)fxdosDevice.partitionTable.partition_type);
+		k_debug_hex ("***fxdosDevice end_chs0:",fxdosDevice.partitionTable.end_chs[0]);
+		k_debug_hex ("***fxdosDevice end_chs1:",fxdosDevice.partitionTable.end_chs[1]);
+		k_debug_hex ("***fxdosDevice end_chs2:",fxdosDevice.partitionTable.end_chs[2]);
+		k_debug_long("***fxdosDevice start_sector:",fxdosDevice.partitionTable.start_sector);
+		k_debug_long("***fxdosDevice length_sectors:",fxdosDevice.partitionTable.length_sectors);
+
+
+		bsOffset = (pPartTable->start_sector * FAT_PAGE_SIZE);
+		fxdosDevice.bsOffset = (pPartTable->start_sector * FAT_PAGE_SIZE);
+
+		errorCode = readSDSector(bsOffset,sectorBuffer);
+		fxdosDevice.errorCode = readSDSector(bsOffset,sectorBuffer);
+		if(!errorCode)
+		{
+			pFATBS = (PFATBOOTSECTOR)sectorBuffer;
+
+
+
+			k_debug_integer("***k_sd_reset bytes_per_sector:",(INT)pFATBS->bytes_per_sector);
+			k_debug_integer("***k_sd_reset sectors_per_cluster:",(INT)pFATBS->sectors_per_cluster);
+			k_debug_integer("***k_sd_reset reserved_sector_count:",(INT)pFATBS->reserved_sector_count);
+			k_debug_integer("***k_sd_reset table_count:",(INT)pFATBS->fat_table_count);
+			k_debug_integer("***k_sd_reset root_entry_count:",(INT)pFATBS->root_entry_count);
+			k_debug_integer("***k_sd_reset total_sectors_16:",(INT)pFATBS->total_sectors_16);
+			k_debug_integer("***k_sd_reset media_type:",(INT)pFATBS->media_type);
+			k_debug_integer("***k_sd_reset sectors_per_fat:",(INT)pFATBS->sectors_per_fat);
+			k_debug_integer("***k_sd_reset sectors_per_track:",(INT)pFATBS->sectors_per_track);
+			k_debug_integer("***k_sd_reset head_side_count:",(INT)pFATBS->head_side_count);
+			k_debug_integer("***k_sd_reset hidden_sector_count:",(INT)pFATBS->hidden_sector_count);
+			k_debug_integer("***k_sd_reset total_sectors_32:",(INT)pFATBS->total_sectors_32);
+
+
+			memcpy(&fxdosDevice.bootSector,sectorBuffer,sizeof(FATBOOTSECTOR));
+
+			k_debug_integer("***fxdosDevice bytes_per_sector:",(INT)fxdosDevice.bootSector.bytes_per_sector);
+			k_debug_integer("***fxdosDevice sectors_per_cluster:",(INT)fxdosDevice.bootSector.sectors_per_cluster);
+			k_debug_integer("***fxdosDevice reserved_sector_count:",(INT)fxdosDevice.bootSector.reserved_sector_count);
+			k_debug_integer("***fxdosDevice table_count:",(INT)fxdosDevice.bootSector.fat_table_count);
+			k_debug_integer("***fxdosDevice root_entry_count:",(INT)fxdosDevice.bootSector.root_entry_count);
+			k_debug_integer("***fxdosDevice total_sectors_16:",(INT)fxdosDevice.bootSector.total_sectors_16);
+			k_debug_integer("***fxdosDevice media_type:",(INT)fxdosDevice.bootSector.media_type);
+			k_debug_integer("***fxdosDevice sectors_per_fat:",(INT)fxdosDevice.bootSector.sectors_per_fat);
+			k_debug_integer("***fxdosDevice sectors_per_track:",(INT)fxdosDevice.bootSector.sectors_per_track);
+			k_debug_integer("***fxdosDevice head_side_count:",(INT)fxdosDevice.bootSector.head_side_count);
+			k_debug_integer("***fxdosDevice hidden_sector_count:",(INT)fxdosDevice.bootSector.hidden_sector_count);
+			k_debug_integer("***fxdosDevice total_sectors_32:",(INT)fxdosDevice.bootSector.total_sectors_32);
+
+
+			k_debug_nstring(pFATBS->vol_name,11);
+			k_debug_string("\r\n");
+			k_debug_nstring(pFATBS->file_system_type,8);
+			k_debug_string("\r\n");
+
+			strncpy(fxdosDevice.volume_name,pFATBS->vol_name,11);
+			fxdosDevice.volume_name[11] = 0;
+			k_debug_strings("***fxdosDevice Volume Name:",fxdosDevice.volume_name);
+
+			root_entry_count = pFATBS->root_entry_count;
+			fxdosDevice.root_entry_count = pFATBS->root_entry_count;
+
+			fatTable       = bsOffset + (pFATBS->bytes_per_sector * pFATBS->reserved_sector_count);
+			rootDirSectors = bsOffset + (((ULONG)pFATBS->reserved_sector_count + ((ULONG)pFATBS->sectors_per_fat * (ULONG)pFATBS->fat_table_count)) * (ULONG)pFATBS->bytes_per_sector);
+			sectors_per_cluster = (INT)pFATBS->sectors_per_cluster;
+
+			k_debug_long("***k_sd_reset fatTable:",fatTable);
+
+			fxdosDevice.fatTableOffset = bsOffset + (pFATBS->bytes_per_sector * pFATBS->reserved_sector_count);
+			fxdosDevice.rootDirSectors = bsOffset + (((ULONG)pFATBS->reserved_sector_count + ((ULONG)pFATBS->sectors_per_fat * (ULONG)pFATBS->fat_table_count)) * (ULONG)pFATBS->bytes_per_sector);
+			fxdosDevice.sectors_per_cluster = (INT)pFATBS->sectors_per_cluster;
+
+			k_debug_long("***fxdosDevice fatTable:",fxdosDevice.fatTableOffset);
+
+
+
+			if(readSDSector(fatTable,sectorBuffer) == 0)
+			{
+				pFAT1 = (PUINT)sectorBuffer;
+				memcpy(&fxdosDevice.fileAllocationTable,sectorBuffer,FAT_PAGE_SIZE);
+				//k_debug_byte_array("FAT ENTRIES:",sectorBuffer,512);
+				/*
+				i = 0;
+				x = 0xFFFF;
+				while(x)
+				{
+					x = ((INT*)fileAllocationTable1)[i++];
+					k_debug_integer("FAT ENTRY:",x);
+				}
+				*/
+			}
+
+
+			//rootDirSectors = bsOffset + (((ULONG)pFATBS->reserved_sector_count + ((ULONG)pFATBS->sectors_per_fat * (ULONG)pFATBS->fat_table_count)) * (ULONG)pFATBS->bytes_per_sector);
+
+			k_debug_long("***k_sd_reset root offset:",rootDirSectors);
+			k_debug_long("***k_sd_reset root sizeof(FAT16ENTRY):",sizeof(FAT16ENTRY));
+			k_debug_long("***k_sd_reset root root_entry_count:",root_entry_count);
+			k_debug_long("***k_sd_reset root root_entry_count/sizeof(FAT16ENTRY):",root_entry_count/sizeof(FAT16ENTRY));
+
+			k_debug_long("***fxdosDevice root offset:",fxdosDevice.rootDirSectors);
+			k_debug_long("***fxdosDevice root sizeof(FAT16ENTRY):",sizeof(FAT16ENTRY));
+			k_debug_long("***fxdosDevice root root_entry_count:",fxdosDevice.root_entry_count);
+			k_debug_long("***fxdosDevice root root_entry_count/sizeof(FAT16ENTRY):",fxdosDevice.root_entry_count/sizeof(FAT16ENTRY));
+
+
+			if(readSDSector(rootDirSectors,sectorBuffer) == 0)
+			{
+				//k_debug_byte_array("FAT ENTRIES:",sectorBuffer,size);
+				k_debug_integer("FAT root_entry_count:",root_entry_count);
+				for(i=0; i<root_entry_count; i++)
+				{
+					if(i * sizeof(FAT16ENTRY) > (512 - sizeof(FAT16ENTRY)))
+					{
+
+					}
+
+					pentry = (PFAT16ENTRY)&sectorBuffer[i * sizeof(FAT16ENTRY)];
+					data = print_file_info(pentry);
+					if(data > 0)
+					{
+						k_debug_long("bsOffset:",bsOffset);
+						k_debug_long("Cluster Offset + bsOffset:",data + bsOffset);
+
+						//((N – 2) * BPB_SecPerClus) + FirstDataSector;
+
+						firstDataSector = (INT)fxdosDevice.bootSector.reserved_sector_count + ((INT)pFATBS->fat_table_count * 512) + fxdosDevice.rootDirSectors;
+
+
+						k_debug_long("Cluster Offset Calculated:",((data - 2) * fxdosDevice.sectors_per_cluster) + firstDataSector);
+
+						k_debug_long("FAT Entry:",((UINT*)(&fxdosDevice.fileAllocationTable))[data]);
+
+
+						if(readSDSector(data + bsOffset,fatfileBuffer) == 0)
+						{
+							k_debug_byte_array("CONTENT:\r\n",fatfileBuffer,512);
+						}
+
+						if( memcmp(pentry->filename,"TEST1",5) == 0 )
+						{
+							//k_debug_string("** Found TEST1\r\n");
+							//k_debug_long("** Found TEST1 size:",pentry->file_size);
+
+							//memset(fatfileBuffer,0,512);
+							memcpy(fatfileBuffer,"AUTOMATION!      ",pentry->file_size);
+
+							writeSDSector(data + bsOffset,fatfileBuffer);
+						}
+					}
+				}
+			}
+
+			/*
+			typedef struct _FXDosDevice
+			{
+				FATBOOTSECTOR  bootSector;
+				PARTITIONTABLE partitionTable;
+				UCHAR 		   fileAllocationTable[512];
+				ULONG		   bsOffset;
+				ULONG 		   rootDirSectors;
+				INT 		   root_entry_count;
+				INT            rootEntriesPerPage;
+				INT 		   sectors_per_cluster;
+				volume_name
+				UINT8		   errorCode;
+			}FXDOSDEVICE;
+				*/
+			rootEntriesPerPage = root_entry_count/sizeof(FAT16ENTRY);
+			fxdosDevice.rootEntriesPerPage = root_entry_count/sizeof(FAT16ENTRY);
+
+			for(i=0; i<rootEntriesPerPage; i++)
+			{
+				if(readSDSector(rootDirSectors,sectorBuffer) == 0)
+				{
+					for(x=0; x<rootEntriesPerPage; x++)
+					{
+						pentry = (PFAT16ENTRY)&sectorBuffer[x * sizeof(FAT16ENTRY)];
+						data = print_file_info(pentry);
+
+						/*
+						if(data && pFAT1)
+						{
+							LPCHAR videoMem = SHADOW_BANK_0;
+
+							k_debug_integer("FILE FIRST CLUSTER 1:",pentry->starting_cluster);
+
+							next = pentry->starting_cluster;
+							while(next!=65528L && next!=0L && next!=65535L)
+							{
+								k_debug_integer("FILE FAT CLUSTER 2:",next);
+
+								if(next!=65528L && next!=0L && next!=65535L)
+								{
+									k_debug_integer("FILE FAT CLUSTER 3:",next);
+									if( memcmp(pentry->filename,"LOGO1",5) == 0 )
+									{
+										videoMem = readClusterToMemory(getClusterLocationByIndex(next) + bsOffset,sectors_per_cluster,videoMem,pentry->file_size);
+									}
+									else
+									{
+										 videoMem = NULL;
+									}
+									next = pFAT1[next];
+								}
+							}
+
+							if(videoMem)
+							{
+								readBitmapData(SHADOW_BANK_0);
+							}
+						}
+						*/
+						/*
+						if(data > 0)
+						{
+							if(readSDSector(data + bsOffset,fatfileBuffer) == 0)
+							{
+								k_debug_strings("\tCONTENT:\r\n\t\t",fatfileBuffer);
+							}
+
+							if( memcmp(pentry->filename,"TEST1",5) == 0 )
+							{
+								//k_debug_string("** Found TEST1\r\n");
+								//k_debug_long("** Found TEST1 size:",pentry->file_size);
+
+								//memset(fatfileBuffer,0,512);
+								memcpy(fatfileBuffer,"AUTOMATION!      ",pentry->file_size);
+
+								writeSDSector(data + bsOffset,fatfileBuffer);
+							}
+						}
+						*/
+					}
+				}
+
+				rootDirSectors+=512;
+
+			}
+
+
+
+		}
+
+    }
+
+    GABE_MSTR_CTRL[0] = GABE_MSTR_CTRL[0] & (~GABE_CTRL_SDC_LED);
+
+	return 0;
+}
+
+
+
+UINT8 k_sd_reset_safe(VOID)
+{
+
+
+	INT x = 0;
+	INT i = 0;
+	INT size = 0;
+
+	UINT8	errorCode;
+	CHAR	byte;
+
+	//UINT8	fifoLO;
+	//UINT8	fifoHI;
+	UINT8	s;
+
+	ULONG next = -1;
+	INT root_entry_count     = 0;
+	INT rootEntriesPerPage	 = 0;
+	INT sectors_per_cluster  = 0;
+
+	PFATBOOTSECTOR pFATBS = NULL;
+	PPARTITIONTABLE pPartTable = NULL;
+	PFAT16ENTRY  pentry = NULL;
+	PUINT pFAT1 = NULL;
+
+	unsigned long offset = 0L;
+	unsigned long bsOffset = 0L;
+	unsigned long fatTable = 0L;
+	unsigned long rootDirSectors = 0L;// 0x010000D2;
+	unsigned long data = 0L;// 0x010000D2;
+
+	k_debug_string("***k_sd_reset_safe 1\r\n");
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_INIT_SD;
+    SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+    s = SDC_TRANS_BUSY;
+    while(s & SDC_TRANS_BUSY)
+    {
+    	s = SDC_TRANS_STATUS_REG[0];
+   	}
+
+    errorCode = SDC_TRANS_ERROR_REG[0];
+
+    k_debug_integer("***k_sd_reset errorCode:",errorCode);
+
+    if(!errorCode)
+    {
+		GABE_MSTR_CTRL[0] |= GABE_CTRL_SDC_LED;
+
+		errorCode = readSDSector(0,sectorBuffer);
+
+		for(x=0;x<4;x++)
+		{
+			pPartTable = (PPARTITIONTABLE)&sectorBuffer[FAT_PARTITION_TABLE_1 + (0x10 * x)];
+
+			k_debug_hex ("***k_sd_reset first_byte:",pPartTable->first_byte);
+			k_debug_hex ("***k_sd_reset start_chs0:",pPartTable->start_chs[0]);
+			k_debug_hex ( "***k_sd_reset start_chs1:",pPartTable->start_chs[1]);
+			k_debug_hex ("***k_sd_reset start_chs2:",pPartTable->start_chs[2]);
+			k_debug_hex ("***k_sd_reset partition_type:",(INT)pPartTable->partition_type);
+			k_debug_hex ("***k_sd_reset end_chs0:",pPartTable->end_chs[0]);
+			k_debug_hex ("***k_sd_reset end_chs1:",pPartTable->end_chs[1]);
+			k_debug_hex ("***k_sd_reset end_chs2:",pPartTable->end_chs[2]);
+			k_debug_long("***k_sd_reset start_sector:",pPartTable->start_sector);
+			k_debug_long("***k_sd_reset length_sectors:",pPartTable->length_sectors);
+
+			if(pPartTable->partition_type == FAT_PARTITION_TYPE_DOS30 ||
+			   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS33 ||
+			   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS70)
+			{
+				k_debug_hex("FAT16 filesystem found from partition:", pPartTable->partition_type);
+				break;
+			}
+		}
+
+		bsOffset = (pPartTable->start_sector * FAT_PAGE_SIZE);
+
+		errorCode = readSDSector(bsOffset,sectorBuffer);
+		if(!errorCode)
+		{
+			pFATBS = (PFATBOOTSECTOR)sectorBuffer;
+
+			k_debug_integer("***k_sd_reset bytes_per_sector:",(INT)pFATBS->bytes_per_sector);
+			k_debug_integer("***k_sd_reset sectors_per_cluster:",(INT)pFATBS->sectors_per_cluster);
+			k_debug_integer("***k_sd_reset reserved_sector_count:",(INT)pFATBS->reserved_sector_count);
+			k_debug_integer("***k_sd_reset table_count:",(INT)pFATBS->fat_table_count);
+			k_debug_integer("***k_sd_reset root_entry_count:",(INT)pFATBS->root_entry_count);
+			k_debug_integer("***k_sd_reset total_sectors_16:",(INT)pFATBS->total_sectors_16);
+			k_debug_integer("***k_sd_reset media_type:",(INT)pFATBS->media_type);
+			k_debug_integer("***k_sd_reset sectors_per_fat:",(INT)pFATBS->sectors_per_fat);
+			k_debug_integer("***k_sd_reset sectors_per_track:",(INT)pFATBS->sectors_per_track);
+			k_debug_integer("***k_sd_reset head_side_count:",(INT)pFATBS->head_side_count);
+			k_debug_integer("***k_sd_reset hidden_sector_count:",(INT)pFATBS->hidden_sector_count);
+			k_debug_integer("***k_sd_reset total_sectors_32:",(INT)pFATBS->total_sectors_32);
+
+			k_debug_nstring(pFATBS->vol_name,11);
+			k_debug_string("\r\n");
+			k_debug_nstring(pFATBS->file_system_type,8);
+			k_debug_string("\r\n");
+
+			root_entry_count = pFATBS->root_entry_count;
+
+			fatTable       = bsOffset + (pFATBS->bytes_per_sector * pFATBS->reserved_sector_count);
+			rootDirSectors = bsOffset + (((ULONG)pFATBS->reserved_sector_count + ((ULONG)pFATBS->sectors_per_fat * (ULONG)pFATBS->fat_table_count)) * (ULONG)pFATBS->bytes_per_sector);
+			sectors_per_cluster = (INT)pFATBS->sectors_per_cluster;
+
+			k_debug_long("***k_sd_reset fatTable:",fatTable);
+
+
+			if(readSDSector(fatTable,sectorBuffer) == 0)
+			{
+				pFAT1 = (PUINT)sectorBuffer;
+				//k_debug_byte_array("FAT ENTRIES:",sectorBuffer,512);
+				/*
+				i = 0;
+				x = 0xFFFF;
+				while(x)
+				{
+					x = ((INT*)fileAllocationTable1)[i++];
+					k_debug_integer("FAT ENTRY:",x);
+				}
+				*/
+			}
+
+
+			//rootDirSectors = bsOffset + (((ULONG)pFATBS->reserved_sector_count + ((ULONG)pFATBS->sectors_per_fat * (ULONG)pFATBS->fat_table_count)) * (ULONG)pFATBS->bytes_per_sector);
+
+			k_debug_long("***k_sd_reset root offset:",rootDirSectors);
+
+			k_debug_long("***k_sd_reset root sizeof(FAT16ENTRY):",sizeof(FAT16ENTRY));
+			k_debug_long("***k_sd_reset root root_entry_count:",root_entry_count);
+			k_debug_long("***k_sd_reset root root_entry_count/sizeof(FAT16ENTRY):",root_entry_count/sizeof(FAT16ENTRY));
+
+			/*
+			if(readSDSector(rootDirSectors,sectorBuffer) == 0)
+			{
+				//k_debug_byte_array("FAT ENTRIES:",sectorBuffer,size);
+				//k_debug_integer("FAT root_entry_count:",root_entry_count);
+				for(i=0; i<root_entry_count; i++)
+				{
+					if(i * sizeof(FAT16ENTRY) > (512 - sizeof(FAT16ENTRY)))
+					{
+
+					}
+
+					pentry = (PFAT16ENTRY)&sectorBuffer[i * sizeof(FAT16ENTRY)];
+					data = print_file_info(pentry);
+					if(data > 0)
+					{
+						if(readSDSector(data + bsOffset,fatfileBuffer) == 0)
+						{
+							k_debug_strings("\tCONTENT:\r\n\t\t",fatfileBuffer);
+						}
+
+						if( memcmp(pentry->filename,"TEST1",5) == 0 )
+						{
+							//k_debug_string("** Found TEST1\r\n");
+							//k_debug_long("** Found TEST1 size:",pentry->file_size);
+
+							//memset(fatfileBuffer,0,512);
+							memcpy(fatfileBuffer,"AUTOMATION!      ",pentry->file_size);
+
+							writeSDSector(data + bsOffset,fatfileBuffer);
+						}
+					}
+				}
+			}
+			*/
+
+			rootEntriesPerPage = root_entry_count/sizeof(FAT16ENTRY);
+
+			for(i=0; i<rootEntriesPerPage; i++)
+			{
+				if(readSDSector(rootDirSectors,sectorBuffer) == 0)
+				{
+					for(x=0; x<rootEntriesPerPage; x++)
+					{
+						pentry = (PFAT16ENTRY)&sectorBuffer[x * sizeof(FAT16ENTRY)];
+						data = print_file_info(pentry);
+
+						/*
+						if(data && pFAT1)
+						{
+							LPCHAR videoMem = SHADOW_BANK_0;
+
+							k_debug_integer("FILE FIRST CLUSTER 1:",pentry->starting_cluster);
+
+							next = pentry->starting_cluster;
+							while(next!=65528L && next!=0L && next!=65535L)
+							{
+								k_debug_integer("FILE FAT CLUSTER 2:",next);
+
+								if(next!=65528L && next!=0L && next!=65535L)
+								{
+									k_debug_integer("FILE FAT CLUSTER 3:",next);
+									if( memcmp(pentry->filename,"LOGO1",5) == 0 )
+									{
+										videoMem = readClusterToMemory(getClusterLocationByIndex(next) + bsOffset,sectors_per_cluster,videoMem,pentry->file_size);
+									}
+									else
+									{
+										 videoMem = NULL;
+									}
+									next = pFAT1[next];
+								}
+							}
+
+							if(videoMem)
+							{
+								readBitmapData(SHADOW_BANK_0);
+							}
+						}
+						*/
+						/*
+						if(data > 0)
+						{
+							if(readSDSector(data + bsOffset,fatfileBuffer) == 0)
+							{
+								k_debug_strings("\tCONTENT:\r\n\t\t",fatfileBuffer);
+							}
+
+							if( memcmp(pentry->filename,"TEST1",5) == 0 )
+							{
+								//k_debug_string("** Found TEST1\r\n");
+								//k_debug_long("** Found TEST1 size:",pentry->file_size);
+
+								//memset(fatfileBuffer,0,512);
+								memcpy(fatfileBuffer,"AUTOMATION!      ",pentry->file_size);
+
+								writeSDSector(data + bsOffset,fatfileBuffer);
+							}
+						}
+						*/
+					}
+				}
+
+				rootDirSectors+=512;
+
+			}
+
+
+
+		}
+
+    }
+
+    GABE_MSTR_CTRL[0] = GABE_MSTR_CTRL[0] & (~GABE_CTRL_SDC_LED);
+
+	return 0;
+}
+
+#endif
+
+void k_dos_deallocate_long_entry(LPCSTR name,LPVOID pdata)
+{
+	PFAT16ENTRYLONG entry = (PFAT16ENTRYLONG)pdata;
+
+	//k_debug_strings("k_dos_deallocate_long_entry name:",(LPSTR)name);
+
+	if(entry)
+	{
+		//k_debug_pointer("k_dos_deallocate_long_entry ptr:",(LPSTR)entry->plongfileName);
+		if(entry->plongfileName)
+			k_mem_deallocate_heap(entry->plongfileName);
+
+		k_mem_deallocate_heap(entry);
+	}
+
+	//k_debug_string("k_dos_deallocate_long_exit\r\n");
+}
+
+
+void k_sd_dos_init(PFXDOSDEVICE pfxdosDevice)
+{
+	UINT s = 0;
+
+	k_debug_string("k_sd_dos_init...\r\n");
+
+	SDC_TRANS_TYPE_REG[0]    = SDC_TRANS_INIT_SD;
+    SDC_TRANS_CONTROL_REG[0] = SDC_TRANS_START;
+
+    s = SDC_TRANS_BUSY;
+    while(s & SDC_TRANS_BUSY)
+    {
+    	s = SDC_TRANS_STATUS_REG[0];
+   	}
+
+
+    pfxdosDevice->devstatus = SDC_TRANS_ERROR_REG[0];
+    if(!pfxdosDevice->devstatus)
+    	pfxdosDevice->initialized = TRUE;
+
+    k_debug_bits("k_sd_dos_init:",pfxdosDevice->devstatus);
+}
+
+void k_hd_dos_init(PFXDOSDEVICE pfxdosDevice)
+{
+	k_debug_string("k_hd_dos_init...\r\n");
+
+	k_ide_init();
+
+	pfxdosDevice->initialized = TRUE;
+	pfxdosDevice->devdata = (PIDENTIFY_DEVICE_DATA)k_ide_get_info();
+	pfxdosDevice->devstatus = 0;
+}
+
+void k_fd_dos_init(PFXDOSDEVICE pfxdosDevice)
+{
+	k_debug_string("k_fd_dos_init...\r\n");
+
+
+	pfxdosDevice->initialized = TRUE;
+	//floppy_init();
+	k_fd_init();
+}
+
+UCHAR k_read_fd_sector(unsigned long offset,LPCHAR receiveBuffer)
+{
+	int pres = 0;
+	k_debug_long("k_read_fd_sector:",offset);
+
+	/*
+	offset = offset / 512;
+
+	if(offset == 0L)
+		memcpy(receiveBuffer,FAT12BOOT,512);
+	else if(offset == 19L)
+		memcpy(receiveBuffer,FAT12ROOT,512);
+
+	return 0;
+	*/
+	//pres = floppy_present();
+	k_debug_long("k_read_fd_sector():", pres);
+
+	//floppy_read(receiveBuffer, offset, 1);
+	k_fd_read_sector(receiveBuffer, offset);
+
+	return 0;
+}
+
+
+UINT k_dos_read_file(PFXDOSDEVICE pfxdosDevice,LPCSTR fileName)
+{
+	UINT fileSize = 0;
+	UINT next = 0;
+	UINT pageSize = 0;
+	PFXNODELIST fileList = NULL;
+	PFXNODE file = NULL;
+	PBYTE buffer = NULL;
+
+
+	fileList = k_read_dos_directory(pfxdosDevice);
+	if(fileList)
+	{
+
+		file = k_nodelist_foreach_until_listdata(fileList,(LPVOID)fileName,k_dos_foreach_file);
+		if(file)
+		{
+			PFAT16ENTRYLONG pentry = ((PFAT16ENTRYLONG)file->data);
+
+			k_debug_strings("k_dos_read_file MATCH:file:",pentry->plongfileName);
+			fileSize = pentry->file_size;
+
+			pageSize = 512 * (fileSize/512 + 1);
+			buffer = k_mem_allocate_heap(pageSize);
+
+			k_debug_integer("pentry->starting_cluster:",pentry->starting_cluster);
+
+			next = pentry->starting_cluster;
+			while(next!=65528L && next!=0L && next!=65535L)
+			{
+				k_debug_integer("k_dos_read_file:next1:",next);
+
+				if(next!=65528L && next!=0L && next!=65535L)
+				{
+
+
+
+					k_debug_integer("k_dos_read_file:pageSize:",pageSize);
+
+
+					//readClusterToMemory(getClusterLocationByIndex(next) + pfxdosDevice->bsOffset,pfxdosDevice->sectors_per_cluster,buffer,pentry->file_size);
+					//readSDSector(offset + (pfxdosDevice->sectors_per_cluster * 1) + read,buffer);
+
+					k_debug_long("k_dos_read_file:getClusterLocationByIndex:0x210000:",0x210000);
+
+
+					k_debug_long("k_dos_read_file:getDeviceClusterLocationByIndex:",getDeviceClusterLocationByIndex(pfxdosDevice,next));
+					k_debug_long("k_dos_read_file:getDeviceClusterLocationByIndex:",getDeviceClusterLocationByIndex(pfxdosDevice,next) + pfxdosDevice->bsOffset);
+
+					k_debug_long("k_dos_read_file:getClusterLocationByIndex:",getClusterLocationByIndex(next) + pfxdosDevice->bsOffset);
+
+
+					//pfxdosDevice->pfReader((getClusterLocationByIndex(next)+ pfxdosDevice->bsOffset) * 512,buffer);
+					pfxdosDevice->pfReader(0x210000,buffer);
+
+					/*
+					buffer = readClusterToMemory(getClusterLocationByIndex(next) + pfxdosDevice->bsOffset,
+							                     pfxdosDevice->sectors_per_cluster,
+												 buffer,
+												 fileSize);*/
+					k_debug_byte_array("k_dos_read_file:buffer:\r\n",buffer,512);
+
+					next = pfxdosDevice->fileAllocationTable[next];
+
+					k_debug_integer("k_dos_read_file:next2:",next);
+					k_debug_long("k_dos_read_file:next512:",next * 512);
+				}
+			}
+
+			k_mem_deallocate_heap(buffer);
+		}
+
+		k_nodelist_deallocate_list(fileList);
+	}
+
+
+	k_debug_integer("k_dos_read_file exit:fileSize:",fileSize);
+
+	return fileSize;
+}
+
+PFXNODELIST k_read_dos_directory(PFXDOSDEVICE pfxdosDevice)
+{
+	ULONG x = 0;
+	ULONG i = 0;
+	ULONG check = 0L;
+	ULONG fileOffset;
+	//PFAT16ENTRY     pentry     = NULL;
+	PFAT16ENTRYLONG  pentrylong = NULL;
+
+	PFXNODELIST plist   = NULL;
+
+	unsigned long rootDirSectors = pfxdosDevice->rootDirSectors;
+
+	k_debug_nstrings("k_read_dos_directory volume:",pfxdosDevice->root_volume_name,11);
+
+	if(pfxdosDevice->initialized)
+	{
+		plist = k_nodelist_allocate_list("currentDirectory",k_dos_deallocate_long_entry);
+		if(plist)
+		{
+			for(i=0; i<pfxdosDevice->rootEntriesPerPage; i++)
+			{
+				if(pfxdosDevice->pfReader(rootDirSectors,sectorBuffer) == 0)
+				{
+					for(x=0; x<pfxdosDevice->rootEntriesPerPage; x++)
+					{
+						pentrylong = (PFAT16ENTRYLONG)k_mem_allocate_heap(sizeof(FAT16ENTRYLONG));
+						if(pentrylong)
+						{
+							memset(pentrylong,0,sizeof(FAT16ENTRYLONG));
+							memcpy(pentrylong,(PFAT16ENTRY)&sectorBuffer[x * sizeof(FAT16ENTRY)],sizeof(FAT16ENTRY));
+							pentrylong->plongfileName = NULL;
+
+							check = k_dos_get_name(pentrylong,NULL);
+
+							if(check > 0)
+							{
+								k_debug_long("k_dos_get_name check:",check);
+								//fileOffset = ((pentrylong->starting_cluster - 2) * 16) + (8 + (2 * 240)  + ( ((512 * 32) + (512 - 1)) / 512 ));
+								//k_debug_long("fileOffset:",fileOffset);
+							}
+							//print_file_info((PFAT16ENTRY)pentrylong);
+
+							if(pentrylong->plongfileName && pentrylong->plongfileName!=(LPSTR)0xffffffff)
+							{
+								k_nodelist_addtolist(plist,PFXNODE_FILE_PATH_TYPE,pentrylong->plongfileName,pentrylong);
+								//k_debug_pointer("k_read_dos_directory dealloc pentrylong1:",pentrylong);
+								//k_mem_deallocate_heap(pentrylong->plongfileName);
+								//pentrylong->plongfileName = NULL;
+								//k_mem_deallocate_heap(pentrylong);
+							}
+							else
+							{
+								//k_debug_pointer("k_read_dos_directory dealloc pentrylong2:",pentrylong);
+								k_mem_deallocate_heap(pentrylong);
+							}
+						}
+					}
+				}
+				rootDirSectors+=512;
+			}
+		}
+	}
+
+
+
+	return plist;
+}
+
+VOID k_GetDirectory(VOID)
+{
+	PFXZERPOPAGE zp = k_getZeroPage();
+
+	k_debug_integer("k_GetDirectory:Id:",zp->kernelFunctionCallId);
+	k_debug_integer("k_GetDirectory:Index:",zp->kernelFunctionCallBank);
+	k_debug_strings("k_GetDirectory:Parameter:",(LPSTR)zp->kernelFunctionCallParameter);
+
+	zp->kernelFunctionCallReturn = k_mem_allocate_heap(16);
+
+	strcpy((LPSTR)zp->kernelFunctionCallReturn,"Hello!");
+}
+
+PFXDOSDEVICE k_create_dos_device(UINT type)
+{
+	INT x = 0;
+
+	UINT8	errorCode;
+	CHAR	byte;
+
+	UINT8	s;
+
+	BOOL isFAT12 = FALSE;
+
+	PFATBOOTSECTOR  pBoot = NULL;
+	PPARTITIONTABLE pPartTable 		= NULL;
+	PFXDOSDEVICE 	pfxdosDevice 	= NULL;
+	PFAT32EXT		pfat32 			= NULL;
+	ULONG lba = 0L;
+
+	INT partitionId = 0x00;
+
+    k_debug_integer("k_create_dos_device:",type);
+
+
+    pfxdosDevice = k_mem_allocate_heap(sizeof(FXDOSDEVICE));
+    if(pfxdosDevice)
+    {
+    	memset(pfxdosDevice,0,sizeof(FXDOSDEVICE));
+
+    	switch(type)
+		{
+    	case FXDOS_SDC:
+
+    		pfxdosDevice->pfInit   = (DOSINITDEVICE)k_sd_dos_init;
+    		pfxdosDevice->pfReader = (DOSSECTORREADER)k_read_sd_sector;
+    		break;
+
+    	case FXDOS_HDD:
+
+    		pfxdosDevice->pfInit   = (DOSINITDEVICE)k_hd_dos_init;
+    		pfxdosDevice->pfReader = (DOSSECTORREADER)k_read_hd_sector;
+    		lba = 0L;
+
+    		break;
+
+    	case FXDOS_FDD:
+
+    		pfxdosDevice->pfInit   = (DOSINITDEVICE)floppy_init;//k_fd_dos_init;
+    		pfxdosDevice->pfReader = (DOSSECTORREADER)k_read_fd_sector;
+    		lba = 0L;
+
+    		break;
+
+		}
+
+    	k_debug_integer("k_create_dos_device size:",sizeof(FXDOSDEVICE));
+
+    	if(!pfxdosDevice->initialized)
+    		pfxdosDevice->pfInit((LPVOID)pfxdosDevice);
+
+
+    	if(!pfxdosDevice->initialized)
+    	{
+    		k_mem_deallocate_heap(pfxdosDevice);
+    		return NULL;
+    	}
+
+		GABE_MSTR_CTRL[0] |= GABE_CTRL_SDC_LED;
+
+		errorCode = pfxdosDevice->pfReader(lba,sectorBuffer);
+		k_debug_byte_array("pfxdosDevice->pfReader:\r\n",sectorBuffer,512);
+
+		pBoot =  (PFATBOOTSECTOR)sectorBuffer;;
+
+		k_debug_integer("pBoot->sectors_per_cluster:",pBoot->sectors_per_cluster);
+		k_debug_integer("pBoot->root_entry_count:",pBoot->root_entry_count);
+		k_debug_integer("pBoot->total_sectors_16:",pBoot->total_sectors_16);
+		k_debug_integer("pBoot->sectors_per_fat:",pBoot->sectors_per_fat);
+		k_debug_integer("pBoot->sectors_per_track:",pBoot->sectors_per_track);
+		k_debug_nstrings("pBoot->vol_name:",pBoot->vol_name,11);
+		k_debug_integer("pBoot->bytes_per_sector:",pBoot->bytes_per_sector);
+		k_debug_hex("pBoot->fat_table_count:",pBoot->fat_table_count);
+		k_debug_integer("pBoot->bytes_per_sector:",pBoot->hidden_sector_count);
+
+
+		if(pBoot->total_sectors_16 == 2880)
+			isFAT12 = TRUE;
+
+
+		if(!isFAT12)
+		{
+			pfat32 =  (PFAT32EXT)(&sectorBuffer[36]);
+
+			k_debug_long("pfat32->table_size_32:",pfat32->table_size_32);
+			k_debug_nstrings("pfat32->volume_label:",pfat32->volume_label,11);
+
+			for(x=0;x<4;x++)
+			{
+				k_debug_integer("*** partition table:",x);
+
+				pPartTable = (PPARTITIONTABLE)&sectorBuffer[FAT_PARTITION_TABLE_1 + (0x10 * x)];
+
+				if(pPartTable->partition_type == FAT_PARTITION_TYPE_DOS30 ||
+				   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS33 ||
+				   pPartTable->partition_type == FAT_PARTITION_TYPE_DOS70)
+				{
+					k_debug_hex("FAT16 filesystem found from partition:", pPartTable->partition_type);
+					partitionId = x;
+					break;
+				}
+				else
+				{
+					k_debug_hex("*** pPartTable->partition_type:",pPartTable->partition_type);
+				}
+			}
+
+
+			memcpy(&pfxdosDevice->partitionTable,&sectorBuffer[FAT_PARTITION_TABLE_1 + (0x10 * partitionId)],sizeof(PARTITIONTABLE));
+			k_debug_hex ("***fxdosDevice first_byte:",pfxdosDevice->partitionTable.first_byte);
+			k_debug_hex ("***fxdosDevice start_chs0:",pfxdosDevice->partitionTable.start_chs[0]);
+			k_debug_hex ("***fxdosDevice start_chs1:",pfxdosDevice->partitionTable.start_chs[1]);
+			k_debug_hex ("***fxdosDevice start_chs2:",pfxdosDevice->partitionTable.start_chs[2]);
+			k_debug_hex ("***fxdosDevice partition_type:",(INT)pfxdosDevice->partitionTable.partition_type);
+			k_debug_hex ("***fxdosDevice end_chs0:",pfxdosDevice->partitionTable.end_chs[0]);
+			k_debug_hex ("***fxdosDevice end_chs1:",pfxdosDevice->partitionTable.end_chs[1]);
+			k_debug_hex ("***fxdosDevice end_chs2:",pfxdosDevice->partitionTable.end_chs[2]);
+			k_debug_long("***fxdosDevice start_sector:",pfxdosDevice->partitionTable.start_sector);
+			k_debug_long("***fxdosDevice length_sectors:",pfxdosDevice->partitionTable.length_sectors);
+		}
+		else
+		{
+			memset(&pfxdosDevice->partitionTable,0,sizeof(PARTITIONTABLE));
+			pPartTable->start_sector = 0;
+		}
+
+		pfxdosDevice->bsOffset = (pPartTable->start_sector * FAT_PAGE_SIZE);
+
+		pfxdosDevice->errorCode = pfxdosDevice->pfReader(pfxdosDevice->bsOffset,sectorBuffer);
+		if(!pfxdosDevice->errorCode)
+		{
+			memcpy(&pfxdosDevice->bootSector,sectorBuffer,sizeof(FATBOOTSECTOR));
+
+			k_debug_integer("***fxdosDevice bytes_per_sector:",(INT)pfxdosDevice->bootSector.bytes_per_sector);
+			k_debug_integer("***fxdosDevice sectors_per_cluster:",(INT)pfxdosDevice->bootSector.sectors_per_cluster);
+			k_debug_integer("***fxdosDevice reserved_sector_count:",(INT)pfxdosDevice->bootSector.reserved_sector_count);
+			k_debug_integer("***fxdosDevice table_count:",(INT)pfxdosDevice->bootSector.fat_table_count);
+			k_debug_integer("***fxdosDevice root_entry_count:",(INT)pfxdosDevice->bootSector.root_entry_count);
+			k_debug_integer("***fxdosDevice total_sectors_16:",(INT)pfxdosDevice->bootSector.total_sectors_16);
+			k_debug_integer("***fxdosDevice media_type:",(INT)pfxdosDevice->bootSector.media_type);
+			k_debug_integer("***fxdosDevice sectors_per_fat:",(INT)pfxdosDevice->bootSector.sectors_per_fat);
+			k_debug_integer("***fxdosDevice sectors_per_track:",(INT)pfxdosDevice->bootSector.sectors_per_track);
+			k_debug_integer("***fxdosDevice head_side_count:",(INT)pfxdosDevice->bootSector.head_side_count);
+			k_debug_integer("***fxdosDevice hidden_sector_count:",(INT)pfxdosDevice->bootSector.hidden_sector_count);
+			k_debug_integer("***fxdosDevice total_sectors_32:",(INT)pfxdosDevice->bootSector.total_sectors_32);
+
+			strncpy(pfxdosDevice->volume_name,pfxdosDevice->bootSector.vol_name,11);
+			//pfxdosDevice->volume_name[11] = 0;
+			k_debug_nstrings("***fxdosDevice Volume Name:",pfxdosDevice->volume_name,11);
+
+			pfxdosDevice->root_entry_count = pfxdosDevice->bootSector.root_entry_count;
+
+			pfxdosDevice->fatTableOffset = pfxdosDevice->bsOffset + (pfxdosDevice->bootSector.bytes_per_sector * pfxdosDevice->bootSector.reserved_sector_count);
+			pfxdosDevice->rootDirSectors = pfxdosDevice->bsOffset + (((ULONG)pfxdosDevice->bootSector.reserved_sector_count + ((ULONG)pfxdosDevice->bootSector.sectors_per_fat * (ULONG)pfxdosDevice->bootSector.fat_table_count)) * (ULONG)pfxdosDevice->bootSector.bytes_per_sector);
+			pfxdosDevice->sectors_per_cluster = (INT)pfxdosDevice->bootSector.sectors_per_cluster;
+
+			k_debug_long("***fxdosDevice fatTable:",pfxdosDevice->fatTableOffset);
+
+
+
+			if(pfxdosDevice->pfReader(pfxdosDevice->fatTableOffset,sectorBuffer) == 0)
+			{
+				memcpy(&pfxdosDevice->fileAllocationTable,sectorBuffer,FAT_PAGE_SIZE);
+			}
+
+			k_debug_long("***fxdosDevice root offset:",pfxdosDevice->rootDirSectors);
+			k_debug_long("***fxdosDevice root sizeof(FAT16ENTRY):",sizeof(FAT16ENTRY));
+			k_debug_long("***fxdosDevice root root_entry_count:",pfxdosDevice->root_entry_count);
+			k_debug_long("***fxdosDevice root root_entry_count/sizeof(FAT16ENTRY):",pfxdosDevice->root_entry_count/sizeof(FAT16ENTRY));
+
+
+			pfxdosDevice->rootEntriesPerPage = pfxdosDevice->root_entry_count/sizeof(FAT16ENTRY);
+
+			if(pfxdosDevice->pfReader(pfxdosDevice->rootDirSectors,sectorBuffer) == 0)
+			{
+				k_read_volume_name((PFAT16ENTRY)&sectorBuffer[0],pfxdosDevice);
+				k_debug_strings("k_create_dos_device::ROOT VOLUME NAME:",pfxdosDevice->root_volume_name);
+			}
+		}
+
+    }
+
+    GABE_MSTR_CTRL[0] = GABE_MSTR_CTRL[0] & (~GABE_CTRL_SDC_LED);
+
+	return pfxdosDevice;
+}
+
+
+UINT8 k_sd_status(VOID)
+{
+	return 0;
+}
+
+BOOL k_sd_ispresent(void)
+{
+	UINT8 errorCode = 0;
+
+	errorCode = k_sd_initialize();
+	k_debug_integer("k_sd_ispresent:", errorCode);
+
+	if(errorCode)
+		return FALSE;
+	else
+		return TRUE;
+}
+
+UCHAR k_sd_waitforirq(void)
+{
+	return 0;
+}
+
+PFXDOSDEVICE k_sd_mount(void)
+{
+	PFXDOSDEVICE device = NULL;
+
+	if(k_sd_ispresent())
+	{
+		device = k_create_dos_device(FXDOS_SDC);
+	}
+
+	return device;
+}
+
+BOOL k_sd_openfile(LPCHAR filename)
+{
+	k_debug_string("k_sd_openfile::filename:");
+	k_debug_string(filename);
+	k_debug_string("\r\n");
+
+	return FALSE;
+}
+
+BOOL k_sd_setfilename(LPCHAR filename)
+{
+	k_debug_string("k_sd_setfilename::filename:");
+	k_debug_string(filename);
+	k_debug_string("\r\n");
+
+
+	return TRUE;
+}
+
+
+PFXNODE k_sd_read_dir(void)
+{
+	return NULL;
+}
+
+void k_sd_search_dir(LPCHAR searchString)
+{
+}
+
+
+UINT16 k_read_disk_sector(LPCHAR buf, UINT32 iLbaStart, UINT8 iSectorCount)
+{
+	return 0;
+}
+
+UINT8 k_sd_cmd_and_irq( UINT8 mCmd )
+{
+	return 0;
+}
+
+UINT8 k_sd_disk_req_sense( void )
+{
+	return 0;
+}
+
+BOOL k_sd_read_vol(PDISKINFO pdiskInfo)
+{
+	//k_sd_reset();
+
+	k_sd_test();
+
+	return FALSE;
+}
+
+BOOL k_sd_write_file(LPCHAR fileName,LPVOID fileBuffer,UINT fileSize)
+{
+	return FALSE;
+}
+
+BOOL k_sd_read_file(LPCHAR fileName,LPVOID fileBuffer,UINT fileSize)
+{
+	return FALSE;
+}
+
+BOOL k_sd_create_dir(LPCHAR dirName)
+{
+	return FALSE;
+}
+
+BOOL k_sd_getdirinfo(P_FAT_DIR_INFO pdirName)
+{
+	return FALSE;
+}
+
+BOOL k_sd_delete(LPCHAR dirOrFileName)
+{
+	return FALSE;
+}
+
+BOOL k_sd_close(UCHAR update)
+{
+	return FALSE;
+}
+
+void k_sd_sendcmd(UCHAR command)
+{
+}
+
+void k_sd_senddta(UCHAR data)
+{
+}
+
+void k_sd_cmd_delay(void)
+{
+
+}
+
+void k_sd_dta_delay(void)
+{
+
+}
+
+
+UINT8 k_sd_createfile( LPCHAR name )
+{
+	return 0;
+}
+
+UINT8	k_sd_read_block( PUINT8 buf )
+{
+
+	return 0;
+}
+
+
+void k_sd_write_host_block( PUINT8 buf, UINT8 len )
+{
+
+}
+
+void k_sd_write_ofs_blocks( PUINT8 buf, UINT8 ofs, UINT8 len )
+{
+
+}
+
+UINT8 k_sd_byte_locate( UINT32 offset )
+{
+	return 0;
+}
+
+/*
+UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_read:",ReqCount);
+
+	xWriteCH376Cmd( CMD2H_BYTE_READ );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+	if ( RealCount ) *RealCount = 0;
+	while ( 1 )
+	{
+		s = k_sd_waitforirq( );
+		k_debug_integer("k_sd_byte_read:status:",s);
+		if ( s == USB_INT_DISK_READ || s == USB_INT_SUCCESS)
+		{
+			s = k_sd_read_block( buf );
+			xWriteCH376Cmd( CMD0H_BYTE_RD_GO );
+			xEndCH376Cmd( );
+			buf += s;
+			if ( RealCount )
+				*RealCount += s;
+
+			k_debug_integer("k_sd_byte_read:RealCount:",*RealCount);
+		}
+		//else if ( s == USB_INT_SUCCESS ) return( s );
+		else return( s );
+	}
+}
+*/
+UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+
+	return 0;
+}
+
+/*
+UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_write:",ReqCount);
+
+	xWriteCH376Cmd( CMD2H_BYTE_WRITE );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+	if ( RealCount ) *RealCount = 0;
+	while ( 1 )
+	{
+		s = k_sd_waitforirq( );
+		k_debug_integer("k_sd_byte_write:status1:",s);
+		//if ( s == USB_INT_DISK_WRITE )
+		if ( s == USB_INT_SUCCESS ||  s == USB_INT_DISK_WRITE)
+		{
+			s = k_sd_write_req_block( buf );
+
+			xWriteCH376Cmd( CMD0H_BYTE_WR_GO );
+			xEndCH376Cmd( );
+			buf += s;
+
+			if ( RealCount )
+			{
+				*RealCount += s;
+				if(*RealCount == ReqCount)
+					return s;
+			}
+			k_debug_integer("k_sd_byte_write:status2:",s);
+		}
+		//e-lse if ( s == USB_INT_SUCCESS ) return( s );
+		else return( s );
+	}
+}
+*/
+
+UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	return 0;
+}
+
+UINT8 k_sd_write_req_block( PUINT8 buf )
+{
+	return 0;
+}
+
+/*
+void k_sd_test_new(void)
+{
+	UINT8 s;
+	UINT16 j;
+
+	mDelaymS(100);
+
+	//mInitCH376Host();
+
+	if (k_sd_initialize())
+	{
+		k_debug_string("k_sd_test::initialized...\r\n");
+		if (k_sd_ispresent())
+		{
+			k_debug_string("k_sd_test::card present...\r\n");
+
+			if (k_sd_mount())
+			{
+				k_debug_string("k_sd_test::card mounted...\r\n");
+
+				k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+				s = CH376ReadBlock(buf);
+				if (s == sizeof(INQUIRY_DATA))
+				{
+					buf[s] = 0;
+					k_debug_string("UdiskInfo:");
+					k_debug_string(
+							(char FAR*) ((P_INQUIRY_DATA) buf)->VendorIdStr);
+					k_debug_string("\r\n");
+				}
+
+			}
+			else
+			{
+				k_debug_string("k_sd_test::card NOT mounted...\r\n");
+			}
+		}
+		else
+		{
+			k_debug_string("k_sd_test::card NOT present...\r\n");
+		}
+	}
+	else
+	{
+		k_debug_string("k_sd_test::NOT initialized...\r\n");
+	}
+
+}
+*/
+void k_sd_test(void)
+{
+
+	DISKINFO di;
+	FAT_DIR_INFO dirName;
+
+	if (k_sd_initialize())
+	{
+		k_debug_string("k_sd_test::initialized...\r\n");
+		if (k_sd_ispresent())
+		{
+			k_debug_string("k_sd_test::card present...\r\n");
+
+			if (k_sd_mount())
+			{
+				k_debug_string("k_sd_test::card mounted...\r\n");
+
+				k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+
+				//k_sd_read_vol(&di);
+				//k_sd_search_dir("*VOL");
+
+				//k_sd_read_dir();
+				/*
+				 k_sd_read_vol();
+
+				 if(k_sd_getdirinfo( &dirName ))
+				 {
+				 k_debug_string("k_sd_getdirinfo::ROOT:FAT_DIR_INFO.NAME:");
+				 k_debug_nstring(dirName.DIR_Name,11);
+				 k_debug_string("\r\n");
+				 }
+				 */
+
+				/*
+				 k_debug_string("k_sd_test::k_sd_delete...\r\n");
+				 if(k_sd_delete("/NEWDIR"))
+				 {
+				 k_debug_string("k_sd_test::k_sd_delete:DELETED\r\n");
+				 }
+				 else
+				 {
+				 k_debug_string("k_sd_test::k_sd_delete:NOT DELETED\r\n");
+				 }
+
+				 k_debug_string("k_sd_test::k_sd_create_dir...\r\n");
+				 if(k_sd_create_dir("/NEWDIR"))
+				 {
+				 k_debug_string("k_sd_test::ck_sd_create_dir CREATED...\r\n");
+				 }
+				 else
+				 {
+				 k_debug_string("k_sd_test::ck_sd_create_dir:NOT CREATED\r\n");
+				 }
+
+				 k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+				 k_sd_read_dir();
+				 */
+			}
+			else
+			{
+				k_debug_string("k_sd_test::card NOT mounted...\r\n");
+			}
+		}
+		else
+		{
+			k_debug_string("k_sd_test::card NOT present...\r\n");
+		}
+	}
+	else
+	{
+		k_debug_string("k_sd_test::NOT initialized...\r\n");
+	}
+}
+
+VOID  k_dos_dealloc_filelist(PFXNODE plist)
+{
+	PFXNODE p   = plist;
+	PFXNODE tmp = NULL;
+
+	while(p)
+	{
+		tmp = p->next;
+
+		k_mem_deallocate_heap(((PFILEINFO)p->data)->pFilename);
+		k_mem_deallocate_heap(p->data);
+		k_mem_deallocate_heap(p);
+
+		p = tmp;
+	}
+}
+
+PFILEINFO _k_dos_alloc_fileinfo(FAT_DIR_INFO FAR *direntry)
+{
+	PFILEINFO pfi = NULL;
+
+	//k_debug_string("_k_dos_alloc_fileinfo:enter\r\n");
+
+	pfi = k_mem_allocate_heap(sizeof(FILEINFO));
+	if(pfi!=NULL)
+	{
+		pfi->type  		 = direntry->DIR_Attr;
+		pfi->lSize 		 = direntry->DIR_FileSize;
+		pfi->lchangeDate = direntry->DIR_LstAccDate;
+		pfi->lcreateDate = direntry->DIR_CrtDate;
+		pfi->pFilename   = _k_dos_alloc_filename(direntry->DIR_Name);
+	}
+
+	return pfi;
+}
+
+LPCHAR _k_dos_alloc_filename(LPCHAR filename11)
+{
+	UINT index = 0;
+	//UINT p = 0;
+	//UINT dot = 0;
+	LPCHAR lpName = NULL;
+	CHAR ftmp[4] = {0,0,0,0};
+
+	//k_debug_string("_k_dos_alloc_filename:enter\r\n");
+
+	lpName = (LPCHAR)k_mem_allocate_heap(16);
+	if(lpName!=NULL)
+	{
+		//k_debug_string("_k_dos_alloc_filename:copy\r\n");
+		//memset(lpName,0,16);
+		//memcpy(lpName,filename11,8);
+		for(index=0;index<16;index++)
+					lpName[index] = 0;
+
+		for(index=0;index<8;index++)
+			lpName[index] = filename11[index];
+
+
+		lpName = k_string_rtrim(lpName);
+		if(filename11[8]!=' ')
+		{
+			strcat(lpName,".");
+
+			for(index=0;index<3;index++)
+				ftmp[index] = filename11[index + 8];
+
+			strcat(lpName,ftmp);
+		}
+
+		//k_debug_string("_k_ds_alloc_filename:");
+		//k_debug_string(lpName);
+		//k_debug_string("\r\n");
+	}
+
+	return lpName;
+}
+
+
+#else
+
+static BOOL _mount_lock = FALSE;
+static DISKINFO lastdiskInfo;
+static PDISKINFO pdiskCache = NULL;
+
+
+BOOL k_pc_initialize(void)
+{
+	return FALSE;
+}
+
+/*
+BOOL k_sd_initialize(void)
+{
+	BOOL retCode = FALSE;
+	UCHAR data = 0;
+	UCHAR status = 0;
+	int abort = 0;
+	//k_sd_init();
+	//k_sd_ismounted();
+	k_debug_string("k_sd_initialize::reset...\r\n");
+
+	data = SDCARD_DATA[0];
+
+	SDCARD_PRSNT_MNT[0] = 0x00;
+
+	SDCARD_CMD[0] = 0x05;
+
+	for (abort = 0; abort < 35; abort++)
+		k_sd_cmd_delay();
+
+	k_debug_string("k_sd_initialize::init s1...\r\n");
+
+	SDCARD_CMD[0] = 0x06;
+	k_sd_cmd_delay();
+	SDCARD_DATA[0] = 0xA8;
+
+
+	k_debug_string("k_sd_initialize::init s1a...\r\n");
+
+	k_sd_dta_delay();
+	k_sd_dta_delay();
+	k_sd_dta_delay();
+
+	k_debug_string("k_sd_initialize::init s1b...\r\n");
+
+	data = SDCARD_DATA[0];
+
+	k_debug_string("k_sd_initialize::init s1c...\r\n");
+
+	k_sd_cmd_delay();
+
+	k_debug_string("k_sd_initialize::init s2...\r\n");
+
+	SDCARD_CMD[0] = CH_CMD_SET_MODE;
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+
+
+
+	SDCARD_DATA[0] = 0x03; // Mode 3 - SDCARD
+
+	k_debug_string("k_sd_initialize::read..\r\n");
+
+	retCode = TRUE;
+	data = 0;
+	while (data != 0x51)
+	{
+		abort++;
+		if (abort > 100)
+		{
+			retCode = FALSE;
+			break;
+		}
+		k_sd_dta_delay();
+
+		data = SDCARD_DATA[0];
+		k_debug_integer("k_sd_initialize::SDCARD_DATA:", data);
+	}
+
+
+	abort = k_read_disk_sector(sectorBuffer, 1, 1);
+	//SDCARD_CMD[0] = 0x01;
+	//k_sd_cmd_delay();
+	//k_debug_integer("k_sd_initialize::version:",SDCARD_DATA[0]);
+
+	//SDCARD_CMD[0] = CH_CMD_GET_STATUS;
+	//status = k_sd_waitforirq();
+	//k_debug_integer("k_sd_initialize::CH_CMD_GET_STATUS:",status);
+
+	k_debug_string("k_sd_initialize::exit...\r\n");
+
+	return retCode;
+}
+*/
+UINT8 k_sd_reset(VOID)
+{
+	UINT8	s;
+
+	k_debug_string("***k_sd_reset 1\r\n");
+
+	xWriteCH376Cmd( CMD_RESET_ALL );
+	s = xReadCH376Data( );
+	xEndCH376Cmd( );
+
+	k_debug_string("***k_sd_reset 2\r\n");
+
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+
+	k_sd_initialize();
+
+	return( s );
+}
+
+
+UINT8 k_sd_status(VOID)
+{
+	UINT8	s;
+
+	xWriteCH376Cmd( CMD01_GET_STATUS );
+	s = xReadCH376Data( );
+	xEndCH376Cmd( );
+	return( s );
+}
+
+BOOL k_sd_ispresent(void)
+{
+	UCHAR stat = 0;
+	BOOL retCode = FALSE;
+
+	stat = SDCARD_STAT[0]; //  BIT[0] = Cd, BIT[1] = WP
+	k_debug_integer("k_sd_initialize::SDCARD_STAT:", stat);
+
+	if (stat & 0x01)
+	{
+		retCode = FALSE;
+		SDCARD_PRSNT_MNT[0] = 0x00;
+	}
+	else
+	{
+		SDCARD_PRSNT_MNT[0] = 0x01;
+		retCode = TRUE;
+	}
+
+
+	if(!retCode)
+	{
+		pdiskCache = NULL;
+		k_sd_reset();
+	}
+
+
+	k_debug_integer("k_sd_ispresent:", retCode);
+
+	return retCode;
+}
+
+UCHAR k_sd_waitforirq(void)
+{
+	UINT abort = 0xFF;
+	UCHAR status = 0x80;
+
+	//asm SEI;
+
+	while (status == 0x80)
+	{
+		status = SDCARD_DATA[0];
+		//k_debug_integer("k_sd_waitforirq::wait:", status);
+
+		abort--;
+		if(abort < 1)
+		{
+			return 0x80;
+		}
+	}
+
+	k_sd_cmd_delay();
+	k_sd_cmd_delay();
+
+	SDCARD_CMD[0] = CH_CMD_GET_STATUS;
+
+	k_sd_cmd_delay();
+
+	status = SDCARD_DATA[0];
+
+	//k_debug_integer("k_sd_waitforirq::status:", status);
+
+	//asm cli;
+
+	return status;
+}
+
+BOOL k_sd_mount(void)
+{
+	int i = 0;
+	int abort = 0;
+	UCHAR status = 0x00;
+	UCHAR data[37];
+	BOOL retCode = FALSE;
+
+	if(_mount_lock)
+		return TRUE;
+
+	if(k_sd_ispresent())
+	{
+		k_debug_string("k_sd_mount::card detected\r\n");
+		//if(SDCARD_PRSNT_MNT[0] & 0x05 != 0x05)
+		if (SDCARD_PRSNT_MNT[0] == 0x01)
+		{
+			k_debug_string("k_sd_mount::card mounting..\r\n");
+
+			/// SDCARD_PRSNT_MNT[0] = 0x01;//      ; Bit[0] = Card Present
+
+			while (status != CH376S_STAT_SUCCESS) //TRY_MOUNT_AGAIN
+			{
+				SDCARD_CMD[0] = CH_CMD_DISK_MOUNT;
+				k_sd_cmd_delay();
+
+				k_sd_cmd_delay();
+				k_sd_cmd_delay();
+
+				status = k_sd_waitforirq();
+
+				if (status == CH376S_STAT_SUCCESS)
+				{
+
+					/*
+					 SDCARD_CMD[0] = CH_CMD_RD_DATA0;
+					 k_sd_cmd_delay();
+					 k_debug_hex("k_sd_read_dir::k_sd_mount-size:",SDCARD_DATA[0]);
+
+					 for(i=0;i<36;i++)
+					 {
+					 data[i] = SDCARD_DATA[0];
+					 k_sd_dta_delay();
+					 k_debug_hexchar("k_sd_read_dir::k_sd_mount:",data[i]);
+					 }
+					 data[36] = 0;
+
+					 k_debug_string("k_sd_mount::mount-name:");
+					 k_debug_string(data);
+					 k_debug_string("\r\n");
+					 */
+				}
+
+				//INY
+				//CPY #$00F0
+				//BNE TRY_MOUNT_AGAIN
+				//JMP SDCARD_ERROR_MOUNT
+				abort++;
+				if (abort > 0x03FF) // 0x03FF
+				{
+					k_debug_string("k_sd_mount::card mount failed\r\n");
+					k_debug_hex("k_sd_mount::status:",status);
+					return FALSE;
+				}
+			}
+
+			k_debug_integer("k_sd_mount::abort:",abort);
+		}
+
+		//;              LDA SDCARD_PRSNT_MNT        ; Load Presence Status
+		//;              AND #$05
+		//;              CMP #$05
+		//;              BEQ ISDOS_MOUNTED
+
+		SDCARD_PRSNT_MNT[0] &= SDCARD_PRSNT_MNTED;
+		k_debug_string("k_sd_mount::card mounted\r\n");
+		retCode = TRUE;
+	}
+	else
+	{
+		SDCARD_PRSNT_MNT[0] = SDCARD_PRSNT_NO_CARD;
+	}
+
+	return retCode;
+}
+
+BOOL k_sd_openfile(LPCHAR filename)
+{
+	UCHAR status = 0x00;
+	BOOL retCode = FALSE;
+
+	k_debug_string("k_sd_openfile::filename:");
+	k_debug_string(filename);
+	k_debug_string("\r\n");
+
+	k_sd_setfilename(filename);
+	k_sd_cmd_delay();
+	SDCARD_CMD[0] = CH_CMD_FILE_OPEN;
+
+	status = k_sd_waitforirq();
+
+	k_debug_integer("k_sd_openfile::result:", status);
+
+	//retCode = (status == 0x14);
+	retCode = (status !=USB_INT_DISK_ERR);
+
+
+	return retCode;
+}
+
+BOOL k_sd_setfilename(LPCHAR filename)
+{
+	int i = 0;
+	BOOL bRet = FALSE;
+	LPCHAR fptr = filename;
+
+	//k_debug_string("k_sd_setfilename::enter\r\n");
+
+	if (filename != NULL)
+	{
+		SDCARD_CMD[0] = CH_CMD_SET_FILENAME;
+		k_sd_cmd_delay();
+
+		//k_debug_string("k_sd_setfilename::send\r\n");
+
+		while (*fptr)
+		{
+			SDCARD_DATA[0] = *fptr;
+			k_sd_dta_delay();
+			fptr++;
+		}
+		SDCARD_DATA[0] = 0;
+		k_sd_dta_delay();
+
+		bRet = TRUE;
+	}
+
+	//k_debug_integer("k_sd_setfilename::result:", bRet);
+
+	return bRet;
+}
+
+/*
+ 	nodelist = k_nodelist_init(1,"node1",NULL);
+
+	newnode = k_nodelist_create(2,"node2",NULL,NULL,NULL);
+	k_nodelist_add(nodelist,newnode);
+	newnode = k_nodelist_create(3,"node3",NULL,NULL,NULL);
+	k_nodelist_add(nodelist,newnode);
+	newnode = k_nodelist_create(34,"node4",NULL,NULL,NULL);
+	k_nodelist_add(nodelist,newnode);
+
+	k_debug_nodelist(nodelist);
+
+*/
+
+PFXNODE k_sd_read_dir(void)
+{
+	PFXNODE pnDirList = NULL;
+	PFXNODE node  = NULL;
+	PFILEINFO pfi = NULL;
+	UCHAR rsize = 0;
+	FAT_DIR_INFO FAR *direntry = NULL;
+	//FAT_DIR_INFO direntry;
+	LPCHAR pdirentry = NULL;
+	UCHAR data = 0;
+	UCHAR status = 0x000;
+	int i = 0;
+
+	k_debug_integer("k_sd_read_dir::enter:sizeof(FAT_DIR_INFO):",sizeof(FAT_DIR_INFO));
+
+	k_sd_read_vol(NULL);
+
+	if(k_sd_ispresent() && k_sd_mount())
+	{
+		if(k_sd_openfile(sd_card_dir_string))
+		{
+			k_debug_string("k_sd_read_dir::k_sd_openfile:success\r\n");
+
+			direntry = k_mem_allocate_heap(sizeof(FAT_DIR_INFO));
+
+			status = CH376S_STAT_DSK_RD;
+			while (status == CH376S_STAT_DSK_RD || status == 0x51)
+			//while (status != ERR_MISS_FILE)
+			{
+				SDCARD_CMD[0] = CH_CMD_RD_DATA0;
+				k_sd_cmd_delay();
+
+				rsize = SDCARD_DATA[0];
+				k_debug_hex("k_sd_read_dir::k_sd_openfile:read:",data);
+
+				//k_sd_cmd_delay();
+
+				pdirentry = (LPCHAR) direntry;
+
+				for (i = 0; i < rsize; i++)
+				{
+					k_sd_dta_delay();
+					data = SDCARD_DATA[0];
+					//k_debug_char("k_sd_read_dir::entrydata:",data);
+					*pdirentry = data;
+					pdirentry++;
+				}
+
+				k_debug_string("k_sd_read_dir::FAT_DIR_INFO.NAME:");
+				k_debug_nstring(direntry->DIR_Name, 11);
+				k_debug_string("\r\n");
+
+				if(pnDirList == NULL)
+				{
+					k_debug_string("k_sd_read_dir::pnDirList\r\n");
+					pnDirList = k_nodelist_init(direntry->DIR_Attr,"dos",(LPVOID)_k_dos_alloc_fileinfo(direntry));
+				}
+				else
+				{
+					node = k_nodelist_create(direntry->DIR_Attr,"dos",(LPVOID)_k_dos_alloc_fileinfo(direntry),NULL,NULL);
+					k_debug_pointer("k_sd_read_dir::node:",node);
+					if(node!=NULL)
+						k_nodelist_add(pnDirList,node);
+				}
+
+				/*
+				if (direntry.DIR_Attr == ATTR_VOLUME_ID)
+				{
+					k_debug_string("** VOLUME **\r\n");
+				}
+				*/
+				//k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+				//k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+				//k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+
+				k_sd_cmd_delay();
+
+				SDCARD_CMD[0] = CH_CMD_FILE_ENUM_GO;
+				k_sd_cmd_delay();
+				status = k_sd_waitforirq();
+				k_debug_hex("k_sd_read_dir::CH_CMD_FILE_ENUM_GO:status:",status);
+
+				if(status == 0)
+				{
+					SDCARD_CMD[0] = CH_CMD_FILE_ENUM_GO;
+					k_sd_cmd_delay();
+					status = k_sd_waitforirq();
+					k_debug_hex("k_sd_read_dir::CH_CMD_FILE_ENUM_GO:retry status:",status);
+				}
+
+			}
+
+			k_sd_close(0);
+		}
+	}
+
+	return pnDirList;
+}
+
+void k_sd_read_dir_OLD(void)
+{
+	PFXNODE nodesDirList = NULL;
+
+	FAT_DIR_INFO direntry;
+	LPCHAR pdirentry = NULL;
+	UCHAR data = 0;
+	UCHAR status = 0x000;
+	int i = 0;
+
+	//k_debug_string("k_sd_read_dir::enter\r\n");
+
+	if (k_sd_mount())
+	{
+		if (k_sd_openfile(sd_card_dir_string))
+		{
+			//k_debug_string("k_sd_read_dir::k_sd_openfile:success\r\n");
+			;
+			status = CH376S_STAT_DSK_RD;
+			while (status == CH376S_STAT_DSK_RD || status == 0x51)
+			{
+				SDCARD_CMD[0] = CH_CMD_RD_DATA0;
+				k_sd_cmd_delay();
+
+				data = SDCARD_DATA[0];
+				//k_debug_hex("k_sd_read_dir::k_sd_openfile:read:",data);
+
+				//k_sd_cmd_delay();
+
+				pdirentry = (LPCHAR) &direntry;
+
+				for (i = 0; i < sizeof(DIRENTRY); i++)
+				{
+					k_sd_dta_delay();
+					data = SDCARD_DATA[0];
+					//k_debug_char("k_sd_read_dir::entrydata:",data);
+					*pdirentry = data;
+					pdirentry++;
+				}
+
+				k_debug_string("k_sd_read_dir::FAT_DIR_INFO.NAME:");
+				k_debug_nstring(direntry.DIR_Name, 11);
+				//k_debug_string(pdirentry);
+				k_debug_string("\r\n");
+
+				if (direntry.DIR_Attr == ATTR_VOLUME_ID)
+				{
+					k_debug_string("** VOLUME **\r\n");
+				}
+
+				k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+				//k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+				k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+
+				k_sd_cmd_delay();
+
+				SDCARD_CMD[0] = CH_CMD_FILE_ENUM_GO;
+				status = k_sd_waitforirq();
+				//k_debug_hex("k_sd_read_dir::CH_CMD_FILE_ENUM_GO:status:",status);
+			}
+
+			k_sd_close(0);
+		}
+	}
+}
+
+void k_sd_search_dir(LPCHAR searchString)
+{
+	FAT_DIR_INFO direntry;
+	LPCHAR pdirentry = NULL;
+	UCHAR data = 0;
+	UCHAR status = 0x000;
+	int i = 0;
+
+	//k_debug_string("k_sd_read_dir::enter\r\n");
+
+	if (k_sd_mount())
+	{
+		if (k_sd_openfile(searchString))
+		{
+			//k_debug_string("k_sd_read_dir::k_sd_openfile:success\r\n");
+			;
+			status = CH376S_STAT_DSK_RD;
+			while (status == CH376S_STAT_DSK_RD || status == 0x51)
+			{
+				SDCARD_CMD[0] = CH_CMD_RD_DATA0;
+				k_sd_cmd_delay();
+
+				data = SDCARD_DATA[0];
+				//k_debug_hex("k_sd_read_dir::k_sd_openfile:read:",data);
+
+				//k_sd_cmd_delay();
+
+				pdirentry = (LPCHAR) &direntry;
+
+				for (i = 0; i < sizeof(DIRENTRY); i++)
+				{
+					k_sd_dta_delay();
+					data = SDCARD_DATA[0];
+					//k_debug_char("k_sd_read_dir::entrydata:",data);
+					*pdirentry = data;
+					pdirentry++;
+				}
+
+				k_debug_string("k_sd_read_dir::FAT_DIR_INFO.NAME:");
+				k_debug_nstring(direntry.DIR_Name, 11);
+				//k_debug_string(pdirentry);
+				k_debug_string("\r\n");
+
+				if (direntry.DIR_Attr == ATTR_VOLUME_ID)
+				{
+					k_debug_string("** VOLUME **\r\n");
+				}
+
+				k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.ATTR:",direntry.DIR_Attr);
+				//k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.NTRES:",direntry.DIR_NTRes);
+				k_debug_integer("k_sd_read_dir::FAT_DIR_INFO.SIZE:",direntry.DIR_FileSize);
+
+				k_sd_cmd_delay();
+
+				SDCARD_CMD[0] = CH_CMD_FILE_ENUM_GO;
+				status = k_sd_waitforirq();
+				//k_debug_hex("k_sd_read_dir::CH_CMD_FILE_ENUM_GO:status:",status);
+			}
+
+			k_sd_close(0);
+		}
+	}
+}
+
+
+UINT16 k_read_disk_sector(LPCHAR buf, UINT32 iLbaStart, UINT8 iSectorCount)
+{
+	UINT16 size = 0;
+	UINT8  err;
+	UINT16 mBlockCount;
+
+	UINT8  s = USB_INT_DISK_READ;
+
+	k_debug_long("k_read_disk_sector::iLbaStart:",iLbaStart);
+
+	for (err = 0; err != 3; ++err)
+	{
+		xWriteCH376Cmd(CMD5H_DISK_READ);
+		k_sd_cmd_delay();
+		k_sd_cmd_delay();
+		xWriteCH376Data((UINT8) iLbaStart);
+		k_sd_dta_delay();
+		xWriteCH376Data((UINT8) ((UINT16) iLbaStart >> 8));
+		k_sd_dta_delay();
+		xWriteCH376Data((UINT8) (iLbaStart >> 16));
+		k_sd_dta_delay();
+		xWriteCH376Data((UINT8) (iLbaStart >> 24));
+		k_sd_dta_delay();
+		xWriteCH376Data(iSectorCount);
+		k_sd_dta_delay();
+		xEndCH376Cmd();
+
+		s = USB_INT_DISK_READ;
+
+		for (mBlockCount = iSectorCount * DEF_SECTOR_SIZE / CH376_DAT_BLOCK_LEN;mBlockCount != 0; --mBlockCount)
+		{
+			k_debug_integer("k_read_disk_sector::mBlockCount:",mBlockCount);
+
+			s = k_sd_waitforirq();
+
+			//s = USB_INT_DISK_READ;
+			if (s == USB_INT_DISK_READ)
+			{
+				s = k_sd_read_block(buf);
+				xWriteCH376Cmd( CMD0H_DISK_RD_GO);
+				xEndCH376Cmd();
+				buf += s;
+				size += s;
+				k_debug_integer("k_read_disk_sector::read:size:",size);
+			}
+			else
+			{
+				k_debug_integer("k_read_disk_sector::k_sd_waitforirq:",s);
+				break;
+			}
+			s = k_sd_waitforirq();
+		}
+
+		if (mBlockCount == 0)
+		{
+			s = k_sd_waitforirq();
+			if (s == USB_INT_SUCCESS)
+				return (size);
+		}
+		if (s == USB_INT_DISCONNECT)
+			return (size);
+		k_sd_disk_req_sense();
+	}
+	return (size);
+}
+
+UINT8 k_sd_cmd_and_irq( UINT8 mCmd )
+{
+	xWriteCH376Cmd( mCmd );
+	k_sd_cmd_delay();
+	xEndCH376Cmd( );
+	return( k_sd_waitforirq( ) );
+}
+
+UINT8 k_sd_disk_req_sense( void )
+{
+	UINT8	s;
+	mDelaymS( 5 );
+	s = k_sd_cmd_and_irq( CMD0H_DISK_R_SENSE );
+	mDelaymS( 5 );
+	return( s );
+}
+
+BOOL k_sd_read_vol(PDISKINFO pdiskInfo)
+{
+
+	BOOL bRet = FALSE;
+	//UINT size = 0;
+	UINT   index = 0;
+	BOOL   cmd = FALSE;
+	UINT16 read = 0;
+	//fat_BS_t direntry;
+	//LPCHAR pdirentry = (LPCHAR) &direntry;
+	UCHAR data = 0;
+	//UCHAR status = 0x000;
+	LPCHAR contents = NULL;
+	//LPCHAR test = "This is a test!\r\n";
+	int i = 0;
+
+	k_debug_string("k_sd_read_dir::enter\r\n");
+
+	//asm sei;
+
+	k_sd_reset();
+
+	//if(k_sd_ispresent() && k_sd_mount())
+	if(k_sd_mount())
+	{
+		_mount_lock = TRUE;
+
+		k_sd_openfile("\0");
+
+		if (k_sd_openfile(CONST_FXINFO_FILE))
+		{
+
+			k_debug_string("k_sd_read_vol::opened\r\n");
+
+			//k_sd_byte_locate(0L);
+
+			if(pdiskInfo!=NULL)
+			{
+				memset(pdiskInfo,0,sizeof(DISKINFO));
+
+
+				k_sd_byte_read((LPCHAR)pdiskInfo,sizeof(DISKINFO),&read);
+				if(read == 0)
+				{
+					strcpy(pdiskInfo->stgName,"NO NAME");
+				}
+				k_debug_integer("k_sd_read_vol::k_sd_byte_read:read:", read);
+				k_debug_string("VOLUME NAME:");
+				k_debug_nstring(pdiskInfo->stgName, 32 );
+				k_debug_string("\r\n");
+
+				memcpy(&lastdiskInfo,pdiskInfo,sizeof(DISKINFO));
+				pdiskCache = &lastdiskInfo;
+
+				bRet = TRUE;
+			}
+
+			k_sd_close(CLOSE_NOUPDATE);
+		}
+
+		k_debug_string("k_sd_read_vol::exit\r\n");
+
+		_mount_lock = FALSE;
+	}
+	else
+	{
+		pdiskCache = NULL;
+	}
+
+	//asm cli;
+
+	return bRet;
+}
+
+BOOL k_sd_write_file(LPCHAR fileName,LPVOID fileBuffer,UINT fileSize)
+{
+
+	BOOL bRet = FALSE;
+	UINT   index = 0;
+	BOOL   cmd = FALSE;
+	UINT16 wrote = 0;
+	int i = 0;
+
+	k_debug_integer("k_sd_write_file::enter:",fileSize);
+
+	//asm sei;
+
+	k_sd_reset();
+
+	if(fileName && k_sd_ispresent() && k_sd_mount())
+	{
+		k_sd_openfile("\0");
+
+		k_sd_delete(fileName);
+
+		k_sd_reset();
+
+		k_sd_openfile("\0");
+		if(k_sd_createfile(fileName))
+		{
+			if (k_sd_openfile(fileName))
+			{
+				k_sd_cmd_delay();
+				k_debug_string("k_sd_write_file::opened\r\n");
+				if(fileBuffer!=NULL)
+				{
+					k_sd_byte_write((LPCHAR)fileBuffer,fileSize,&wrote);
+					k_debug_integer("k_sd_write_file::k_sd_byte_write:wrote:", wrote);
+					bRet = (wrote == fileSize);
+				}
+				k_sd_close(TRUE);
+			}
+		}
+		k_debug_string("k_sd_write_file::exit\r\n");
+	}
+
+	//asm cli;
+
+	return bRet;
+}
+
+BOOL k_sd_read_file(LPCHAR fileName,LPVOID fileBuffer,UINT fileSize)
+{
+
+	BOOL bRet = FALSE;
+	UINT   index = 0;
+	BOOL   cmd = FALSE;
+	UINT16 read = 0;
+	UCHAR data = 0;
+	LPCHAR contents = NULL;
+	int i = 0;
+
+	k_debug_string("k_sd_read_file::enter\r\n");
+
+	//asm sei;
+
+	k_sd_reset();
+
+	if(k_sd_ispresent() && k_sd_mount())
+	{
+		if (k_sd_openfile(CONST_FXINFO_FILE))
+		{
+
+			k_debug_string("k_sd_read_file::opened\r\n");
+
+			//k_sd_byte_locate(0L);
+
+			if(fileBuffer!=NULL)
+			{
+				memset(fileBuffer,0,fileSize);
+				k_sd_byte_read((LPCHAR)fileBuffer,fileSize,&read);
+
+
+				k_debug_integer("k_sd_read_file::k_sd_byte_read:read:", read);
+
+				bRet = TRUE;
+			}
+
+			k_sd_close(CLOSE_NOUPDATE);
+		}
+
+		k_debug_string("k_sd_read_file::exit\r\n");
+	}
+
+	//asm cli;
+
+	return bRet;
+}
+
+BOOL k_sd_create_dir(LPCHAR dirName)
+{
+	UCHAR status = 0;
+	BOOL bRet = FALSE;
+
+	if (k_sd_setfilename(dirName))
+	{
+		k_sd_sendcmd( CMD0H_DIR_CREATE);
+		status = k_sd_waitforirq();
+		if (status == USB_INT_SUCCESS)
+		{
+			bRet = TRUE;
+		}
+	}
+
+	return bRet;
+}
+
+BOOL k_sd_getdirinfo(P_FAT_DIR_INFO pdirName)
+{
+	int i = 0;
+	UCHAR status = 0;
+	UCHAR data = 0;
+	BOOL bRet = FALSE;
+	LPCHAR ptr = (LPCHAR) pdirName;
+
+	if (k_sd_openfile("/NEWDIR"))
+	{
+		k_sd_sendcmd( CMD1H_DIR_INFO_READ);
+		k_sd_senddta(0xFF);
+		status = k_sd_waitforirq();
+		k_debug_hex("k_sd_getdirinfo::CMD1H_DIR_INFO_READ:read:", status);
+		if (status == USB_INT_SUCCESS)
+		{
+			k_sd_sendcmd( CH_CMD_RD_DATA0);
+
+			//data = SDCARD_DATA[0];
+			//k_debug_hex("k_sd_getdirinfo::read:",data);
+
+			//k_sd_cmd_delay();
+
+			for (i = 0; i < sizeof(FAT_DIR_INFO); i++)
+			{
+				k_sd_dta_delay();
+				data = SDCARD_DATA[0];
+				k_debug_char("k_sd_getdirinfo::entrydata:", data);
+				*ptr = data;
+				ptr++;
+			}
+
+			bRet = TRUE;
+		}
+
+		k_sd_close(FALSE);
+	}
+	return bRet;
+}
+
+BOOL k_sd_delete(LPCHAR dirOrFileName)
+{
+	UCHAR status = 0;
+	BOOL bRet = FALSE;
+
+	k_debug_string("k_sd_delete:enter\r\n");
+
+	if (k_sd_setfilename(dirOrFileName))
+	{
+		k_sd_sendcmd( CMD0H_FILE_ERASE);
+		status = k_sd_waitforirq();
+		if (status == USB_INT_SUCCESS)
+		{
+			bRet = TRUE;
+		}
+		//k_sd_close(TRUE);
+	}
+
+
+	k_debug_integer("k_sd_delete:exit:",bRet);
+
+	return bRet;
+}
+
+BOOL k_sd_close(UCHAR update)
+{
+	UCHAR status = 0;
+	BOOL bRet = FALSE;
+
+	k_debug_string("k_sd_close\r\n");
+
+	k_sd_sendcmd( CMD1H_FILE_CLOSE);
+	k_sd_senddta(update);
+
+	status = k_sd_waitforirq();
+	if (status == USB_INT_SUCCESS)
+	{
+		bRet = TRUE;
+	}
+
+	return bRet;
+}
+
+void k_sd_sendcmd(UCHAR command)
+{
+	SDCARD_CMD[0] = command;
+	k_sd_cmd_delay();
+}
+
+void k_sd_senddta(UCHAR data)
+{
+	SDCARD_DATA[0] = data;
+	k_sd_dta_delay();
+}
+
+void k_sd_cmd_delay(void)
+{
+#asm
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+#endasm
+}
+
+void k_sd_dta_delay(void)
+{
+#asm
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+#endasm
+}
+
+
+UINT8 k_sd_createfile( LPCHAR name )
+{
+	if(name)
+	{
+		k_debug_string("k_sd_createfile:name:");
+		k_debug_string(name);
+		k_debug_string("\r\n");
+
+		k_sd_setfilename( name );
+	}
+	return( k_sd_cmd_and_irq( CMD0H_FILE_CREATE ) );
+}
+
+UINT8	k_sd_read_block( PUINT8 buf )
+{
+	UINT8	s, l;
+	xWriteCH376Cmd( CMD01_RD_USB_DATA0 );
+	s = l = xReadCH376Data( );
+	if ( l ) {
+		do {
+			*buf = xReadCH376Data( );
+			buf ++;
+		} while ( -- l );
+	}
+	xEndCH376Cmd( );
+	return( s );
+}
+
+
+void k_sd_write_host_block( PUINT8 buf, UINT8 len )
+{
+	xWriteCH376Cmd( CMD10_WR_HOST_DATA );
+	xWriteCH376Data( len );
+	if ( len ) {
+		do {
+			xWriteCH376Data( *buf );
+			buf ++;
+		} while ( -- len );
+	}
+	xEndCH376Cmd( );
+}
+
+void k_sd_write_ofs_blocks( PUINT8 buf, UINT8 ofs, UINT8 len )
+{
+	xWriteCH376Cmd( CMD20_WR_OFS_DATA );
+	xWriteCH376Data( ofs );
+	xWriteCH376Data( len );
+	if ( len ) {
+		do {
+			xWriteCH376Data( *buf );
+			buf ++;
+		} while ( -- len );
+	}
+	xEndCH376Cmd( );
+}
+
+UINT8 k_sd_byte_locate( UINT32 offset )
+{
+	xWriteCH376Cmd( CMD4H_BYTE_LOCATE );
+	xWriteCH376Data( (UINT8)offset );
+	xWriteCH376Data( (UINT8)((UINT16)offset>>8) );
+	xWriteCH376Data( (UINT8)(offset>>16) );
+	xWriteCH376Data( (UINT8)(offset>>24) );
+	xEndCH376Cmd( );
+	return( Wait376Interrupt( ) );
+}
+
+/*
+UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_read:",ReqCount);
+
+	xWriteCH376Cmd( CMD2H_BYTE_READ );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+	if ( RealCount ) *RealCount = 0;
+	while ( 1 )
+	{
+		s = k_sd_waitforirq( );
+		k_debug_integer("k_sd_byte_read:status:",s);
+		if ( s == USB_INT_DISK_READ || s == USB_INT_SUCCESS)
+		{
+			s = k_sd_read_block( buf );
+			xWriteCH376Cmd( CMD0H_BYTE_RD_GO );
+			xEndCH376Cmd( );
+			buf += s;
+			if ( RealCount )
+				*RealCount += s;
+
+			k_debug_integer("k_sd_byte_read:RealCount:",*RealCount);
+		}
+		//else if ( s == USB_INT_SUCCESS ) return( s );
+		else return( s );
+	}
+}
+*/
+UINT8 k_sd_byte_read( PUINT8 buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_read:ReqCount:",ReqCount);
+
+	k_debug_hex("k_sd_byte_read:ReqCount L:",(UINT8)ReqCount );
+	k_debug_hex("k_sd_byte_read:ReqCount H:",(UINT8)(ReqCount>>8));
+
+	xWriteCH376Cmd( CMD2H_BYTE_READ );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+	if ( RealCount )
+		*RealCount = 0;
+
+	s = k_sd_waitforirq( );
+	k_debug_integer("k_sd_byte_read:INITIAL:",s);
+	if(s == USB_INT_SUCCESS || s == USB_INT_DISK_READ)
+	{
+		k_debug_integer("k_sd_byte_read:STATUS:",s);
+
+		s = USB_INT_DISK_READ;
+		while(s == USB_INT_DISK_READ)
+		{
+			s = k_sd_read_block( buf );
+			buf += s;
+
+			if ( RealCount )
+			{
+				*RealCount += s;
+			}
+			k_debug_integer("k_sd_byte_read:READ:",s);
+
+			xWriteCH376Cmd( CMD0H_BYTE_RD_GO );
+			xEndCH376Cmd( );
+
+			s = k_sd_waitforirq();
+		}
+	}
+
+	return s;
+}
+
+/*
+UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_write:",ReqCount);
+
+	xWriteCH376Cmd( CMD2H_BYTE_WRITE );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+	if ( RealCount ) *RealCount = 0;
+	while ( 1 )
+	{
+		s = k_sd_waitforirq( );
+		k_debug_integer("k_sd_byte_write:status1:",s);
+		//if ( s == USB_INT_DISK_WRITE )
+		if ( s == USB_INT_SUCCESS ||  s == USB_INT_DISK_WRITE)
+		{
+			s = k_sd_write_req_block( buf );
+
+			xWriteCH376Cmd( CMD0H_BYTE_WR_GO );
+			xEndCH376Cmd( );
+			buf += s;
+
+			if ( RealCount )
+			{
+				*RealCount += s;
+				if(*RealCount == ReqCount)
+					return s;
+			}
+			k_debug_integer("k_sd_byte_write:status2:",s);
+		}
+		//e-lse if ( s == USB_INT_SUCCESS ) return( s );
+		else return( s );
+	}
+}
+*/
+
+UINT8 k_sd_byte_write( LPCHAR buf, UINT16 ReqCount, PUINT16 RealCount )
+{
+	UINT8	s;
+
+	k_debug_integer("k_sd_byte_write:ReqCount:",ReqCount);
+
+	k_debug_hex("k_sd_byte_write:ReqCount L:",(UINT8)ReqCount );
+	k_debug_hex("k_sd_byte_write:ReqCount H:",(UINT8)(ReqCount>>8));
+
+	xWriteCH376Cmd( CMD2H_BYTE_WRITE );
+	xWriteCH376Data( (UINT8)ReqCount );
+	xWriteCH376Data( (UINT8)(ReqCount>>8) );
+	xEndCH376Cmd( );
+
+	if ( RealCount )
+		*RealCount = 0;
+
+	s = k_sd_waitforirq( );
+
+	k_debug_integer("k_sd_byte_write:INITIAL:",s);
+	if(s == USB_INT_SUCCESS || s == CMD_RET_SUCCESS  || s == USB_INT_DISK_WRITE)
+	{
+		k_debug_integer("k_sd_byte_write:STATUS:",s);
+		s = USB_INT_DISK_WRITE;
+		while(s == USB_INT_DISK_WRITE)
+		{
+			s = k_sd_write_req_block( buf );
+			buf += s;
+
+			if ( RealCount )
+			{
+				*RealCount += s;
+			}
+			k_debug_integer("k_sd_byte_write:WRITE:",s);
+
+			xWriteCH376Cmd( CMD0H_BYTE_WR_GO );
+			xEndCH376Cmd( );
+
+			s = k_sd_waitforirq();
+			k_debug_integer("k_sd_byte_write:CMD0H_BYTE_WR_GO:STATUS:",s);
+		}
+	}
+
+	return s;
+}
+
+UINT8 k_sd_write_req_block( PUINT8 buf )
+{
+	UINT8	s, l;
+
+	k_debug_string("k_sd_write_req_block::ENTER\r\n");
+
+	xWriteCH376Cmd( CMD01_WR_REQ_DATA );
+	s = l = xReadCH376Data( );
+	k_debug_integer("k_sd_write_req_block:SIZE:",l);
+
+	if ( l )
+	{
+		do
+		{
+			xWriteCH376Data( *buf );
+			buf ++;
+		} while ( -- l );
+	}
+	xEndCH376Cmd( );
+
+	k_debug_integer("k_sd_write_req_block::EXIT:",s);
+
+	return( s );
+}
+
+
+void k_sd_test_new(void)
+{
+	UINT8 s;
+	UINT16 j;
+
+	mDelaymS(100);
+
+	//mInitCH376Host();
+
+	if (k_sd_initialize())
+	{
+		k_debug_string("k_sd_test::initialized...\r\n");
+		if (k_sd_ispresent())
+		{
+			k_debug_string("k_sd_test::card present...\r\n");
+
+			if (k_sd_mount())
+			{
+				k_debug_string("k_sd_test::card mounted...\r\n");
+
+				k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+				s = CH376ReadBlock(buf);
+				if (s == sizeof(INQUIRY_DATA))
+				{
+					buf[s] = 0;
+					k_debug_string("UdiskInfo:");
+					k_debug_string(
+							(char FAR*) ((P_INQUIRY_DATA) buf)->VendorIdStr);
+					k_debug_string("\r\n");
+				}
+
+			}
+			else
+			{
+				k_debug_string("k_sd_test::card NOT mounted...\r\n");
+			}
+		}
+		else
+		{
+			k_debug_string("k_sd_test::card NOT present...\r\n");
+		}
+	}
+	else
+	{
+		k_debug_string("k_sd_test::NOT initialized...\r\n");
+	}
+
+}
+
+void k_sd_test(void)
+{
+
+	DISKINFO di;
+	FAT_DIR_INFO dirName;
+
+	if (k_sd_initialize())
+	{
+		k_debug_string("k_sd_test::initialized...\r\n");
+		if (k_sd_ispresent())
+		{
+			k_debug_string("k_sd_test::card present...\r\n");
+
+			if (k_sd_mount())
+			{
+				k_debug_string("k_sd_test::card mounted...\r\n");
+
+				k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+
+				//k_sd_read_vol(&di);
+				//k_sd_search_dir("*VOL");
+
+				//k_sd_read_dir();
+				/*
+				 k_sd_read_vol();
+
+				 if(k_sd_getdirinfo( &dirName ))
+				 {
+				 k_debug_string("k_sd_getdirinfo::ROOT:FAT_DIR_INFO.NAME:");
+				 k_debug_nstring(dirName.DIR_Name,11);
+				 k_debug_string("\r\n");
+				 }
+				 */
+
+				/*
+				 k_debug_string("k_sd_test::k_sd_delete...\r\n");
+				 if(k_sd_delete("/NEWDIR"))
+				 {
+				 k_debug_string("k_sd_test::k_sd_delete:DELETED\r\n");
+				 }
+				 else
+				 {
+				 k_debug_string("k_sd_test::k_sd_delete:NOT DELETED\r\n");
+				 }
+
+				 k_debug_string("k_sd_test::k_sd_create_dir...\r\n");
+				 if(k_sd_create_dir("/NEWDIR"))
+				 {
+				 k_debug_string("k_sd_test::ck_sd_create_dir CREATED...\r\n");
+				 }
+				 else
+				 {
+				 k_debug_string("k_sd_test::ck_sd_create_dir:NOT CREATED\r\n");
+				 }
+
+				 k_debug_string("k_sd_test::k_sd_read_dir...\r\n");
+				 k_sd_read_dir();
+				 */
+			}
+			else
+			{
+				k_debug_string("k_sd_test::card NOT mounted...\r\n");
+			}
+		}
+		else
+		{
+			k_debug_string("k_sd_test::card NOT present...\r\n");
+		}
+	}
+	else
+	{
+		k_debug_string("k_sd_test::NOT initialized...\r\n");
+	}
+}
+
+VOID  k_dos_dealloc_filelist(PFXNODE plist)
+{
+	PFXNODE p   = plist;
+	PFXNODE tmp = NULL;
+
+	while(p)
+	{
+		tmp = p->next;
+
+		k_mem_deallocate_heap(((PFILEINFO)p->data)->pFilename);
+		k_mem_deallocate_heap(p->data);
+		k_mem_deallocate_heap(p);
+
+		p = tmp;
+	}
+}
+
+PFILEINFO _k_dos_alloc_fileinfo(FAT_DIR_INFO FAR *direntry)
+{
+	PFILEINFO pfi = NULL;
+
+	//k_debug_string("_k_dos_alloc_fileinfo:enter\r\n");
+
+	pfi = k_mem_allocate_heap(sizeof(FILEINFO));
+	if(pfi!=NULL)
+	{
+		pfi->type  		 = direntry->DIR_Attr;
+		pfi->lSize 		 = direntry->DIR_FileSize;
+		pfi->lchangeDate = direntry->DIR_LstAccDate;
+		pfi->lcreateDate = direntry->DIR_CrtDate;
+		pfi->pFilename   = _k_dos_alloc_filename(direntry->DIR_Name);
+	}
+
+	return pfi;
+}
+
+LPCHAR _k_dos_alloc_filename(LPCHAR filename11)
+{
+	UINT index = 0;
+	//UINT p = 0;
+	//UINT dot = 0;
+	LPCHAR lpName = NULL;
+	CHAR ftmp[4] = {0,0,0,0};
+
+	//k_debug_string("_k_dos_alloc_filename:enter\r\n");
+
+	lpName = (LPCHAR)k_mem_allocate_heap(16);
+	if(lpName!=NULL)
+	{
+		//k_debug_string("_k_dos_alloc_filename:copy\r\n");
+		//memset(lpName,0,16);
+		//memcpy(lpName,filename11,8);
+		for(index=0;index<16;index++)
+					lpName[index] = 0;
+
+		for(index=0;index<8;index++)
+			lpName[index] = filename11[index];
+
+
+		lpName = k_string_rtrim(lpName);
+		if(filename11[8]!=' ')
+		{
+			strcat(lpName,".");
+
+			for(index=0;index<3;index++)
+				ftmp[index] = filename11[index + 8];
+
+			strcat(lpName,ftmp);
+		}
+
+		//k_debug_string("_k_ds_alloc_filename:");
+		//k_debug_string(lpName);
+		//k_debug_string("\r\n");
+	}
+
+	return lpName;
+}
+#endif

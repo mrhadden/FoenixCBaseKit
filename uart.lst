@@ -1,0 +1,1903 @@
+  Thu Dec  3 2020 22:25                                                                                                Page 1
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+                                             ***************************************
+                                             **      WDC 65C816 Macro Assembler   **
+                                             **                                   **
+                                             **     Version 3.49.1- Feb  6 2006    **
+                                             ***************************************
+
+     1                             PW 128         ;Page Width (# of char/line) 
+     2                             PL 60          ;Page Length for HP Laser
+     3                             INCLIST ON     ;Add Include files in Listing
+     4                        
+     5                        				;*********************************************
+     6                        				;Test for Valid Processor defined in -D option
+     7                        				;*********************************************
+     8                        	IF	USING_265
+     9                        	ELSEIF	USING_816
+    10                        	ELSEIF	USING_CDC16F 
+    11                        	ELSE
+    12                        		EXIT         "Not Valid Processor: Use -DUSING_816, etc. ! ! ! ! ! ! ! ! ! ! ! !"
+    13                        	ENDIF
+    14                        
+    15                        
+    16                        				;*********************************************
+    17                        				;Test for Valid 'Model' type defined in -D option
+    18                        				;*********************************************
+    19                        	IF	SMALL
+    20                        	ELSEIF	MEDIUM
+    21                        	ELSEIF	COMPACT
+    22                        	ELSEIF	LARGE
+    23                        	ELSE
+    24                        ;		EXIT         "Not Valid 'Model' type - SMALL, MEDIUM, COMPACT, or LARGE: Use -DSMALL, et
+                    c. ! ! ! ! ! ! ! ! ! ! ! !"
+    25                        	ENDIF
+    26                        
+    27                        	title  "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+    28                        
+    29                        	INCLUDE interrupt_def.asm
+     1                        ; Pending Interrupt (Read and Write Back to Clear)
+     2             00000140   INT_PENDING_REG0 EQU $000140 ;
+     3             00000141   INT_PENDING_REG1 EQU $000141 ;
+     4             00000142   INT_PENDING_REG2 EQU $000142 ;
+     5                        ; Polarity Set
+     6             00000144   INT_POL_REG0     EQU $000144 ;
+     7             00000145   INT_POL_REG1     EQU $000145 ;
+     8             00000146   INT_POL_REG2     EQU $000146 ;
+     9                        ; Edge Detection Enable
+    10             00000148   INT_EDGE_REG0    EQU $000148 ;
+    11             00000149   INT_EDGE_REG1    EQU $000149 ;
+    12             0000014A   INT_EDGE_REG2    EQU $00014A ;
+    13                        ; Mask
+    14             0000014C   INT_MASK_REG0    EQU $00014C ;
+    15             0000014D   INT_MASK_REG1    EQU $00014D ;
+    16             0000014E   INT_MASK_REG2    EQU $00014E ;
+    17                        
+    18                        ; Interrupt Bit Definition
+    19                        ; Register Block 0
+    20             00000001   FNX0_INT00_SOF    EQU $01  ;Start of Frame @ 60FPS
+  Thu Dec  3 2020 22:25                                                                                                Page 2
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    21             00000002   FNX0_INT01_SOL    EQU $02  ;Start of Line (Programmable)
+    22             00000004   FNX0_INT02_TMR0   EQU $04  ;Timer 0 Interrupt
+    23             00000008   FNX0_INT03_TMR1   EQU $08  ;Timer 1 Interrupt
+    24             00000010   FNX0_INT04_TMR2   EQU $10  ;Timer 2 Interrupt
+    25             00000020   FNX0_INT05_RTC    EQU $20  ;Real-Time Clock Interrupt
+    26             00000040   FNX0_INT06_FDC    EQU $40  ;Floppy Disk Controller
+    27             00000080   FNX0_INT07_MOUSE  EQU $80  ; Mouse Interrupt (INT12 in SuperIO IOspace)
+    28                        ; Register Block 1
+    29             00000001   FNX1_INT00_KBD    EQU $01  ;Keyboard Interrupt
+    30             00000002   FNX1_INT01_SC0    EQU $02  ;Sprite 2 Sprite Collision
+    31             00000004   FNX1_INT02_SC1    EQU $04  ;Sprite 2 Tiles Collision
+    32             00000008   FNX1_INT03_COM2   EQU $08  ;Serial Port 2
+    33             00000010   FNX1_INT04_COM1   EQU $10  ;Serial Port 1
+    34             00000020   FNX1_INT05_MPU401 EQU $20  ;Midi Controller Interrupt
+    35             00000040   FNX1_INT06_LPT    EQU $40  ;Parallel Port
+    36             00000080   FNX1_INT07_SDCARD EQU $80  ;SD Card Controller Interrupt
+    37                        ; Register Block 2
+    38             00000001   FNX2_INT00_OPL2R  EQU $01  ;OPl2 Right Channel
+    39             00000002   FNX2_INT01_OPL2L  EQU $02  ;OPL2 Left Channel
+    40             00000004   FNX2_INT02_BTX_INT EQU $04  ;Beatrix Interrupt (TBD)
+    41             00000008   FNX2_INT03_SDMA   EQU $08  ;System DMA
+    42             00000010   FNX2_INT04_VDMA   EQU $10  ;Video DMA
+    43             00000020   FNX2_INT05_DACHP  EQU $20  ;DAC Hot Plug
+    44             00000040   FNX2_INT06_EXT    EQU $40  ;External Expansion
+    45                        ;FNX2_INT07_ALLONE EQU $80  ; Not Used - Always 1
+    46             00000080   FNX2_INT07_SDCARD EQU $80  ; sdcard insert
+    47                        
+    48             00000160   TIMER0_CTRL_REG    EQU $000160 ; (Write - Control, Read Status)
+    49                        ; Control Register Definitions
+    50             00000001   TMR0_EN      EQU $01
+    51             00000002   TMR0_SCLR    EQU $02
+    52             00000004   TMR0_SLOAD   EQU $04 ; Use SLOAD is
+    53             00000008   TMR0_UPDWN   EQU $08
+    54                        
+    55             00000161   TIMER0_CHARGE_L    EQU $000161 ; Use if you want to Precharge and countdown
+    56             00000162   TIMER0_CHARGE_M    EQU $000162 ;
+    57             00000163   TIMER0_CHARGE_H    EQU $000163 ;
+    58                        ; Compare Block
+    59             00000164   TIMER0_CMP_REG     EQU $000164 ;
+    60             00000001   TMR0_CMP_RECLR      EQU $01 ; set to one for it to cycle when Counting up
+    61             00000002   TMR0_CMP_RELOAD     EQU $02 ; Set to one for it to reload when Counting Down
+    62                        
+    63             00000165   TIMER0_CMP_L       EQU $000165 ; Load this Value for Countup
+    64             00000166   TIMER0_CMP_M       EQU $000166 ;
+    65             00000167   TIMER0_CMP_H       EQU $000167 ;
+    66                        ; Pending Interrupt (Read and Write Back to Clear)
+    67                        ; TIMER1
+    68             00000168   TIMER1_CTRL_REG    EQU $000168 ;
+    69             00000001   TMR1_EN      EQU $01
+    70             00000002   TMR1_SCLR    EQU $02
+    71             00000004   TMR1_SLOAD   EQU $04
+    72             00000008   TMR1_UPDWN   EQU $08 ; 1 = Up, 0 = Down
+    73             00000169   TIMER1_CHARGE_L    EQU $000169 ; Use if you want to Precharge and countdown
+    74             0000016A   TIMER1_CHARGE_M    EQU $00016A ;
+    75             0000016B   TIMER1_CHARGE_H    EQU $00016B ;
+    76                        ; Compare Block
+  Thu Dec  3 2020 22:25                                                                                                Page 3
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    77             0000016C   TIMER1_CMP_REG     EQU $00016C ;
+    78             00000001   TMR1_CMP_RECLR      EQU $01 ; set to one for it to cycle when Counting up
+    79             00000002   TMR1_CMP_RELOAD     EQU $02 ; Set to one for it to reload when Counting Down
+    80             0000016D   TIMER1_CMP_L       EQU $00016D ;
+    81             0000016E   TIMER1_CMP_M       EQU $00016E ;
+    82             0000016F   TIMER1_CMP_H       EQU $00016F ;
+    30                        	INCLUDE macros_inc.asm
+     1                        ; Set 8-bit accumulator
+     2                        setaxs          .macro
+     3                                        SEP #$30        ; set A&X short
+     4                                        LONGA OFF
+     5                                        LONGI OFF 
+     6                                        .endm
+     7                                        
+     8                        ; Set 16-bit accumulator
+     9                        setaxl          .macro
+    10                                        REP #$30        ; set A&X long 
+    11                                        LONGA ON
+    12                                        LONGI ON
+    13                                        .endm
+    14                        
+    15                        ; Set 8-bit accumulator
+    16                        setas           .macro
+    17                                        SEP #$20        ; set A short 
+    18                                        LONGA OFF
+    19                                        .endm
+    20                                        
+    21                        ; Set 16-bit accumulator
+    22                        setal           .macro
+    23                                        REP #$20        ; set A long 
+    24                                        LONGA ON
+    25                                        .endm
+    26                        
+    27                        ; Set 8 bit index registers               
+    28                        setxs           .macro
+    29                                        SEP #$10        ; set X short 
+    30                                        LONGI OFF
+    31                                        .endm
+    32                                        
+    33                        ; Set 16-bit index registers
+    34                        setxl           .macro
+    35                                        REP #$10        ; set X long 
+    36                                        LONGI ON
+    37                                        .endm
+    38                        
+    39                        ; Set the direct page. 
+    40                        ; Note: This uses the accumulator and leaves A set to 16 bits. 
+    41                        setdp           .macro                
+    42                                        PHA             ; begin setdp macro 
+    43                        	PHP
+    44                                        setal
+    45                                        LDA #\1         ; set DP to page 0
+    46                                        TCD             
+    47                                        .dpage \1
+    48                        	PLP
+    49                                        PLA             ; end setdp macro 
+  Thu Dec  3 2020 22:25                                                                                                Page 4
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    50                                        .endm 
+    51                        
+    52                        setdbr          .macro          ; Set the B (Data bank) register 
+    53                                        PHA             ; begin setdbr macro 
+    54                                        PHP
+    55                                        setas
+    56                        	LDA #\1         
+    57                                        PHA
+    58                                        PLB
+    59                                        .databank \1
+    60                                        PLP
+    61                                        PLA             ; end setdbr macro 
+    62                                        .endm 
+    63                        
+    31                        	INCLUDE super_io_def.asm
+     1                        ;Super IO Registers
+     2             00AF1100   PME_STS_REG      EQU  $AF1100
+     3             00AF1102   PME_EN_REG		   EQU  $AF1102
+     4             00AF1104   PME_STS1_REG		 EQU  $AF1104
+     5             00AF1105   PME_STS2_REG		 EQU  $AF1105
+     6             00AF1106   PME_STS3_REG		 EQU  $AF1106
+     7             00AF1107   PME_STS4_REG		 EQU  $AF1107
+     8             00AF1108   PME_STS5_REG		 EQU  $AF1108
+     9             00AF110A   PME_EN1_REG      EQU  $AF110A
+    10             00AF110B   PME_EN2_REG      EQU  $AF110B
+    11             00AF110C   PME_EN3_REG      EQU  $AF110C
+    12             00AF110D   PME_EN4_REG      EQU  $AF110D
+    13             00AF110E   PME_EN5_REG      EQU  $AF110E
+    14             00AF1110   SMI_STS1_REG		 EQU  $AF1110
+    15             00AF1111   SMI_STS2_REG		 EQU  $AF1111
+    16             00AF1112   SMI_STS3_REG		 EQU  $AF1112
+    17             00AF1113   SMI_STS4_REG		 EQU  $AF1113
+    18             00AF1114   SMI_STS5_REG		 EQU  $AF1114
+    19             00AF1116   SMI_EN1_REG      EQU  $AF1116
+    20             00AF1117   SMI_EN2_REG      EQU  $AF1117
+    21             00AF1118   SMI_EN3_REG      EQU  $AF1118
+    22             00AF1119   SMI_EN4_REG      EQU  $AF1119
+    23             00AF111A   SMI_EN5_REG      EQU  $AF111A
+    24             00AF111C   MSC_ST_REG       EQU  $AF111C
+    25             00AF111E   FORCE_DISK_CHANGE        EQU  $AF111E
+    26             00AF111F   FLOPPY_DATA_RATE         EQU  $AF111F
+    27             00AF1120   UART1_FIFO_CTRL_SHDW     EQU  $AF1120
+    28             00AF1121   UART2_FIFO_CTRL_SHDW     EQU  $AF1121
+    29             00AF1122   DEV_DISABLE_REG          EQU  $AF1122
+    30             00AF1123   GP10_REG    		 EQU  $AF1123
+    31             00AF1124   GP11_REG    		 EQU  $AF1124
+    32             00AF1125   GP12_REG    		 EQU  $AF1125
+    33             00AF1126   GP13_REG    		 EQU  $AF1126
+    34             00AF1127   GP14_REG    		 EQU  $AF1127
+    35             00AF1128   GP15_REG    		 EQU  $AF1128
+    36             00AF1129   GP16_REG    		 EQU  $AF1129
+    37             00AF112A   GP17_REG    		 EQU  $AF112A
+    38             00AF112B   GP20_REG    		 EQU  $AF112B
+    39             00AF112C   GP21_REG    		 EQU  $AF112C
+    40             00AF112D   GP22_REG		 EQU  $AF112D
+    41             00AF112F   GP24_REG		 EQU  $AF112F
+  Thu Dec  3 2020 22:25                                                                                                Page 5
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    42             00AF1130   GP25_REG		 EQU  $AF1130
+    43             00AF1131   GP26_REG		 EQU  $AF1131
+    44             00AF1132   GP27_REG		 EQU  $AF1132
+    45             00AF1133   GP30_REG		 EQU  $AF1133
+    46             00AF1134   GP31_REG		 EQU  $AF1134
+    47             00AF1135   GP32_REG		 EQU  $AF1135
+    48             00AF1136   GP33_REG		 EQU  $AF1136
+    49             00AF1137   GP34_REG		 EQU  $AF1137
+    50             00AF1138   GP35_REG		 EQU  $AF1138
+    51             00AF1139   GP36_REG		 EQU  $AF1139
+    52             00AF113A   GP37_REG		 EQU  $AF113A
+    53             00AF113B   GP40_REG		 EQU  $AF113B
+    54             00AF113C   GP41_REG		 EQU  $AF113C
+    55             00AF113D   GP42_REG		 EQU  $AF113D
+    56             00AF113E   GP43_REG		 EQU  $AF113E
+    57             00AF113F   GP50_REG		 EQU  $AF113F
+    58             00AF1140   GP51_REG		 EQU  $AF1140
+    59             00AF1141   GP52_REG		 EQU  $AF1141
+    60             00AF1142   GP53_REG		 EQU  $AF1142
+    61             00AF1143   GP54_REG		 EQU  $AF1143
+    62             00AF1144   GP55_REG		 EQU  $AF1144
+    63             00AF1145   GP56_REG		 EQU  $AF1145
+    64             00AF1146   GP57_REG		 EQU  $AF1146
+    65             00AF1147   GP60_REG		 EQU  $AF1147
+    66             00AF1148   GP61_REG		 EQU  $AF1148
+    67             00AF114B   GP1_REG			 EQU  $AF114B
+    68             00AF114C   GP2_REG			 EQU  $AF114C
+    69             00AF114D   GP3_REG			 EQU  $AF114D
+    70             00AF114E   GP4_REG			 EQU  $AF114E
+    71             00AF114F   GP5_REG			 EQU  $AF114F
+    72             00AF1150   GP6_REG			 EQU  $AF1150
+    73             00AF1156   FAN1_REG		         EQU  $AF1156
+    74             00AF1157   FAN2_REG             EQU  $AF1157
+    75             00AF1158   FAN_CTRL_REG  	     EQU  $AF1158
+    76             00AF1159   FAN1_TACH_REG        EQU  $AF1159
+    77             00AF115A   FAN2_TACH_REG        EQU  $AF115A
+    78             00AF115B   FAN1_PRELOAD_REG     EQU  $AF115B
+    79             00AF115C   FAN2_PRELOAD_REG     EQU  $AF115C
+    80             00AF115D   LED1_REG    		     EQU  $AF115D
+    81             00AF115E   LED2_REG    		     EQU  $AF115E
+    82             00AF115F   KEYBOARD_SCAN_CODE	 EQU  $AF115F
+    32                        	INCLUDE vicky_def.asm
+     1                        ;Internal VICKY Registers and Internal Memory Locations (LUTs)
+     2             00AF0000   MASTER_CTRL_REG_L	       EQU  $AF0000
+     3                        ;Control Bits Fields
+     4             00000001   Mstr_Ctrl_Text_Mode_En   EQU  $01       ; Enable the Text Mode
+     5             00000002   Mstr_Ctrl_Text_Overlay   EQU  $02       ; Enable the Overlay of the text mode on top of Graphic Mo
+                    de (the Background Color is ignored)
+     6             00000004   Mstr_Ctrl_Graph_Mode_En  EQU  $04       ; Enable the Graphic Mode
+     7             00000008   Mstr_Ctrl_Bitmap_En      EQU  $08       ; Enable the Bitmap Module In Vicky
+     8             00000010   Mstr_Ctrl_TileMap_En     EQU  $10       ; Enable the Tile Module in Vicky
+     9             00000020   Mstr_Ctrl_Sprite_En      EQU  $20       ; Enable the Sprite Module in Vicky
+    10             00000040   Mstr_Ctrl_GAMMA_En       EQU  $40       ; this Enable the GAMMA correction - The Analog and DVI ha
+                    ve different color value, the GAMMA is great to correct the difference
+    11             00000080   Mstr_Ctrl_Disable_Vid    EQU  $80       ; This will disable the Scanning of the Video hence giving
+                     100% bandwith to the CPU
+  Thu Dec  3 2020 22:25                                                                                                Page 6
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    12             00AF0001   MASTER_CTRL_REG_H	       EQU  $AF0001
+    13                        ; Reserved - TBD
+    14             00AF0002   VKY_RESERVED_00          EQU  $AF0002
+    15             00AF0003   VKY_RESERVED_01          EQU  $AF0003
+    16             00AF0004   BORDER_CTRL_REG          EQU  $AF0004
+    17             00000001   Border_Ctrl_Enable       EQU  $01
+    18                        
+    19             00AF0005   BORDER_COLOR_B           EQU  $AF0005
+    20             00AF0006   BORDER_COLOR_G           EQU  $AF0006
+    21             00AF0007   BORDER_COLOR_R           EQU  $AF0007
+    22                        
+    23             00AF0008   BACKGROUND_COLOR_B       EQU  $AF0008 ; When in Graphic Mode, if a pixel is "0" then the Backgroun
+                    d pixel is chosen
+    24             00AF0009   BACKGROUND_COLOR_G       EQU  $AF0009
+    25             00AF000A   BACKGROUND_COLOR_R       EQU  $AF000A ;
+    26                        
+    27             00AF0010   VKY_TXT_CURSOR_CTRL_REG  EQU  $AF0010   ;[0]  Enable Text Mode
+    28             00000001   Vky_Cursor_Enable        EQU  $01
+    29             00000002   Vky_Cursor_Flash_Rate0   EQU  $02
+    30             00000004   Vky_Cursor_Flash_Rate1   EQU  $04
+    31             00000008   Vky_Cursor_FONT_Page0    EQU  $08       ; Pick Font Page 0 or Font Page 1
+    32             00000010   Vky_Cursor_FONT_Page1    EQU  $10       ; Pick Font Page 0 or Font Page 1
+    33             00AF0011   VKY_TXT_RESERVED         EQU  $AF0011   ;Not in Use
+    34             00AF0012   VKY_TXT_CURSOR_CHAR_REG  EQU  $AF0012
+    35                        
+    36             00AF0013   VKY_TXT_CURSOR_COLR_REG  EQU  $AF0013
+    37             00AF0014   VKY_TXT_CURSOR_X_REG_L   EQU  $AF0014
+    38             00AF0015   VKY_TXT_CURSOR_X_REG_H   EQU  $AF0015
+    39             00AF0016   VKY_TXT_CURSOR_Y_REG_L   EQU  $AF0016
+    40             00AF0017   VKY_TXT_CURSOR_Y_REG_H   EQU  $AF0017
+    41                        
+    42             00AF001C   VKY_INFO_CHIP_NUM_L      EQU  $AF001C
+    43             00AF001D   VKY_INFO_CHIP_NUM_H      EQU  $AF001D
+    44             00AF001E   VKY_INFO_CHIP_VER_L      EQU  $AF001E
+    45             00AF001F   VKY_INFO_CHIP_VER_H      EQU  $AF001F
+    46                        
+    47                        ;
+    48                        ; Bit Field Definition for the Control Register
+    49             00000001   TILE_Enable              EQU  $01
+    50             00000002   TILE_LUT0                EQU  $02
+    51             00000004   TILE_LUT1                EQU  $04
+    52             00000008   TILE_LUT2                EQU  $08
+    53             00000080   TILESHEET_256x256_En     EQU  $80   ; 0 -> Sequential, 1-> 256x256 Tile Sheet Striding
+    54                        ;
+    55                        ;Tile MAP Layer 0 Registers
+    56             00AF0100   TL0_CONTROL_REG          EQU  $AF0100       ; Bit[0] - Enable, Bit[3:1] - LUT Select,
+    57             00AF0101   TL0_START_ADDY_L         EQU  $AF0101       ; Not USed right now - Starting Address to where is th
+                    e MAP
+    58             00AF0102   TL0_START_ADDY_M         EQU  $AF0102
+    59             00AF0103   TL0_START_ADDY_H         EQU  $AF0103
+    60             00AF0104   TL0_MAP_X_STRIDE_L       EQU  $AF0104       ; The Stride of the Map
+    61             00AF0105   TL0_MAP_X_STRIDE_H       EQU  $AF0105
+    62             00AF0106   TL0_MAP_Y_STRIDE_L       EQU  $AF0106       ; The Stride of the Map
+    63             00AF0107   TL0_MAP_Y_STRIDE_H       EQU  $AF0107
+    64                        ;TL0_RESERVED_0           EQU  $AF0108
+    65                        ;TL0_RESERVED_1           EQU  $AF0109
+  Thu Dec  3 2020 22:25                                                                                                Page 7
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    66                        ;TL0_RESERVED_2           EQU  $AF010A
+    67                        ;TL0_RESERVED_3           EQU  $AF010B
+    68                        ;TL0_RESERVED_4           EQU  $AF010C
+    69                        ;TL0_RESERVED_5           EQU  $AF010D
+    70                        ;TL0_RESERVED_6           EQU  $AF010E
+    71                        ;TL0_RESERVED_7           EQU  $AF010F
+    72                        ;Tile MAP Layer 1 Registers
+    73             00AF0108   TL1_CONTROL_REG          EQU  $AF0108       ; Bit[0] - Enable, Bit[3:1] - LUT Select,
+    74             00AF0109   TL1_START_ADDY_L         EQU  $AF0109       ; Not USed right now - Starting Address to where is th
+                    e MAP
+    75             00AF010A   TL1_START_ADDY_M         EQU  $AF010A
+    76             00AF010B   TL1_START_ADDY_H         EQU  $AF010B
+    77             00AF010C   TL1_MAP_X_STRIDE_L       EQU  $AF010C       ; The Stride of the Map
+    78             00AF010D   TL1_MAP_X_STRIDE_H       EQU  $AF010D
+    79             00AF010E   TL1_MAP_Y_STRIDE_L       EQU  $AF010E       ; The Stride of the Map
+    80             00AF010F   TL1_MAP_Y_STRIDE_H       EQU  $AF010F
+    81                        ;TL1_RESERVED_0           EQU  $AF0118
+    82                        ;TL1_RESERVED_1           EQU  $AF0119
+    83                        ;TL1_RESERVED_2           EQU  $AF011A
+    84                        ;TL1_RESERVED_3           EQU  $AF011B
+    85                        ;TL1_RESERVED_4           EQU  $AF011C
+    86                        ;TL1_RESERVED_5           EQU  $AF011D
+    87                        ;TL1_RESERVED_6           EQU  $AF011E
+    88                        ;TL1_RESERVED_7           EQU  $AF011F
+    89                        ;Tile MAP Layer 2 Registers
+    90             00AF0110   TL2_CONTROL_REG          EQU  $AF0110       ; Bit[0] - Enable, Bit[3:1] - LUT Select,
+    91             00AF0111   TL2_START_ADDY_L         EQU  $AF0111       ; Not USed right now - Starting Address to where is th
+                    e MAP
+    92             00AF0112   TL2_START_ADDY_M         EQU  $AF0112
+    93             00AF0113   TL2_START_ADDY_H         EQU  $AF0113
+    94             00AF0114   TL2_MAP_X_STRIDE_L       EQU  $AF0114       ; The Stride of the Map
+    95             00AF0115   TL2_MAP_X_STRIDE_H       EQU  $AF0115
+    96             00AF0116   TL2_MAP_Y_STRIDE_L       EQU  $AF0116       ; The Stride of the Map
+    97             00AF0117   TL2_MAP_Y_STRIDE_H       EQU  $AF0117
+    98                        ;TL2_RESERVED_0           EQU  $AF0128
+    99                        ;TL2_RESERVED_1           EQU  $AF0129
+   100                        ;TL2_RESERVED_2           EQU  $AF012A
+   101                        ;TL2_RESERVED_3           EQU  $AF012B
+   102                        ;TL2_RESERVED_4           EQU  $AF012C
+   103                        ;TL2_RESERVED_5           EQU  $AF012D
+   104                        ;TL2_RESERVED_6           EQU  $AF012E
+   105                        ;TL2_RESERVED_7           EQU  $AF012F
+   106                        ;Tile MAP Layer 3 Registers
+   107             00AF0118   TL3_CONTROL_REG          EQU  $AF0118       ; Bit[0] - Enable, Bit[3:1] - LUT Select,
+   108             00AF0119   TL3_START_ADDY_L         EQU  $AF0119       ; Not USed right now - Starting Address to where is th
+                    e MAP
+   109             00AF011A   TL3_START_ADDY_M         EQU  $AF011A
+   110             00AF011B   TL3_START_ADDY_H         EQU  $AF011B
+   111             00AF011C   TL3_MAP_X_STRIDE_L       EQU  $AF011C       ; The Stride of the Map
+   112             00AF011D   TL3_MAP_X_STRIDE_H       EQU  $AF011D
+   113             00AF011E   TL3_MAP_Y_STRIDE_L       EQU  $AF011E       ; The Stride of the Map
+   114             00AF011F   TL3_MAP_Y_STRIDE_H       EQU  $AF011F
+   115                        ;TL3_RESERVED_0           EQU  $AF0138
+   116                        ;TL3_RESERVED_1           EQU  $AF0139
+   117                        ;TL3_RESERVED_2           EQU  $AF013A
+   118                        ;TL3_RESERVED_3           EQU  $AF013B
+  Thu Dec  3 2020 22:25                                                                                                Page 8
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   119                        ;TL3_RESERVED_4           EQU  $AF013C
+   120                        ;TL3_RESERVED_5           EQU  $AF013D
+   121                        ;TL3_RESERVED_6           EQU  $AF013E
+   122                        ;TL3_RESERVED_7           EQU  $AF013F
+   123                        ;Bitmap Registers
+   124             00AF0140   BM_CONTROL_REG           EQU  $AF0140
+   125             00AF0141   BM_START_ADDY_L          EQU  $AF0141
+   126             00AF0142   BM_START_ADDY_M          EQU  $AF0142
+   127             00AF0143   BM_START_ADDY_H          EQU  $AF0143
+   128             00AF0144   BM_X_SIZE_L              EQU  $AF0144
+   129             00AF0145   BM_X_SIZE_H              EQU  $AF0145
+   130             00AF0146   BM_Y_SIZE_L              EQU  $AF0146
+   131             00AF0147   BM_Y_SIZE_H              EQU  $AF0147
+   132             00AF0148   BM_RESERVED_0            EQU  $AF0148
+   133             00AF0149   BM_RESERVED_1            EQU  $AF0149
+   134             00AF014A   BM_RESERVED_2            EQU  $AF014A
+   135             00AF014B   BM_RESERVED_3            EQU  $AF014B
+   136             00AF014C   BM_RESERVED_4            EQU  $AF014C
+   137             00AF014D   BM_RESERVED_5            EQU  $AF014D
+   138             00AF014E   BM_RESERVED_6            EQU  $AF014E
+   139             00AF014F   BM_RESERVED_7            EQU  $AF014F
+   140                        ;Sprite Registers
+   141                        ; Bit Field Definition for the Control Register
+   142             00000001   SPRITE_Enable              EQU  $01
+   143             00000002   SPRITE_LUT0                EQU  $02 ; This is the LUT that the Sprite will use
+   144             00000004   SPRITE_LUT1                EQU  $04
+   145             00000008   SPRITE_LUT2                EQU  $08 ; Only 4 LUT for Now, So this bit is not used.
+   146             00000010   SPRITE_DEPTH0              EQU  $10 ; This is the Layer the Sprite will be Displayed in
+   147             00000020   SPRITE_DEPTH1              EQU  $20
+   148             00000040   SPRITE_DEPTH2              EQU  $40
+   149                        
+   150                        ; Sprite 0 (Highest Priority)
+   151             00AF0200   SP00_CONTROL_REG         EQU  $AF0200
+   152             00AF0201   SP00_ADDY_PTR_L          EQU  $AF0201
+   153             00AF0202   SP00_ADDY_PTR_M          EQU  $AF0202
+   154             00AF0203   SP00_ADDY_PTR_H          EQU  $AF0203
+   155             00AF0204   SP00_X_POS_L             EQU  $AF0204
+   156             00AF0205   SP00_X_POS_H             EQU  $AF0205
+   157             00AF0206   SP00_Y_POS_L             EQU  $AF0206
+   158             00AF0207   SP00_Y_POS_H             EQU  $AF0207
+   159                        ; Sprite 1
+   160             00AF0208   SP01_CONTROL_REG         EQU  $AF0208
+   161             00AF0209   SP01_ADDY_PTR_L          EQU  $AF0209
+   162             00AF020A   SP01_ADDY_PTR_M          EQU  $AF020A
+   163             00AF020B   SP01_ADDY_PTR_H          EQU  $AF020B
+   164             00AF020C   SP01_X_POS_L             EQU  $AF020C
+   165             00AF020D   SP01_X_POS_H             EQU  $AF020D
+   166             00AF020E   SP01_Y_POS_L             EQU  $AF020E
+   167             00AF020F   SP01_Y_POS_H             EQU  $AF020F
+   168                        ; Sprite 2
+   169             00AF0210   SP02_CONTROL_REG         EQU  $AF0210
+   170             00AF0211   SP02_ADDY_PTR_L          EQU  $AF0211
+   171             00AF0212   SP02_ADDY_PTR_M          EQU  $AF0212
+   172             00AF0213   SP02_ADDY_PTR_H          EQU  $AF0213
+   173             00AF0214   SP02_X_POS_L             EQU  $AF0214
+   174             00AF0215   SP02_X_POS_H             EQU  $AF0215
+  Thu Dec  3 2020 22:25                                                                                                Page 9
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   175             00AF0216   SP02_Y_POS_L             EQU  $AF0216
+   176             00AF0217   SP02_Y_POS_H             EQU  $AF0217
+   177                        ; Sprite 3
+   178             00AF0218   SP03_CONTROL_REG         EQU  $AF0218
+   179             00AF0219   SP03_ADDY_PTR_L          EQU  $AF0219
+   180             00AF021A   SP03_ADDY_PTR_M          EQU  $AF021A
+   181             00AF021B   SP03_ADDY_PTR_H          EQU  $AF021B
+   182             00AF021C   SP03_X_POS_L             EQU  $AF021C
+   183             00AF021D   SP03_X_POS_H             EQU  $AF021D
+   184             00AF021E   SP03_Y_POS_L             EQU  $AF021E
+   185             00AF021F   SP03_Y_POS_H             EQU  $AF021F
+   186                        ; Sprite 4
+   187             00AF0220   SP04_CONTROL_REG         EQU  $AF0220
+   188             00AF0221   SP04_ADDY_PTR_L          EQU  $AF0221
+   189             00AF0222   SP04_ADDY_PTR_M          EQU  $AF0222
+   190             00AF0223   SP04_ADDY_PTR_H          EQU  $AF0223
+   191             00AF0224   SP04_X_POS_L             EQU  $AF0224
+   192             00AF0225   SP04_X_POS_H             EQU  $AF0225
+   193             00AF0226   SP04_Y_POS_L             EQU  $AF0226
+   194             00AF0227   SP04_Y_POS_H             EQU  $AF0227
+   195                        ; Sprite 5
+   196             00AF0228   SP05_CONTROL_REG         EQU  $AF0228
+   197             00AF0229   SP05_ADDY_PTR_L          EQU  $AF0229
+   198             00AF022A   SP05_ADDY_PTR_M          EQU  $AF022A
+   199             00AF022B   SP05_ADDY_PTR_H          EQU  $AF022B
+   200             00AF022C   SP05_X_POS_L             EQU  $AF022C
+   201             00AF022D   SP05_X_POS_H             EQU  $AF022D
+   202             00AF022E   SP05_Y_POS_L             EQU  $AF022E
+   203             00AF022F   SP05_Y_POS_H             EQU  $AF022F
+   204                        ; Sprite 6
+   205             00AF0230   SP06_CONTROL_REG         EQU  $AF0230
+   206             00AF0231   SP06_ADDY_PTR_L          EQU  $AF0231
+   207             00AF0232   SP06_ADDY_PTR_M          EQU  $AF0232
+   208             00AF0233   SP06_ADDY_PTR_H          EQU  $AF0233
+   209             00AF0234   SP06_X_POS_L             EQU  $AF0234
+   210             00AF0235   SP06_X_POS_H             EQU  $AF0235
+   211             00AF0236   SP06_Y_POS_L             EQU  $AF0236
+   212             00AF0237   SP06_Y_POS_H             EQU  $AF0237
+   213                        ; Sprite 7
+   214             00AF0238   SP07_CONTROL_REG         EQU  $AF0238
+   215             00AF0239   SP07_ADDY_PTR_L          EQU  $AF0239
+   216             00AF023A   SP07_ADDY_PTR_M          EQU  $AF023A
+   217             00AF023B   SP07_ADDY_PTR_H          EQU  $AF023B
+   218             00AF023C   SP07_X_POS_L             EQU  $AF023C
+   219             00AF023D   SP07_X_POS_H             EQU  $AF023D
+   220             00AF023E   SP07_Y_POS_L             EQU  $AF023E
+   221             00AF023F   SP07_Y_POS_H             EQU  $AF023F
+   222                        ; Sprite 8
+   223             00AF0240   SP08_CONTROL_REG         EQU  $AF0240
+   224             00AF0241   SP08_ADDY_PTR_L          EQU  $AF0241
+   225             00AF0242   SP08_ADDY_PTR_M          EQU  $AF0242
+   226             00AF0243   SP08_ADDY_PTR_H          EQU  $AF0243
+   227             00AF0244   SP08_X_POS_L             EQU  $AF0244
+   228             00AF0245   SP08_X_POS_H             EQU  $AF0245
+   229             00AF0246   SP08_Y_POS_L             EQU  $AF0246
+   230             00AF0247   SP08_Y_POS_H             EQU  $AF0247
+  Thu Dec  3 2020 22:25                                                                                                Page 10
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   231                        ; Sprite 9
+   232             00AF0248   SP09_CONTROL_REG         EQU  $AF0248
+   233             00AF0249   SP09_ADDY_PTR_L          EQU  $AF0249
+   234             00AF024A   SP09_ADDY_PTR_M          EQU  $AF024A
+   235             00AF024B   SP09_ADDY_PTR_H          EQU  $AF024B
+   236             00AF024C   SP09_X_POS_L             EQU  $AF024C
+   237             00AF024D   SP09_X_POS_H             EQU  $AF024D
+   238             00AF024E   SP09_Y_POS_L             EQU  $AF024E
+   239             00AF024F   SP09_Y_POS_H             EQU  $AF024F
+   240                        ; Sprite 10
+   241             00AF0250   SP10_CONTROL_REG         EQU  $AF0250
+   242             00AF0251   SP10_ADDY_PTR_L          EQU  $AF0251
+   243             00AF0252   SP10_ADDY_PTR_M          EQU  $AF0252
+   244             00AF0253   SP10_ADDY_PTR_H          EQU  $AF0253
+   245             00AF0254   SP10_X_POS_L             EQU  $AF0254
+   246             00AF0255   SP10_X_POS_H             EQU  $AF0255
+   247             00AF0256   SP10_Y_POS_L             EQU  $AF0256
+   248             00AF0257   SP10_Y_POS_H             EQU  $AF0257
+   249                        ; Sprite 11
+   250             00AF0258   SP11_CONTROL_REG         EQU  $AF0258
+   251             00AF0259   SP11_ADDY_PTR_L          EQU  $AF0259
+   252             00AF025A   SP11_ADDY_PTR_M          EQU  $AF025A
+   253             00AF025B   SP11_ADDY_PTR_H          EQU  $AF025B
+   254             00AF025C   SP11_X_POS_L             EQU  $AF025C
+   255             00AF025D   SP11_X_POS_H             EQU  $AF025D
+   256             00AF025E   SP11_Y_POS_L             EQU  $AF025E
+   257             00AF025F   SP11_Y_POS_H             EQU  $AF025F
+   258                        ; Sprite 12
+   259             00AF0260   SP12_CONTROL_REG         EQU  $AF0260
+   260             00AF0261   SP12_ADDY_PTR_L          EQU  $AF0261
+   261             00AF0262   SP12_ADDY_PTR_M          EQU  $AF0262
+   262             00AF0263   SP12_ADDY_PTR_H          EQU  $AF0263
+   263             00AF0264   SP12_X_POS_L             EQU  $AF0264
+   264             00AF0265   SP12_X_POS_H             EQU  $AF0265
+   265             00AF0266   SP12_Y_POS_L             EQU  $AF0266
+   266             00AF0267   SP12_Y_POS_H             EQU  $AF0267
+   267                        ; Sprite 13
+   268             00AF0268   SP13_CONTROL_REG         EQU  $AF0268
+   269             00AF0269   SP13_ADDY_PTR_L          EQU  $AF0269
+   270             00AF026A   SP13_ADDY_PTR_M          EQU  $AF026A
+   271             00AF026B   SP13_ADDY_PTR_H          EQU  $AF026B
+   272             00AF026C   SP13_X_POS_L             EQU  $AF026C
+   273             00AF026D   SP13_X_POS_H             EQU  $AF026D
+   274             00AF026E   SP13_Y_POS_L             EQU  $AF026E
+   275             00AF026F   SP13_Y_POS_H             EQU  $AF026F
+   276                        ; Sprite 14
+   277             00AF0270   SP14_CONTROL_REG         EQU  $AF0270
+   278             00AF0271   SP14_ADDY_PTR_L          EQU  $AF0271
+   279             00AF0272   SP14_ADDY_PTR_M          EQU  $AF0272
+   280             00AF0273   SP14_ADDY_PTR_H          EQU  $AF0273
+   281             00AF0274   SP14_X_POS_L             EQU  $AF0274
+   282             00AF0275   SP14_X_POS_H             EQU  $AF0275
+   283             00AF0276   SP14_Y_POS_L             EQU  $AF0276
+   284             00AF0277   SP14_Y_POS_H             EQU  $AF0277
+   285                        ; Sprite 15
+   286             00AF0278   SP15_CONTROL_REG         EQU  $AF0278
+  Thu Dec  3 2020 22:25                                                                                                Page 11
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   287             00AF0279   SP15_ADDY_PTR_L          EQU  $AF0279
+   288             00AF027A   SP15_ADDY_PTR_M          EQU  $AF027A
+   289             00AF027B   SP15_ADDY_PTR_H          EQU  $AF027B
+   290             00AF027C   SP15_X_POS_L             EQU  $AF027C
+   291             00AF027D   SP15_X_POS_H             EQU  $AF027D
+   292             00AF027E   SP15_Y_POS_L             EQU  $AF027E
+   293             00AF027F   SP15_Y_POS_H             EQU  $AF027F
+   294                        ; Sprite 16
+   295             00AF0280   SP16_CONTROL_REG         EQU  $AF0280
+   296             00AF0281   SP16_ADDY_PTR_L          EQU  $AF0281
+   297             00AF0282   SP16_ADDY_PTR_M          EQU  $AF0282
+   298             00AF0283   SP16_ADDY_PTR_H          EQU  $AF0283
+   299             00AF0284   SP16_X_POS_L             EQU  $AF0284
+   300             00AF0285   SP16_X_POS_H             EQU  $AF0285
+   301             00AF0286   SP16_Y_POS_L             EQU  $AF0286
+   302             00AF0287   SP16_Y_POS_H             EQU  $AF0287
+   303                        ; Sprite 17
+   304             00AF0288   SP17_CONTROL_REG         EQU  $AF0288
+   305             00AF0289   SP17_ADDY_PTR_L          EQU  $AF0289
+   306             00AF028A   SP17_ADDY_PTR_M          EQU  $AF028A
+   307             00AF028B   SP17_ADDY_PTR_H          EQU  $AF028B
+   308             00AF028C   SP17_X_POS_L             EQU  $AF028C
+   309             00AF028D   SP17_X_POS_H             EQU  $AF028D
+   310             00AF028E   SP17_Y_POS_L             EQU  $AF028E
+   311             00AF028F   SP17_Y_POS_H             EQU  $AF028F
+   312                        ; DMA Controller $AF0400 - $AF04FF
+   313             00AF0400   VDMA_CONTROL_REG         EQU  $AF0400
+   314             00AF0401   VDMA_COUNT_REG_L         EQU  $AF0401
+   315             00AF0402   VDMA_COUNT_REG_M         EQU  $AF0402
+   316             00AF0403   VDMA_COUNT_REG_H         EQU  $AF0403
+   317             00AF0404   VDMA_DATA_2_WRITE_L      EQU  $AF0404
+   318             00AF0405   VDMA_DATA_2_WRITE_H      EQU  $AF0405
+   319             00AF0406   VDMA_STRIDE_L            EQU  $AF0406
+   320             00AF0407   VDMA_STRIDE_H            EQU  $AF0407
+   321             00AF0408   VDMA_SRC_ADDY_L          EQU  $AF0408
+   322             00AF0409   VDMA_SRC_ADDY_M          EQU  $AF0409
+   323             00AF040A   VDMA_SRC_ADDY_H          EQU  $AF040A
+   324             00AF040B   VDMA_RESERVED_0          EQU  $AF040B
+   325             00AF040C   VDMA_DST_ADDY_L          EQU  $AF040C
+   326             00AF040D   VDMA_DST_ADDY_M          EQU  $AF040D
+   327             00AF040E   VDMA_DST_ADDY_H          EQU  $AF040E
+   328             00AF040F   VDMA_RESERVED_1          EQU  $AF040F
+   329                        
+   330                        ; Mouse Pointer Graphic Memory
+   331             00AF0500   MOUSE_PTR_GRAP0_START     EQU  $AF0500 ; 16 x 16  EQU  256 Pixels (Grey Scale) 0  EQU  Transparent
+                    , 1  EQU  Black , 255  EQU  White
+   332             00AF05FF   MOUSE_PTR_GRAP0_END       EQU  $AF05FF ; Pointer 0
+   333             00AF0600   MOUSE_PTR_GRAP1_START     EQU  $AF0600 ;
+   334             00AF06FF   MOUSE_PTR_GRAP1_END       EQU  $AF06FF ; Pointer 1
+   335                        
+   336             00AF0700   MOUSE_PTR_CTRL_REG_L     EQU  $AF0700 ; Bit[0] Enable, Bit[1]  EQU  0  ( 0  EQU  Pointer0, 1  EQU 
+                     Pointer1)
+   337             00AF0701   MOUSE_PTR_CTRL_REG_H     EQU  $AF0701 ;
+   338             00AF0702   MOUSE_PTR_X_POS_L        EQU  $AF0702 ; X Position (0 - 639) (Can only read now) Writing will have
+                     no effect
+   339             00AF0703   MOUSE_PTR_X_POS_H        EQU  $AF0703 ;
+  Thu Dec  3 2020 22:25                                                                                                Page 12
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   340             00AF0704   MOUSE_PTR_Y_POS_L        EQU  $AF0704 ; Y Position (0 - 479) (Can only read now) Writing will have
+                     no effect
+   341             00AF0705   MOUSE_PTR_Y_POS_H        EQU  $AF0705 ;
+   342             00AF0706   MOUSE_PTR_BYTE0          EQU  $AF0706 ; Byte 0 of Mouse Packet (you must write 3 Bytes)
+   343             00AF0707   MOUSE_PTR_BYTE1          EQU  $AF0707 ; Byte 1 of Mouse Packet (if you don't, then )
+   344             00AF0708   MOUSE_PTR_BYTE2          EQU  $AF0708 ; Byte 2 of Mouse Packet (state Machine will be jammed in 1 
+                    state)
+   345                                                          ; (And the mouse won't work)
+   346             00AF070B   C256F_MODEL_MAJOR        EQU  $AF070B ;
+   347             00AF070C   C256F_MODEL_MINOR        EQU  $AF070C ;
+   348             00AF070D   FPGA_DOR                 EQU  $AF070D ;
+   349             00AF070E   FPGA_MOR                 EQU  $AF070E ;
+   350             00AF070F   FPGA_YOR                 EQU  $AF070F ;
+   351                        
+   352                        ;                        EQU  $AF0800 ; the RTC is Here
+   353                        ;                        EQU  $AF1000 ; The SuperIO Start is Here
+   354                        ;                        EQU  $AF13FF ; The SuperIO Start is Here
+   355                        
+   356             00AF1F40   FG_CHAR_LUT_PTR          EQU  $AF1F40
+   357             00AF1F80   BG_CHAR_LUT_PTR		       EQU  $AF1F80
+   358                        
+   359             00AF2000   GRPH_LUT0_PTR		         EQU  $AF2000
+   360             00AF2400   GRPH_LUT1_PTR		         EQU  $AF2400
+   361             00AF2800   GRPH_LUT2_PTR		         EQU  $AF2800
+   362             00AF2C00   GRPH_LUT3_PTR		         EQU  $AF2C00
+   363             00AF3000   GRPH_LUT4_PTR		         EQU  $AF3000
+   364             00AF3400   GRPH_LUT5_PTR		         EQU  $AF3400
+   365             00AF3800   GRPH_LUT6_PTR		         EQU  $AF3800
+   366             00AF3C00   GRPH_LUT7_PTR		         EQU  $AF3C00
+   367                        
+   368             00AF4000   GAMMA_B_LUT_PTR		       EQU  $AF4000
+   369             00AF4100   GAMMA_G_LUT_PTR		       EQU  $AF4100
+   370             00AF4200   GAMMA_R_LUT_PTR		       EQU  $AF4200
+   371                        
+   372             00AF5000   TILE_MAP0       		     EQU  $AF5000     ;$AF5000 - $AF57FF
+   373             00AF5800   TILE_MAP1                EQU  $AF5800     ;$AF5800 - $AF5FFF
+   374             00AF6000   TILE_MAP2                EQU  $AF6000     ;$AF6000 - $AF67FF
+   375             00AF6800   TILE_MAP3                EQU  $AF6800     ;$AF6800 - $AF6FFF
+   376                        
+   377             00AF8000   FONT_MEMORY_BANK0        EQU  $AF8000     ;$AF8000 - $AF87FF
+   378             00AF8800   FONT_MEMORY_BANK1        EQU  $AF8800     ;$AF8800 - $AF8FFF
+   379             00AFA000   CS_TEXT_MEM_PTR          EQU  $AFA000
+   380             00AFC000   CS_COLOR_MEM_PTR         EQU  $AFC000
+   381                        
+   382                        
+   383             00AFE000   BTX_START                EQU  $AFE000     ; BEATRIX Registers
+   384             00AFFFFF   BTX_END                  EQU  $AFFFFF
+   385                        
+   386                        ; Line Interrupt Registers
+   387             00AF001B   VKY_LINE_IRQ_CTRL_REG    EQU  $AF001B ;[0] - Enable Line 0, [1] -Enable Line 1
+   388             00AF001C   VKY_LINE0_CMP_VALUE_LO   EQU  $AF001C ;Write Only [7:0]
+   389             00AF001D   VKY_LINE0_CMP_VALUE_HI   EQU  $AF001D ;Write Only [3:0]
+   390             00AF001E   VKY_LINE1_CMP_VALUE_LO   EQU  $AF001E ;Write Only [7:0]
+   391             00AF001F   VKY_LINE1_CMP_VALUE_HI   EQU  $AF001F ;Write Only [3:0]
+   392                        
+    33                        	INCLUDE keyboard_def.asm
+  Thu Dec  3 2020 22:25                                                                                                Page 13
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+     1                        ;
+     2             00AF1064   STATUS_PORT 	         EQU 	$AF1064
+     3             00AF1060   KBD_OUT_BUF 	         EQU 	$AF1060
+     4             00AF1060   KBD_INPT_BUF	         EQU  $AF1060
+     5             00AF1064   KBD_CMD_BUF		         EQU  $AF1064
+     6             00AF1060   KBD_DATA_BUF	         EQU  $AF1060
+     7             00AF1060   PORT_A			           EQU 	$AF1060
+     8             00AF1061   PORT_B			           EQU 	$AF1061
+     9                        
+    10                        ; Status
+    11             00000001   OUT_BUF_FULL   EQU 	$01
+    12             00000002   INPT_BUF_FULL	 EQU 	$02
+    13             00000004   SYS_FLAG		   EQU 	$04
+    14             00000008   CMD_DATA		   EQU 	$08
+    15             00000010   KEYBD_INH      EQU 	$10
+    16             00000020   TRANS_TMOUT	   EQU 	$20
+    17             00000040   RCV_TMOUT		   EQU 	$40
+    18             00000080   PARITY_EVEN		 EQU 	$80
+    19             00000010   INH_KEYBOARD	 EQU 	$10
+    20             000000AE   KBD_ENA			   EQU 	$AE
+    21             000000AD   KBD_DIS			   EQU 	$AD
+    22                        
+    23                        ; Keyboard Commands
+    24             000000F1   KB_MENU			   EQU 	$F1
+    25             000000F4   KB_ENABLE		   EQU 	$F4
+    26             000000F7   KB_MAKEBREAK   EQU 	$F7
+    27             000000FE   KB_ECHO			   EQU 	$FE
+    28             000000FF   KB_RESET		   EQU 	$FF
+    29             000000ED   KB_LED_CMD		 EQU 	$ED
+    30                        
+    31                        ; Keyboard responses
+    32             000000AA   KB_OK			     EQU 	$AA
+    33             000000FA   KB_ACK			   EQU 	$FA
+    34             000000FF   KB_OVERRUN		 EQU 	$FF
+    35             000000FE   KB_RESEND		   EQU 	$FE
+    36             000000F0   KB_BREAK		   EQU 	$F0
+    37             00000010   KB_FA			     EQU 	$10
+    38             00000020   KB_FE			     EQU 	$20
+    39             00000040   KB_PR_LED		   EQU 	$40
+    34                        	INCLUDE page_00_inc.asm
+     1                        ; page_00.asm
+     2                        ; Direct Page Addresses
+     3                        ;
+     4                        ;* Addresses are the byte AFTER the block. Use this to confirm block locations and check for overl
+                    aps
+     5             00000000   BANK0_BEGIN       EQU  $000000 ;Start of bank 0 and Direct page
+     6             00000000   unused_0000       EQU  $000000 ;12 Bytes unused
+     7             00000008   OPL2_ADDY_PTR_LO  EQU  $000008  ; THis Points towards the Instruments Database
+     8             00000009   OPL2_ADDY_PTR_MD  EQU  $000009
+     9             0000000A   OPL2_ADDY_PTR_HI  EQU  $00000A
+    10             0000000C   SCREENBEGIN       EQU  $00000C ;3 Bytes Start of screen in video RAM. This is the upper-left corrn
+                    er of the current video page being written to. This may not be what's being displayed by VICKY. Update this 
+                    if you change VICKY's display page.
+    11             0000000F   COLS_VISIBLE      EQU  $00000F ;2 Bytes Columns visible per screen line. A virtual line can be lon
+                    ger than displayed, up to COLS_PER_LINE long. Default  EQU  80
+    12             00000011   COLS_PER_LINE     EQU  $000011 ;2 Bytes Columns in memory per screen line. A virtual line can be t
+  Thu Dec  3 2020 22:25                                                                                                Page 14
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+                    his long. Default EQU 128
+    13             00000013   LINES_VISIBLE     EQU  $000013 ;2 Bytes The number of rows visible on the screen. Default EQU 25
+    14             00000015   LINES_MAX         EQU  $000015 ;2 Bytes The number of rows in memory for the screen. Default EQU 6
+                    4
+    15             00000017   CURSORPOS         EQU  $000017 ;3 Bytes The next character written to the screen will be written i
+                    n this location.
+    16             0000001A   CURSORX           EQU  $00001A ;2 Bytes This is where the blinking cursor sits. Do not edit this d
+                    ireectly. Call LOCATE to update the location and handle moving the cursor correctly.
+    17             0000001C   CURSORY           EQU  $00001C ;2 Bytes This is where the blinking cursor sits. Do not edit this d
+                    ireectly. Call LOCATE to update the location and handle moving the cursor correctly.
+    18             0000001E   CURCOLOR          EQU  $00001E ;2 Bytes Color of next character to be printed to the screen.
+    19             00000020   CURATTR           EQU  $000020 ;2 Bytes Attribute of next character to be printed to the screen.
+    20             00000022   STACKBOT          EQU  $000022 ;2 Bytes Lowest location the stack should be allowed to write to. I
+                    f SP falls below this value, the runtime should generate STACK OVERFLOW error and abort.
+    21             00000024   STACKTOP          EQU  $000024 ;2 Bytes Highest location the stack can occupy. If SP goes above th
+                    is value, the runtime should generate STACK OVERFLOW error and abort.
+    22                        ; OPL2 Library Variable (Can be shared if Library is not used)
+    23                        ; THis will need to move eventually
+    24             00000026   OPL2_OPERATOR     EQU  $000026 ;
+    25             00000027   OPL2_CHANNEL      EQU  $000027 ;
+    26             00000028   OPL2_REG_REGION   EQU  $000028 ; Offset to the Group of Registers
+    27             0000002A   OPL2_REG_OFFSET   EQU  $00002A ; 2 Bytes (16Bits)
+    28             0000002C   OPL2_IND_ADDY_LL  EQU  $00002C ; 2 Bytes Reserved (Only need 3)
+    29             0000002E   OPL2_IND_ADDY_HL  EQU  $00002E ; 2 Bytes Reserved (Only need 3)
+    30             00000030   OPL2_NOTE         EQU  $000030 ; 1 Byte
+    31             00000031   OPL2_OCTAVE       EQU  $000031 ; 1 Byte
+    32             00000032   OPL2_PARAMETER0   EQU  $000032 ; 1 Byte - Key On/Feedback
+    33             00000033   OPL2_PARAMETER1   EQU  $000033 ; 1 Byte
+    34             00000034   OPL2_PARAMETER2   EQU  $000034 ; 1 Byte
+    35             00000035   OPL2_PARAMETER3   EQU  $000035 ; 1 Byte
+    36             00000036   OPL2_LOOP         EQU  $000036 ;
+    37             00000036   OPL2_BLOCK        EQU  $000036
+    38                        ; SD Card (CH376S) Variables
+    39             00000038   SDCARD_FILE_PTR   EQU  $000038 ; 3 Bytes Pointer to Filename to open
+    40             0000003C   SDCARD_BYTE_NUM   EQU  $00003C ; 2Bytes
+    41             0000003F   SDCARD_PRSNT_MNT  EQU  $00003F ; 1 Byte, Indicate that the SDCard is Present and that it is Mounte
+                    d
+    42                        ; Command Line Parser Variables
+    43             00000040   CMD_PARSER_TMPX   EQU  $000040 ; <<< Command Parser 2Bytes
+    44             00000042   CMD_PARSER_TMPY   EQU  $000042 ; <<< Command Parser 2Bytes
+    45             00000044   CMD_LIST_PTR      EQU  $000044 ; <<< Command Parser 3 Bytes
+    46             00000048   CMD_PARSER_PTR    EQU  $000048 ; <<< Command Parser 3 Bytes
+    47             0000004B   CMD_ATTRIBUTE     EQU  $00004B ; <<< Command Parser 2 Bytes (16bits Attribute Field)
+    48             0000004D   CMD_EXEC_ADDY     EQU  $00004D ; <<< Command Parser 3 Bytes 24 Bits Address Jump to execute the Co
+                    mmand
+    49             00000050   KEY_BUFFER_RPOS   EQU  $000050 ;
+    50             00000052   KEY_BUFFER_WPOS   EQU  $000052 ;
+    51             00000054   CMD_VARIABLE_TMP  EQU  $000054 ;
+    52             00000056   CMD_ARG_DEV       EQU  $000056 ;
+    53             00000057   CMD_ARG_SA        EQU  $000057 ;
+    54             0000005A   CMD_ARG_EA        EQU  $00005A ;
+    55             0000005D   CMD_VALID         EQU  $00005D ;
+    56                        
+    57                        
+    58                        ; Bitmap Clear Routine
+    59             00000040   BM_CLEAR_SCRN_X   EQU  $000040
+  Thu Dec  3 2020 22:25                                                                                                Page 15
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    60             00000042   BM_CLEAR_SCRN_Y   EQU  $000042
+    61                        ; RAD File Player
+    62             00000040   RAD_STARTLINE     EQU  $000040 ; 1 Byte
+    63             00000041   RAD_PATTERN_IDX   EQU  $000041 ; 1 Byte
+    64             00000042   RAD_LINE          EQU  $000042 ; 1 Byte
+    65             00000043   RAD_LINENUMBER    EQU  $000043 ; 1 Byte
+    66             00000044   RAD_CHANNEL_NUM   EQU  $000044 ; 1 Byte
+    67             00000045   RAD_ISLASTCHAN    EQU  $000045 ; 1 Byte
+    68             00000046   RAD_Y_POINTER     EQU  $000046 ; 2 Bytes
+    69             00000048   RAD_TICK          EQU  $000048
+    70             0000004A   RAD_CHANNEL_DATA  EQU  $00004A ; 2 Bytes
+    71             0000004C   RAD_CHANNE_EFFCT  EQU  $00004C
+    72             0000004D   RAD_TEMP          EQU  $00004D
+    73                        
+    74                        ; BMP File Parser Variables (Can be shared if BMP Parser not used)
+    75                        ; Used for Command Parser Mainly
+    76             00000040   BMP_X_SIZE        EQU  $000040 ; 2 Bytes
+    77             00000042   BMP_Y_SIZE        EQU  $000042 ; 2 Bytes
+    78             00000044   BMP_PRSE_SRC_PTR  EQU  $000044 ; 3 Bytes
+    79             00000048   BMP_PRSE_DST_PTR  EQU  $000048 ; 3 Bytes
+    80             0000004C   BMP_COLOR_PALET   EQU  $00004C ; 2 Bytes
+    81             0000004E   SCRN_X_STRIDE     EQU  $00004E ; 2 Bytes, Basically How many Pixel Accross in Bitmap Mode
+    82             00000050   BMP_FILE_SIZE     EQU  $000050 ; 4 Bytes
+    83             00000054   BMP_POSITION_X    EQU  $000054 ; 2 Bytes Where, the BMP will be position on the X Axis
+    84             00000056   BMP_POSITION_Y    EQU  $000056 ; 2 Bytes Where, the BMP will be position on the Y Axis
+    85             00000058   BMP_PALET_CHOICE  EQU  $000058 ;
+    86                        ;Empty Region
+    87                        ;XXX              EQU  $000060
+    88                        ;..
+    89                        ;..
+    90                        ;..
+    91                        ;YYY              EQU  $0000EE
+    92                        
+    93             000000E0   MOUSE_PTR         EQU  $0000E0
+    94             000000E1   MOUSE_POS_X_LO    EQU  $0000E1
+    95             000000E2   MOUSE_POS_X_HI    EQU  $0000E2
+    96             000000E3   MOUSE_POS_Y_LO    EQU  $0000E3
+    97             000000E4   MOUSE_POS_Y_HI    EQU  $0000E4
+    98                        
+    99             000000F0   USER_TEMP         EQU  $0000F0 ;32 Bytes Temp space for user programs
+   100                        ;;///////////////////////////////////////////////////////////////
+   101                        ;;; NO CODE or Variable ought to be Instatied in this REGION
+   102                        ;; BEGIN
+   103                        ;;///////////////////////////////////////////////////////////////
+   104             00000100   GAVIN_BLOCK       EQU  $000100 ;256 Bytes Gavin reserved, overlaps debugging registers at $1F0
+   105                        
+   106             00000100   MULTIPLIER_0      EQU  $000100 ;0 Byte  Unsigned multiplier
+   107             00000100   M0_OPERAND_A      EQU  $000100 ;2 Bytes Operand A (ie: A x B)
+   108             00000102   M0_OPERAND_B      EQU  $000102 ;2 Bytes Operand B (ie: A x B)
+   109             00000104   M0_RESULT         EQU  $000104 ;4 Bytes Result of A x B
+   110                        
+   111             00000108   MULTIPLIER_1      EQU  $000108 ;0 Byte  Signed Multiplier
+   112             00000108   M1_OPERAND_A      EQU  $000108 ;2 Bytes Operand A (ie: A x B)
+   113             0000010A   M1_OPERAND_B      EQU  $00010A ;2 Bytes Operand B (ie: A x B)
+   114             0000010C   M1_RESULT         EQU  $00010C ;4 Bytes Result of A x B
+   115                        
+  Thu Dec  3 2020 22:25                                                                                                Page 16
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   116             00000108   DIVIDER_0         EQU  $000108 ;0 Byte  Unsigned divider
+   117             00000108   D0_OPERAND_A      EQU  $000108 ;2 Bytes Divider 0 Dividend ex: A in  A/B
+   118             0000010A   D0_OPERAND_B      EQU  $00010A ;2 Bytes Divider 0 Divisor ex B in A/B
+   119             0000010C   D0_RESULT         EQU  $00010C ;2 Bytes Quotient result of A/B ex: 7/2  EQU  3 r 1
+   120             0000010E   D0_REMAINDER      EQU  $00010E ;2 Bytes Remainder of A/B ex: 1 in 7/2 EQU 3 r 1
+   121                        
+   122             00000110   DIVIDER_1         EQU  $000110 ;0 Byte  Signed divider
+   123             00000110   D1_OPERAND_A      EQU  $000110 ;2 Bytes Divider 1 Dividend ex: A in  A/B
+   124             00000112   D1_OPERAND_B      EQU  $000112 ;2 Bytes Divider 1 Divisor ex B in A/B
+   125             00000114   D1_RESULT         EQU  $000114 ;2 Bytes Signed quotient result of A/B ex: 7/2  EQU  3 r 1
+   126             00000116   D1_REMAINDER      EQU  $000116 ;2 Bytes Signed remainder of A/B ex: 1 in 7/2 EQU 3 r 1
+   127                        ; Reserved
+   128             00000120   ADDER_SIGNED_32   EQU  $000120 ; The 32 Bit Adders takes 12Byte that are NOT RAM Location
+   129                        ; Reserved
+   130             00000140   INT_CONTROLLER    EQU  $000140 ; $000140...$00015F Interrupt Controller
+   131                        
+   132             00000160   TIMER_CONTROLLER  EQU  $000160 ; $000160...$00017F Timer0/Timer1/Timer2 Block
+   133             00000160   TIMER_CTRL_REGLL  EQU  $000160 ;
+   134             00000161   TIMER_CTRL_REGLH  EQU  $000161 ;
+   135             00000162   TIMER_CTRL_REGHL  EQU  $000162 ;
+   136             00000163   TIMER_CTRL_REGHH  EQU  $000163 ;
+   137                        ;;///////////////////////////////////////////////////////////////
+   138                        ;;; NO CODE or Variable ought to be Instatied in this REGION
+   139                        ;; END
+   140                        ;;///////////////////////////////////////////////////////////////
+   141             00000240   CPU_REGISTERS     EQU  $000240 ; Byte
+   142             00000240   CPUPC             EQU  $000240 ;2 Bytes Program Counter (PC)
+   143             00000242   CPUPBR            EQU  $000242 ;2 Bytes Program Bank Register (K)
+   144             00000244   CPUA              EQU  $000244 ;2 Bytes Accumulator (A)
+   145             00000246   CPUX              EQU  $000246 ;2 Bytes X Register (X)
+   146             00000248   CPUY              EQU  $000248 ;2 Bytes Y Register (Y)
+   147             0000024A   CPUSTACK          EQU  $00024A ;2 Bytes Stack Pointer (S)
+   148             0000024C   CPUDP             EQU  $00024C ;2 Bytes Direct Page Register (D)
+   149             0000024E   CPUDBR            EQU  $00024E ;1 Byte  Data Bank Register (B)
+   150             0000024F   CPUFLAGS          EQU  $00024F ;1 Byte  Flags (P)
+   151                        
+   152             00000250   MONITOR_VARS      EQU  $000250 ; Byte  MONITOR Variables. BASIC variables may overlap this space
+   153             00000250   MCMDADDR          EQU  $000250 ;3 Bytes Address of the current line of text being processed by the
+                     command parser. Can be in display memory or a variable in memory. MONITOR will parse up to MTEXTLEN charact
+                    ers or to a null character.
+   154             00000253   MCMP_TEXT         EQU  $000253 ;3 Bytes Address of symbol being evaluated for COMPARE routine
+   155             00000256   MCMP_LEN          EQU  $000256 ;2 Bytes Length of symbol being evaluated for COMPARE routine
+   156             00000258   MCMD              EQU  $000258 ;3 Bytes Address of the current command/function string
+   157             0000025B   MCMD_LEN          EQU  $00025B ;2 Bytes Length of the current command/function string
+   158             0000025D   MARG1             EQU  $00025D ;4 Bytes First command argument. May be data or address, depending 
+                    on command
+   159             00000261   MARG2             EQU  $000261 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   160             00000265   MARG3             EQU  $000265 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   161             00000269   MARG4             EQU  $000269 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   162             0000026D   MARG5             EQU  $00026D ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   163             00000271   MARG6             EQU  $000271 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+  Thu Dec  3 2020 22:25                                                                                                Page 17
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   164             00000275   MARG7             EQU  $000275 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   165             00000279   MARG8             EQU  $000279 ;4 Bytes First command argument. May be data or address, depending 
+                    on command. Data is 32-bit number. Address is 24-bit address and 8-bit length.
+   166                        
+   167             00000300   LOADFILE_VARS     EQU  $000300 ; Byte
+   168             00000300   LOADFILE_NAME     EQU  $000300 ;3 Bytes (addr) Name of file to load. Address in Data Page
+   169             00000303   LOADFILE_LEN      EQU  $000303 ;1 Byte  Length of filename. 0 EQU Null Terminated
+   170             00000304   LOADPBR           EQU  $000304 ;1 Byte  First Program Bank of loaded file ($05 segment)
+   171             00000305   LOADPC            EQU  $000305 ;2 Bytes Start address of loaded file ($05 segment)
+   172             00000307   LOADDBR           EQU  $000307 ;1 Byte  First data bank of loaded file ($06 segment)
+   173             00000308   LOADADDR          EQU  $000308 ;2 Bytes FIrst data address of loaded file ($06 segment)
+   174             0000030A   LOADFILE_TYPE     EQU  $00030A ;3 Bytes (addr) File type string in loaded data file. Actual string
+                     data will be in Bank 1. Valid values are BIN, PRG, P16
+   175             0000030D   BLOCK_LEN         EQU  $00030D ;2 Bytes Length of block being loaded
+   176             0000030F   BLOCK_ADDR        EQU  $00030F ;2 Bytes (temp) Address of block being loaded
+   177             00000311   BLOCK_BANK        EQU  $000311 ;1 Byte  (temp) Bank of block being loaded
+   178             00000312   BLOCK_COUNT       EQU  $000312 ;2 Bytes (temp) Counter of bytes read as file is loaded
+   179                        
+   180                        ; $00:0320 to $00:06FF - Reserved for CH376S SDCard Controller
+   181             00000320   SDOS_BLOCK_BEGIN  EQU  $000320 ;
+   182             00000324   SDOS_LOAD_ADDY    EQU  $000324 ; 4 Bytes (Uses 3 Only)
+   183             00000328   SDOS_FILE_SIZE    EQU  $000328 ;
+   184             0000032C   SDOS_BYTE_NUMBER  EQU  $00032C ; Number of Byte to Read or Write before changing the Pointer
+   185             00000330   SDOS_REG_WR32_AD  EQU  $000330 ; 4 Bytes (Used to read and Write Values in/from CH376S)
+   186             00000334   SDOS_BYTE_PTR     EQU  $000334
+   187             00000380   SDOS_FILE_NAME    EQU  $000380 ; // Max of 128 Chars
+   188             00000400   SDOS_BLK_BEGIN    EQU  $000400 ; 512 Bytes to Store SD Card Incoming or Outcoming Block
+   189             000006FF   SDOS_BLK_END      EQU  $0006FF ;
+   190                        
+   191             00000700   TASKSS_STACK_LO	  EQU  $000700;
+   192             00000701   TASKSS_STACK_HI	  EQU  $000701;
+   193             00000702   TASKSS_CALLER_LO  EQU  $000702;
+   194             00000703   TASKSS_CALLER_HI  EQU  $000703;
+   195             00000704   TASKSS_SOS_LO	  EQU  $000704;
+   196             00000705   TASKSS_SOS_HI	  EQU  $000705;
+   197                        
+   198             000007F0   CURRUART	  	  EQU  $0007F0;
+   199                        
+   200                        ; COMMAND PARSER Variables
+   201                        ; Command Parser Stuff between $000F00 -> $000F84 (see CMD_Parser.asm)
+   202             00000F00   KEY_BUFFER        EQU  $000F00 ;64 Bytes keyboard buffer
+   203             00000080   KEY_BUFFER_SIZE   EQU  $0080 ;128 Bytes (constant) keyboard buffer length
+   204             00000F7F   KEY_BUFFER_END    EQU  $000F7F ;1 Byte  Last byte of keyboard buffer
+   205             00000F83   KEY_BUFFER_CMD    EQU  $000F83 ;1 Byte  Indicates the Command Process Status
+   206             00000F84   COMMAND_SIZE_STR  EQU  $000F84 ; 1 Byte
+   207             00000F86   COMMAND_COMP_TMP  EQU  $000F86 ; 2 Bytes
+   208             00000F87   KEYBOARD_SC_FLG   EQU  $000F87 ;1 Bytes that indicate the Status of Left Shift, Left CTRL, Left AL
+                    T, Right Shift
+   209             00000F88   KEYBOARD_SC_TMP   EQU  $000F88 ;1 Byte, Interrupt Save Scan Code while Processing
+   210                        
+   211                        
+   212                        
+   213             00001000   TEST_BEGIN        EQU  $001000 ;28672 Bytes Test/diagnostic code for prototype.
+   214             00007FFF   TEST_END          EQU  $007FFF ;0 Byte
+   215                        
+  Thu Dec  3 2020 22:25                                                                                                Page 18
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   216             00008000   STACK_BEGIN       EQU  $008000 ;32512 Bytes The default beginning of stack space
+   217             0000FEFF   STACK_END         EQU  $00FEFF ;0 Byte  End of stack space. Everything below this is I/O space
+   218                        
+   219             0018FF00   ISR_BEGIN         EQU  $18FF00 ; Byte  Beginning of CPU vectors in Direct page
+   220             0018FF00   HRESET            EQU  $18FF00 ;16 Bytes Handle RESET asserted. Reboot computer and re-initialize 
+                    the kernel.
+   221             0018FF10   HCOP              EQU  $18FF10 ;16 Bytes Handle the COP instruction. Program use; not used by OS
+   222             0018FF20   HBRK              EQU  $18FF20 ;16 Bytes Handle the BRK instruction. Returns to BASIC Ready prompt
+                    .
+   223             0018FF30   HABORT            EQU  $18FF30 ;16 Bytes Handle ABORT asserted. Return to Ready prompt with an err
+                    or message.
+   224             0018FF40   HNMI              EQU  $18FF40 ;32 Bytes Handle NMI
+   225             0018FF60   HIRQ              EQU  $18FF60 ;32 Bytes Handle IRQ
+   226             0018FF80   Unused_FF80       EQU  $18FF80 ;End of direct page Interrrupt handlers
+   227                        
+   228             0018FFE0   VECTORS_BEGIN     EQU  $18FFE0 ;0 Byte  Interrupt vectors
+   229             0000FFE0   JMP_READY         EQU  $00FFE0 ;4 Bytes Jumps to ROM READY routine. Modified whenever alternate co
+                    mmand interpreter is loaded.
+   230             0000FFE4   VECTOR_COP        EQU  $00FFE4 ;2 Bytes Native COP Interrupt vector
+   231             0000FFE6   VECTOR_BRK        EQU  $00FFE6 ;2 Bytes Native BRK Interrupt vector
+   232             0000FFE8   VECTOR_ABORT      EQU  $00FFE8 ;2 Bytes Native ABORT Interrupt vector
+   233             0000FFEA   VECTOR_NMI        EQU  $00FFEA ;2 Bytes Native NMI Interrupt vector
+   234             0000FFEC   VECTOR_RESET      EQU  $00FFEC ;2 Bytes Unused (Native RESET vector)
+   235             0000FFEE   VECTOR_IRQ        EQU  $00FFEE ;2 Bytes Native IRQ Vector
+   236             0000FFF0   RETURN            EQU  $00FFF0 ;4 Bytes RETURN key handler. Points to BASIC or MONITOR subroutine 
+                    to execute when RETURN is pressed.
+   237             0000FFF4   VECTOR_ECOP       EQU  $00FFF4 ;2 Bytes Emulation mode interrupt handler
+   238             0000FFF6   VECTOR_EBRK       EQU  $00FFF6 ;2 Bytes Emulation mode interrupt handler
+   239             0000FFF8   VECTOR_EABORT     EQU  $00FFF8 ;2 Bytes Emulation mode interrupt handler
+   240             0000FFFA   VECTOR_ENMI       EQU  $00FFFA ;2 Bytes Emulation mode interrupt handler
+   241             0000FFFC   VECTOR_ERESET     EQU  $00FFFC ;2 Bytes Emulation mode interrupt handler
+   242             0000FFFE   VECTOR_EIRQ       EQU  $00FFFE ;2 Bytes Emulation mode interrupt handler
+   243             00200000   VECTORS_END       EQU  $200000 ;*End of vector space
+   244             0000FFFF   BANK0_END         EQU  $00FFFF ;End of Bank 00 and Direct page
+   245                        ;
+    35                        
+    36                        ;;;
+    37                        ;;; Low-level serial I/O routines
+    38                        ;;;
+    39                        
+    40                        ;;;
+    41                        ;;; UART routines
+    42                        ;;;
+    43                        ;;; UART_SELECT : Call with A = COM# to make that UART the active port for subsequent calls
+    44                        ;;; UART_INIT : Initialize the selected UART with some basic, standard settings
+    45                        ;;; UART_SETBPS : Set the transfer rate for the selected UART. A = the desired rate (e.g. UART_960
+                    0)
+    46                        ;;; UART_SETLCR : Set parity, stop bit, and data length parameters. A = the flags to set (see LCR_
+                     constants)
+    47                        ;;; UART_HASBYT : Check to see if the receive FIFO has any data. Carry is set, if so.
+    48                        ;;; UART_GETC : Get a byte from the selected UART into A. Block if nothing ready.
+    49                        ;;; UART_PUTC : Send a byte in A to the selected UART. Block until the transmit FIFO has room.
+    50                        ;;; UART_PUTS : Send a nul terminated string to the UART. X = pointer to the string, B = data bank
+                     of the string.
+    51                        ;;;
+    52                        
+  Thu Dec  3 2020 22:25                                                                                                Page 19
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+    53                        ; UARTs
+    54             00AF13F8   UART1_BASE EQU $AF13F8        ; Base address for UART 1 (COM1)
+    55             00AF12F8   UART2_BASE EQU $AF12F8        ; Base address for UART 2 (COM2)
+    56                        
+    57                        ; Register Offsets
+    58             00000000   UART_TRHB EQU $00             ; Transmit/Receive Hold Buffer
+    59             00000000   UART_DLL EQU UART_TRHB        ; Divisor Latch Low Byte
+    60             00000001   UART_DLH EQU $01              ; Divisor Latch High Byte
+    61             00000001   UART_IER EQU  UART_DLH         ; Interupt Enable Register
+    62             00000002   UART_FCR EQU $02              ; FIFO Control Register
+    63             00000002   UART_IIR EQU UART_FCR         ; Interupt Indentification Register
+    64             00000003   UART_LCR EQU $03              ; Line Control Register
+    65             00000004   UART_MCR EQU $04              ; Modem Control REgister
+    66             00000005   UART_LSR EQU $05              ; Line Status Register
+    67             00000006   UART_MSR EQU $06              ; Modem Status Register
+    68             00000007   UART_SR EQU $07               ; Scratch Register
+    69                        
+    70                        ; Interupt Enable Flags
+    71             00000020   UINT_LOW_POWER EQU $20        ; Enable Low Power Mode (16750)
+    72             00000010   UINT_SLEEP_MODE EQU $10       ; Enable Sleep Mode (16750)
+    73             00000008   UINT_MODEM_STATUS EQU $08     ; Enable Modem Status Interrupt
+    74             00000004   UINT_LINE_STATUS EQU $04      ; Enable Receiver Line Status Interupt
+    75             00000002   UINT_THR_EMPTY EQU $02        ; Enable Transmit Holding Register Empty interrupt
+    76             00000001   UINT_DATA_AVAIL EQU $01       ; Enable Recieve Data Available interupt   
+    77                        
+    78                        ; Interrupt Identification Register Codes
+    79             00000080   IIR_FIFO_ENABLED EQU $80      ; FIFO is enabled
+    80             00000040   IIR_FIFO_NONFUNC EQU $40      ; FIFO is not functioning
+    81             00000020   IIR_FIFO_64BYTE EQU $20       ; 64 byte FIFO enabled (16750)
+    82             00000000   IIR_MODEM_STATUS EQU $00      ; Modem Status Interrupt
+    83             00000002   IIR_THR_EMPTY EQU $02         ; Transmit Holding Register Empty Interrupt
+    84             00000004   IIR_DATA_AVAIL EQU $04        ; Data Available Interrupt
+    85             00000006   IIR_LINE_STATUS EQU $06       ; Line Status Interrupt
+    86             0000000C   IIR_TIMEOUT EQU $0C           ; Time-out Interrupt (16550 and later)
+    87             00000001   IIR_INTERRUPT_PENDING EQU $01 ; Interrupt Pending Flag
+    88                        
+    89                        ; Line Control Register Codes
+    90             00000080   LCR_DLB EQU $80               ; Divisor Latch Access Bit
+    91             00000060   LCR_SBE EQU $60               ; Set Break Enable
+    92                        
+    93             00000000   LCR_PARITY_NONE EQU $00       ; Parity: None
+    94             00000008   LCR_PARITY_ODD EQU $08        ; Parity: Odd
+    95             00000018   LCR_PARITY_EVEN EQU $18       ; Parity: Even
+    96             00000028   LCR_PARITY_MARK EQU $28       ; Parity: Mark
+    97             00000038   LCR_PARITY_SPACE EQU $38      ; Parity: Space
+    98                        
+    99             00000000   LCR_STOPBIT_1 EQU $00         ; One Stop Bit
+   100             00000004   LCR_STOPBIT_2 EQU $04         ; 1.5 or 2 Stop Bits
+   101                        
+   102             00000000   LCR_DATABITS_5 EQU $00        ; Data Bits: 5
+   103             00000001   LCR_DATABITS_6 EQU $01        ; Data Bits: 6
+   104             00000002   LCR_DATABITS_7 EQU $02        ; Data Bits: 7
+   105             00000003   LCR_DATABITS_8 EQU $03        ; Data Bits: 8
+   106                        
+   107             00000080   LSR_ERR_RECIEVE EQU $80       ; Error in Received FIFO
+   108             00000040   LSR_XMIT_DONE EQU $40         ; All data has been transmitted
+  Thu Dec  3 2020 22:25                                                                                                Page 20
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   109             00000020   LSR_XMIT_EMPTY EQU $20        ; Empty transmit holding register
+   110             00000010   LSR_BREAK_INT EQU $10         ; Break interrupt
+   111             00000008   LSR_ERR_FRAME EQU $08         ; Framing error
+   112             00000004   LSR_ERR_PARITY EQU $04        ; Parity error
+   113             00000002   LSR_ERR_OVERRUN EQU $02       ; Overrun error
+   114             00000001   LSR_DATA_AVAIL EQU $01        ; Data is ready in the receive buffer
+   115                        
+   116             00000180   UART_300 	 EQU 384              ; Code for 300 bps
+   117             00000060   UART_1200 	 EQU 96              ; Code for 1200 bps
+   118             00000030   UART_2400 	 EQU 48              ; Code for 2400 bps
+   119             00000018   UART_4800 	 EQU 24              ; Code for 4800 bps
+   120             0000000C   UART_9600	 EQU 12              ; Code for 9600 bps
+   121             00000006   UART_19200 	 EQU 6              ; Code for 19200 bps
+   122             00000003   UART_38400	 EQU 3              ; Code for 28400 bps
+   123             00000002   UART_57600	 EQU 2              ; Code for 57600 bps
+   124             00000001   UART_115200  EQU 1             ; Code for 115200 bps
+   125                        
+   126                        
+   127                        ;
+   128                        ; Select a UART to use. Set the CURRUART pointer to that ports base address.
+   129                        ;
+   130                        ; Inputs:
+   131                        ;   A = the UART number (1 or 2)
+   132                        ;
+   133                        ; Returns:
+   134                        ;   CURRUART = the base address of the selected UART
+   135                        ;
+   136                        
+   137                        	xdef ~~k_uart_select	
+   138                        ~~k_uart_select
+   139                        UART_SELECT 
+   140 00:0000: 08                       PHP
+   141                            
+   142                                    setal
++  142 00:0001: C2 20                        REP #$20        ; set A long 
++  142                                        LONGA ON
+   143 00:0003: C9 02 00                 CMP #2
+   144 00:0006: F0 07                    BEQ is_COM2
+   145                        
+   146                                    setal
++  146 00:0008: C2 20                        REP #$20        ; set A long 
++  146                                        LONGA ON
+   147 00:000A: A9 F8 13                 LDA #<UART1_BASE
+   148 00:000D: 80 05                    BRA setaddr
+   149                        
+   150                        is_COM2     setal
++  150 00:000F: C2 20                        REP #$20        ; set A long 
++  150                                        LONGA ON
+   151 00:0011: A9 F8 12                 LDA #<UART2_BASE
+   152 00:0014: 8F F0 07 00  setaddr     STA >CURRUART
+   153                                    setas
++  153 00:0018: E2 20                        SEP #$20        ; set A short 
++  153                                        LONGA OFF
+   154 00:001A: A9 AF                    LDA #^UART1_BASE
+   155 00:001C: 8F F2 07 00              STA >CURRUART+2
+   156                        
+  Thu Dec  3 2020 22:25                                                                                                Page 21
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   157 00:0020: 28                       PLP
+   158 00:0021: 6B                       RTL
+   159                                    
+   160                        
+   161                        ;
+   162                        ; Set the transfer rate for the UART
+   163                        ;
+   164                        ; Inputs:
+   165                        ;   A = the transfer rate code
+   166                        ;
+   167                        	xdef ~~k_uart_setbaud	
+   168                        ~~k_uart_setbaud
+   169                        UART_SETBPS 
+   170 00:0022: 08                       PHP
+   171 00:0023: 0B                       PHD
+   172                        
+   173                                    ;setdp CURRUART
+   174                        
+   175                                    setaxl
++  175 00:0024: C2 30                        REP #$30        ; set A&X long 
++  175                                        LONGA ON
++  175                                        LONGI ON
+   176 00:0026: 48                       PHA
+   177                        
+   178                                    setas
++  178 00:0027: E2 20                        SEP #$20        ; set A short 
++  178                                        LONGA OFF
+   179 00:0029: A0 03 00                 LDY #UART_LCR       ; Enable divisor latch
+   180 00:002C: B7 F0                    LDA [CURRUART],Y  
+   181 00:002E: 09 80                    ORA #LCR_DLB
+   182 00:0030: 97 F0                    STA [CURRUART],Y
+   183                        
+   184                                    setal
++  184 00:0032: C2 20                        REP #$20        ; set A long 
++  184                                        LONGA ON
+   185 00:0034: 68                       PLA
+   186 00:0035: A0 00 00                 LDY #UART_DLL
+   187 00:0038: 97 F0                    STA [CURRUART],Y    ; Save the divisor to the UART
+   188                        
+   189                                    setas
++  189 00:003A: E2 20                        SEP #$20        ; set A short 
++  189                                        LONGA OFF
+   190 00:003C: A0 03 00                 LDY #UART_LCR       ; Disable divisor latch
+   191 00:003F: B7 F0                    LDA [CURRUART],Y  
+   192 00:0041: 49 80                    EOR #LCR_DLB
+   193 00:0043: 97 F0                    STA [CURRUART],Y 
+   194                        
+   195 00:0045: 2B                       PLD
+   196 00:0046: 28                       PLP
+   197 00:0047: 6B                       RTL          
+   198                                    
+   199                        	xdef ~~k_uart_setbaud_com1	
+   200                        ~~k_uart_setbaud_com1
+   201                        UART_SETBPS_COM1
+   202 00:0048: 08                       PHP
+   203 00:0049: 0B                       PHD
+  Thu Dec  3 2020 22:25                                                                                                Page 22
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   204                        
+   205                                    ;setdp CURRUART
+   206                        
+   207                                    setaxl
++  207 00:004A: C2 30                        REP #$30        ; set A&X long 
++  207                                        LONGA ON
++  207                                        LONGI ON
+   208 00:004C: 48                       PHA
+   209                        
+   210                                    setas
++  210 00:004D: E2 20                        SEP #$20        ; set A short 
++  210                                        LONGA OFF
+   211 00:004F: A0 03 00                 LDY #UART_LCR       ; Enable divisor latch
+   212 00:0052: AF FB 13 AF              LDA >UART1_BASE+UART_LCR  
+   213 00:0056: 09 80                    ORA #LCR_DLB
+   214 00:0058: 8F FB 13 AF              STA >UART1_BASE+UART_LCR
+   215                        
+   216                                    setal
++  216 00:005C: C2 20                        REP #$20        ; set A long 
++  216                                        LONGA ON
+   217 00:005E: 68                       PLA
+   218 00:005F: A0 00 00                 LDY #UART_DLL
+   219                        			
+   220 00:0062: A9 01 00     			LDA #1
+   221 00:0065: 8F F8 13 AF              STA >UART1_BASE+UART_DLL    ; Save the divisor to the UART
+   222                        
+   223                                    setas
++  223 00:0069: E2 20                        SEP #$20        ; set A short 
++  223                                        LONGA OFF
+   224 00:006B: A0 03 00                 LDY #UART_LCR       ; Disable divisor latch
+   225 00:006E: AF FB 13 AF              LDA >UART1_BASE+UART_LCR  
+   226 00:0072: 49 80                    EOR #LCR_DLB
+   227 00:0074: 8F FB 13 AF              STA >UART1_BASE+UART_LCR 
+   228                        
+   229 00:0078: 2B                       PLD
+   230 00:0079: 28                       PLP
+   231 00:007A: 6B                       RTL  
+   232                        
+   233                        	xdef ~~k_uart_setbaud_com2	
+   234                        ~~k_uart_setbaud_com2
+   235                        UART_SETBPS_COM2
+   236 00:007B: 08                       PHP
+   237 00:007C: 0B                       PHD
+   238                        
+   239                                    ;setdp CURRUART
+   240                        
+   241                                    setaxl
++  241 00:007D: C2 30                        REP #$30        ; set A&X long 
++  241                                        LONGA ON
++  241                                        LONGI ON
+   242 00:007F: 48                       PHA
+   243                        
+   244                                    setas
++  244 00:0080: E2 20                        SEP #$20        ; set A short 
++  244                                        LONGA OFF
+   245 00:0082: A0 03 00                 LDY #UART_LCR       ; Enable divisor latch
+  Thu Dec  3 2020 22:25                                                                                                Page 23
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   246 00:0085: AF FB 12 AF              LDA >UART2_BASE+UART_LCR  
+   247 00:0089: 09 80                    ORA #LCR_DLB
+   248 00:008B: 8F FB 12 AF              STA >UART2_BASE+UART_LCR
+   249                        
+   250                                    setal
++  250 00:008F: C2 20                        REP #$20        ; set A long 
++  250                                        LONGA ON
+   251 00:0091: 68                       PLA
+   252 00:0092: A0 00 00                 LDY #UART_DLL
+   253                        			
+   254 00:0095: A9 01 00     			LDA #1
+   255 00:0098: 8F F8 12 AF              STA >UART2_BASE+UART_DLL    ; Save the divisor to the UART
+   256                        
+   257                                    setas
++  257 00:009C: E2 20                        SEP #$20        ; set A short 
++  257                                        LONGA OFF
+   258 00:009E: A0 03 00                 LDY #UART_LCR       ; Disable divisor latch
+   259 00:00A1: AF FB 12 AF              LDA >UART2_BASE+UART_LCR  
+   260 00:00A5: 49 80                    EOR #LCR_DLB			
+   261 00:00A7: 8F FB 12 AF              STA >UART2_BASE+UART_LCR 
+   262                        
+   263 00:00AB: 2B                       PLD
+   264 00:00AC: 28                       PLP
+   265 00:00AD: 6B                       RTL  			
+   266                        
+   267                        ;
+   268                        ; Set the line control register
+   269                        ;
+   270                        ; Input:
+   271                        ;   X = the port number to set (1 or 2)
+   272                        ;   A = the line control flags (parity, stop bit, data length)
+   273                        	xdef ~~k_uart_setctl	
+   274                        ~~k_uart_setctl
+   275                        UART_SETLCR 
+   276 00:00AE: 08                       PHP
+   277 00:00AF: 0B                       PHD
+   278                        
+   279                                    ;setdp CURRUART
+   280                        
+   281                                    setas
++  281 00:00B0: E2 20                        SEP #$20        ; set A short 
++  281                                        LONGA OFF
+   282                                    setxl
++  282 00:00B2: C2 10                        REP #$10        ; set X long 
++  282                                        LONGI ON
+   283 00:00B4: 29 7F                    AND #$7F            ; We don't want to alter divisor latch
+   284 00:00B6: A0 03 00                 LDY #UART_LCR
+   285 00:00B9: 97 F0                    STA [CURRUART],Y
+   286                        
+   287 00:00BB: 2B                       PLD
+   288 00:00BC: 28                       PLP
+   289 00:00BD: 6B                       RTL
+   290                        
+   291                        ;
+   292                        ; Set the line control register
+   293                        ;
+  Thu Dec  3 2020 22:25                                                                                                Page 24
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   294                        ; Input:
+   295                        ;   X = the port number to set (1 or 2)
+   296                        ;   A = the line control flags (parity, stop bit, data length)
+   297                        	xdef ~~k_uart_setctl_com1	
+   298                        ~~k_uart_setctl_com1
+   299                        UART_SETLCR_COM1 
+   300 00:00BE: 08                       PHP
+   301 00:00BF: 0B                       PHD
+   302                        
+   303                                    ;setdp CURRUART
+   304                        
+   305                                    setas
++  305 00:00C0: E2 20                        SEP #$20        ; set A short 
++  305                                        LONGA OFF
+   306                                    setxl
++  306 00:00C2: C2 10                        REP #$10        ; set X long 
++  306                                        LONGI ON
+   307                                    ;AND #$7F            ; We don't want to alter divisor latch
+   308                                    ;LDY #UART_LCR
+   309 00:00C4: A9 03        			LDA #%00000011
+   310 00:00C6: 8F FB 13 AF              STA >UART1_BASE+UART_LCR 
+   311                        
+   312 00:00CA: 2B                       PLD
+   313 00:00CB: 28                       PLP
+   314 00:00CC: 6B                       RTL
+   315                        
+   316                        	xdef ~~k_uart_setctl_com2	
+   317                        ~~k_uart_setctl_com2
+   318                        UART_SETLCR_COM2 
+   319 00:00CD: 08                       PHP
+   320 00:00CE: 0B                       PHD
+   321                        
+   322                                    ;setdp CURRUART
+   323                        
+   324                                    setas
++  324 00:00CF: E2 20                        SEP #$20        ; set A short 
++  324                                        LONGA OFF
+   325                                    setxl
++  325 00:00D1: C2 10                        REP #$10        ; set X long 
++  325                                        LONGI ON
+   326                                    ;AND #$7F            ; We don't want to alter divisor latch
+   327                                    ;LDY #UART_LCR
+   328 00:00D3: A9 03        			LDA #%00000011
+   329 00:00D5: 8F FB 12 AF              STA >UART2_BASE+UART_LCR 
+   330                        
+   331 00:00D9: 2B                       PLD
+   332 00:00DA: 28                       PLP
+   333 00:00DB: 6B                       RTL			
+   334                        			
+   335                                    
+   336                        
+   337                        ;
+   338                        ; Initialize the serial port to a default state:
+   339                        ;   115200, 1 stop bit, no parity, 8 data bits
+   340                        ;
+   341                        	xdef ~~k_uart_init	
+  Thu Dec  3 2020 22:25                                                                                                Page 25
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   342                        ~~k_uart_init
+   343                        UART_INIT   
+   344 00:00DC: 08                       PHP
+   345 00:00DD: 0B                       PHD
+   346                                    setaxl
++  346 00:00DE: C2 30                        REP #$30        ; set A&X long 
++  346                                        LONGA ON
++  346                                        LONGI ON
+   347                        		
+   348                                    ;setdp CURRUART
+   349                        
+   350                                    ; Set speed to 115200 bps
+   351 00:00E0: A9 0C 00                 LDA #UART_9600
+   352 00:00E3: 22 xx xx xx              JSL UART_SETBPS
+   353                        
+   354                                    ; Set: no parity, 1 stop bit, 8 data bits
+   355                                    setas
++  355 00:00E7: E2 20                        SEP #$20        ; set A short 
++  355                                        LONGA OFF
+   356 00:00E9: A9 00                    LDA #LCR_PARITY_NONE | LCR_STOPBIT_1 | LCR_DATABITS_8
+   357 00:00EB: 22 xx xx xx              JSL UART_SETLCR
+   358                        
+   359                                    ; Enable FIFOs, set for 56 byte tigger level
+   360                                    ;LDA #%00000000          ; %11100001
+   361 00:00EF: A9 E1        			LDA #%11100001
+   362 00:00F1: A0 02 00                 LDY #UART_FCR
+   363 00:00F4: 97 F0                    STA [CURRUART],Y
+   364                        
+   365 00:00F6: 2B                       PLD
+   366 00:00F7: 28                       PLP
+   367 00:00F8: 6B                       RTL
+   368                                    
+   369                        ;
+   370                        ; Initialize the serial port to a default state:
+   371                        ;   115200, 1 stop bit, no parity, 8 data bits
+   372                        ;
+   373                        	xdef ~~k_uart_init_com1	
+   374                        ~~k_uart_init_com1
+   375                        UART_INIT_COM1   
+   376 00:00F9: 08                       PHP
+   377 00:00FA: 0B                       PHD
+   378                                    setaxl
++  378 00:00FB: C2 30                        REP #$30        ; set A&X long 
++  378                                        LONGA ON
++  378                                        LONGI ON
+   379                        		
+   380                                    ;setdp CURRUART
+   381                        
+   382                                    ; Set speed to 115200 bps
+   383 00:00FD: A9 01 00                 LDA #1
+   384 00:0100: 22 xx xx xx              JSL UART_SETBPS_COM1
+   385                        
+   386                                    ; Set: no parity, 1 stop bit, 8 data bits
+   387                                    setas
++  387 00:0104: E2 20                        SEP #$20        ; set A short 
++  387                                        LONGA OFF
+  Thu Dec  3 2020 22:25                                                                                                Page 26
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   388 00:0106: A9 00                    LDA #LCR_PARITY_NONE | LCR_STOPBIT_1 | LCR_DATABITS_8
+   389 00:0108: 22 xx xx xx              JSL UART_SETLCR_COM1
+   390                        
+   391                                    ; Enable FIFOs, set for 56 byte tigger level
+   392                                    ;LDA #%00000000          ; %11100001
+   393 00:010C: A9 01        			LDA #%00000001
+   394 00:010E: A0 02 00                 LDY #UART_FCR
+   395 00:0111: 8F FA 13 AF              STA >UART1_BASE+UART_FCR
+   396                                    ; Enable FIFOs, set for 56 byte tigger level
+   397                                    ;LDA #%00000000          ; %11100001
+   398                        			;LDA #%11100001
+   399                        			;LDA #%00000000
+   400                                    ;LDY #UART_FCR
+   401                                    ;STA >UART1_BASE+UART_FCR
+   402                        
+   403 00:0115: 2B                       PLD
+   404 00:0116: 28                       PLP
+   405 00:0117: 6B                       RTL
+   406                        
+   407                        ;
+   408                        ; Initialize the serial port to a default state:
+   409                        ;   115200, 1 stop bit, no parity, 8 data bits
+   410                        ;
+   411                        	xdef ~~k_uart_init_com2	
+   412                        ~~k_uart_init_com2
+   413                        UART_INIT_COM2   
+   414 00:0118: 08                       PHP
+   415 00:0119: 0B                       PHD
+   416                                    setaxl
++  416 00:011A: C2 30                        REP #$30        ; set A&X long 
++  416                                        LONGA ON
++  416                                        LONGI ON
+   417                        		
+   418                                    ;setdp CURRUART
+   419                        
+   420                                    ; Set speed to 115200 bps
+   421 00:011C: A9 01 00                 LDA #1
+   422 00:011F: 22 xx xx xx              JSL UART_SETBPS_COM2
+   423                        
+   424                                    ; Set: no parity, 1 stop bit, 8 data bits
+   425                                    setas
++  425 00:0123: E2 20                        SEP #$20        ; set A short 
++  425                                        LONGA OFF
+   426 00:0125: A9 00                    LDA #LCR_PARITY_NONE | LCR_STOPBIT_1 | LCR_DATABITS_8
+   427 00:0127: 22 xx xx xx              JSL UART_SETLCR_COM2
+   428                        
+   429                                    ; Enable FIFOs, set for 56 byte tigger level
+   430                                    ;LDA #%00000000          ; %11100001
+   431 00:012B: A9 01        			LDA #%00000001
+   432 00:012D: A0 02 00                 LDY #UART_FCR
+   433 00:0130: 8F FA 12 AF              STA >UART2_BASE+UART_FCR
+   434                        
+   435                        			;LDA #%00000000
+   436                                    ;LDY #UART_FCR
+   437                                    ;STA >UART2_BASE+UART_FCR
+   438                        
+  Thu Dec  3 2020 22:25                                                                                                Page 27
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   439 00:0134: 2B                       PLD
+   440 00:0135: 28                       PLP
+   441 00:0136: 6B                       RTL
+   442                        
+   443                        ;
+   444                        ; Check to see if a character is waiting on the receive FIFO.
+   445                        ;
+   446                        ; Outputs:
+   447                        ;   C is set if a character is available
+   448                        ;
+   449                        	xdef ~~k_uart_dataready	
+   450                        ~~k_uart_dataready
+   451                        UART_HASBYT 
+   452 00:0137: 08                       PHP
+   453 00:0138: 0B                       PHD
+   454                        
+   455                                    setaxl
++  455 00:0139: C2 30                        REP #$30        ; set A&X long 
++  455                                        LONGA ON
++  455                                        LONGI ON
+   456                                    ;setdp CURRUART
+   457                        
+   458                                    setas                  
++  458 00:013B: E2 20                        SEP #$20        ; set A short 
++  458                                        LONGA OFF
+   459 00:013D: A0 05 00                 LDY #UART_LSR           ; Check the receive FIFO
+   460 00:0140: B7 F0        			LDA [CURRUART],Y
+   461 00:0142: 29 01                    AND #LSR_DATA_AVAIL
+   462 00:0144: D0 04                    BNE ret_true            ; If flag is set, return true
+   463                        
+   464 00:0146: 2B           ret_false   PLD                     ; Return false
+   465 00:0147: 28                       PLP
+   466 00:0148: 18                       CLC
+   467 00:0149: 6B                       RTL
+   468                        
+   469 00:014A: 2B           ret_true    PLD                     ; Return true
+   470 00:014B: 28                       PLP
+   471 00:014C: 38                       SEC
+   472 00:014D: 6B                       RTL
+   473                                    
+   474                        
+   475                        ;
+   476                        ; Get a character from the selected UARTs receive FIFO.
+   477                        ; Block if nothing is ready.
+   478                        ;
+   479                        ; Outputs:
+   480                        ;   A = the character read
+   481                        ;
+   482                        	xdef ~~k_uart_getbyte	
+   483                        ~~k_uart_getbyte
+   484                        
+   485                        UART_GETC   
+   486 00:014E: 08                       PHP
+   487 00:014F: 0B                       PHD
+   488                        
+   489                                    setaxl
+  Thu Dec  3 2020 22:25                                                                                                Page 28
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
++  489 00:0150: C2 30                        REP #$30        ; set A&X long 
++  489                                        LONGA ON
++  489                                        LONGI ON
+   490                                    ;setdp CURRUART
+   491                        
+   492                                    setas                  
++  492 00:0152: E2 20                        SEP #$20        ; set A short 
++  492                                        LONGA OFF
+   493 00:0154: A0 05 00                 LDY #UART_LSR           ; Check the receive FIFO
+   494 00:0157: B7 F0        wait_getc   LDA [CURRUART],Y
+   495 00:0159: 29 01                    AND #LSR_DATA_AVAIL
+   496 00:015B: F0 FA                    BEQ wait_getc           ; If the flag is clear, wait
+   497                        
+   498 00:015D: A0 00 00                 LDY #UART_TRHB          ; Get the byte from the receive FIFO
+   499 00:0160: B7 F0                    LDA [CURRUART],Y
+   500                        
+   501 00:0162: 2B                       PLD
+   502 00:0163: 28                       PLP
+   503 00:0164: 6B                       RTL
+   504                                    
+   505                        
+   506                        ;
+   507                        ; Send a byte to the UART
+   508                        ;
+   509                        ; Inputs:
+   510                        ;   A = the character to print
+   511                        ;   X = the port to use
+   512                        ;
+   513                        	xdef ~~k_uart_putbyte	
+   514                        ~~k_uart_putbyte
+   515                        
+   516                        UART_PUTC   
+   517 00:0165: 08                       PHP
+   518 00:0166: 0B                       PHD
+   519                        
+   520                                    setaxl
++  520 00:0167: C2 30                        REP #$30        ; set A&X long 
++  520                                        LONGA ON
++  520                                        LONGI ON
+   521                                    ;setdp CURRUART
+   522                        
+   523                                    setas
++  523 00:0169: E2 20                        SEP #$20        ; set A short 
++  523                                        LONGA OFF
+   524 00:016B: 48                       PHA                     ; Wait for the transmit FIFO to free up
+   525 00:016C: A0 05 00                 LDY #UART_LSR
+   526 00:016F: B7 F0        wait_putc   LDA [CURRUART],Y
+   527 00:0171: 29 20                    AND #LSR_XMIT_EMPTY
+   528 00:0173: F0 FA                    BEQ wait_putc
+   529 00:0175: 68                       PLA
+   530                        
+   531 00:0176: A0 00 00                 LDY #UART_TRHB
+   532 00:0179: 97 F0                    STA [CURRUART],Y
+   533                        
+   534 00:017B: 2B                       PLD
+   535 00:017C: 28                       PLP
+  Thu Dec  3 2020 22:25                                                                                                Page 29
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   536 00:017D: 6B                       RTL
+   537                                    
+   538                        
+   539                        ;
+   540                        ; Send a nul-terminated string to the selected UART
+   541                        ;
+   542                        ; Inputs:
+   543                        ;   B = the data bank for the string
+   544                        ;   X = the pointer to the string
+   545                        ;
+   546                        	xdef ~~k_uart_putstring	
+   547                        ~~k_uart_putstring
+   548                        
+   549                        UART_PUTS   
+   550 00:017E: 08                       PHP
+   551                        
+   552                                    setas
++  552 00:017F: E2 20                        SEP #$20        ; set A short 
++  552                                        LONGA OFF
+   553 00:0181: A9 00        put_loop    LDA #0,B,X
+   554 00:0183: F0 07                    BEQ done
+   555 00:0185: 22 xx xx xx              JSL UART_PUTC
+   556 00:0189: E8                       INX
+   557 00:018A: 80 F5                    BRA put_loop
+   558                        
+   559 00:018C: 28           done        PLP
+   560 00:018D: 6B                       RTL
+   561                                    
+   562                        
+   563                        ;
+   564                        ; Enable interrupt requests for the UARTs
+   565                        ;
+   566                        	xdef ~~k_uart_enableirq	
+   567                        ~~k_uart_enableirq
+   568                        UART_ENIRQ  
+   569 00:018E: 08                       PHP
+   570 00:018F: 0B                       PHD
+   571                        
+   572                                    setaxl            
++  572 00:0190: C2 30                        REP #$30        ; set A&X long 
++  572                                        LONGA ON
++  572                                        LONGI ON
+   573                                    ;setdp CURRUART
+   574                        
+   575 00:0192: A9 02 00                 LDA #2
+   576 00:0195: 22 xx xx xx              JSL UART_SELECT
+   577 00:0199: 22 xx xx xx              JSL UART_INIT           ; Initialize COM1
+   578                        
+   579                                    setas
++  579 00:019D: E2 20                        SEP #$20        ; set A short 
++  579                                        LONGA OFF
+   580                        
+   581                                    ;LDA #$08
+   582                        			;LDY #UART_MCR
+   583                                    ;STA [CURRUART],Y
+   584                        
+  Thu Dec  3 2020 22:25                                                                                                Page 30
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   585                        
+   586                                    ;LDA #UINT_DATA_AVAIL    ; Enable Data Available interrupts
+   587 00:019F: A9 0F                    LDA #$0F
+   588 00:01A1: A0 01 00     			LDY #UART_IER
+   589 00:01A4: 97 F0                    STA [CURRUART],Y
+   590                        
+   591 00:01A6: AF 4D 01 00              LDA >INT_MASK_REG1     ; Enable COM1 interrupts
+   592 00:01AA: 29 EF                    AND #$EF ;#~FNX1_INT04_COM1
+   593 00:01AC: 8F 4D 01 00              STA >INT_MASK_REG1
+   594                        
+   595 00:01B0: AF 4D 01 00              LDA >INT_MASK_REG1     ; Enable COM1 interrupts
+   596 00:01B4: 29 F7                    AND #$F7 ;#~FNX1_INT03_COM2
+   597 00:01B6: 8F 4D 01 00              STA >INT_MASK_REG1
+   598                        
+   599                                    ;LDA #'^'
+   600                                    ;JSL IPUTC
+   601                        			
+   602                        
+   603                        
+   604                                    setaxl
++  604 00:01BA: C2 30                        REP #$30        ; set A&X long 
++  604                                        LONGA ON
++  604                                        LONGI ON
+   605 00:01BC: 2B                       PLD
+   606 00:01BD: 28                       PLP
+   607 00:01BE: 6B                       RTL
+   608                                    
+   609                        
+   610                        	xdef ~~k_uart_enableirq_ports	
+   611                        ~~k_uart_enableirq_ports
+   612                        UART_ENIRQ_PORTS  
+   613 00:01BF: 08                       PHP
+   614 00:01C0: 0B                       PHD
+   615                        
+   616                                    setaxl            
++  616 00:01C1: C2 30                        REP #$30        ; set A&X long 
++  616                                        LONGA ON
++  616                                        LONGI ON
+   617                        
+   618                        
+   619 00:01C3: 22 xx xx xx              JSL UART_INIT_COM1           ; Initialize COM1
+   620 00:01C7: 22 xx xx xx  			JSL UART_INIT_COM2           ; Initialize COM2
+   621                        			
+   622                                    setas
++  622 00:01CB: E2 20                        SEP #$20        ; set A short 
++  622                                        LONGA OFF
+   623                        
+   624 00:01CD: A9 08                    LDA #$08
+   625 00:01CF: A0 04 00     			LDY #UART_MCR
+   626 00:01D2: 8F FC 13 AF              STA >UART1_BASE+UART_MCR
+   627                        
+   628                                    setas
++  628 00:01D6: E2 20                        SEP #$20        ; set A short 
++  628                                        LONGA OFF
+   629 00:01D8: A0 03 00                 LDY #UART_LCR       ; Enable divisor latch
+   630 00:01DB: AF FB 13 AF              LDA >UART1_BASE+UART_LCR  
+  Thu Dec  3 2020 22:25                                                                                                Page 31
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   631 00:01DF: 29 7F                    AND #%01111111
+   632 00:01E1: 8F FB 13 AF              STA >UART1_BASE+UART_LCR
+   633                        
+   634                                    ;LDA #UINT_DATA_AVAIL    ; Enable Data Available interrupts
+   635 00:01E5: A9 07                    LDA #$07
+   636 00:01E7: A0 01 00     			LDY #UART_IER
+   637 00:01EA: 8F F9 13 AF              STA >UART1_BASE+UART_IER
+   638                        
+   639                        
+   640 00:01EE: A9 08                    LDA #$08
+   641 00:01F0: A0 04 00     			LDY #UART_MCR
+   642 00:01F3: 8F FC 12 AF              STA >UART2_BASE+UART_MCR
+   643                        
+   644                                    setas
++  644 00:01F7: E2 20                        SEP #$20        ; set A short 
++  644                                        LONGA OFF
+   645 00:01F9: A0 03 00                 LDY #UART_LCR       ; Enable divisor latch
+   646 00:01FC: AF FB 12 AF              LDA >UART2_BASE+UART_LCR  
+   647 00:0200: 29 7F                    AND #%01111111
+   648 00:0202: 8F FB 12 AF              STA >UART2_BASE+UART_LCR
+   649                        
+   650                        
+   651 00:0206: A9 07                    LDA #$07
+   652 00:0208: A0 01 00     			LDY #UART_IER
+   653 00:020B: 8F F9 12 AF              STA >UART2_BASE+UART_IER
+   654                        			
+   655                        
+   656                        
+   657 00:020F: AF 4D 01 00              LDA >INT_MASK_REG1     ; Enable COM1 interrupts
+   658 00:0213: 29 EF                    AND #$EF ;#~FNX1_INT04_COM1
+   659 00:0215: 8F 4D 01 00              STA >INT_MASK_REG1
+   660                        
+   661 00:0219: AF 4D 01 00              LDA >INT_MASK_REG1     ; Enable COM1 interrupts
+   662 00:021D: 29 F7                    AND #$F7 ;#~FNX1_INT03_COM2
+   663 00:021F: 8F 4D 01 00              STA >INT_MASK_REG1
+   664                        
+   665                                    ;LDA #'^'
+   666                                    ;JSL IPUTC
+   667                        			
+   668                        
+   669                        
+   670                                    setaxl
++  670 00:0223: C2 30                        REP #$30        ; set A&X long 
++  670                                        LONGA ON
++  670                                        LONGI ON
+   671 00:0225: 2B                       PLD
+   672 00:0226: 28                       PLP
+   673 00:0227: 6B                       RTL
+   674                        
+   675                        ;
+   676                        ; Loop and poll the Interrupt Identification register of the UART waiting for an interrupt.
+   677                        ; If the interrupt is for received characters, print all the characters in the receive buffer.
+   678                        ;
+   679                        	xdef ~~k_uart_poll	
+   680                        ~~k_uart_poll
+   681                        
+  Thu Dec  3 2020 22:25                                                                                                Page 32
+
+    "FXOS 'C' Startup Program V 1.00 for Large Model W65C816 - fxstartup.asm"
+
+   682                        UART_POLLIR 
+   683 00:0228: 08                       PHP
+   684 00:0229: 0B                       PHD
+   685                        
+   686                                    ;setdp CURRUART
+   687                                    setas
++  687 00:022A: E2 20                        SEP #$20        ; set A short 
++  687                                        LONGA OFF
+   688                        
+   689                        WAITINT      
+   690                                    ; LDA >INT_PENDING_REG1  ; Check to see if IRQ4 is pending
+   691                                    ; AND #FNX1_INT04_COM1
+   692                                    ; CMP #FNX1_INT04_COM1
+   693                                    ; BNE WAITINT
+   694                        
+   695 00:022C: A0 02 00                 LDY #UART_IIR
+   696 00:022F: B7 F0                    LDA [CURRUART],Y        ; Get the Interrupt Identification Register
+   697 00:0231: 89 01                    BIT #$01                ; See if an interrupt is pending
+   698 00:0233: D0 F7                    BNE WAITINT             ; No? Keep waiting
+   699                        
+   700 00:0235: 4A                       LSR A
+   701 00:0236: 29 03                    AND #$03                ; Get the interrupt vector code
+   702                                    
+   703 00:0238: C9 02                    CMP #$02                ; Is it 2 (Received Data)?
+   704 00:023A: D0 00                    BNE else1               ; No? Keep checking
+   705                                    ;JSR UART_ECRC           ; Yes: echo the packet
+   706                        
+   707 00:023C: 80 EE        else1       BRA WAITINT             ; Otherwise: just wait
+   708                        
+   709 00:023E: 2B                       PLD
+   710 00:023F: 28                       PLP
+   711 00:0240: 6B                       RTL
+   712                                    
+   713                                         ; And return
+   714                                    
+
+
+      Lines assembled: 1718
+      Errors: 0

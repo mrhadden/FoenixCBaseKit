@@ -1,5 +1,6 @@
 
 #include "fxstring.h"
+#include "fxmemorymanager.h"
 #include <stdlib.h>
 
 static char bytetohex[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
@@ -47,6 +48,17 @@ char FAR * k_pad_string(char FAR * dest,char FAR * src,char filler,int width)
 
 	return dest;
 }
+
+LPSTR k_strcat(LPSTR dest,LPCSTR src)
+{
+	return dest;
+}
+
+LPSTR k_strcpy(LPSTR dest,LPCSTR src)
+{
+	return dest;
+}
+
 /*
  *
  *
@@ -359,7 +371,7 @@ LPCHAR k_string_ltrim(LPCHAR lpText)
 	if(lpText)
 	{
 		length = strlen(lpText);
-		tmp = malloc(length+1);
+		tmp = k_mem_allocate_heap(length+1);
 		if(tmp)
 		{
 			memset(tmp,0,length+1);
@@ -379,7 +391,7 @@ LPCHAR k_string_ltrim(LPCHAR lpText)
 					break;
 			}
 			strcpy(lpText,tmp);
-			free(tmp);
+			k_mem_deallocate_heap(tmp);
 		}
 	}
 	return lpText;
@@ -429,7 +441,7 @@ LPCHAR k_string_copy_string(LPCSTR src)
 
 		if(size > 0)
 		{
-			copy = malloc(size+1);
+			copy = k_mem_allocate_heap(size+1);
 			//strcpy(copy,src);
 			ptr = copy;
 			while(*src)
@@ -456,10 +468,10 @@ PFXSTRING k_fxstring_init(UINT size)
 	{
 		k_debug_integer("k_fxstring_new:",size);
 
-		fxstring = malloc(sizeof(FXSTRING));
+		fxstring = k_mem_allocate_heap(sizeof(FXSTRING));
 		fxstring->pos = 0;
 		fxstring->size = size;
-		fxstring->buffer = malloc(fxstring->size);
+		fxstring->buffer = k_mem_allocate_heap(fxstring->size);
 		if(fxstring->buffer)
 			memset(fxstring->buffer,0,fxstring->size);
 
@@ -488,7 +500,7 @@ PFXSTRING k_fxstring_new(LPCHAR initial,UINT size)
 
 	if(fxstring->buffer == NULL)
 	{
-		fxstring->buffer = malloc(fxstring->size);
+		fxstring->buffer = k_mem_allocate_heap(fxstring->size);
 		memset(fxstring->buffer,0,fxstring->size);
 	}
 
@@ -505,13 +517,13 @@ VOID k_fxstring_free(PFXSTRING string)
 	if(string)
 	{
 		if(string->buffer)
-			free(string->buffer);
+			k_mem_deallocate_heap(string->buffer);
 
 		string->size = 0;
 		string->pos  = 0;
 		string->buffer = NULL;
 
-		free(string);
+		k_mem_deallocate_heap(string);
 	}
 	return;
 }
@@ -640,7 +652,7 @@ LPCHAR k_string_append_integer(LPCHAR baseText,UINT integer)
 	UCHAR buffer[16];
 
 
-	newString = malloc(strlen(baseText) + 16 + 1);
+	newString = k_mem_allocate_heap(strlen(baseText) + 16 + 1);
 	newString[0] = 0;
 	strcat(newString,baseText);
 	strcat(newString,k_inttodec(integer,buffer));
@@ -658,6 +670,10 @@ LPCHAR k_string_replace(LPCSTR template, LPCSTR marker, LPCSTR replacement)
 	UINT   mlen = 0;
 	UINT   rlen = 0;
 
+	k_debug_strings("k_string_replace:template:",(LPSTR)template);
+	k_debug_strings("k_string_replace:marker:",(LPSTR)marker);
+	k_debug_strings("k_string_replace:replacement:",(LPSTR)replacement);
+
 	if(template && marker && replacement)
 	{
 		tc = k_string_copy_string(template);
@@ -667,7 +683,7 @@ LPCHAR k_string_replace(LPCSTR template, LPCSTR marker, LPCSTR replacement)
 			rlen = strlen(replacement);
 			if(mlen && rlen)
 			{
-				buffer = malloc(256);
+				buffer = k_mem_allocate_heap(256);
 				if(buffer)
 				{
 					memset(buffer,0,256);
@@ -689,10 +705,11 @@ LPCHAR k_string_replace(LPCSTR template, LPCSTR marker, LPCSTR replacement)
 					strcat(buffer,tc);
 				}
 			}
-			free(tc);
+			k_mem_deallocate_heap(tc);
 		}
 	}
 
+	k_debug_strings("k_string_replace:buffer:",buffer);
 
 	return buffer;
 }

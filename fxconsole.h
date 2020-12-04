@@ -13,7 +13,7 @@
 #endif
 
 #include "fxstring.h"
-#include "fxstringtable.h"
+#include "fxeventmanager.h"
 
 #define WIN_BORDER_CHAR_TOP 		   	(0xC4)
 #define WIN_BORDER_CHAR_BOTTOM 		   	(0xC4)
@@ -113,6 +113,7 @@ void k_clear_screen(int bcolor);
 void k_print(char * message);
 void k_put_char(int col, int row, char c, int fcolor, int bcolor);
 int k_put_string(int col, int row, char * text, int fcolor, int bcolor);
+int k_put_string_buffer(int col,int row,char * text,LPVOID buffer);
 int k_put_color(int col,int row,char * textColor);
 void k_text_mode_dialog(int x,int y,int width,int height,LPCSTR message);
 void k_window_draw(int bx,int by,int bw,int bh,char FAR* title);
@@ -127,6 +128,8 @@ void OnMouse(PFXPROCESS p,int button,int x,int y);
 void ObjectClicked(PWINDOW console);
 
 void DefConsoleProc2(PFXOSMESSAGE pMsg);
+void DefConsoleProc3(PFXOSMESSAGE pMsg);
+
 
 VOID foreach_file_entry(LPVOID ctx,LPVOID data);
 
@@ -135,6 +138,7 @@ LPCHAR token_to_string(TOKENTYPE tt);
 PTOKEN newToken(PFXSTRING name,TOKENTYPE type);
 void sig_walk(LPVOID signature,LPVOID pdata);
 VOID getTokenSig(PFXNODE tokens,LPVOID signature);
+
 
 
 UINT cmd_CLEAR(PFXPROCESS process,PFXNODE tokens);
@@ -154,5 +158,14 @@ UINT cmd_BACK(PFXPROCESS process,PFXNODE tokens);
 UINT cmd_CHRDIR(PFXPROCESS process,PFXNODE tokens);
 UINT cmd_DISPLAY(PFXPROCESS process,PFXNODE tokens);
 UINT cmd_SEND(PFXPROCESS process,PFXNODE tokens);
+UINT cmd_Window(PFXPROCESS process,PFXNODE tokens);
+UINT cmd_START(PFXPROCESS process,PFXNODE tokens);
+UINT cmd_EXIT(PFXPROCESS process,PFXNODE tokens);
+UINT cmd_TIME(PFXPROCESS process,PFXNODE tokens);
+
+UINT cmd_PAUSE(PFXPROCESS process,PFXNODE tokens);
+UINT cmd_RESUME(PFXPROCESS process,PFXNODE tokens);
+
+UINT cmd_LINEUP(PFXPROCESS process,PFXNODE tokens);
 
 #endif

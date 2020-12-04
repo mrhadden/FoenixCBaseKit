@@ -5,10 +5,12 @@
 //void *heap_start=(void FAR *)0x030000,*heap_end=(void FAR *)(0x04FFFF);
 
 static ULONG FXOSVERSION = 0x010000;
-static PFAR  FXOSVERSIONSTRING = "FX/OS Version 0.8.0 Beta";
+static PFAR  FXOSVERSIONSTRING = "FX/OS Version 0.9.0 Beta";
 
 
 static char k16buffer[16];
+
+static KERNELTRAPCALL *KERNEL_FUNCTION_TABLE;
 
 void k_delay_nop(void)
 {
@@ -62,6 +64,11 @@ PFAR k_getFXOSVersionName(void)
 PFXZERPOPAGE k_getZeroPage(void)
 {
 	return (PFXZERPOPAGE)ZEROPAGE;
+}
+
+KERNELTRAPCALL FAR *k_getKernelTrapTable(VOID)
+{
+	return KERNEL_FUNCTION_TABLE;
 }
 
 VOID k_initializeZeroPage(VOID)
@@ -126,6 +133,7 @@ int k_report_configuration(int offset,int line)
 	k_get_fpga_date_year(krcBuffer);
 	pos = k_put_string(pos,line,k_strip_padding(krcBuffer),15,0);
 
+
 	return line;
 }
 /*
@@ -158,14 +166,33 @@ void k_debug_string(char FAR* debugString)
 #ifdef USE_FX256_FMX
 	k_debug_string_com1(debugString);
 #else
-	k_debug_string_com2(debugString);
+	//k_debug_string_com2(debugString);
+	k_debug_string_com1(debugString);
 #endif
+}
+
+VOID k_DebugOutString(VOID)
+{
+	//PFXZERPOPAGE zp = k_getZeroPage();
+
+	//k_debug_pointer("k_DebugOutString1:",zp->kernelFunctionCallParameter);
+
+
+	//k_debug_string(zp->kernelFunctionCallParameter);
+	k_debug_string("k_DebugOutString!!!!\r\n");
+
 }
 
 void k_debug_nstring(char FAR* debugString,int nsize)
 {
 	//k_debug_nstring_com2(debugString,nsize);
+	//k_debug_nstring_com1(debugString,nsize);
+#ifdef USE_FX256_FMX
 	k_debug_nstring_com1(debugString,nsize);
+#else
+	//k_debug_nstring_com2(debugString,nsize);
+	k_debug_nstring_com1(debugString,nsize);
+#endif
 }
 
 /*
@@ -217,8 +244,9 @@ void k_debug_nstring_com1(char FAR* debugString,int nsize)
 		while(!(UART1_BASE[5] & 0x20))
 		{
 		}
-		UART1_BASE[0] = *ptr;
-		ptr++;
+		//UART1_BASE[0] = *ptr;
+		//ptr++;
+		UART1_BASE[0] = debugString[i];
 	}
 	return;
 }
@@ -232,8 +260,9 @@ void k_debug_nstring_com2(char FAR* debugString,int nsize)
 		while(!(UART2_BASE[5] & 0x20))
 		{
 		}
-		UART2_BASE[0] = *ptr;
-		ptr++;
+		//UART2_BASE[0] = *ptr;
+		//ptr++;
+		UART2_BASE[0] = debugString[i];
 	}
 	return;
 }
@@ -385,6 +414,22 @@ void k_debug_strings(char FAR* debugString,char FAR *message)
 }
 
 
+void k_debug_nmessage(char FAR* debugString,char FAR *message,UINT size)
+{
+	k_debug_string(debugString);
+	k_debug_string("[");
+	k_debug_nstring(message,size);
+	k_debug_string("]");
+	k_debug_string("\r\n");
+
+	return;
+}
+
+void k_debug_nstrings(char FAR* debugString,char FAR *message,UINT size)
+{
+	k_debug_nmessage(debugString,message,size);
+}
+
 /*
  *
  *
@@ -408,15 +453,64 @@ void k_debug_hexchar(PFAR debugString, UCHAR n)
 
 	return;
 }
-/*
- *
- *
- *
- *
- */
-void k_debug_byte_array(char FAR* debugString,BYTE FAR *n,UINT size)
+
+void k_debug_on(UCHAR n)
 {
-	int i = 0;
+	if(n == 0)
+	{
+		k_debug_string("0");
+	}
+	else
+	{
+		k_debug_string("1");
+	}
+}
+
+void k_debug_bits(PFAR debugString, UCHAR n)
+{
+	PDEBUGBYTEBITS pbits = (PDEBUGBYTEBITS)&n;
+
+	k_debug_string(debugString);
+
+
+	/*
+	k_debug_on(pbits->bit7);
+	k_debug_on(pbits->bit6);
+	k_debug_on(pbits->bit5);
+	k_debug_on(pbits->bit4);
+	k_debug_on(pbits->bit3);
+	k_debug_on(pbits->bit2);
+	k_debug_on(pbits->bit1);
+	k_debug_on(pbits->bit0);
+	*/
+
+	k_debug_on(pbits->bit0);
+	k_debug_on(pbits->bit1);
+	k_debug_on(pbits->bit2);
+	k_debug_on(pbits->bit3);
+	k_debug_on(pbits->bit4);
+	k_debug_on(pbits->bit5);
+	k_debug_on(pbits->bit6);
+	k_debug_on(pbits->bit7);
+
+
+	/*
+	k_debug_string(k_bytetohex(pbits->bit7,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit6,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit5,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit4,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit3,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit2,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit1,k16buffer));
+	k_debug_string(k_bytetohex(pbits->bit0,k16buffer));
+	*/
+
+	k_debug_string("\r\n");
+}
+
+void k_debug_byte_array(LPCHAR debugString,PBYTE n,ULONG size)
+{
+	ULONG i = 0;
 	k_debug_string(debugString);
 
 	for(i=0;i<size;i++)
@@ -433,7 +527,64 @@ void k_debug_byte_array(char FAR* debugString,BYTE FAR *n,UINT size)
 }
 
 
+/**
+ *
+ *
+ */
+void k_debug_node(PFXNODE node)
+{
+	k_debug_pointer("     NODE:",node);
+	if(node && node->name)
+	{
+		node->name[31] = 0;
+		k_debug_string("NODE NAME:");
+		k_debug_string(node->name);
+		k_debug_string("\r\n");
 
+		k_debug_integer("     TYPE:",node->type);
+		k_debug_pointer("  POINTER:",node->data);
+
+	}
+}
+/**
+ *
+ *
+ */
+void k_debug_nodelist(PFXNODE head)
+{
+	PFXNODE ptr = head;
+	while(ptr!=NULL)
+	{
+		k_debug_node(ptr);
+		ptr = ptr->next;
+	}
+}
+
+/**
+ *
+ *
+ */
+void k_debug_nodelist_list(PFXNODELIST list,FOREACHNODE handler)
+{
+	PFXNODE ptr = list->listhead->next;
+
+	k_debug_strings("NODELIST:",(LPCHAR)list->listhead->data);
+
+	k_debug_nodelist_with_data(list->listhead->next,handler);
+}
+
+
+void k_debug_nodelist_with_data(PFXNODE head,FOREACHNODE handler)
+{
+	PFXNODE ptr = head;
+	while(ptr!=NULL)
+	{
+		k_debug_node(ptr);
+		if(handler)
+			handler(NULL,ptr->data);
+		ptr = ptr->next;
+	}
+}
 /*
  *
  *

@@ -1,0 +1,2350 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.c",0
+     7                        ;/*
+     8                        ; * fxmenumanager.c
+     9                        ; *
+    10                        ; *  Created on: Oct 1, 2019
+    11                        ; *      Author: mtbush
+    12                        ; */
+    13                        ;#include "fxos.h"
+    14                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+    15                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    16                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    17                        	.line	88
+    18                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    19                        	.stag	fake1_,32,1
+    20                        	.member	quot,0,5,8,16
+    21                        	.member	rem,16,5,8,16
+    22                        	.eos
+    23                        	.stag	fake2_,64,2
+    24                        	.member	quot,0,7,8,32
+    25                        	.member	rem,32,7,8,32
+    26                        	.eos
+    27                        	.stag	int_sqrt,32,3
+    28                        	.member	sqrt,0,16,8,16
+    29                        	.member	frac,16,16,8,16
+    30                        	.eos
+    31                        	.line	205
+    32                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",4
+    33                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    34                        	.line	134
+    35                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",5
+    36                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    37                        	.line	103
+    38                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",6
+    39                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+    40                        	.stag	_fx_bytebits,8,4
+    41                        	.member	b7,0,14,17,1
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    42                        	.member	b6,1,14,17,1
+    43                        	.member	b5,2,14,17,1
+    44                        	.member	b4,3,14,17,1
+    45                        	.member	b3,4,14,17,1
+    46                        	.member	b2,5,14,17,1
+    47                        	.member	b1,6,14,17,1
+    48                        	.member	b0,7,14,17,1
+    49                        	.eos
+    50                        	.stag	_fx_node,384,5
+    51                        	.member	type,0,14,8,8
+    52                        	.member	Reserved0,8,14,8,8
+    53                        	.member	data,16,129,8,32
+    54                        	.member	last,48,138,8,32,5
+    55                        	.member	next,80,138,8,32,5
+    56                        	.member	name,112,110,8,0,32
+    57                        	.member	Reserved1,368,16,8,16
+    58                        	.eos
+    59                        	.stag	_fx_nodelist,96,6
+    60                        	.member	listhead,0,138,8,32,5
+    61                        	.member	listData,32,129,8,32
+    62                        	.member	deallocator,64,641,8,32
+    63                        	.eos
+    64                        	.stag	_fx_queue,80,7
+    65                        	.member	count,0,5,8,16
+    66                        	.member	front,16,138,8,32,5
+    67                        	.member	rear,48,138,8,32,5
+    68                        	.eos
+    69                        	.stag	fake8_,32,8
+    70                        	.member	subsystem,0,14,8,8
+    71                        	.member	level,8,14,8,8
+    72                        	.member	error,16,16,8,16
+    73                        	.eos
+    74                        	.stag	_fx_process_signal,16,9
+    75                        	.member	cbSize,0,16,8,16
+    76                        	.eos
+    77                        	.stag	_fx_semaphore,16,10
+    78                        	.member	reserved,0,5,8,16
+    79                        	.eos
+    80                        	.stag	_fx_fileBlock,552,11
+    81                        	.member	openCount,0,16,8,16
+    82                        	.member	lockCount,16,16,8,16
+    83                        	.member	dirty,32,14,8,8
+    84                        	.member	fileBuffer,40,110,8,0,64
+    85                        	.eos
+    86                        	.stag	_fx_irq_data,48,12
+    87                        	.member	line,0,5,8,16
+    88                        	.member	keycode,16,142,8,32
+    89                        	.eos
+    90                        	.stag	_task,48,13
+    91                        	.member	SPL,0,14,8,8
+    92                        	.member	SPH,8,14,8,8
+    93                        	.member	pstack,16,142,8,32
+    94                        	.eos
+    95                        	.stag	_task_stack,32,14
+    96                        	.member	SS,0,142,8,32
+    97                        	.eos
+    98                        	.stag	int_regs,104,15
+    99                        	.member	PB,0,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+   100                        	.member	PH,8,14,8,8
+   101                        	.member	PL,16,14,8,8
+   102                        	.member	PP,24,14,8,8
+   103                        	.member	DB,32,14,8,8
+   104                        	.member	DH,40,14,8,8
+   105                        	.member	DL,48,14,8,8
+   106                        	.member	AH,56,14,8,8
+   107                        	.member	AL,64,14,8,8
+   108                        	.member	XH,72,14,8,8
+   109                        	.member	XL,80,14,8,8
+   110                        	.member	YH,88,14,8,8
+   111                        	.member	YL,96,14,8,8
+   112                        	.eos
+   113                        	.stag	_fx_eventMessage,304,16
+   114                        	.member	src,0,18,8,32
+   115                        	.member	dest,32,18,8,32
+   116                        	.member	type,64,16,8,16
+   117                        	.member	hwnd,80,129,8,32
+   118                        	.member	pheap,112,129,8,32
+   119                        	.member	msgTime,144,18,8,32
+   120                        	.member	data,176,110,8,0,16
+   121                        	.eos
+   122                        	.stag	_fx_cmdMessage,304,17
+   123                        	.member	src,0,18,8,32
+   124                        	.member	dest,32,18,8,32
+   125                        	.member	type,64,16,8,16
+   126                        	.member	hwnd,80,129,8,32
+   127                        	.member	pheap,112,129,8,32
+   128                        	.member	msgTime,144,18,8,32
+   129                        	.member	cmdCId,176,16,8,16
+   130                        	.member	cmdMId,192,16,8,16
+   131                        	.member	parameter1,208,18,8,32
+   132                        	.member	parameter2,240,18,8,32
+   133                        	.member	parameter3,272,18,8,32
+   134                        	.eos
+   135                        	.stag	_fx_console_ctl,448,18
+   136                        	.member	maxCols,0,5,8,16
+   137                        	.member	maxRows,16,5,8,16
+   138                        	.member	curX,32,5,8,16
+   139                        	.member	curY,48,5,8,16
+   140                        	.member	fgColor,64,5,8,16
+   141                        	.member	bgColor,80,5,8,16
+   142                        	.member	mode,96,14,8,8
+   143                        	.member	kbBuffer,104,101,8,0,16
+   144                        	.member	screenBuffer,360,142,8,32
+   145                        	.member	desktopMode,392,14,8,8
+   146                        	.member	lastMouseButton,400,5,8,16
+   147                        	.member	lastMouseX,416,5,8,16
+   148                        	.member	lastMouseY,432,5,8,16
+   149                        	.eos
+   150                        	.stag	_fx_desktop_ctl,392,19
+   151                        	.member	desktopMode,0,14,8,8
+   152                        	.member	cursorCtl,8,5,8,16
+   153                        	.member	cursorState,24,5,8,16
+   154                        	.member	backgroundColor,40,5,8,16
+   155                        	.member	foregroundColor,56,5,8,16
+   156                        	.member	menuMode,72,5,8,16
+   157                        	.member	lastMouseButton,88,5,8,16
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   158                        	.member	lastMouseX,104,5,8,16
+   159                        	.member	lastMouseY,120,5,8,16
+   160                        	.member	currentDiskName,136,142,8,32
+   161                        	.member	diskNodes,168,129,8,32
+   162                        	.member	titleNodes,200,129,8,32
+   163                        	.member	menuNodes,232,129,8,32
+   164                        	.member	iconNodes,264,129,8,32
+   165                        	.member	windowNodes,296,129,8,32
+   166                        	.member	fontNodes,328,129,8,32
+   167                        	.member	wndProc,360,138,8,32,6
+   168                        	.eos
+   169                        	.stag	_fx_process,800,20
+   170                        	.member	cbSize,0,5,8,16
+   171                        	.member	procId,16,18,8,32
+   172                        	.member	parentId,48,18,8,32
+   173                        	.member	ctx,80,129,8,32
+   174                        	.member	userId,112,16,8,16
+   175                        	.member	status,128,16,8,16
+   176                        	.member	foregroundActive,144,14,8,8
+   177                        	.member	tls,152,1121,8,32,8
+   178                        	.member	commandLine,408,142,8,32
+   179                        	.member	semaphores,440,138,8,32,6
+   180                        	.member	fileHandles,472,138,8,32,6
+   181                        	.member	pathList,504,138,8,32,6
+   182                        	.member	resources,536,138,8,32,6
+   183                        	.member	timerAware,568,14,8,8
+   184                        	.member	timerTicks,576,112,8,0,2
+   185                        	.member	timerTickCount,608,112,8,0,2
+   186                        	.member	kernelError,640,10,8,32,8
+   187                        	.member	consoleCtl,672,138,8,32,18
+   188                        	.member	desktopCtl,704,138,8,32,19
+   189                        	.member	execProc,736,641,8,32
+   190                        	.member	startupArgs,768,129,8,32
+   191                        	.eos
+   192                        	.stag	_fxProcessMessage,112,21
+   193                        	.member	src,0,18,8,32
+   194                        	.member	dest,32,18,8,32
+   195                        	.member	type,64,16,8,16
+   196                        	.member	processInfo,80,138,8,32,20
+   197                        	.eos
+   198                        	.stag	_fx_property,384,22
+   199                        	.member	name,0,110,8,0,16
+   200                        	.member	value,128,110,8,0,32
+   201                        	.eos
+   202                        	.utag	_24bitPointer,32,23
+   203                        	.member	address,0,142,11,32
+   204                        	.member	bytes,0,110,11,0,4
+   205                        	.eos
+   206                        	.stag	_PointStruct,32,24
+   207                        	.member	x,0,5,8,16
+   208                        	.member	y,16,5,8,16
+   209                        	.eos
+   210                        	.stag	_RectStruct,64,25
+   211                        	.member	x,0,5,8,16
+   212                        	.member	y,16,5,8,16
+   213                        	.member	width,32,5,8,16
+   214                        	.member	height,48,5,8,16
+   215                        	.eos
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   216                        	.stag	_k_WindowClass,256,26
+   217                        	.member	cbSize,0,16,8,16
+   218                        	.member	style,16,16,8,16
+   219                        	.member	pWndProc,32,654,8,32
+   220                        	.member	hInstance,64,129,8,32
+   221                        	.member	hIcon,96,129,8,32
+   222                        	.member	hCursor,128,129,8,32
+   223                        	.member	hbrBackground,160,129,8,32
+   224                        	.member	lpszMenuName,192,142,8,32
+   225                        	.member	lpszClassName,224,142,8,32
+   226                        	.eos
+   227                        	.stag	_ClickableRect,88,27
+   228                        	.member	area,0,10,8,64,25
+   229                        	.member	z,64,5,8,16
+   230                        	.member	enabled,80,14,8,8
+   231                        	.eos
+   232                        	.stag	_NCClickableRect,88,28
+   233                        	.member	area,0,10,8,64,25
+   234                        	.member	msgType,64,16,8,16
+   235                        	.member	enabled,80,14,8,8
+   236                        	.eos
+   237                        	.stag	_DragData,136,29
+   238                        	.member	area,0,10,8,64,25
+   239                        	.member	xoffset,64,5,8,16
+   240                        	.member	yoffset,80,5,8,16
+   241                        	.member	msgType,96,16,8,16
+   242                        	.member	isDrag,112,14,8,8
+   243                        	.member	canDrag,120,14,8,8
+   244                        	.member	canDrop,128,14,8,8
+   245                        	.eos
+   246                        	.stag	_k_WindowStruct,2808,30
+   247                        	.member	cbSize,0,16,8,16
+   248                        	.member	style,16,18,8,32
+   249                        	.member	win_id,48,5,8,16
+   250                        	.member	win_x,64,5,8,16
+   251                        	.member	win_y,80,5,8,16
+   252                        	.member	win_width,96,5,8,16
+   253                        	.member	win_height,112,5,8,16
+   254                        	.member	wndRect,128,10,8,64,25
+   255                        	.member	clientRect,192,10,8,64,25
+   256                        	.member	nonclientGadgets,256,106,8,0,28,16
+   257                        	.member	clickable,1664,129,8,32
+   258                        	.member	win_title,1696,110,8,0,32
+   259                        	.member	Reserved0,1952,16,8,16
+   260                        	.member	win_class,1968,110,8,0,16
+   261                        	.member	win_class_name,2096,110,8,0,32
+   262                        	.member	nBitmapLayer,2352,16,8,16
+   263                        	.member	procid,2368,18,8,32
+   264                        	.member	pWndClass,2400,138,8,32,26
+   265                        	.member	pParentWindow,2432,129,8,32
+   266                        	.member	hMenu,2464,129,8,32
+   267                        	.member	pChildWindows,2496,138,8,32,6
+   268                        	.member	pChildHitList,2528,138,8,32,6
+   269                        	.member	isVisible,2560,14,8,8
+   270                        	.member	windowData,2568,129,8,32
+   271                        	.member	clientData,2600,1121,8,32,6
+   272                        	.member	isClosed,2792,14,8,8
+   273                        	.member	isClosing,2800,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   274                        	.eos
+   275                        	.stag	_k_WindowStructEx,2704,31
+   276                        	.member	cbSize,0,16,8,16
+   277                        	.member	style,16,18,8,32
+   278                        	.member	win_id,48,5,8,16
+   279                        	.member	win_x,64,5,8,16
+   280                        	.member	win_y,80,5,8,16
+   281                        	.member	win_width,96,5,8,16
+   282                        	.member	win_height,112,5,8,16
+   283                        	.member	wndRect,128,10,8,64,25
+   284                        	.member	clientRect,192,10,8,64,25
+   285                        	.member	nonclientGadgets,256,106,8,0,28,16
+   286                        	.member	clickable,1664,129,8,32
+   287                        	.member	win_title,1696,110,8,0,32
+   288                        	.member	Reserved0,1952,16,8,16
+   289                        	.member	win_class,1968,110,8,0,16
+   290                        	.member	nBitmapLayer,2096,16,8,16
+   291                        	.member	procid,2112,18,8,32
+   292                        	.member	pWndClass,2144,138,8,32,26
+   293                        	.member	pParentWindow,2176,129,8,32
+   294                        	.member	hMenu,2208,129,8,32
+   295                        	.member	pChildWindows,2240,138,8,32,6
+   296                        	.member	pChildHitList,2272,138,8,32,6
+   297                        	.member	isVisible,2304,14,8,8
+   298                        	.member	windowData,2312,129,8,32
+   299                        	.member	clientData,2344,1121,8,32,4
+   300                        	.member	isClosed,2472,14,8,8
+   301                        	.member	hWnd,2480,129,8,32
+   302                        	.member	localRect,2512,10,8,64,25
+   303                        	.member	globalRect,2576,10,8,64,25
+   304                        	.member	clientOffsetRect,2640,10,8,64,25
+   305                        	.eos
+   306                        	.stag	_FontMetric,32,32
+   307                        	.member	width,0,5,8,16
+   308                        	.member	height,16,5,8,16
+   309                        	.eos
+   310                        	.stag	_ctl_Textbox,112,33
+   311                        	.member	win_id,0,5,8,16
+   312                        	.member	win_x,16,5,8,16
+   313                        	.member	win_y,32,5,8,16
+   314                        	.member	win_width,48,5,8,16
+   315                        	.member	win_height,64,5,8,16
+   316                        	.member	content,80,1166,8,32
+   317                        	.eos
+   318                        	.stag	_MenuStruct,248,34
+   319                        	.member	cx,0,5,8,16
+   320                        	.member	cy,16,5,8,16
+   321                        	.member	width,32,5,8,16
+   322                        	.member	height,48,5,8,16
+   323                        	.member	fcolor,64,14,8,8
+   324                        	.member	bcolor,72,14,8,8
+   325                        	.member	chromeLeft,80,14,8,8
+   326                        	.member	chromeRight1,88,14,8,8
+   327                        	.member	chromeRight2,96,14,8,8
+   328                        	.member	itemId,104,16,8,16
+   329                        	.member	pCaption,120,142,8,32
+   330                        	.member	subMenus,152,138,8,32,6
+   331                        	.member	pBackground,184,129,8,32
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   332                        	.member	hWndOwner,216,129,8,32
+   333                        	.eos
+   334                        	.stag	fake35_,112,35
+   335                        	.member	menuId,0,16,8,16
+   336                        	.member	caption,16,142,8,32
+   337                        	.member	rect,48,10,8,64,25
+   338                        	.eos
+   339                        	.stag	fake36_,3568,36
+   340                        	.member	pParent,0,138,8,32,30
+   341                        	.member	rect,32,10,8,64,25
+   342                        	.member	captions,96,1134,8,32,24
+   343                        	.member	chrome,864,110,8,0,24
+   344                        	.member	ids,1056,112,8,0,24
+   345                        	.member	clickable,1440,106,8,0,27,24
+   346                        	.member	selected,3552,16,8,16
+   347                        	.eos
+   348                        	.stag	_fx_button_t,80,37
+   349                        	.member	pCaption,0,142,8,32
+   350                        	.member	data,32,129,8,32
+   351                        	.member	captionPixelWidth,64,16,8,16
+   352                        	.eos
+   353                        	.stag	_fx_scrollbar_t,192,38
+   354                        	.member	min,0,16,8,16
+   355                        	.member	max,16,16,8,16
+   356                        	.member	increment,32,16,8,16
+   357                        	.member	stopsize,48,16,8,16
+   358                        	.member	location,64,5,8,16
+   359                        	.member	state,80,5,8,16
+   360                        	.member	rectThumb,96,10,8,64,25
+   361                        	.member	data,160,129,8,32
+   362                        	.eos
+   363                        	.stag	_fx_listbox_t,240,39
+   364                        	.member	pos,0,5,8,16
+   365                        	.member	selected,16,16,8,16
+   366                        	.member	offsetX,32,5,8,16
+   367                        	.member	offsetY,48,5,8,16
+   368                        	.member	inc,64,5,8,16
+   369                        	.member	direction,80,5,8,16
+   370                        	.member	top,96,5,8,16
+   371                        	.member	bottom,112,5,8,16
+   372                        	.member	indexTop,128,5,8,16
+   373                        	.member	indexBottom,144,5,8,16
+   374                        	.member	maxItems,160,16,8,16
+   375                        	.member	fontSet,176,142,8,32
+   376                        	.member	data,208,129,8,32
+   377                        	.eos
+   378                        	.stag	_fx_textbox_t,144,40
+   379                        	.member	pos,0,5,8,16
+   380                        	.member	selected,16,16,8,16
+   381                        	.member	offsetX,32,5,8,16
+   382                        	.member	offsetY,48,5,8,16
+   383                        	.member	isShifted,64,14,8,8
+   384                        	.member	cursorState,72,14,8,8
+   385                        	.member	fontSet,80,142,8,32
+   386                        	.member	data,112,129,8,32
+   387                        	.eos
+   388                        	.stag	_fx_menuAnchor_t,144,41
+   389                        	.member	pCaption,0,142,8,32
+  Thu Dec  3 2020 22:25                                                Page 8
+
+
+   390                        	.member	renderLayoutX,32,16,8,16
+   391                        	.member	renderLayoutY,48,16,8,16
+   392                        	.member	captionPixelWidth,64,16,8,16
+   393                        	.member	data,80,129,8,32
+   394                        	.member	droppedWindow,112,138,8,32,30
+   395                        	.eos
+   396                        	.stag	_SubMenuStruct,64,42
+   397                        	.member	caption,0,142,8,32
+   398                        	.member	action,32,641,8,32
+   399                        	.eos
+   400                        	.stag	_SubMenuListStruct,40,43
+   401                        	.member	cMenus,0,14,8,8
+   402                        	.member	psubmenus,8,9354,8,32,42
+   403                        	.eos
+   404                        	.stag	_fx_ComBuffer,2080,44
+   405                        	.member	cbSize,0,16,8,16
+   406                        	.member	cbBuffer,16,16,8,16
+   407                        	.member	buffer,32,110,8,0,256
+   408                        	.eos
+   409                        	.line	708
+   410                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",8
+   411                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstringtable.h",0
+   412                        	.line	89
+   413                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",9
+   414                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   415                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   416                        	.line	708
+   417                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",5
+   418                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",0
+   419                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   420                        	.line	708
+   421                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fmx_vicky.h",11
+   422                        	.line	72
+   423                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",6
+   424                        	.line	1325
+   425                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",13
+   426                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",0
+   427                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   428                        	.line	25
+   429                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",5
+   430                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   431                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+  Thu Dec  3 2020 22:25                                                Page 9
+
+
+   432                        	.line	708
+   433                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",5
+   434                        	.line	61
+   435                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxkernel.h",6
+   436                        	.stag	_fx_zero_page,448,45
+   437                        	.member	fxos_mouse_byte_0,0,14,8,8
+   438                        	.member	fxos_mouse_byte_1,8,14,8,8
+   439                        	.member	fxos_mouse_byte_2,16,14,8,8
+   440                        	.member	fxos_mouse_byte_t,24,14,8,8
+   441                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+   442                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+   443                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+   444                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+   445                        	.member	fxos_key_byte_0,64,14,8,8
+   446                        	.member	fxos_key_byte_1,72,14,8,8
+   447                        	.member	fxos_key_byte_2,80,14,8,8
+   448                        	.member	fxos_mouse_ctl,88,14,8,8
+   449                        	.member	fxos_mouse_index,96,14,8,8
+   450                        	.member	fxos_mouse_status,104,14,8,8
+   451                        	.member	VersionMajor,112,16,8,16
+   452                        	.member	VersionMinor,128,16,8,16
+   453                        	.member	VersionRelease,144,16,8,16
+   454                        	.member	topMemory,160,18,8,32
+   455                        	.member	bottomMemory,192,18,8,32
+   456                        	.member	availableMemory,224,18,8,32
+   457                        	.member	availableMemoryK,256,18,8,32
+   458                        	.member	availableHeapMemory,288,18,8,32
+   459                        	.member	availableHeapMemoryK,320,18,8,32
+   460                        	.member	kernelFunctionCallId,352,16,8,16
+   461                        	.member	kernelFunctionCallBank,368,14,8,8
+   462                        	.member	kernelFunctionCallReserved,376,14,8,8
+   463                        	.member	kernelFunctionCallParameter,384,129,8,32
+   464                        	.member	kernelFunctionCallReturn,416,129,8,32
+   465                        	.eos
+   466                        	.stag	_fx_environment,96,46
+   467                        	.member	variables,0,142,8,32
+   468                        	.member	reserved1,32,5,8,16
+   469                        	.member	reserved2,48,5,8,16
+   470                        	.member	reserved3,64,5,8,16
+   471                        	.member	reserved4,80,5,8,16
+   472                        	.eos
+   473                        	.stag	_debug_byte_bits,8,47
+   474                        	.member	bit7,0,14,17,1
+   475                        	.member	bit6,1,14,17,1
+   476                        	.member	bit5,2,14,17,1
+   477                        	.member	bit4,3,14,17,1
+   478                        	.member	bit3,4,14,17,1
+   479                        	.member	bit2,5,14,17,1
+   480                        	.member	bit1,6,14,17,1
+   481                        	.member	bit0,7,14,17,1
+   482                        	.eos
+   483                        	.stag	_fx_device_driver,1416,48
+   484                        	.member	name,0,110,8,0,64
+   485                        	.member	version,512,110,8,0,64
+   486                        	.member	hmajor,1024,110,8,0,16
+   487                        	.member	hminor,1152,110,8,0,16
+  Thu Dec  3 2020 22:25                                                Page 10
+
+
+   488                        	.member	type,1280,14,8,8
+   489                        	.member	f_driver_load,1288,129,8,32
+   490                        	.member	f_driver_read,1320,129,8,32
+   491                        	.member	f_driver_write,1352,129,8,32
+   492                        	.member	f_driver_unload,1384,129,8,32
+   493                        	.eos
+   494                        	.stag	_fx_block_device_driver,1448,49
+   495                        	.member	name,0,110,8,0,64
+   496                        	.member	version,512,110,8,0,64
+   497                        	.member	hmajor,1024,110,8,0,16
+   498                        	.member	hminor,1152,110,8,0,16
+   499                        	.member	type,1280,14,8,8
+   500                        	.member	f_driver_load,1288,129,8,32
+   501                        	.member	f_driver_read,1320,129,8,32
+   502                        	.member	f_driver_write,1352,129,8,32
+   503                        	.member	f_driver_unload,1384,129,8,32
+   504                        	.member	f_driver_command,1416,129,8,32
+   505                        	.eos
+   506                        	.line	270
+   507                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",19
+   508                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   509                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   510                        	.line	134
+   511                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",5
+   512                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   513                        	.line	205
+   514                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",6
+   515                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   516                        	.line	708
+   517                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",7
+   518                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxc256fmx.h",0
+   519                        	.line	1325
+   520                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",10
+   521                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   522                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+   523                        	.line	205
+   524                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",5
+   525                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+   526                        	.line	134
+   527                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",6
+   528                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   529                        	.line	708
+  Thu Dec  3 2020 22:25                                                Page 11
+
+
+   530                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",7
+   531                        	.stag	_fx_string,64,50
+   532                        	.member	size,0,16,8,16
+   533                        	.member	pos,16,5,8,16
+   534                        	.member	buffer,32,142,8,32
+   535                        	.eos
+   536                        	.line	71
+   537                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",15
+   538                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   539                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   540                        	.line	25
+   541                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",5
+   542                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",0
+   543                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   544                        	.line	708
+   545                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxexec.h",5
+   546                        	.line	52
+   547                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",6
+   548                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   549                        	.line	61
+   550                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",7
+   551                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",0
+   552                        	.line	171
+   553                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",8
+   554                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",0
+   555                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   556                        	.line	708
+   557                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",5
+   558                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   559                        	.line	25
+   560                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",6
+   561                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",0
+   562                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",0
+   563                        	.line	25
+   564                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",5
+   565                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",0
+  Thu Dec  3 2020 22:25                                                Page 12
+
+
+   566                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos_build_parameters.h",0
+   567                        	.line	32
+   568                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc_cfg.h",8
+   569                        	.stag	UMM_HEAP_INFO_t,256,51
+   570                        	.member	totalEntries,0,18,8,32
+   571                        	.member	usedEntries,32,18,8,32
+   572                        	.member	freeEntries,64,18,8,32
+   573                        	.member	totalBlocks,96,18,8,32
+   574                        	.member	usedBlocks,128,18,8,32
+   575                        	.member	freeBlocks,160,18,8,32
+   576                        	.member	maxFreeContiguousBlocks,192,18,8,32
+   577                        	.member	blockSize,224,18,8,32
+   578                        	.eos
+   579                        	.line	199
+   580                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",6
+   581                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",0
+   582                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   583                        	.line	708
+   584                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\umm_malloc.h",11
+   585                        	.line	24
+   586                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmemorymanager.h",7
+   587                        	.stag	_fx_memory_map,2072,52
+   588                        	.member	availableMemory,0,18,8,32
+   589                        	.member	valid_segments,32,110,8,0,255
+   590                        	.eos
+   591                        	.line	39
+   592                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",7
+   593                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",0
+   594                        	.line	743
+   595                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",8
+   596                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",0
+   597                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",0
+   598                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxtypes.h",0
+   599                        	.line	708
+   600                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxfont.h",6
+   601                        	.line	64
+   602                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxgui.h",4
+   603                        	.stag	_click_detected,64,53
+   604                        	.member	window,0,138,8,32,30
+   605                        	.member	handler,32,641,8,32
+   606                        	.eos
+   607                        	.stag	_current_palette_map,400,54
+   608                        	.member	CUR_DESKTOP,0,5,8,16
+  Thu Dec  3 2020 22:25                                                Page 13
+
+
+   609                        	.member	CUR_BACKGROUND,16,5,8,16
+   610                        	.member	CUR_FONT,32,5,8,16
+   611                        	.member	CUR_SELECTED_FONT,48,5,8,16
+   612                        	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+   613                        	.member	CUR_WINDOWFRAME,80,5,8,16
+   614                        	.member	CUR_WINDOWBORDER,96,5,8,16
+   615                        	.member	CUR_WINDOWSHADOW,112,5,8,16
+   616                        	.member	CUR_MENU,128,5,8,16
+   617                        	.member	CUR_GADGET,144,5,8,16
+   618                        	.member	CUR_COLOR,160,101,8,0,15
+   619                        	.eos
+   620                        	.line	264
+   621                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",9
+   622                        	.stag	_childMessage_t,64,55
+   623                        	.member	msgType,0,16,8,16
+   624                        	.member	msgData,16,129,8,32
+   625                        	.member	dataSize,48,16,8,16
+   626                        	.eos
+   627                        	.line	362
+   628                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxeventmanager.h",9
+   629                        	.stag	_fx_main_loopvars,16,56
+   630                        	.member	dummy,0,5,8,16
+   631                        	.eos
+   632                        	.stag	_fxMouseMessageData,64,57
+   633                        	.member	button1,0,14,8,8
+   634                        	.member	button2,8,14,8,8
+   635                        	.member	button3,16,14,8,8
+   636                        	.member	button4,24,14,8,8
+   637                        	.member	x,32,16,8,16
+   638                        	.member	y,48,16,8,16
+   639                        	.eos
+   640                        	.stag	_fx_eventProcess,64,58
+   641                        	.member	process,0,138,8,32,20
+   642                        	.member	eventProc,32,641,8,32
+   643                        	.eos
+   644                        	.stag	_mouse_msg_state,184,59
+   645                        	.member	lastEvent,0,18,8,32
+   646                        	.member	buttonLeftDown,32,14,8,8
+   647                        	.member	lastLeftDown,40,18,8,32
+   648                        	.member	buttonRightDown,72,14,8,8
+   649                        	.member	lastRightDown,80,18,8,32
+   650                        	.member	buttonMiddleDown,112,14,8,8
+   651                        	.member	lastMiddleDown,120,18,8,32
+   652                        	.member	lastX,152,16,8,16
+   653                        	.member	lastY,168,16,8,16
+   654                        	.eos
+   655                        	.line	743
+   656                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxconsole.h",16
+   657                        	.stag	_fx_spinner_ctx,48,60
+   658                        	.member	index,0,5,8,16
+   659                        	.member	spinner,16,142,8,32
+   660                        	.eos
+   661                        	.stag	_fx_console_ctx,1144,61
+   662                        	.member	lineBufferIndex,0,5,8,16
+   663                        	.member	lineBuffer,16,110,8,0,128
+  Thu Dec  3 2020 22:25                                                Page 14
+
+
+   664                        	.member	isShifted,1040,14,8,8
+   665                        	.member	userData,1048,129,8,32
+   666                        	.member	screenBuffer,1080,129,8,32
+   667                        	.member	Reserved1,1112,129,8,32
+   668                        	.eos
+   669                        	.stag	_token,64,62
+   670                        	.member	type,0,5,8,16
+   671                        	.member	depth,16,16,8,16
+   672                        	.member	text,32,142,8,32
+   673                        	.eos
+   674                        	.stag	_command_args,64,63
+   675                        	.member	proc,0,656,8,32
+   676                        	.member	tokens,32,138,8,32,5
+   677                        	.eos
+   678                        	.line	171
+   679                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",20
+   680                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxstring.h",0
+   681                        	.line	71
+   682                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",21
+   683                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxnode.h",0
+   684                        	.line	61
+   685                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxos.h",22
+   686                        	.line	25
+   687                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.c",7
+   688                        ;#include "fxmenumanager.h"
+   689                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.h",0
+   690                        	.line	26
+   691                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.c",8
+   692                        ;#include "fxwindowmanager.h"
+   693                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxwindowmanager.h",0
+   694                        	.line	362
+   695                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.c",9
+   696                        ;
+   697                        ;BOOL k_initializeMenuManager(void)
+   698                        ;{
+   699                        	.line	11
+   700                        	.line	12
+   701                        	code
+   702                        	xdef	~~k_initializeMenuManager
+   703                        	func
+   704                        	.function	12
+   705                        ~~k_initializeMenuManager:
+   706                        	longa	on
+   707                        	longi	on
+   708 00:0000: 3B           	tsc
+   709 00:0001: 38           	sec
+   710 00:0002: E9 04 00     	sbc	#L2
+   711 00:0005: 1B           	tcs
+  Thu Dec  3 2020 22:25                                                Page 15
+
+
+   712 00:0006: 0B           	phd
+   713 00:0007: 5B           	tcd
+   714                        	.block	12
+   715                        ;	k_debug_strings("k_initializeMenuManager:","Ente
+                    r");
+   716                        	.line	13
+   717 00:0008: F4 xx xx     	pea	#^L1+25
+   718 00:000B: F4 xx xx     	pea	#<L1+25
+   719 00:000E: F4 xx xx     	pea	#^L1
+   720 00:0011: F4 xx xx     	pea	#<L1
+   721 00:0014: 22 xx xx xx  	jsl	~~k_debug_strings
+   722                        ;
+   723                        ;	k_user_CreateWindowClass("menuMainWindowClass",N
+                    ULL,0,NULL,NULL,NULL,mainMenuWindowProc);
+   724                        	.line	15
+   725 00:0018: F4 xx xx     	pea	#^~~mainMenuWindowProc
+   726 00:001B: F4 xx xx     	pea	#<~~mainMenuWindowProc
+   727 00:001E: F4 00 00     	pea	#^$0
+   728 00:0021: F4 00 00     	pea	#<$0
+   729 00:0024: F4 00 00     	pea	#^$0
+   730 00:0027: F4 00 00     	pea	#<$0
+   731 00:002A: F4 00 00     	pea	#^$0
+   732 00:002D: F4 00 00     	pea	#<$0
+   733 00:0030: F4 00 00     	pea	#<$0
+   734 00:0033: F4 00 00     	pea	#^$0
+   735 00:0036: F4 00 00     	pea	#<$0
+   736 00:0039: F4 xx xx     	pea	#^L1+31
+   737 00:003C: F4 xx xx     	pea	#<L1+31
+   738 00:003F: 22 xx xx xx  	jsl	~~k_user_CreateWindowClass
+   739                        ;	//k_user_CreateWindowClass("menuAnchorWindowClas
+                    s",NULL,0,NULL,NULL,NULL,menuAnchorWindowProc);
+   740                        ;	//k_user_CreateWindowClass("menuDropDownWindowCl
+                    ass",NULL,0,NULL,NULL,NULL,menuDropDownWindowProc);
+   741                        ;	//k_user_CreateWindowClass("menuItemWindowClass"
+                    ,NULL,0,NULL,NULL,NULL,menuItemWindowProc);
+   742                        ;
+   743                        ;
+   744                        ;	k_menu_CreateMenu(k_user_getDesktopWindow(),NULL
+                    ,NULL);
+   745                        	.line	21
+   746 00:0043: F4 00 00     	pea	#^$0
+   747 00:0046: F4 00 00     	pea	#<$0
+   748 00:0049: F4 00 00     	pea	#^$0
+   749 00:004C: F4 00 00     	pea	#<$0
+   750 00:004F: 22 xx xx xx  	jsl	~~k_user_getDesktopWindow
+   751 00:0053: 85 01        	sta	<R0
+   752 00:0055: 86 03        	stx	<R0+2
+   753 00:0057: DA           	phx
+   754 00:0058: 48           	pha
+   755 00:0059: 22 xx xx xx  	jsl	~~k_menu_CreateMenu
+   756                        ;
+   757                        ;
+   758                        ;	return TRUE;
+   759                        	.line	24
+   760 00:005D: A9 01 00     	lda	#$1
+   761                        L5:
+   762 00:0060: A8           	tay
+   763 00:0061: 2B           	pld
+  Thu Dec  3 2020 22:25                                                Page 16
+
+
+   764 00:0062: 3B           	tsc
+   765 00:0063: 18           	clc
+   766 00:0064: 69 04 00     	adc	#L2
+   767 00:0067: 1B           	tcs
+   768 00:0068: 98           	tya
+   769 00:0069: 6B           	rtl
+   770                        ;}
+   771                        	.line	25
+   772                        	.endblock	25
+   773             00000004   L2	equ	4
+   774             00000005   L3	equ	5
+   775                        	ends
+   776                        	efunc
+   777                        	.endfunc	25,5,4
+   778                        	.line	25
+   779                        	data
+   780                        L1:
+   781 00:0000: 6B 5F 69 6E  	db	$6B,$5F,$69,$6E,$69,$74,$69,$61,$6C,$69,
+                    $7A,$65,$4D,$65,$6E
+       00:0004: 69 74 69 61 
+       00:0008: 6C 69 7A 65 
+       00:000C: 4D 65 6E 
+   782 00:000F: 75 4D 61 6E  	db	$75,$4D,$61,$6E,$61,$67,$65,$72,$3A,$00,
+                    $45,$6E,$74,$65,$72
+       00:0013: 61 67 65 72 
+       00:0017: 3A 00 45 6E 
+       00:001B: 74 65 72 
+   783 00:001E: 00 6D 65 6E  	db	$00,$6D,$65,$6E,$75,$4D,$61,$69,$6E,$57,
+                    $69,$6E,$64,$6F,$77
+       00:0022: 75 4D 61 69 
+       00:0026: 6E 57 69 6E 
+       00:002A: 64 6F 77 
+   784 00:002D: 43 6C 61 73  	db	$43,$6C,$61,$73,$73,$00
+       00:0031: 73 00 
+   785 00:0033:              	ends
+   786                        ;
+   787                        ;HMENURESOURCE k_menu_CreateMenuResource(LPCSTR re
+                    sourceName)
+   788                        ;{
+   789                        	.line	27
+   790                        	.line	28
+   791                        	code
+   792                        	xdef	~~k_menu_CreateMenuResource
+   793                        	func
+   794                        	.function	28
+   795                        ~~k_menu_CreateMenuResource:
+   796                        	longa	on
+   797                        	longi	on
+   798 00:006A: 3B           	tsc
+   799 00:006B: 38           	sec
+   800 00:006C: E9 08 00     	sbc	#L7
+   801 00:006F: 1B           	tcs
+   802 00:0070: 0B           	phd
+   803 00:0071: 5B           	tcd
+   804             00000004   resourceName_0	set	4
+   805                        	.block	28
+   806                        ;	PMENU pMenu = NULL;
+   807                        ;
+  Thu Dec  3 2020 22:25                                                Page 17
+
+
+   808                        ;	k_debug_strings("k_menu_CreateMenuResource:","En
+                    ter");
+   809             00000000   pMenu_1	set	0
+   810                        	.sym	pMenu,0,138,1,32,34
+   811                        	.sym	resourceName,4,142,6,32
+   812 00:0072: 64 05        	stz	<L8+pMenu_1
+   813 00:0074: 64 07        	stz	<L8+pMenu_1+2
+   814                        	.line	31
+   815 00:0076: F4 xx xx     	pea	#^L6+27
+   816 00:0079: F4 xx xx     	pea	#<L6+27
+   817 00:007C: F4 xx xx     	pea	#^L6
+   818 00:007F: F4 xx xx     	pea	#<L6
+   819 00:0082: 22 xx xx xx  	jsl	~~k_debug_strings
+   820                        ;
+   821                        ;	pMenu = k_mem_allocate_heap(sizeof(MENU));
+   822                        	.line	33
+   823 00:0086: F4 1F 00     	pea	#<$1f
+   824 00:0089: 22 xx xx xx  	jsl	~~k_mem_allocate_heap
+   825 00:008D: 85 05        	sta	<L8+pMenu_1
+   826 00:008F: 86 07        	stx	<L8+pMenu_1+2
+   827                        ;	if(pMenu)
+   828                        	.line	34
+   829                        ;	{
+   830 00:0091: A5 05        	lda	<L8+pMenu_1
+   831 00:0093: 05 07        	ora	<L8+pMenu_1+2
+   832 00:0095: D0 03        	bne	L10
+   833 00:0097: 82 48 00     	brl	L10001
+   834                        L10:
+   835                        	.line	35
+   836                        ;		memset(pMenu,0,sizeof(MENU));
+   837                        	.line	36
+   838 00:009A: F4 1F 00     	pea	#<$1f
+   839 00:009D: F4 00 00     	pea	#<$0
+   840 00:00A0: D4 07        	pei	<L8+pMenu_1+2
+   841 00:00A2: D4 05        	pei	<L8+pMenu_1
+   842 00:00A4: 22 xx xx xx  	jsl	~~memset
+   843                        ;
+   844                        ;		pMenu->pCaption = k_string_copy_string(r
+                    esourceName);
+   845                        	.line	38
+   846 00:00A8: D4 0E        	pei	<L7+resourceName_0+2
+   847 00:00AA: D4 0C        	pei	<L7+resourceName_0
+   848 00:00AC: 22 xx xx xx  	jsl	~~k_string_copy_string
+   849 00:00B0: 85 01        	sta	<R0
+   850 00:00B2: 86 03        	stx	<R0+2
+   851 00:00B4: A5 01        	lda	<R0
+   852 00:00B6: A0 0F 00     	ldy	#$f
+   853 00:00B9: 97 05        	sta	[<L8+pMenu_1],Y
+   854 00:00BB: A5 03        	lda	<R0+2
+   855 00:00BD: A0 11 00     	ldy	#$11
+   856 00:00C0: 97 05        	sta	[<L8+pMenu_1],Y
+   857                        ;		pMenu->width    = 0;
+   858                        	.line	39
+   859 00:00C2: A9 00 00     	lda	#$0
+   860 00:00C5: A0 04 00     	ldy	#$4
+   861 00:00C8: 97 05        	sta	[<L8+pMenu_1],Y
+   862                        ;		pMenu->height   = 0;
+   863                        	.line	40
+  Thu Dec  3 2020 22:25                                                Page 18
+
+
+   864 00:00CA: A9 00 00     	lda	#$0
+   865 00:00CD: A0 06 00     	ldy	#$6
+   866 00:00D0: 97 05        	sta	[<L8+pMenu_1],Y
+   867                        ;		pMenu->subMenus = NULL;
+   868                        	.line	41
+   869 00:00D2: A9 00 00     	lda	#$0
+   870 00:00D5: A0 13 00     	ldy	#$13
+   871 00:00D8: 97 05        	sta	[<L8+pMenu_1],Y
+   872 00:00DA: A9 00 00     	lda	#$0
+   873 00:00DD: A0 15 00     	ldy	#$15
+   874 00:00E0: 97 05        	sta	[<L8+pMenu_1],Y
+   875                        ;	}
+   876                        	.line	42
+   877                        ;	k_debug_strings("k_user_CreateMenuResource:","Ex
+                    it");
+   878                        L10001:
+   879                        	.line	43
+   880 00:00E2: F4 xx xx     	pea	#^L6+60
+   881 00:00E5: F4 xx xx     	pea	#<L6+60
+   882 00:00E8: F4 xx xx     	pea	#^L6+33
+   883 00:00EB: F4 xx xx     	pea	#<L6+33
+   884 00:00EE: 22 xx xx xx  	jsl	~~k_debug_strings
+   885                        ;
+   886                        ;	return (HMENURESOURCE)pMenu;
+   887                        	.line	45
+   888 00:00F2: A6 07        	ldx	<L8+pMenu_1+2
+   889 00:00F4: A5 05        	lda	<L8+pMenu_1
+   890                        L11:
+   891 00:00F6: A8           	tay
+   892 00:00F7: A5 0A        	lda	<L7+2
+   893 00:00F9: 85 0E        	sta	<L7+2+4
+   894 00:00FB: A5 09        	lda	<L7+1
+   895 00:00FD: 85 0D        	sta	<L7+1+4
+   896 00:00FF: 2B           	pld
+   897 00:0100: 3B           	tsc
+   898 00:0101: 18           	clc
+   899 00:0102: 69 0C 00     	adc	#L7+4
+   900 00:0105: 1B           	tcs
+   901 00:0106: 98           	tya
+   902 00:0107: 6B           	rtl
+   903                        ;}
+   904                        	.line	46
+   905                        	.endblock	46
+   906             00000008   L7	equ	8
+   907             00000005   L8	equ	5
+   908                        	ends
+   909                        	efunc
+   910                        	.endfunc	46,5,8
+   911                        	.line	46
+   912                        	data
+   913                        L6:
+   914 00:0033: 6B 5F 6D 65  	db	$6B,$5F,$6D,$65,$6E,$75,$5F,$43,$72,$65,
+                    $61,$74,$65,$4D,$65
+       00:0037: 6E 75 5F 43 
+       00:003B: 72 65 61 74 
+       00:003F: 65 4D 65 
+   915 00:0042: 6E 75 52 65  	db	$6E,$75,$52,$65,$73,$6F,$75,$72,$63,$65,
+                    $3A,$00,$45,$6E,$74
+  Thu Dec  3 2020 22:25                                                Page 19
+
+
+       00:0046: 73 6F 75 72 
+       00:004A: 63 65 3A 00 
+       00:004E: 45 6E 74 
+   916 00:0051: 65 72 00 6B  	db	$65,$72,$00,$6B,$5F,$75,$73,$65,$72,$5F,
+                    $43,$72,$65,$61,$74
+       00:0055: 5F 75 73 65 
+       00:0059: 72 5F 43 72 
+       00:005D: 65 61 74 
+   917 00:0060: 65 4D 65 6E  	db	$65,$4D,$65,$6E,$75,$52,$65,$73,$6F,$75,
+                    $72,$63,$65,$3A,$00
+       00:0064: 75 52 65 73 
+       00:0068: 6F 75 72 63 
+       00:006C: 65 3A 00 
+   918 00:006F: 45 78 69 74  	db	$45,$78,$69,$74,$00
+       00:0073: 00 
+   919 00:0074:              	ends
+   920                        ;
+   921                        ;
+   922                        ;VOID k_menu_FreemMenuResource(HMENURESOURCE menuR
+                    esource)
+   923                        ;{
+   924                        	.line	49
+   925                        	.line	50
+   926                        	code
+   927                        	xdef	~~k_menu_FreemMenuResource
+   928                        	func
+   929                        	.function	50
+   930                        ~~k_menu_FreemMenuResource:
+   931                        	longa	on
+   932                        	longi	on
+   933 00:0108: 3B           	tsc
+   934 00:0109: 38           	sec
+   935 00:010A: E9 04 00     	sbc	#L13
+   936 00:010D: 1B           	tcs
+   937 00:010E: 0B           	phd
+   938 00:010F: 5B           	tcd
+   939             00000004   menuResource_0	set	4
+   940                        	.block	50
+   941                        ;	PMENU pMenu = ((PMENU)menuResource);
+   942                        ;
+   943                        ;	k_debug_strings("k_menu_FreemMenuResource:","Ent
+                    er");
+   944             00000000   pMenu_1	set	0
+   945                        	.sym	pMenu,0,138,1,32,34
+   946                        	.sym	menuResource,4,129,6,32
+   947 00:0110: A5 08        	lda	<L13+menuResource_0
+   948 00:0112: 85 01        	sta	<L14+pMenu_1
+   949 00:0114: A5 0A        	lda	<L13+menuResource_0+2
+   950 00:0116: 85 03        	sta	<L14+pMenu_1+2
+   951                        	.line	53
+   952 00:0118: F4 xx xx     	pea	#^L12+26
+   953 00:011B: F4 xx xx     	pea	#<L12+26
+   954 00:011E: F4 xx xx     	pea	#^L12
+   955 00:0121: F4 xx xx     	pea	#<L12
+   956 00:0124: 22 xx xx xx  	jsl	~~k_debug_strings
+   957                        ;
+   958                        ;	if(pMenu)
+   959                        	.line	55
+  Thu Dec  3 2020 22:25                                                Page 20
+
+
+   960                        ;	{
+   961 00:0128: A5 01        	lda	<L14+pMenu_1
+   962 00:012A: 05 03        	ora	<L14+pMenu_1+2
+   963 00:012C: D0 03        	bne	L16
+   964 00:012E: 82 37 00     	brl	L10002
+   965                        L16:
+   966                        	.line	56
+   967                        ;		if(pMenu->pCaption)
+   968                        	.line	57
+   969                        ;			k_mem_deallocate_heap((LPVOID)pM
+                    enu->pCaption);
+   970 00:0131: A0 0F 00     	ldy	#$f
+   971 00:0134: B7 01        	lda	[<L14+pMenu_1],Y
+   972 00:0136: A0 11 00     	ldy	#$11
+   973 00:0139: 17 01        	ora	[<L14+pMenu_1],Y
+   974 00:013B: D0 03        	bne	L17
+   975 00:013D: 82 10 00     	brl	L10003
+   976                        L17:
+   977                        	.line	58
+   978 00:0140: A0 11 00     	ldy	#$11
+   979 00:0143: B7 01        	lda	[<L14+pMenu_1],Y
+   980 00:0145: 48           	pha
+   981 00:0146: A0 0F 00     	ldy	#$f
+   982 00:0149: B7 01        	lda	[<L14+pMenu_1],Y
+   983 00:014B: 48           	pha
+   984 00:014C: 22 xx xx xx  	jsl	~~k_mem_deallocate_heap
+   985                        ;
+   986                        ;		k_nodelist_deallocate_list(pMenu->subMen
+                    us);
+   987                        L10003:
+   988                        	.line	60
+   989 00:0150: A0 15 00     	ldy	#$15
+   990 00:0153: B7 01        	lda	[<L14+pMenu_1],Y
+   991 00:0155: 48           	pha
+   992 00:0156: A0 13 00     	ldy	#$13
+   993 00:0159: B7 01        	lda	[<L14+pMenu_1],Y
+   994 00:015B: 48           	pha
+   995 00:015C: 22 xx xx xx  	jsl	~~k_nodelist_deallocate_list
+   996                        ;
+   997                        ;		k_mem_deallocate_heap(menuResource);
+   998                        	.line	62
+   999 00:0160: D4 0A        	pei	<L13+menuResource_0+2
+  1000 00:0162: D4 08        	pei	<L13+menuResource_0
+  1001 00:0164: 22 xx xx xx  	jsl	~~k_mem_deallocate_heap
+  1002                        ;	}
+  1003                        	.line	63
+  1004                        ;	k_heap_integrity_check();
+  1005                        L10002:
+  1006                        	.line	64
+  1007 00:0168: 22 xx xx xx  	jsl	~~k_heap_integrity_check
+  1008                        ;	k_debug_strings("k_menu_FreemMenuResource:","Exi
+                    t");
+  1009                        	.line	65
+  1010 00:016C: F4 xx xx     	pea	#^L12+58
+  1011 00:016F: F4 xx xx     	pea	#<L12+58
+  1012 00:0172: F4 xx xx     	pea	#^L12+32
+  1013 00:0175: F4 xx xx     	pea	#<L12+32
+  1014 00:0178: 22 xx xx xx  	jsl	~~k_debug_strings
+  Thu Dec  3 2020 22:25                                                Page 21
+
+
+  1015                        ;}
+  1016                        	.line	66
+  1017                        L18:
+  1018 00:017C: A5 06        	lda	<L13+2
+  1019 00:017E: 85 0A        	sta	<L13+2+4
+  1020 00:0180: A5 05        	lda	<L13+1
+  1021 00:0182: 85 09        	sta	<L13+1+4
+  1022 00:0184: 2B           	pld
+  1023 00:0185: 3B           	tsc
+  1024 00:0186: 18           	clc
+  1025 00:0187: 69 08 00     	adc	#L13+4
+  1026 00:018A: 1B           	tcs
+  1027 00:018B: 6B           	rtl
+  1028                        	.endblock	66
+  1029             00000004   L13	equ	4
+  1030             00000001   L14	equ	1
+  1031                        	ends
+  1032                        	efunc
+  1033                        	.endfunc	66,1,4
+  1034                        	.line	66
+  1035                        	data
+  1036                        L12:
+  1037 00:0074: 6B 5F 6D 65  	db	$6B,$5F,$6D,$65,$6E,$75,$5F,$46,$72,$65,
+                    $65,$6D,$4D,$65,$6E
+       00:0078: 6E 75 5F 46 
+       00:007C: 72 65 65 6D 
+       00:0080: 4D 65 6E 
+  1038 00:0083: 75 52 65 73  	db	$75,$52,$65,$73,$6F,$75,$72,$63,$65,$3A,
+                    $00,$45,$6E,$74,$65
+       00:0087: 6F 75 72 63 
+       00:008B: 65 3A 00 45 
+       00:008F: 6E 74 65 
+  1039 00:0092: 72 00 6B 5F  	db	$72,$00,$6B,$5F,$6D,$65,$6E,$75,$5F,$46,
+                    $72,$65,$65,$6D,$4D
+       00:0096: 6D 65 6E 75 
+       00:009A: 5F 46 72 65 
+       00:009E: 65 6D 4D 
+  1040 00:00A1: 65 6E 75 52  	db	$65,$6E,$75,$52,$65,$73,$6F,$75,$72,$63,
+                    $65,$3A,$00,$45,$78
+       00:00A5: 65 73 6F 75 
+       00:00A9: 72 63 65 3A 
+       00:00AD: 00 45 78 
+  1041 00:00B0: 69 74 00     	db	$69,$74,$00
+  1042 00:00B3:              	ends
+  1043                        ;
+  1044                        ;PWINDOW	k_menu_CreateMenu(HWND      	hWndPare
+                    nt,
+  1045                        ;						  HMENUR
+                    ESOURCE hMenuRes,
+  1046                        ;						  HINSTA
+                    NCE 	hInstance)
+  1047                        ;{
+  1048                        	.line	68
+  1049                        	.line	71
+  1050                        	code
+  1051                        	xdef	~~k_menu_CreateMenu
+  1052                        	func
+  1053                        	.function	71
+  Thu Dec  3 2020 22:25                                                Page 22
+
+
+  1054                        ~~k_menu_CreateMenu:
+  1055                        	longa	on
+  1056                        	longi	on
+  1057 00:018C: 3B           	tsc
+  1058 00:018D: 38           	sec
+  1059 00:018E: E9 08 00     	sbc	#L20
+  1060 00:0191: 1B           	tcs
+  1061 00:0192: 0B           	phd
+  1062 00:0193: 5B           	tcd
+  1063             00000004   hWndParent_0	set	4
+  1064             00000008   hMenuRes_0	set	8
+  1065             0000000C   hInstance_0	set	12
+  1066                        	.block	71
+  1067                        ;
+  1068                        ;	PWINDOW pWin = NULL;
+  1069                        ;
+  1070                        ;	k_debug_pointer("k_menu_CreateMenu:Parent hWnd:"
+                    ,hWndParent);
+  1071             00000000   pWin_1	set	0
+  1072                        	.sym	pWin,0,138,1,32,30
+  1073                        	.sym	hWndParent,4,129,6,32
+  1074                        	.sym	hMenuRes,8,129,6,32
+  1075                        	.sym	hInstance,12,129,6,32
+  1076 00:0194: 64 05        	stz	<L21+pWin_1
+  1077 00:0196: 64 07        	stz	<L21+pWin_1+2
+  1078                        	.line	75
+  1079 00:0198: D4 0E        	pei	<L20+hWndParent_0+2
+  1080 00:019A: D4 0C        	pei	<L20+hWndParent_0
+  1081 00:019C: F4 xx xx     	pea	#^L19
+  1082 00:019F: F4 xx xx     	pea	#<L19
+  1083 00:01A2: 22 xx xx xx  	jsl	~~k_debug_pointer
+  1084                        ;	k_debug_pointer("k_menu_CreateMenu:DesktopWindow
+                    :",k_user_getDesktopWindow());
+  1085                        	.line	76
+  1086 00:01A6: 22 xx xx xx  	jsl	~~k_user_getDesktopWindow
+  1087 00:01AA: 85 01        	sta	<R0
+  1088 00:01AC: 86 03        	stx	<R0+2
+  1089 00:01AE: DA           	phx
+  1090 00:01AF: 48           	pha
+  1091 00:01B0: F4 xx xx     	pea	#^L19+31
+  1092 00:01B3: F4 xx xx     	pea	#<L19+31
+  1093 00:01B6: 22 xx xx xx  	jsl	~~k_debug_pointer
+  1094                        ;
+  1095                        ;	pWin = k_user_CreateWindow(0,
+  1096                        	.line	78
+  1097                        ;							
+                       "menuMainWindowClass",
+  1098                        ;							
+                        "mainmenu",
+  1099                        ;							
+                    	0,0,
+  1100                        ;							
+                    	k_user_getSystemMetric(SM_CXMENUSIZE),
+  1101                        ;							
+                    	k_user_getSystemMetric(SM_CYMENUSIZE),
+  1102                        ;							
+                    	hWndParent,
+  1103                        ;							
+  Thu Dec  3 2020 22:25                                                Page 23
+
+
+                    	(HMENU)hMenuRes,
+  1104                        ;							
+                    	NULL);
+  1105 00:01BA: F4 00 00     	pea	#^$0
+  1106 00:01BD: F4 00 00     	pea	#<$0
+  1107 00:01C0: D4 12        	pei	<L20+hMenuRes_0+2
+  1108 00:01C2: D4 10        	pei	<L20+hMenuRes_0
+  1109 00:01C4: D4 0E        	pei	<L20+hWndParent_0+2
+  1110 00:01C6: D4 0C        	pei	<L20+hWndParent_0
+  1111 00:01C8: F4 37 00     	pea	#<$37
+  1112 00:01CB: 22 xx xx xx  	jsl	~~k_user_getSystemMetric
+  1113 00:01CF: 48           	pha
+  1114 00:01D0: F4 36 00     	pea	#<$36
+  1115 00:01D3: 22 xx xx xx  	jsl	~~k_user_getSystemMetric
+  1116 00:01D7: 48           	pha
+  1117 00:01D8: F4 00 00     	pea	#<$0
+  1118 00:01DB: F4 00 00     	pea	#<$0
+  1119 00:01DE: F4 xx xx     	pea	#^L19+84
+  1120 00:01E1: F4 xx xx     	pea	#<L19+84
+  1121 00:01E4: F4 xx xx     	pea	#^L19+64
+  1122 00:01E7: F4 xx xx     	pea	#<L19+64
+  1123 00:01EA: F4 00 00     	pea	#^$0
+  1124 00:01ED: F4 00 00     	pea	#<$0
+  1125 00:01F0: 22 xx xx xx  	jsl	~~k_user_CreateWindow
+  1126 00:01F4: 85 05        	sta	<L21+pWin_1
+  1127 00:01F6: 86 07        	stx	<L21+pWin_1+2
+  1128                        ;
+  1129                        ;
+  1130                        ;
+  1131                        ;
+  1132                        ;	return pWin;
+  1133                        	.line	91
+  1134 00:01F8: A6 07        	ldx	<L21+pWin_1+2
+  1135 00:01FA: A5 05        	lda	<L21+pWin_1
+  1136                        L23:
+  1137 00:01FC: A8           	tay
+  1138 00:01FD: A5 0A        	lda	<L20+2
+  1139 00:01FF: 85 16        	sta	<L20+2+12
+  1140 00:0201: A5 09        	lda	<L20+1
+  1141 00:0203: 85 15        	sta	<L20+1+12
+  1142 00:0205: 2B           	pld
+  1143 00:0206: 3B           	tsc
+  1144 00:0207: 18           	clc
+  1145 00:0208: 69 14 00     	adc	#L20+12
+  1146 00:020B: 1B           	tcs
+  1147 00:020C: 98           	tya
+  1148 00:020D: 6B           	rtl
+  1149                        ;
+  1150                        ;}
+  1151                        	.line	93
+  1152                        	.endblock	93
+  1153             00000008   L20	equ	8
+  1154             00000005   L21	equ	5
+  1155                        	ends
+  1156                        	efunc
+  1157                        	.endfunc	93,5,8
+  1158                        	.line	93
+  1159                        	data
+  Thu Dec  3 2020 22:25                                                Page 24
+
+
+  1160                        L19:
+  1161 00:00B3: 6B 5F 6D 65  	db	$6B,$5F,$6D,$65,$6E,$75,$5F,$43,$72,$65,
+                    $61,$74,$65,$4D,$65
+       00:00B7: 6E 75 5F 43 
+       00:00BB: 72 65 61 74 
+       00:00BF: 65 4D 65 
+  1162 00:00C2: 6E 75 3A 50  	db	$6E,$75,$3A,$50,$61,$72,$65,$6E,$74,$20,
+                    $68,$57,$6E,$64,$3A
+       00:00C6: 61 72 65 6E 
+       00:00CA: 74 20 68 57 
+       00:00CE: 6E 64 3A 
+  1163 00:00D1: 00 6B 5F 6D  	db	$00,$6B,$5F,$6D,$65,$6E,$75,$5F,$43,$72,
+                    $65,$61,$74,$65,$4D
+       00:00D5: 65 6E 75 5F 
+       00:00D9: 43 72 65 61 
+       00:00DD: 74 65 4D 
+  1164 00:00E0: 65 6E 75 3A  	db	$65,$6E,$75,$3A,$44,$65,$73,$6B,$74,$6F,
+                    $70,$57,$69,$6E,$64
+       00:00E4: 44 65 73 6B 
+       00:00E8: 74 6F 70 57 
+       00:00EC: 69 6E 64 
+  1165 00:00EF: 6F 77 3A 00  	db	$6F,$77,$3A,$00,$6D,$65,$6E,$75,$4D,$61,
+                    $69,$6E,$57,$69,$6E
+       00:00F3: 6D 65 6E 75 
+       00:00F7: 4D 61 69 6E 
+       00:00FB: 57 69 6E 
+  1166 00:00FE: 64 6F 77 43  	db	$64,$6F,$77,$43,$6C,$61,$73,$73,$00,$6D,
+                    $61,$69,$6E,$6D,$65
+       00:0102: 6C 61 73 73 
+       00:0106: 00 6D 61 69 
+       00:010A: 6E 6D 65 
+  1167 00:010D: 6E 75 00     	db	$6E,$75,$00
+  1168 00:0110:              	ends
+  1169                        ;
+  1170                        ;
+  1171                        ;BOOL mainMenuWindowProc(PFXOSMESSAGE pMsg)
+  1172                        ;{
+  1173                        	.line	96
+  1174                        	.line	97
+  1175                        	code
+  1176                        	xdef	~~mainMenuWindowProc
+  1177                        	func
+  1178                        	.function	97
+  1179                        ~~mainMenuWindowProc:
+  1180                        	longa	on
+  1181                        	longi	on
+  1182 00:020E: 3B           	tsc
+  1183 00:020F: 38           	sec
+  1184 00:0210: E9 2C 00     	sbc	#L25
+  1185 00:0213: 1B           	tcs
+  1186 00:0214: 0B           	phd
+  1187 00:0215: 5B           	tcd
+  1188             00000004   pMsg_0	set	4
+  1189                        	.block	97
+  1190                        ;	PWINDOW pWin = NULL;
+  1191                        ;	PFXPROCESS p = NULL;
+  1192                        ;	PFXSTRING  fxstr = NULL;
+  1193                        ;	LPCHAR title = NULL;
+  Thu Dec  3 2020 22:25                                                Page 25
+
+
+  1194                        ;	UCHAR localBuffer[16];
+  1195                        ;	PFXNODE node = NULL;
+  1196                        ;
+  1197                        ;	if(pMsg!=NULL)
+  1198             00000000   pWin_1	set	0
+  1199             00000004   p_1	set	4
+  1200             00000008   fxstr_1	set	8
+  1201             0000000C   title_1	set	12
+  1202             00000010   localBuffer_1	set	16
+  1203             00000020   node_1	set	32
+  1204                        	.sym	pWin,0,138,1,32,30
+  1205                        	.sym	p,4,138,1,32,20
+  1206                        	.sym	fxstr,8,138,1,32,50
+  1207                        	.sym	title,12,142,1,32
+  1208                        	.sym	localBuffer,16,110,1,0,16
+  1209                        	.sym	node,32,138,1,32,5
+  1210                        	.sym	pMsg,4,138,6,32,16
+  1211 00:0216: 64 09        	stz	<L26+pWin_1
+  1212 00:0218: 64 0B        	stz	<L26+pWin_1+2
+  1213 00:021A: 64 0D        	stz	<L26+p_1
+  1214 00:021C: 64 0F        	stz	<L26+p_1+2
+  1215 00:021E: 64 11        	stz	<L26+fxstr_1
+  1216 00:0220: 64 13        	stz	<L26+fxstr_1+2
+  1217 00:0222: 64 15        	stz	<L26+title_1
+  1218 00:0224: 64 17        	stz	<L26+title_1+2
+  1219 00:0226: 64 29        	stz	<L26+node_1
+  1220 00:0228: 64 2B        	stz	<L26+node_1+2
+  1221                        	.line	105
+  1222                        ;	{
+  1223 00:022A: A5 30        	lda	<L25+pMsg_0
+  1224 00:022C: 05 32        	ora	<L25+pMsg_0+2
+  1225 00:022E: D0 03        	bne	L28
+  1226 00:0230: 82 30 01     	brl	L10004
+  1227                        L28:
+  1228                        	.line	106
+  1229                        ;		p = k_exec_get_current_process();
+  1230                        	.line	107
+  1231 00:0233: 22 xx xx xx  	jsl	~~k_exec_get_current_process
+  1232 00:0237: 85 0D        	sta	<L26+p_1
+  1233 00:0239: 86 0F        	stx	<L26+p_1+2
+  1234                        ;
+  1235                        ;		pWin = k_getWindowFromHandle(pMsg->hwnd)
+                    ;
+  1236                        	.line	109
+  1237 00:023B: A0 0C 00     	ldy	#$c
+  1238 00:023E: B7 30        	lda	[<L25+pMsg_0],Y
+  1239 00:0240: 48           	pha
+  1240 00:0241: A0 0A 00     	ldy	#$a
+  1241 00:0244: B7 30        	lda	[<L25+pMsg_0],Y
+  1242 00:0246: 48           	pha
+  1243 00:0247: 22 xx xx xx  	jsl	~~k_getWindowFromHandle
+  1244 00:024B: 85 09        	sta	<L26+pWin_1
+  1245 00:024D: 86 0B        	stx	<L26+pWin_1+2
+  1246                        ;
+  1247                        ;		//k_debug_long("consoleWindowProc::Proce
+                    ssId:",p->procId);
+  1248                        ;
+  1249                        ;		switch(pMsg->type)
+  Thu Dec  3 2020 22:25                                                Page 26
+
+
+  1250                        	.line	113
+  1251 00:024F: A0 08 00     	ldy	#$8
+  1252 00:0252: B7 30        	lda	[<L25+pMsg_0],Y
+  1253 00:0254: 82 F0 00     	brl	L10005
+  1254                        ;		{
+  1255                        	.line	114
+  1256                        ;		case FX_CREATE_WINDOW:
+  1257                        	.line	115
+  1258                        L10007:
+  1259                        ;			k_debug_string("mainMenuWindowPr
+                    oc::FX_CREATE_WINDOW\r\n");
+  1260                        	.line	116
+  1261 00:0257: F4 xx xx     	pea	#^L24
+  1262 00:025A: F4 xx xx     	pea	#<L24
+  1263 00:025D: 22 xx xx xx  	jsl	~~k_debug_string
+  1264                        ;			//k_debug_long("menuWindowProc::
+                    heap:",umm_free_heap_size());
+  1265                        ;			//k_debug_integer("menuWindowPro
+                    c::MessageId:",pMsg->type);
+  1266                        ;
+  1267                        ;			pWin->windowData = k_mem_allocat
+                    e_heap(sizeof(MENUANCHOR));
+  1268                        	.line	120
+  1269 00:0261: F4 12 00     	pea	#<$12
+  1270 00:0264: 22 xx xx xx  	jsl	~~k_mem_allocate_heap
+  1271 00:0268: 85 01        	sta	<R0
+  1272 00:026A: 86 03        	stx	<R0+2
+  1273 00:026C: A5 01        	lda	<R0
+  1274 00:026E: A0 41 01     	ldy	#$141
+  1275 00:0271: 97 09        	sta	[<L26+pWin_1],Y
+  1276 00:0273: A5 03        	lda	<R0+2
+  1277 00:0275: A0 43 01     	ldy	#$143
+  1278 00:0278: 97 09        	sta	[<L26+pWin_1],Y
+  1279                        ;			((PMENUANCHOR)pWin->windowData)-
+                    >renderLayoutX = 2 * FONTW;
+  1280                        	.line	121
+  1281 00:027A: A0 41 01     	ldy	#$141
+  1282 00:027D: B7 09        	lda	[<L26+pWin_1],Y
+  1283 00:027F: 85 01        	sta	<R0
+  1284 00:0281: A0 43 01     	ldy	#$143
+  1285 00:0284: B7 09        	lda	[<L26+pWin_1],Y
+  1286 00:0286: 85 03        	sta	<R0+2
+  1287 00:0288: 22 xx xx xx  	jsl	~~k_font_getFontWidth
+  1288 00:028C: 85 05        	sta	<R1
+  1289 00:028E: A5 05        	lda	<R1
+  1290 00:0290: 0A           	asl	A
+  1291 00:0291: A0 04 00     	ldy	#$4
+  1292 00:0294: 97 01        	sta	[<R0],Y
+  1293                        ;			((PMENUANCHOR)pWin->windowData)-
+                    >renderLayoutY = 2;
+  1294                        	.line	122
+  1295 00:0296: A0 41 01     	ldy	#$141
+  1296 00:0299: B7 09        	lda	[<L26+pWin_1],Y
+  1297 00:029B: 85 01        	sta	<R0
+  1298 00:029D: A0 43 01     	ldy	#$143
+  1299 00:02A0: B7 09        	lda	[<L26+pWin_1],Y
+  1300 00:02A2: 85 03        	sta	<R0+2
+  1301 00:02A4: A9 02 00     	lda	#$2
+  Thu Dec  3 2020 22:25                                                Page 27
+
+
+  1302 00:02A7: A0 06 00     	ldy	#$6
+  1303 00:02AA: 97 01        	sta	[<R0],Y
+  1304                        ;
+  1305                        ;			/*
+  1306                        ;			k_debug_pointer("mainMenuWindowP
+                    roc::pWin->hMenu:",pWin->hMenu);
+  1307                        ;			if(pWin->hMenu)
+  1308                        ;			{
+  1309                        ;
+  1310                        ;					k_nodelist_forea
+                    ch_type(((PMENU)pWin->hMenu)->subMenus,
+  1311                        ;							
+                    			NL_TYPE_WINDOW_MENU,
+  1312                        ;							
+                    			pMsg->hwnd,
+  1313                        ;							
+                    			k_iterate_menus);
+  1314                        ;
+  1315                        ;
+  1316                        ;				if(((PMENU)pWin->hMenu)-
+                    >subMenus)
+  1317                        ;				{
+  1318                        ;					k_vdraw_ui_menu(
+                    pWin->win_x,pWin->win_y,
+  1319                        ;							
+                    		pWin->win_width,
+  1320                        ;							
+                    		pWin->win_height,
+  1321                        ;							
+                    		"", //((PFXSTRING)((PMENU)pWin->hMenu)->subMenus
+                    ->listData)->buffer,
+  1322                        ;							
+                    		4,3);
+  1323                        ;
+  1324                        ;					k_put_wingadget_
+                    point(WINICON_TITLE_BCLOSE,pWin->win_x + 2,pWin->win_y + 2 ,
+                    k_getUIGadgetColor());
+  1325                        ;
+  1326                        ;					if(pWin->hMenu &
+                    & ((PMENU)pWin->hMenu)->subMenus)
+  1327                        ;					{
+  1328                        ;						//((PMEN
+                    U)pWin->hMenu)->hWndOwner = pWin->pParentWindow; // temp for
+                     a test
+  1329                        ;						//k_debu
+                    g_strings("menuWindowProc::FX_MOUSE_ENTER:hWndOwner:title:",
+                     k_getWindowFromHandle(pWin->pParentWindow)->win_title );
+  1330                        ;
+  1331                        ;
+  1332                        ;						_k_user_
+                    send_child_message(pWin,FX_SHOW_WINDOW,NULL,0);
+  1333                        ;
+  1334                        ;						//fxstr 
+                    = k_fxstring_init(128);
+  1335                        ;
+  1336                        ;						//k_debu
+                    g_strings("menuWindowProc::FX_CREATE_WINDOW:fxstr:",fxstr->b
+                    uffer);
+  Thu Dec  3 2020 22:25                                                Page 28
+
+
+  1337                        ;						//((PMEN
+                    U)pWin->hMenu)->subMenus->listData = fxstr;
+  1338                        ;						//k_debu
+                    g_strings("menuWindowProc::FX_CREATE_WINDOW:title:",title);
+  1339                        ;					}
+  1340                        ;
+  1341                        ;
+  1342                        ;				}
+  1343                        ;
+  1344                        ;
+  1345                        ;
+  1346                        ;				//k_draw_menu(pWin->hMen
+                    u,15,3);
+  1347                        ;
+  1348                        ;			}
+  1349                        ;			*/
+  1350                        ;			//k_debug_string("menuWindowProc
+                    ::FX_CREATE_WINDOW:k_vdraw_ui_menu\r\n");
+  1351                        ;			break;
+  1352                        	.line	170
+  1353 00:02AC: 82 B4 00     	brl	L10006
+  1354                        ;		case FX_DRAW_WINDOW:
+  1355                        	.line	171
+  1356                        L10008:
+  1357                        ;			k_debug_string("mainMenuWindowPr
+                    oc::FX_REDRAW_WINDOW\r\n");
+  1358                        	.line	172
+  1359 00:02AF: F4 xx xx     	pea	#^L24+39
+  1360 00:02B2: F4 xx xx     	pea	#<L24+39
+  1361 00:02B5: 22 xx xx xx  	jsl	~~k_debug_string
+  1362                        ;
+  1363                        ;
+  1364                        ;			k_vdraw_ui_menu(pWin->win_x,
+  1365                        	.line	175
+  1366                        ;							
+                    pWin->win_y,
+  1367                        ;							
+                    pWin->win_width,
+  1368                        ;							
+                    pWin->win_height,
+  1369                        ;							
+                    NULL, //((PFXSTRING)((PMENU)pWin->hMenu)->subMenus->listData
+                    )->buffer,
+  1370                        ;							
+                    4,3);
+  1371 00:02B9: F4 03 00     	pea	#<$3
+  1372 00:02BC: F4 04 00     	pea	#<$4
+  1373 00:02BF: F4 00 00     	pea	#^$0
+  1374 00:02C2: F4 00 00     	pea	#<$0
+  1375 00:02C5: A0 0E 00     	ldy	#$e
+  1376 00:02C8: B7 09        	lda	[<L26+pWin_1],Y
+  1377 00:02CA: 48           	pha
+  1378 00:02CB: A0 0C 00     	ldy	#$c
+  1379 00:02CE: B7 09        	lda	[<L26+pWin_1],Y
+  1380 00:02D0: 48           	pha
+  1381 00:02D1: A0 0A 00     	ldy	#$a
+  1382 00:02D4: B7 09        	lda	[<L26+pWin_1],Y
+  1383 00:02D6: 48           	pha
+  Thu Dec  3 2020 22:25                                                Page 29
+
+
+  1384 00:02D7: A0 08 00     	ldy	#$8
+  1385 00:02DA: B7 09        	lda	[<L26+pWin_1],Y
+  1386 00:02DC: 48           	pha
+  1387 00:02DD: 22 xx xx xx  	jsl	~~k_vdraw_ui_menu
+  1388                        ;
+  1389                        ;
+  1390                        ;			break;
+  1391                        	.line	183
+  1392 00:02E1: 82 7F 00     	brl	L10006
+  1393                        ;		case FX_LBUTTON_DOWN:
+  1394                        	.line	184
+  1395                        L10009:
+  1396                        ;			if(pMsg->type!=FX_PROCESS)
+  1397                        	.line	185
+  1398                        ;			{
+  1399 00:02E4: A0 08 00     	ldy	#$8
+  1400 00:02E7: B7 30        	lda	[<L25+pMsg_0],Y
+  1401 00:02E9: C9 00 FF     	cmp	#<$ff00
+  1402 00:02EC: D0 03        	bne	L29
+  1403 00:02EE: 82 36 00     	brl	L10010
+  1404                        L29:
+  1405                        	.line	186
+  1406                        ;				//k_debug_integer("conso
+                    leWindowProc::ProcessId:",p->procId);
+  1407                        ;				k_debug_integer("mainMen
+                    uWindowProc::FX_LBUTTON_DOWN:X:", *((INT*)&pMsg->data[1])  )
+                    ;
+  1408                        	.line	188
+  1409 00:02F1: A0 17 00     	ldy	#$17
+  1410 00:02F4: B7 30        	lda	[<L25+pMsg_0],Y
+  1411 00:02F6: 48           	pha
+  1412 00:02F7: F4 xx xx     	pea	#^L24+78
+  1413 00:02FA: F4 xx xx     	pea	#<L24+78
+  1414 00:02FD: 22 xx xx xx  	jsl	~~k_debug_integer
+  1415                        ;				k_debug_integer("mainMen
+                    uWindowProc::FX_LBUTTON_DOWN:Y:", *((INT*)&pMsg->data[3])  )
+                    ;
+  1416                        	.line	189
+  1417 00:0301: A0 19 00     	ldy	#$19
+  1418 00:0304: B7 30        	lda	[<L25+pMsg_0],Y
+  1419 00:0306: 48           	pha
+  1420 00:0307: F4 xx xx     	pea	#^L24+117
+  1421 00:030A: F4 xx xx     	pea	#<L24+117
+  1422 00:030D: 22 xx xx xx  	jsl	~~k_debug_integer
+  1423                        ;
+  1424                        ;				k_debug_pointer("mainMen
+                    uWindowProc::pChildHitList:",pWin->pChildHitList);
+  1425                        	.line	191
+  1426 00:0311: A0 3E 01     	ldy	#$13e
+  1427 00:0314: B7 09        	lda	[<L26+pWin_1],Y
+  1428 00:0316: 48           	pha
+  1429 00:0317: A0 3C 01     	ldy	#$13c
+  1430 00:031A: B7 09        	lda	[<L26+pWin_1],Y
+  1431 00:031C: 48           	pha
+  1432 00:031D: F4 xx xx     	pea	#^L24+156
+  1433 00:0320: F4 xx xx     	pea	#<L24+156
+  1434 00:0323: 22 xx xx xx  	jsl	~~k_debug_pointer
+  1435                        ;
+  Thu Dec  3 2020 22:25                                                Page 30
+
+
+  1436                        ;				//if(pWin->pChildHitList
+                    )
+  1437                        ;				//	k_debug_nodelist
+                    _with_data( pWin->pChildHitList->listhead, debug_window_node
+                     );
+  1438                        ;
+  1439                        ;
+  1440                        ;				//k_shadow_bitblt(0,0, 6
+                    40, 480, 1,1);
+  1441                        ;
+  1442                        ;			}
+  1443                        	.line	199
+  1444                        ;			break;
+  1445                        L10010:
+  1446                        	.line	200
+  1447 00:0327: 82 39 00     	brl	L10006
+  1448                        ;
+  1449                        ;		case FX_MOUSE_ENTER:
+  1450                        	.line	202
+  1451                        L10011:
+  1452                        ;			k_debug_string("mainMenuWindowPr
+                    oc::FX_MOUSE_ENTER\r\n");
+  1453                        	.line	203
+  1454 00:032A: F4 xx xx     	pea	#^L24+191
+  1455 00:032D: F4 xx xx     	pea	#<L24+191
+  1456 00:0330: 22 xx xx xx  	jsl	~~k_debug_string
+  1457                        ;
+  1458                        ;			/*
+  1459                        ;			if(((PMENU)pWin->hMenu)->subMenu
+                    s)
+  1460                        ;			{
+  1461                        ;				k_vdraw_ui_menu(pWin->wi
+                    n_x,pWin->win_y,
+  1462                        ;							
+                    	pWin->win_width,
+  1463                        ;							
+                    	pWin->win_height,
+  1464                        ;							
+                    	"", //((PFXSTRING)((PMENU)pWin->hMenu)->subMenus->listDa
+                    ta)->buffer,
+  1465                        ;							
+                    	4,3);
+  1466                        ;
+  1467                        ;
+  1468                        ;				if(pWin->hMenu && ((PMEN
+                    U)pWin->hMenu)->subMenus)
+  1469                        ;				{
+  1470                        ;					//((PMENU)pWin->
+                    hMenu)->hWndOwner = pWin->pParentWindow; // temp for a test
+  1471                        ;					//k_debug_string
+                    s("menuWindowProc::FX_MOUSE_ENTER:hWndOwner:title:", k_getWi
+                    ndowFromHandle(pWin->pParentWindow)->win_title );
+  1472                        ;
+  1473                        ;
+  1474                        ;					_k_user_send_chi
+                    ld_message(pWin,FX_SHOW_WINDOW,NULL,0);
+  1475                        ;
+  1476                        ;					//fxstr = k_fxst
+  Thu Dec  3 2020 22:25                                                Page 31
+
+
+                    ring_init(128);
+  1477                        ;
+  1478                        ;					//k_debug_string
+                    s("menuWindowProc::FX_CREATE_WINDOW:fxstr:",fxstr->buffer);
+  1479                        ;					//((PMENU)pWin->
+                    hMenu)->subMenus->listData = fxstr;
+  1480                        ;					//k_debug_string
+                    s("menuWindowProc::FX_CREATE_WINDOW:title:",title);
+  1481                        ;				}
+  1482                        ;
+  1483                        ;
+  1484                        ;			}
+  1485                        ;			*/
+  1486                        ;			break;
+  1487                        	.line	233
+  1488 00:0334: 82 2C 00     	brl	L10006
+  1489                        ;		case FX_MOUSE_EXIT:
+  1490                        	.line	234
+  1491                        L10012:
+  1492                        ;			k_debug_string("mainMenuWindowPr
+                    oc::FX_MOUSE_EXIT\r\n");
+  1493                        	.line	235
+  1494 00:0337: F4 xx xx     	pea	#^L24+228
+  1495 00:033A: F4 xx xx     	pea	#<L24+228
+  1496 00:033D: 22 xx xx xx  	jsl	~~k_debug_string
+  1497                        ;			/*
+  1498                        ;			k_debug_strings("menuWindowProc:
+                    :FX_MOUSE_EXIT:title:",(LPCHAR)((PMENU)pWin->hMenu)->pCaptio
+                    n);
+  1499                        ;
+  1500                        ;			((PMENUANCHOR)pWin->windowData)-
+                    >renderLayoutX = 2 + FONTW;
+  1501                        ;			((PMENUANCHOR)pWin->windowData)-
+                    >renderLayoutY = 2 + FONTW;
+  1502                        ;
+  1503                        ;			if(((PMENU)pWin->hMenu)->pCaptio
+                    n)
+  1504                        ;			{
+  1505                        ;				_k_user_send_child_messa
+                    ge(pWin,FX_HIDE_WINDOW,NULL,0);
+  1506                        ;
+  1507                        ;				k_mem_deallocate_heap((L
+                    PVOID)((PMENU)pWin->hMenu)->pCaption);
+  1508                        ;
+  1509                        ;				title = k_string_replace
+                    (CONST_WB_MENU_TITLE,"%s1", k_strip_padding(k_longtodec(k_ge
+                    tZeroPage()->availableHeapMemoryK,localBuffer)) );
+  1510                        ;				((PMENU)pWin->hMenu)->pC
+                    aption = k_string_replace(title,"%s2", k_strip_padding(k_lon
+                    gtodec(k_getZeroPage()->availableHeapMemoryK,localBuffer)));
+  1511                        ;
+  1512                        ;
+  1513                        ;				k_vdraw_ui_menu(pWin->wi
+                    n_x,pWin->win_y,
+  1514                        ;							
+                    	pWin->win_width,
+  1515                        ;							
+                    	pWin->win_height,
+  Thu Dec  3 2020 22:25                                                Page 32
+
+
+  1516                        ;							
+                    	((PMENU)pWin->hMenu)->pCaption,
+  1517                        ;							
+                    	15,3);
+  1518                        ;
+  1519                        ;				k_mem_deallocate_heap(ti
+                    tle);
+  1520                        ;
+  1521                        ;			}
+  1522                        ;			*/
+  1523                        ;			break;
+  1524                        	.line	262
+  1525 00:0341: 82 1F 00     	brl	L10006
+  1526                        ;
+  1527                        ;		default:
+  1528                        	.line	264
+  1529                        L10013:
+  1530                        ;			break;
+  1531                        	.line	265
+  1532 00:0344: 82 1C 00     	brl	L10006
+  1533                        ;		}
+  1534                        	.line	266
+  1535                        L10005:
+  1536                        	xref	~~~swt
+  1537 00:0347: 22 xx xx xx  	jsl	~~~swt
+  1538 00:034B: 05 00        	dw	5
+  1539 00:034D: 01 0F        	dw	3841
+  1540 00:034F: xx xx        	dw	L10011-1
+  1541 00:0351: 02 0F        	dw	3842
+  1542 00:0353: xx xx        	dw	L10012-1
+  1543 00:0355: 04 0F        	dw	3844
+  1544 00:0357: xx xx        	dw	L10009-1
+  1545 00:0359: 00 FB        	dw	64256
+  1546 00:035B: xx xx        	dw	L10008-1
+  1547 00:035D: 03 FF        	dw	65283
+  1548 00:035F: xx xx        	dw	L10007-1
+  1549 00:0361: xx xx        	dw	L10013-1
+  1550                        L10006:
+  1551                        ;	}
+  1552                        	.line	267
+  1553                        ;
+  1554                        ;	return TRUE;
+  1555                        L10004:
+  1556                        	.line	269
+  1557 00:0363: A9 01 00     	lda	#$1
+  1558                        L30:
+  1559 00:0366: A8           	tay
+  1560 00:0367: A5 2E        	lda	<L25+2
+  1561 00:0369: 85 32        	sta	<L25+2+4
+  1562 00:036B: A5 2D        	lda	<L25+1
+  1563 00:036D: 85 31        	sta	<L25+1+4
+  1564 00:036F: 2B           	pld
+  1565 00:0370: 3B           	tsc
+  1566 00:0371: 18           	clc
+  1567 00:0372: 69 30 00     	adc	#L25+4
+  1568 00:0375: 1B           	tcs
+  1569 00:0376: 98           	tya
+  1570 00:0377: 6B           	rtl
+  Thu Dec  3 2020 22:25                                                Page 33
+
+
+  1571                        ;}
+  1572                        	.line	270
+  1573                        	.endblock	270
+  1574             0000002C   L25	equ	44
+  1575             00000009   L26	equ	9
+  1576                        	ends
+  1577                        	efunc
+  1578                        	.endfunc	270,9,44
+  1579                        	.line	270
+  1580                        	data
+  1581                        L24:
+  1582 00:0110: 6D 61 69 6E  	db	$6D,$61,$69,$6E,$4D,$65,$6E,$75,$57,$69,
+                    $6E,$64,$6F,$77,$50
+       00:0114: 4D 65 6E 75 
+       00:0118: 57 69 6E 64 
+       00:011C: 6F 77 50 
+  1583 00:011F: 72 6F 63 3A  	db	$72,$6F,$63,$3A,$3A,$46,$58,$5F,$43,$52,
+                    $45,$41,$54,$45,$5F
+       00:0123: 3A 46 58 5F 
+       00:0127: 43 52 45 41 
+       00:012B: 54 45 5F 
+  1584 00:012E: 57 49 4E 44  	db	$57,$49,$4E,$44,$4F,$57,$0D,$0A,$00,$6D,
+                    $61,$69,$6E,$4D,$65
+       00:0132: 4F 57 0D 0A 
+       00:0136: 00 6D 61 69 
+       00:013A: 6E 4D 65 
+  1585 00:013D: 6E 75 57 69  	db	$6E,$75,$57,$69,$6E,$64,$6F,$77,$50,$72,
+                    $6F,$63,$3A,$3A,$46
+       00:0141: 6E 64 6F 77 
+       00:0145: 50 72 6F 63 
+       00:0149: 3A 3A 46 
+  1586 00:014C: 58 5F 52 45  	db	$58,$5F,$52,$45,$44,$52,$41,$57,$5F,$57,
+                    $49,$4E,$44,$4F,$57
+       00:0150: 44 52 41 57 
+       00:0154: 5F 57 49 4E 
+       00:0158: 44 4F 57 
+  1587 00:015B: 0D 0A 00 6D  	db	$0D,$0A,$00,$6D,$61,$69,$6E,$4D,$65,$6E,
+                    $75,$57,$69,$6E,$64
+       00:015F: 61 69 6E 4D 
+       00:0163: 65 6E 75 57 
+       00:0167: 69 6E 64 
+  1588 00:016A: 6F 77 50 72  	db	$6F,$77,$50,$72,$6F,$63,$3A,$3A,$46,$58,
+                    $5F,$4C,$42,$55,$54
+       00:016E: 6F 63 3A 3A 
+       00:0172: 46 58 5F 4C 
+       00:0176: 42 55 54 
+  1589 00:0179: 54 4F 4E 5F  	db	$54,$4F,$4E,$5F,$44,$4F,$57,$4E,$3A,$58,
+                    $3A,$00,$6D,$61,$69
+       00:017D: 44 4F 57 4E 
+       00:0181: 3A 58 3A 00 
+       00:0185: 6D 61 69 
+  1590 00:0188: 6E 4D 65 6E  	db	$6E,$4D,$65,$6E,$75,$57,$69,$6E,$64,$6F,
+                    $77,$50,$72,$6F,$63
+       00:018C: 75 57 69 6E 
+       00:0190: 64 6F 77 50 
+       00:0194: 72 6F 63 
+  1591 00:0197: 3A 3A 46 58  	db	$3A,$3A,$46,$58,$5F,$4C,$42,$55,$54,$54,
+                    $4F,$4E,$5F,$44,$4F
+  Thu Dec  3 2020 22:25                                                Page 34
+
+
+       00:019B: 5F 4C 42 55 
+       00:019F: 54 54 4F 4E 
+       00:01A3: 5F 44 4F 
+  1592 00:01A6: 57 4E 3A 59  	db	$57,$4E,$3A,$59,$3A,$00,$6D,$61,$69,$6E,
+                    $4D,$65,$6E,$75,$57
+       00:01AA: 3A 00 6D 61 
+       00:01AE: 69 6E 4D 65 
+       00:01B2: 6E 75 57 
+  1593 00:01B5: 69 6E 64 6F  	db	$69,$6E,$64,$6F,$77,$50,$72,$6F,$63,$3A,
+                    $3A,$70,$43,$68,$69
+       00:01B9: 77 50 72 6F 
+       00:01BD: 63 3A 3A 70 
+       00:01C1: 43 68 69 
+  1594 00:01C4: 6C 64 48 69  	db	$6C,$64,$48,$69,$74,$4C,$69,$73,$74,$3A,
+                    $00,$6D,$61,$69,$6E
+       00:01C8: 74 4C 69 73 
+       00:01CC: 74 3A 00 6D 
+       00:01D0: 61 69 6E 
+  1595 00:01D3: 4D 65 6E 75  	db	$4D,$65,$6E,$75,$57,$69,$6E,$64,$6F,$77,
+                    $50,$72,$6F,$63,$3A
+       00:01D7: 57 69 6E 64 
+       00:01DB: 6F 77 50 72 
+       00:01DF: 6F 63 3A 
+  1596 00:01E2: 3A 46 58 5F  	db	$3A,$46,$58,$5F,$4D,$4F,$55,$53,$45,$5F,
+                    $45,$4E,$54,$45,$52
+       00:01E6: 4D 4F 55 53 
+       00:01EA: 45 5F 45 4E 
+       00:01EE: 54 45 52 
+  1597 00:01F1: 0D 0A 00 6D  	db	$0D,$0A,$00,$6D,$61,$69,$6E,$4D,$65,$6E,
+                    $75,$57,$69,$6E,$64
+       00:01F5: 61 69 6E 4D 
+       00:01F9: 65 6E 75 57 
+       00:01FD: 69 6E 64 
+  1598 00:0200: 6F 77 50 72  	db	$6F,$77,$50,$72,$6F,$63,$3A,$3A,$46,$58,
+                    $5F,$4D,$4F,$55,$53
+       00:0204: 6F 63 3A 3A 
+       00:0208: 46 58 5F 4D 
+       00:020C: 4F 55 53 
+  1599 00:020F: 45 5F 45 58  	db	$45,$5F,$45,$58,$49,$54,$0D,$0A,$00
+       00:0213: 49 54 0D 0A 
+       00:0217: 00 
+  1600 00:0218:              	ends
+  1601                        ;
+  1602                        ;
+  1603                        ;
+  1604                        	.line	272
+  1605                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxmenumanager.c",96
+  1606                        	xref	~~k_user_CreateWindow
+  1607                        	xref	~~k_user_CreateWindowClass
+  1608                        	xref	~~k_user_getSystemMetric
+  1609                        	xref	~~k_user_getDesktopWindow
+  1610                        	xref	~~k_getWindowFromHandle
+  1611                        	xref	~~k_font_getFontWidth
+  1612                        	xref	~~k_vdraw_ui_menu
+  1613                        	xref	~~k_mem_deallocate_heap
+  1614                        	xref	~~k_mem_allocate_heap
+  1615                        	xref	~~k_heap_integrity_check
+  Thu Dec  3 2020 22:25                                                Page 35
+
+
+  1616                        	xref	~~k_exec_get_current_process
+  1617                        	xref	~~k_string_copy_string
+  1618                        	xref	~~k_debug_strings
+  1619                        	xref	~~k_debug_integer
+  1620                        	xref	~~k_debug_pointer
+  1621                        	xref	~~k_debug_string
+  1622                        	xref	~~k_nodelist_deallocate_list
+  1623                        	xref	~~memset
+  1624                        	.sym	~~k_menu_FreemMenuResource,~~k_menu_Free
+                    mMenuResource,65,2,0
+  1625                        	.sym	~~mainMenuWindowProc,~~mainMenuWindowPro
+                    c,78,2,0
+  1626                        	.sym	~~k_menu_CreateMenu,~~k_menu_CreateMenu,
+                    1098,2,32,30
+  1627                        	.sym	~~k_menu_CreateMenuResource,~~k_menu_Cre
+                    ateMenuResource,1089,2,32
+  1628                        	.sym	~~k_initializeMenuManager,~~k_initialize
+                    MenuManager,78,2,0
+  1629                        	.sym	PCOMMANDARGS,0,138,14,32,63
+  1630                        	.sym	COMMANDARGS,0,10,14,64,63
+  1631                        	.sym	PTOKENIZESTATE,0,133,14,32
+  1632                        	.sym	TOKENIZESTATE,0,5,14,16
+  1633                        	.sym	PTOKEN,0,138,14,32,62
+  1634                        	.sym	TOKEN,0,10,14,64,62
+  1635                        	.sym	PTOKENTYPE,0,133,14,32
+  1636                        	.sym	TOKENTYPE,0,5,14,16
+  1637                        	.sym	FXCommandHandler,0,656,14,32
+  1638                        	.sym	PCONSOLECTX,0,138,14,32,61
+  1639                        	.sym	CONSOLECTX,0,10,14,1144,61
+  1640                        	.sym	PSPINNERCTX,0,138,14,32,60
+  1641                        	.sym	SPINNERCTX,0,10,14,48,60
+  1642                        	.sym	PMOUSE_MSG_STATE,0,138,14,32,59
+  1643                        	.sym	MOUSE_MSG_STATE,0,10,14,184,59
+  1644                        	.sym	PFXEVENTPROCESS,0,138,14,32,58
+  1645                        	.sym	FXEVENTPROCESS,0,10,14,64,58
+  1646                        	.sym	FXEventProc,0,641,14,32
+  1647                        	.sym	PMOUSEMSGDATA,0,138,14,32,57
+  1648                        	.sym	MOUSEMSGDATA,0,10,14,64,57
+  1649                        	.sym	MSGIRQ,0,5,14,16
+  1650                        	.sym	MAINLOOPARGS,0,10,14,16,56
+  1651                        	.sym	PEACHCHILD_MSG,0,138,14,32,55
+  1652                        	.sym	EACHCHILD_MSG,0,10,14,64,55
+  1653                        	.sym	~~k_user_CreateWindow,~~k_user_CreateWin
+                    dow,1098,18,32,30
+  1654                        	.sym	~~k_user_CreateWindowClass,~~k_user_Crea
+                    teWindowClass,1098,18,32,26
+  1655                        	.sym	~~k_user_getSystemMetric,~~k_user_getSys
+                    temMetric,69,18,0
+  1656                        	.sym	~~k_user_getDesktopWindow,~~k_user_getDe
+                    sktopWindow,1089,18,32
+  1657                        	.sym	~~k_getWindowFromHandle,~~k_getWindowFro
+                    mHandle,1098,18,32,30
+  1658                        	.sym	~~k_font_getFontWidth,~~k_font_getFontWi
+                    dth,80,18,0
+  1659                        	.sym	PCUR_PALETTE_MAP,0,138,14,32,54
+  1660                        	.sym	CUR_PALETTE_MAP,0,10,14,400,54
+  1661                        	.sym	~~k_vdraw_ui_menu,~~k_vdraw_ui_menu,1098
+                    ,18,32,34
+  Thu Dec  3 2020 22:25                                                Page 36
+
+
+  1662                        	.sym	PCLICKDETECTED,0,138,14,32,53
+  1663                        	.sym	CLICKDETECTED,0,10,14,64,53
+  1664                        	.sym	OBJECTCLICKED,0,641,14,32
+  1665                        	.sym	~~k_mem_deallocate_heap,~~k_mem_dealloca
+                    te_heap,65,18,0
+  1666                        	.sym	~~k_mem_allocate_heap,~~k_mem_allocate_h
+                    eap,1089,18,32
+  1667                        	.sym	~~k_heap_integrity_check,~~k_heap_integr
+                    ity_check,82,18,0
+  1668                        	.sym	MemoryCallback,0,641,14,32
+  1669                        	.sym	PFXMEMORYMAP,0,138,14,32,52
+  1670                        	.sym	FXMEMORYMAP,0,10,14,2072,52
+  1671                        	.sym	UMM_HEAP_INFO,0,10,14,256,51
+  1672                        	.sym	~~k_exec_get_current_process,~~k_exec_ge
+                    t_current_process,1098,18,32,20
+  1673                        	.sym	~~k_string_copy_string,~~k_string_copy_s
+                    tring,1102,18,32
+  1674                        	.sym	PFXSTRING,0,138,14,32,50
+  1675                        	.sym	FXSTRING,0,10,14,64,50
+  1676                        	.sym	DEVICEDRIVER_COMMAND,0,656,14,32
+  1677                        	.sym	DEVICEDRIVER_UNLOAD,0,654,14,32
+  1678                        	.sym	DEVICEDRIVER_WRITE,0,656,14,32
+  1679                        	.sym	DEVICEDRIVER_READ,0,656,14,32
+  1680                        	.sym	DEVICEDRIVER_LOAD,0,654,14,32
+  1681                        	.sym	PFX_BLOCK_DEVICE_DRIVER,0,138,14,32,49
+  1682                        	.sym	FX_BLOCK_DEVICE_DRIVER,0,10,14,1448,49
+  1683                        	.sym	PFX_DEVICE_DRIVER,0,138,14,32,48
+  1684                        	.sym	FX_DEVICE_DRIVER,0,10,14,1416,48
+  1685                        	.sym	~~k_debug_strings,~~k_debug_strings,65,1
+                    8,0
+  1686                        	.sym	~~k_debug_integer,~~k_debug_integer,65,1
+                    8,0
+  1687                        	.sym	~~k_debug_pointer,~~k_debug_pointer,65,1
+                    8,0
+  1688                        	.sym	~~k_debug_string,~~k_debug_string,65,18,
+                    0
+  1689                        	.sym	PDEBUGBYTEBITS,0,138,14,32,47
+  1690                        	.sym	DEBUGBYTEBITS,0,10,14,8,47
+  1691                        	.sym	PFXENVIRONMENT,0,138,14,32,46
+  1692                        	.sym	FXENVIRONMENT,0,10,14,96,46
+  1693                        	.sym	PFXZERPOPAGE,0,138,14,32,45
+  1694                        	.sym	FXZERPOPAGE,0,10,14,448,45
+  1695                        	.sym	KERNELTRAPCALL,0,641,14,32
+  1696                        	.sym	FOREACHNODEUNTIL,0,654,14,32
+  1697                        	.sym	FOREACHNODE,0,641,14,32
+  1698                        	.sym	~~k_nodelist_deallocate_list,~~k_nodelis
+                    t_deallocate_list,65,18,0
+  1699                        	.sym	PFXCOMBUFFER,0,138,14,32,44
+  1700                        	.sym	FXCOMBUFFER,0,10,14,2080,44
+  1701                        	.sym	PSUBMENULIST,0,138,14,32,43
+  1702                        	.sym	SUBMENULIST,0,10,14,40,43
+  1703                        	.sym	HSUBMENU,0,7,14,32
+  1704                        	.sym	PSUBMENU,0,138,14,32,42
+  1705                        	.sym	SUBMENU,0,10,14,64,42
+  1706                        	.sym	MenuAction,0,641,14,32
+  1707                        	.sym	PMENUANCHOR,0,138,14,32,41
+  1708                        	.sym	MENUANCHOR,0,10,14,144,41
+  1709                        	.sym	PTEXTBOX,0,138,14,32,40
+  Thu Dec  3 2020 22:25                                                Page 37
+
+
+  1710                        	.sym	TEXTBOX,0,10,14,144,40
+  1711                        	.sym	PLISTBOX,0,138,14,32,39
+  1712                        	.sym	LISTBOX,0,10,14,240,39
+  1713                        	.sym	PSCROLLBAR,0,138,14,32,38
+  1714                        	.sym	SCROLLBAR,0,10,14,192,38
+  1715                        	.sym	PBUTTON,0,138,14,32,37
+  1716                        	.sym	BUTTON,0,10,14,80,37
+  1717                        	.sym	PMENUDROPDOWNDATA,0,138,14,32,36
+  1718                        	.sym	MENUDROPDOWNDATA,0,10,14,3568,36
+  1719                        	.sym	PMENUTAG,0,138,14,32,35
+  1720                        	.sym	MENUTAG,0,10,14,112,35
+  1721                        	.sym	PMENU,0,138,14,32,34
+  1722                        	.sym	MENU,0,10,14,248,34
+  1723                        	.sym	HMENURESOURCE,0,129,14,32
+  1724                        	.sym	HTEXTBOX,0,7,14,32
+  1725                        	.sym	PTEXTBOXX,0,138,14,32,33
+  1726                        	.sym	TEXTBOXX,0,10,14,112,33
+  1727                        	.sym	FONTMETRIC,0,10,14,32,32
+  1728                        	.sym	TITLE,0,142,14,32
+  1729                        	.sym	PHANDLE,0,1153,14,32
+  1730                        	.sym	HANDLE,0,129,14,32
+  1731                        	.sym	PWINDOWEX,0,138,14,32,31
+  1732                        	.sym	WINDOWEX,0,10,14,2704,31
+  1733                        	.sym	PWINDOW,0,138,14,32,30
+  1734                        	.sym	WINDOW,0,10,14,2808,30
+  1735                        	.sym	PDRAGDATA,0,138,14,32,29
+  1736                        	.sym	DRAGDATA,0,10,14,136,29
+  1737                        	.sym	PNCCLICKABLE,0,138,14,32,28
+  1738                        	.sym	NCCLICKABLE,0,10,14,88,28
+  1739                        	.sym	HCLICKABLE,0,7,14,32
+  1740                        	.sym	PCLICKABLE,0,138,14,32,27
+  1741                        	.sym	CLICKABLE,0,10,14,88,27
+  1742                        	.sym	PWNDCLASS,0,138,14,32,26
+  1743                        	.sym	WNDCLASS,0,10,14,256,26
+  1744                        	.sym	HBRUSH,0,129,14,32
+  1745                        	.sym	HCURSOR,0,129,14,32
+  1746                        	.sym	HICON,0,129,14,32
+  1747                        	.sym	HINSTANCE,0,129,14,32
+  1748                        	.sym	FXWndProc,0,654,14,32
+  1749                        	.sym	PRECT,0,138,14,32,25
+  1750                        	.sym	RECT,0,10,14,64,25
+  1751                        	.sym	PPOINT,0,138,14,32,24
+  1752                        	.sym	POINT,0,10,14,32,24
+  1753                        	.sym	PFXPROPERTY,0,138,14,32,22
+  1754                        	.sym	FXPROPERTY,0,10,14,384,22
+  1755                        	.sym	SCANCODE,0,14,14,8
+  1756                        	.sym	KEYCODE,0,14,14,8
+  1757                        	.sym	PFXPROCESSMESSAGE,0,138,14,32,21
+  1758                        	.sym	FXPROCESSMESSAGE,0,10,14,112,21
+  1759                        	.sym	PFXPROCESS,0,138,14,32,20
+  1760                        	.sym	FXPROCESS,0,10,14,800,20
+  1761                        	.sym	PDESKTOP_CONTROL,0,138,14,32,19
+  1762                        	.sym	DESKTOP_CONTROL,0,10,14,392,19
+  1763                        	.sym	PCONSOLE_CONTROL,0,138,14,32,18
+  1764                        	.sym	CONSOLE_CONTROL,0,10,14,448,18
+  1765                        	.sym	FXProcessProc,0,641,14,32
+  1766                        	.sym	PFXCMDMESSAGE,0,138,14,32,17
+  1767                        	.sym	FXCMDMESSAGE,0,10,14,304,17
+  Thu Dec  3 2020 22:25                                                Page 38
+
+
+  1768                        	.sym	PFXOSMESSAGE,0,138,14,32,16
+  1769                        	.sym	FXOSMESSAGE,0,10,14,304,16
+  1770                        	.sym	PINT_REGS,0,138,14,32,15
+  1771                        	.sym	INT_REGS,0,10,14,104,15
+  1772                        	.sym	TASK_STACK,0,10,14,32,14
+  1773                        	.sym	TASK,0,10,14,48,13
+  1774                        	.sym	PIRQDATA,0,138,14,32,12
+  1775                        	.sym	IRQDATA,0,10,14,48,12
+  1776                        	.sym	HMENU,0,129,14,32
+  1777                        	.sym	HWND,0,129,14,32
+  1778                        	.sym	MSGDATA,0,14,14,8
+  1779                        	.sym	MSGDEST,0,18,14,32
+  1780                        	.sym	MSGSRC,0,18,14,32
+  1781                        	.sym	MSGTYPE,0,16,14,16
+  1782                        	.sym	PROCESS_RESOURCE_LIST,0,138,14,32,6
+  1783                        	.sym	PROCESS_TLS_LIST,0,138,14,32,6
+  1784                        	.sym	SEMAPHORE_LIST,0,138,14,32,6
+  1785                        	.sym	FILE_BLOCK_LIST,0,138,14,32,6
+  1786                        	.sym	FILE_PATH_LIST,0,138,14,32,6
+  1787                        	.sym	PROCEDURE_LIST,0,138,14,32,6
+  1788                        	.sym	FILE_HANDLE,0,138,14,32,11
+  1789                        	.sym	FILE_BLOCK,0,10,14,552,11
+  1790                        	.sym	SEMAPHORE,0,10,14,16,10
+  1791                        	.sym	PPROCESS_SIGNAL,0,138,14,32,9
+  1792                        	.sym	PROCESS_SIGNAL,0,10,14,16,9
+  1793                        	.sym	KRESULT,0,18,14,32
+  1794                        	.sym	PKERNEL_ERROR,0,138,14,32,8
+  1795                        	.sym	KERNEL_ERROR,0,10,14,32,8
+  1796                        	.sym	PROCESS_STATUS,0,16,14,16
+  1797                        	.sym	FILE_PATH_NAME,0,142,14,32
+  1798                        	.sym	PROCESS_RESOURCE,0,129,14,32
+  1799                        	.sym	PROCESS_TLS,0,129,14,32
+  1800                        	.sym	PROCESS_CTX,0,129,14,32
+  1801                        	.sym	USERID,0,16,14,16
+  1802                        	.sym	PROCESS_ID,0,18,14,32
+  1803                        	.sym	PROCESS_BANK,0,14,14,8
+  1804                        	.sym	PFXQUEUE,0,138,14,32,7
+  1805                        	.sym	FXQUEUE,0,10,14,80,7
+  1806                        	.sym	PFXNODELIST,0,138,14,32,6
+  1807                        	.sym	FXNODELIST,0,10,14,96,6
+  1808                        	.sym	NodeListDeallocator,0,641,14,32
+  1809                        	.sym	PFXNODE,0,138,14,32,5
+  1810                        	.sym	FXNODE,0,10,14,384,5
+  1811                        	.sym	PBYTEBITS,0,138,14,32,4
+  1812                        	.sym	BYTEBITS,0,10,14,8,4
+  1813                        	.sym	HCOLOR,0,129,14,32
+  1814                        	.sym	HFONT,0,129,14,32
+  1815                        	.sym	HDC,0,129,14,32
+  1816                        	.sym	HPOINTER,0,129,14,32
+  1817                        	.sym	uint32_t,0,18,14,32
+  1818                        	.sym	uint8_t,0,14,14,8
+  1819                        	.sym	PFAR,0,142,14,32
+  1820                        	.sym	LPBOOL,0,142,14,32
+  1821                        	.sym	BOOL,0,14,14,8
+  1822                        	.sym	DWORD,0,18,14,32
+  1823                        	.sym	ULONG,0,18,14,32
+  1824                        	.sym	LPLONG,0,135,14,32
+  1825                        	.sym	LONG,0,7,14,32
+  Thu Dec  3 2020 22:25                                                Page 39
+
+
+  1826                        	.sym	PUINT,0,144,14,32
+  1827                        	.sym	USHORT,0,16,14,16
+  1828                        	.sym	UINT,0,16,14,16
+  1829                        	.sym	INT,0,5,14,16
+  1830                        	.sym	WORD,0,5,14,16
+  1831                        	.sym	PBYTE,0,142,14,32
+  1832                        	.sym	BYTE,0,14,14,8
+  1833                        	.sym	UCHAR,0,14,14,8
+  1834                        	.sym	LPWCSTR,0,142,14,32
+  1835                        	.sym	LPCSTR,0,142,14,32
+  1836                        	.sym	LPSTR,0,142,14,32
+  1837                        	.sym	LPCHAR,0,142,14,32
+  1838                        	.sym	CHAR,0,14,14,8
+  1839                        	.sym	LPVOID,0,129,14,32
+  1840                        	.sym	VOID,0,1,14,32
+  1841                        	.sym	~~memset,~~memset,1089,18,32
+  1842                        	.sym	Boolean_T,0,5,14,16
+  1843                        	.sym	ldiv_t,0,10,14,64,2
+  1844                        	.sym	div_t,0,10,14,32,1
+  1845                        	.sym	wctype_t,0,16,14,16
+  1846                        	.sym	wint_t,0,16,14,16
+  1847                        	.sym	wchar_t,0,14,14,8
+  1848                        	.sym	ptrdiff_t,0,7,14,32
+  1849                        	.sym	size_t,0,16,14,16
+  1850                        	end
+
+
+      Lines assembled: 1850
+      Errors: 0

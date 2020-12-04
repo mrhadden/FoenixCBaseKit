@@ -1,0 +1,77 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxheapnear.c",0
+     7                        ;
+     8                        ;
+     9                        ;#pragma section CODE=HEAPNEAR, offset $06:0000
+    10                        HEAPNEAR	section	 offset $06:0000
+    11 06:0000:              	ends
+    12                        ;
+    13                        ;void far * k_mem_get_heap_near(void)
+    14                        ;{
+    15                        	.line	5
+    16                        	.line	6
+    17                        	HEAPNEAR
+    18                        	xdef	~~k_mem_get_heap_near
+    19                        	func
+    20                        	.function	6
+    21                        ~~k_mem_get_heap_near:
+    22                        	longa	on
+    23                        	longi	on
+    24 06:0000: 3B           	tsc
+    25 06:0001: 38           	sec
+    26 06:0002: E9 00 00     	sbc	#L2
+    27 06:0005: 1B           	tcs
+    28 06:0006: 0B           	phd
+    29 06:0007: 5B           	tcd
+    30                        	.block	6
+    31                        ;	return (void far *)k_mem_get_heap_near;
+    32                        	.line	7
+    33 06:0008: A9 06 00     	lda	#^~~k_mem_get_heap_near
+    34 06:000B: AA           	tax
+    35 06:000C: A9 00 00     	lda	#<~~k_mem_get_heap_near
+    36                        L5:
+    37 06:000F: A8           	tay
+    38 06:0010: 2B           	pld
+    39 06:0011: 3B           	tsc
+    40 06:0012: 18           	clc
+    41 06:0013: 69 00 00     	adc	#L2
+    42 06:0016: 1B           	tcs
+    43 06:0017: 98           	tya
+    44 06:0018: 6B           	rtl
+    45                        ;}
+    46                        	.line	8
+    47                        	.endblock	8
+    48             00000000   L2	equ	0
+    49             00000001   L3	equ	1
+    50 06:0019:              	ends
+    51                        	efunc
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    52                        	.endfunc	8,1,0
+    53                        	.line	8
+    54                        ;
+    55                        	.line	8
+    56                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\fxheapnear.c",5
+    57                        	.sym	~~k_mem_get_heap_near,~~k_mem_get_heap_n
+                    ear,1089,2,32
+    58                        	end
+
+
+      Lines assembled: 58
+      Errors: 0

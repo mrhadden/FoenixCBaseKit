@@ -1,0 +1,380 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL_BASE.C",0
+     7                        ;
+     8                        ;#include	"HAL.H"
+     9                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL.H",0
+    10                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\CH376INC.H",0
+    11                        	.stag	_FAT_DIR_INFO,256,1
+    12                        	.member	DIR_Name,0,110,8,0,11
+    13                        	.member	DIR_Attr,88,14,8,8
+    14                        	.member	DIR_NTRes,96,14,8,8
+    15                        	.member	DIR_CrtTimeTenth,104,14,8,8
+    16                        	.member	DIR_CrtTime,112,15,8,16
+    17                        	.member	DIR_CrtDate,128,15,8,16
+    18                        	.member	DIR_LstAccDate,144,15,8,16
+    19                        	.member	DIR_FstClusHI,160,15,8,16
+    20                        	.member	DIR_WrtTime,176,15,8,16
+    21                        	.member	DIR_WrtDate,192,15,8,16
+    22                        	.member	DIR_FstClusLO,208,15,8,16
+    23                        	.member	DIR_FileSize,224,18,8,32
+    24                        	.eos
+    25                        	.stag	_BULK_ONLY_CBW,248,2
+    26                        	.member	CBW_Sig,0,18,8,32
+    27                        	.member	CBW_Tag,32,18,8,32
+    28                        	.member	CBW_DataLen0,64,14,8,8
+    29                        	.member	CBW_DataLen1,72,14,8,8
+    30                        	.member	CBW_DataLen2,80,15,8,16
+    31                        	.member	CBW_Flag,96,14,8,8
+    32                        	.member	CBW_LUN,104,14,8,8
+    33                        	.member	CBW_CB_Len,112,14,8,8
+    34                        	.member	CBW_CB_Buf,120,110,8,0,16
+    35                        	.eos
+    36                        	.stag	_INQUIRY_DATA,288,3
+    37                        	.member	DeviceType,0,14,8,8
+    38                        	.member	RemovableMedia,8,14,8,8
+    39                        	.member	Versions,16,14,8,8
+    40                        	.member	DataFormatAndEtc,24,14,8,8
+    41                        	.member	AdditionalLength,32,14,8,8
+    42                        	.member	Reserved1,40,14,8,8
+    43                        	.member	Reserved2,48,14,8,8
+    44                        	.member	MiscFlag,56,14,8,8
+    45                        	.member	VendorIdStr,64,110,8,0,8
+    46                        	.member	ProductIdStr,128,110,8,0,16
+    47                        	.member	ProductRevStr,256,110,8,0,4
+    48                        	.eos
+    49                        	.stag	_SENSE_DATA,144,4
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+    50                        	.member	ErrorCode,0,14,8,8
+    51                        	.member	SegmentNumber,8,14,8,8
+    52                        	.member	SenseKeyAndEtc,16,14,8,8
+    53                        	.member	Information0,24,14,8,8
+    54                        	.member	Information1,32,14,8,8
+    55                        	.member	Information2,40,14,8,8
+    56                        	.member	Information3,48,14,8,8
+    57                        	.member	AdditSenseLen,56,14,8,8
+    58                        	.member	CmdSpecInfo,64,110,8,0,4
+    59                        	.member	AdditSenseCode,96,14,8,8
+    60                        	.member	AddSenCodeQual,104,14,8,8
+    61                        	.member	FieldReplaUnit,112,14,8,8
+    62                        	.member	SenseKeySpec,120,110,8,0,3
+    63                        	.eos
+    64                        	.stag	fake5_,112,5
+    65                        	.member	mBuffer,0,110,8,0,14
+    66                        	.eos
+    67                        	.stag	fake6_,8,6
+    68                        	.member	mUpdateFileSz,0,14,8,8
+    69                        	.eos
+    70                        	.stag	fake7_,8,7
+    71                        	.member	mDirInfoIndex,0,14,8,8
+    72                        	.eos
+    73                        	.utag	fake8_,32,8
+    74                        	.member	mByteOffset,0,18,11,32
+    75                        	.member	mSectorLba,0,18,11,32
+    76                        	.eos
+    77                        	.stag	fake9_,16,9
+    78                        	.member	mByteCount,0,15,8,16
+    79                        	.eos
+    80                        	.stag	fake10_,16,10
+    81                        	.member	mByteCount,0,15,8,16
+    82                        	.eos
+    83                        	.utag	fake11_,32,11
+    84                        	.member	mSectorOffset,0,18,11,32
+    85                        	.member	mSectorLba,0,18,11,32
+    86                        	.eos
+    87                        	.stag	fake12_,64,12
+    88                        	.member	mSectorCount,0,14,8,8
+    89                        	.member	mReserved1,8,14,8,8
+    90                        	.member	mReserved2,16,14,8,8
+    91                        	.member	mReserved3,24,14,8,8
+    92                        	.member	mStartSector,32,18,8,32
+    93                        	.eos
+    94                        	.stag	fake13_,64,13
+    95                        	.member	mSectorCount,0,14,8,8
+    96                        	.member	mReserved1,8,14,8,8
+    97                        	.member	mReserved2,16,14,8,8
+    98                        	.member	mReserved3,24,14,8,8
+    99                        	.member	mStartSector,32,18,8,32
+   100                        	.eos
+   101                        	.stag	fake14_,32,14
+   102                        	.member	mDiskSizeSec,0,18,8,32
+   103                        	.eos
+   104                        	.stag	fake15_,72,15
+   105                        	.member	mTotalSector,0,18,8,32
+   106                        	.member	mFreeSector,32,18,8,32
+   107                        	.member	mDiskFat,64,14,8,8
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+   108                        	.eos
+   109                        	.stag	fake16_,8,16
+   110                        	.member	mMaxLogicUnit,0,14,8,8
+   111                        	.eos
+   112                        	.stag	fake17_,32,17
+   113                        	.member	mDiskSizeSec,0,18,8,32
+   114                        	.eos
+   115                        	.stag	fake18_,40,18
+   116                        	.member	mStartSector,0,18,8,32
+   117                        	.member	mSectorCount,32,14,8,8
+   118                        	.eos
+   119                        	.stag	fake19_,40,19
+   120                        	.member	mStartSector,0,18,8,32
+   121                        	.member	mSectorCount,32,14,8,8
+   122                        	.eos
+   123                        	.utag	_CH376_CMD_DATA,288,20
+   124                        	.member	Default,0,10,11,112,5
+   125                        	.member	DiskMountInq,0,10,11,288,3
+   126                        	.member	OpenDirInfo,0,10,11,256,1
+   127                        	.member	EnumDirInfo,0,10,11,256,1
+   128                        	.member	FileCLose,0,10,11,8,6
+   129                        	.member	DirInfoRead,0,10,11,8,7
+   130                        	.member	ByteLocate,0,11,11,32,8
+   131                        	.member	ByteRead,0,10,11,16,9
+   132                        	.member	ByteWrite,0,10,11,16,10
+   133                        	.member	SectorLocate,0,11,11,32,11
+   134                        	.member	SectorRead,0,10,11,64,12
+   135                        	.member	SectorWrite,0,10,11,64,13
+   136                        	.member	DiskCapacity,0,10,11,32,14
+   137                        	.member	DiskQuery,0,10,11,72,15
+   138                        	.member	DiskBocCbw,0,10,11,248,2
+   139                        	.member	DiskMaxLun,0,10,11,8,16
+   140                        	.member	DiskInitInq,0,10,11,288,3
+   141                        	.member	DiskInqData,0,10,11,288,3
+   142                        	.member	ReqSenseData,0,10,11,144,4
+   143                        	.member	DiskSize,0,10,11,32,17
+   144                        	.member	DiskRead,0,10,11,40,18
+   145                        	.member	DiskWrite,0,10,11,40,19
+   146                        	.eos
+   147                        	.line	586
+   148                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL.H",4
+   149                        	.line	42
+   150                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL_BASE.C",2
+   151                        ;
+   152                        ;void mDelayuS( UINT8 us )
+   153                        ;{
+   154                        	.line	4
+   155                        	.line	5
+   156                        	code
+   157                        	xdef	~~mDelayuS
+   158                        	func
+   159                        	.function	5
+   160                        ~~mDelayuS:
+   161                        	longa	on
+   162                        	longi	on
+   163 00:0000: 3B           	tsc
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   164 00:0001: 38           	sec
+   165 00:0002: E9 04 00     	sbc	#L2
+   166 00:0005: 1B           	tcs
+   167 00:0006: 0B           	phd
+   168 00:0007: 5B           	tcd
+   169             00000004   us_0	set	4
+   170                        	.block	5
+   171                        ;	while ( us -- );  /* 14MHz WDC65C816 */
+   172                        	.sym	us,4,14,6,8
+   173                        	.line	6
+   174                        L10001:
+   175 00:0008: E2 20        	sep	#$20
+   176                        	longa	off
+   177 00:000A: A5 08        	lda	<L2+us_0
+   178 00:000C: 85 01        	sta	<R0
+   179 00:000E: C2 20        	rep	#$20
+   180                        	longa	on
+   181 00:0010: E2 20        	sep	#$20
+   182                        	longa	off
+   183 00:0012: C6 08        	dec	<L2+us_0
+   184 00:0014: C2 20        	rep	#$20
+   185                        	longa	on
+   186 00:0016: A5 01        	lda	<R0
+   187 00:0018: 29 FF 00     	and	#$ff
+   188 00:001B: D0 03        	bne	L5
+   189 00:001D: 82 03 00     	brl	L10002
+   190                        L5:
+   191                        	.line	6
+   192 00:0020: 82 E5 FF     	brl	L10001
+   193                        L10002:
+   194                        ;}
+   195                        	.line	7
+   196                        L6:
+   197 00:0023: A5 06        	lda	<L2+2
+   198 00:0025: 85 08        	sta	<L2+2+2
+   199 00:0027: A5 05        	lda	<L2+1
+   200 00:0029: 85 07        	sta	<L2+1+2
+   201 00:002B: 2B           	pld
+   202 00:002C: 3B           	tsc
+   203 00:002D: 18           	clc
+   204 00:002E: 69 06 00     	adc	#L2+2
+   205 00:0031: 1B           	tcs
+   206 00:0032: 6B           	rtl
+   207                        	.endblock	7
+   208             00000004   L2	equ	4
+   209             00000005   L3	equ	5
+   210                        	ends
+   211                        	efunc
+   212                        	.endfunc	7,5,4
+   213                        	.line	7
+   214                        ;
+   215                        ;void mDelaymS( UINT8 ms )
+   216                        ;{
+   217                        	.line	9
+   218                        	.line	10
+   219                        	code
+   220                        	xdef	~~mDelaymS
+   221                        	func
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   222                        	.function	10
+   223                        ~~mDelaymS:
+   224                        	longa	on
+   225                        	longi	on
+   226 00:0033: 3B           	tsc
+   227 00:0034: 38           	sec
+   228 00:0035: E9 04 00     	sbc	#L7
+   229 00:0038: 1B           	tcs
+   230 00:0039: 0B           	phd
+   231 00:003A: 5B           	tcd
+   232             00000004   ms_0	set	4
+   233                        	.block	10
+   234                        ;	while ( ms -- )
+   235                        	.sym	ms,4,14,6,8
+   236                        	.line	11
+   237                        L10003:
+   238 00:003B: E2 20        	sep	#$20
+   239                        	longa	off
+   240 00:003D: A5 08        	lda	<L7+ms_0
+   241 00:003F: 85 01        	sta	<R0
+   242 00:0041: C2 20        	rep	#$20
+   243                        	longa	on
+   244 00:0043: E2 20        	sep	#$20
+   245                        	longa	off
+   246 00:0045: C6 08        	dec	<L7+ms_0
+   247 00:0047: C2 20        	rep	#$20
+   248                        	longa	on
+   249 00:0049: A5 01        	lda	<R0
+   250 00:004B: 29 FF 00     	and	#$ff
+   251 00:004E: D0 03        	bne	L10
+   252 00:0050: 82 0B 00     	brl	L10004
+   253                        L10:
+   254                        ;	{
+   255                        	.line	12
+   256                        ;		asm NOP;
+   257                        	.line	13
+   258                        	asmstart
+   259 00:0053: EA           	NOP
+   260                        	asmend
+   261                        ;		asm NOP;
+   262                        	.line	14
+   263                        	asmstart
+   264 00:0054: EA           	NOP
+   265                        	asmend
+   266                        ;		asm NOP;
+   267                        	.line	15
+   268                        	asmstart
+   269 00:0055: EA           	NOP
+   270                        	asmend
+   271                        ;		asm NOP;
+   272                        	.line	16
+   273                        	asmstart
+   274 00:0056: EA           	NOP
+   275                        	asmend
+   276                        ;		asm NOP;
+   277                        	.line	17
+   278                        	asmstart
+   279 00:0057: EA           	NOP
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   280                        	asmend
+   281                        ;		asm NOP;
+   282                        	.line	18
+   283                        	asmstart
+   284 00:0058: EA           	NOP
+   285                        	asmend
+   286                        ;		asm NOP;
+   287                        	.line	19
+   288                        	asmstart
+   289 00:0059: EA           	NOP
+   290                        	asmend
+   291                        ;		asm NOP;
+   292                        	.line	20
+   293                        	asmstart
+   294 00:005A: EA           	NOP
+   295                        	asmend
+   296                        ;	}
+   297                        	.line	21
+   298 00:005B: 82 DD FF     	brl	L10003
+   299                        L10004:
+   300                        ;}
+   301                        	.line	22
+   302                        L11:
+   303 00:005E: A5 06        	lda	<L7+2
+   304 00:0060: 85 08        	sta	<L7+2+2
+   305 00:0062: A5 05        	lda	<L7+1
+   306 00:0064: 85 07        	sta	<L7+1+2
+   307 00:0066: 2B           	pld
+   308 00:0067: 3B           	tsc
+   309 00:0068: 18           	clc
+   310 00:0069: 69 06 00     	adc	#L7+2
+   311 00:006C: 1B           	tcs
+   312 00:006D: 6B           	rtl
+   313                        	.endblock	22
+   314             00000004   L7	equ	4
+   315             00000005   L8	equ	5
+   316                        	ends
+   317                        	efunc
+   318                        	.endfunc	22,5,4
+   319                        	.line	22
+   320                        ;
+   321                        	.line	22
+   322                        	.file	"G:\devprojects\c256Foenix\fxos\FXOSWork
+                    space\FXOSv1\src\HAL_BASE.C",9
+   323                        	.sym	~~mDelaymS,~~mDelaymS,65,2,0
+   324                        	.sym	~~mDelayuS,~~mDelayuS,65,2,0
+   325                        	.sym	P_CH376_CMD_DATA,0,139,14,32,20
+   326                        	.sym	CH376_CMD_DATA,0,11,14,288,20
+   327                        	.sym	P_SENSE_DATA,0,138,14,32,4
+   328                        	.sym	SENSE_DATA,0,10,14,144,4
+   329                        	.sym	P_INQUIRY_DATA,0,138,14,32,3
+   330                        	.sym	INQUIRY_DATA,0,10,14,288,3
+   331                        	.sym	P_BULK_ONLY_CBW,0,138,14,32,2
+   332                        	.sym	BULK_ONLY_CBW,0,10,14,248,2
+   333                        	.sym	P_FAT_DIR_INFO,0,138,14,32,1
+   334                        	.sym	FAT_DIR_INFO,0,10,14,256,1
+   335                        	.sym	PUINT8V,0,142,14,32
+   336                        	.sym	UINT8V,0,14,14,8
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   337                        	.sym	PUINT32,0,146,14,32
+   338                        	.sym	PUINT16,0,143,14,32
+   339                        	.sym	PUINT8,0,142,14,32
+   340                        	.sym	UINT32,0,18,14,32
+   341                        	.sym	UINT16,0,15,14,16
+   342                        	.sym	UINT8,0,14,14,8
+   343                        	end
+
+
+      Lines assembled: 343
+      Errors: 0

@@ -1,0 +1,3048 @@
+  Wed Aug 14 2019 13:16                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        ;:ts=8
+     2             00000001   R0	equ	1
+     3             00000005   R1	equ	5
+     4             00000009   R2	equ	9
+     5             0000000D   R3	equ	13
+     6                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basic.c",0
+     7                        ;
+     8                        ;#include "fxstartup.h"
+     9                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxstartup.h",0
+    10                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    11                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stddef.h",0
+    12                        	.line	88
+    13                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",43
+    14                        	.stag	fake1_,32,1
+    15                        	.member	quot,0,5,8,16
+    16                        	.member	rem,16,5,8,16
+    17                        	.eos
+    18                        	.stag	fake2_,64,2
+    19                        	.member	quot,0,7,8,32
+    20                        	.member	rem,32,7,8,32
+    21                        	.eos
+    22                        	.stag	int_sqrt,32,3
+    23                        	.member	sqrt,0,16,8,16
+    24                        	.member	frac,16,16,8,16
+    25                        	.eos
+    26                        	.line	205
+    27                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxstartup.h",4
+    28                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+    29                        	.line	134
+    30                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxstartup.h",5
+    31                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    ctype.h",0
+    32                        	.line	103
+    33                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxstartup.h",6
+    34                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",0
+    35                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    stdlib.h",0
+    36                        	.line	205
+    37                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",4
+    38                        	.file	"G:\devtools\WDCTools\wdc\Tools\include\
+                    string.h",0
+  Wed Aug 14 2019 13:16                                                Page 2
+
+
+    39                        	.line	134
+    40                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",5
+    41                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxtypes.h",0
+    42                        	.utag	_24bitPointer,32,4
+    43                        	.member	address,0,142,11,32
+    44                        	.member	bytes,0,110,11,0,4
+    45                        	.eos
+    46                        	.line	33
+    47                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",8
+    48                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxkernel.h",0
+    49                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxtypes.h",0
+    50                        	.line	33
+    51                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxkernel.h",5
+    52                        	.stag	_fx_zero_page,112,5
+    53                        	.member	fxos_mouse_byte_0,0,14,8,8
+    54                        	.member	fxos_mouse_byte_1,8,14,8,8
+    55                        	.member	fxos_mouse_byte_2,16,14,8,8
+    56                        	.member	fxos_mouse_byte_t,24,14,8,8
+    57                        	.member	fxos_mouse_byte_x_l,32,14,8,8
+    58                        	.member	fxos_mouse_byte_x_h,40,14,8,8
+    59                        	.member	fxos_mouse_byte_y_l,48,14,8,8
+    60                        	.member	fxos_mouse_byte_y_h,56,14,8,8
+    61                        	.member	fxos_key_byte_0,64,14,8,8
+    62                        	.member	fxos_key_byte_1,72,14,8,8
+    63                        	.member	fxos_key_byte_2,80,14,8,8
+    64                        	.member	fxos_mouse_ctl,88,14,8,8
+    65                        	.member	fxos_mouse_index,96,14,8,8
+    66                        	.member	fxos_mouse_status,104,14,8,8
+    67                        	.eos
+    68                        	.stag	_fx_environment,96,6
+    69                        	.member	variables,0,142,8,32
+    70                        	.member	reserved1,32,5,8,16
+    71                        	.member	reserved2,48,5,8,16
+    72                        	.member	reserved3,64,5,8,16
+    73                        	.member	reserved4,80,5,8,16
+    74                        	.eos
+    75                        	.line	97
+    76                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",9
+    77                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxc256.h",0
+    78                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxtypes.h",0
+    79                        	.line	33
+    80                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxc256.h",5
+    81                        	.line	716
+    82                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxos.h",10
+    83                        	.line	13
+    84                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\fxstartup.h",8
+  Wed Aug 14 2019 13:16                                                Page 3
+
+
+    85                        	.stag	_RectStruct,64,7
+    86                        	.member	x,0,5,8,16
+    87                        	.member	y,16,5,8,16
+    88                        	.member	width,32,5,8,16
+    89                        	.member	height,48,5,8,16
+    90                        	.eos
+    91                        	.stag	_WindowStruct,160,8
+    92                        	.member	win_id,0,5,8,16
+    93                        	.member	win_x,16,5,8,16
+    94                        	.member	win_y,32,5,8,16
+    95                        	.member	win_width,48,5,8,16
+    96                        	.member	win_height,64,5,8,16
+    97                        	.member	win_title,80,110,8,0,10
+    98                        	.eos
+    99                        	.stag	_FontMetric,32,9
+   100                        	.member	width,0,5,8,16
+   101                        	.member	height,16,5,8,16
+   102                        	.eos
+   103                        	.stag	_ctl_Textbox,112,10
+   104                        	.member	win_id,0,5,8,16
+   105                        	.member	win_x,16,5,8,16
+   106                        	.member	win_y,32,5,8,16
+   107                        	.member	win_width,48,5,8,16
+   108                        	.member	win_height,64,5,8,16
+   109                        	.member	content,80,1166,8,32
+   110                        	.eos
+   111                        	.stag	_ClickableRect,80,11
+   112                        	.member	area,0,10,8,64,7
+   113                        	.member	enabled,64,14,8,8
+   114                        	.member	depth,72,14,8,8
+   115                        	.eos
+   116                        	.stag	_MenuStruct,168,12
+   117                        	.member	cx,0,5,8,16
+   118                        	.member	cy,16,5,8,16
+   119                        	.member	width,32,5,8,16
+   120                        	.member	height,48,5,8,16
+   121                        	.member	fcolor,64,14,8,8
+   122                        	.member	bcolor,72,14,8,8
+   123                        	.member	chromeLeft,80,14,8,8
+   124                        	.member	chromeRight1,88,14,8,8
+   125                        	.member	chromeRight2,96,14,8,8
+   126                        	.member	pCaption,104,142,8,32
+   127                        	.member	subMenus,136,1153,8,32
+   128                        	.eos
+   129                        	.stag	_SubMenuStruct,64,13
+   130                        	.member	caption,0,142,8,32
+   131                        	.member	action,32,641,8,32
+   132                        	.eos
+   133                        	.stag	_SubMenuListStruct,40,14
+   134                        	.member	cMenus,0,14,8,8
+   135                        	.member	psubmenus,8,9354,8,32,13
+   136                        	.eos
+   137                        	.stag	_fx_irq_data,48,15
+   138                        	.member	line,0,5,8,16
+   139                        	.member	keycode,16,142,8,32
+   140                        	.eos
+   141                        	.stag	_task,48,16
+   142                        	.member	SPL,0,14,8,8
+  Wed Aug 14 2019 13:16                                                Page 4
+
+
+   143                        	.member	SPH,8,14,8,8
+   144                        	.member	pstack,16,142,8,32
+   145                        	.eos
+   146                        	.stag	_task_stack,32,17
+   147                        	.member	SS,0,142,8,32
+   148                        	.eos
+   149                        	.stag	int_regs,104,18
+   150                        	.member	PB,0,14,8,8
+   151                        	.member	PH,8,14,8,8
+   152                        	.member	PL,16,14,8,8
+   153                        	.member	PP,24,14,8,8
+   154                        	.member	DB,32,14,8,8
+   155                        	.member	DH,40,14,8,8
+   156                        	.member	DL,48,14,8,8
+   157                        	.member	AH,56,14,8,8
+   158                        	.member	AL,64,14,8,8
+   159                        	.member	XH,72,14,8,8
+   160                        	.member	XL,80,14,8,8
+   161                        	.member	YH,88,14,8,8
+   162                        	.member	YL,96,14,8,8
+   163                        	.eos
+   164                        	.line	327
+   165                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basic.c",2
+   166                        ;#include "basicfont.h"
+   167                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basicfont.h",0
+   168                        	.line	38
+   169                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basic.c",3
+   170                        ;#include "basicdrawing.h"
+   171                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basicdrawing.h",0
+   172                        	.line	20
+   173                        	.file	"G:\devprojects\c256Foenix\FXOSWorkspace
+                    \FXOSv1\src\basic.c",4
+   174                        ;
+   175                        ;//#include "fbtestfnt.h"
+   176                        ;//#pragma section CODE=FCODE,OFFSET $15:0000
+   177                        ;//extern char _END_UDATA;
+   178                        ;//void *heap_start=(void*)&_END_UDATA,*heap_end=(
+                    void*)(&_END_UDATA + 0x1000);
+   179                        ;
+   180                        ;#define BITMAP_SEG0   ((char far*)0xB00000)
+   181                        ;#define BITMAP_SEG1   ((char far*)0xB10000)
+   182                        ;#define BITMAP_SEG2   ((char far*)0xB20000)
+   183                        ;#define BITMAP_SEG3   ((char far*)0xB30000)
+   184                        ;#define BITMAP_SEG4   ((char far*)0xB40000)
+   185                        ;		
+   186                        ;
+   187                        ;
+   188                        ;char far buffer[32];
+   189                        ;char far strbuf[32];
+   190                        ;char far spinner[] = {'\\','|','/','+'};
+   191                        	data
+   192                        	xdef	~~spinner
+   193                        ~~spinner:
+   194 00:0000: 5C 7C 2F 2B  	db	$5C,$7C,$2F,$2B
+  Wed Aug 14 2019 13:16                                                Page 5
+
+
+   195 00:0004:              	ends
+   196                        ;char far titles[3][10] = {"Title 1","Title 2","Ti
+                    tle 3"};
+   197                        	data
+   198                        	xdef	~~titles
+   199                        ~~titles:
+   200 00:0004: 54 69 74 6C  	db	$54,$69,$74,$6C,$65,$20,$31,$0
+       00:0008: 65 20 31 00 
+   201 00:000C:              	ds	2
+   202 00:000E: 54 69 74 6C  	db	$54,$69,$74,$6C,$65,$20,$32,$0
+       00:0012: 65 20 32 00 
+   203 00:0016:              	ds	2
+   204 00:0018: 54 69 74 6C  	db	$54,$69,$74,$6C,$65,$20,$33,$0
+       00:001C: 65 20 33 00 
+   205 00:0020:              	ds	2
+   206 00:0022:              	ends
+   207                        ;char far *p_message1 = {"FROMC1!!!\r\0"};
+   208                        	data
+   209                        	xdef	~~p_message1
+   210                        ~~p_message1:
+   211 00:0022: xx xx xx xx  	dl	L1+0
+   212 00:0026:              	ends
+   213                        	data
+   214                        L1:
+   215 00:0026: 46 52 4F 4D  	db	$46,$52,$4F,$4D,$43,$31,$21,$21,$21,$0D,
+                    $00,$00
+       00:002A: 43 31 21 21 
+       00:002E: 21 0D 00 00 
+   216 00:0032:              	ends
+   217                        ;char far *p_message2 = {"FROMC2!!!\r\0"};
+   218                        	data
+   219                        	xdef	~~p_message2
+   220                        ~~p_message2:
+   221 00:0032: xx xx xx xx  	dl	L2+0
+   222 00:0036:              	ends
+   223                        	data
+   224                        L2:
+   225 00:0036: 46 52 4F 4D  	db	$46,$52,$4F,$4D,$43,$32,$21,$21,$21,$0D,
+                    $00,$00
+       00:003A: 43 32 21 21 
+       00:003E: 21 0D 00 00 
+   226 00:0042:              	ends
+   227                        ;char far *version_title;
+   228                        ;
+   229                        ;int g_key_index = 0;
+   230                        	data
+   231                        	xdef	~~g_key_index
+   232                        ~~g_key_index:
+   233 00:0042: 00 00        	dw	$0
+   234 00:0044:              	ends
+   235                        ;
+   236                        ;//typedef void (*C256Task)(HANDLE console,void fa
+                    r* arg);
+   237                        ;
+   238                        ;C256Task tasks[2];
+   239                        ;HANDLE consoles[2];
+   240                        ;
+   241                        ;void f1(HANDLE console,void far* arg);
+  Wed Aug 14 2019 13:16                                                Page 6
+
+
+   242                        ;void f2(HANDLE console,void far* arg);
+   243                        ;	
+   244                        ;	//#define GRPH_LUT0_PTR	((char far*)0xAF2000)
+   245                        ;#define GRP_LUT_BASE_ADDR ((unsigned char far*)0x
+                    AF2000)
+   246                        ;
+   247                        ;int 	far _k_window_index = 0;
+   248                        	data
+   249                        	xdef	~~_k_window_index
+   250                        ~~_k_window_index:
+   251 00:0044: 00 00        	dw	$0
+   252 00:0046:              	ends
+   253                        ;Window 	far _k_window_list[10];
+   254                        ;
+   255                        ;int cop_index = 0;
+   256                        	data
+   257                        	xdef	~~cop_index
+   258                        ~~cop_index:
+   259 00:0046: 00 00        	dw	$0
+   260 00:0048:              	ends
+   261                        ;
+   262                        ;void dummy(void)
+   263                        ;{
+   264                        	.line	45
+   265                        	.line	46
+   266                        	code
+   267                        	xdef	~~dummy
+   268                        	func
+   269                        	.function	46
+   270                        ~~dummy:
+   271                        	longa	on
+   272                        	longi	on
+   273 00:0000: 3B           	tsc
+   274 00:0001: 38           	sec
+   275 00:0002: E9 00 00     	sbc	#L4
+   276 00:0005: 1B           	tcs
+   277 00:0006: 0B           	phd
+   278 00:0007: 5B           	tcd
+   279                        	.block	46
+   280                        ;	return;
+   281                        	.line	47
+   282                        L7:
+   283 00:0008: 2B           	pld
+   284 00:0009: 3B           	tsc
+   285 00:000A: 18           	clc
+   286 00:000B: 69 00 00     	adc	#L4
+   287 00:000E: 1B           	tcs
+   288 00:000F: 6B           	rtl
+   289                        ;}
+   290                        	.line	48
+   291                        	.endblock	48
+   292             00000000   L4	equ	0
+   293             00000001   L5	equ	1
+   294                        	ends
+   295                        	efunc
+   296                        	.endfunc	48,1,0
+   297                        	.line	48
+   298                        ;
+  Wed Aug 14 2019 13:16                                                Page 7
+
+
+   299                        ;void dummy2(int* value)
+   300                        ;{
+   301                        	.line	50
+   302                        	.line	51
+   303                        	code
+   304                        	xdef	~~dummy2
+   305                        	func
+   306                        	.function	51
+   307                        ~~dummy2:
+   308                        	longa	on
+   309                        	longi	on
+   310 00:0010: 3B           	tsc
+   311 00:0011: 38           	sec
+   312 00:0012: E9 00 00     	sbc	#L8
+   313 00:0015: 1B           	tcs
+   314 00:0016: 0B           	phd
+   315 00:0017: 5B           	tcd
+   316             00000004   value_0	set	4
+   317                        	.block	51
+   318                        ;	*value = FXOS_MOUSE_BYTE_X_L[0];
+   319                        	.sym	value,4,133,6,32
+   320                        	.line	52
+   321                        ;	
+   322                        ;	return;
+   323                        	.line	54
+   324                        L11:
+   325 00:0018: A5 02        	lda	<L8+2
+   326 00:001A: 85 06        	sta	<L8+2+4
+   327 00:001C: A5 01        	lda	<L8+1
+   328 00:001E: 85 05        	sta	<L8+1+4
+   329 00:0020: 2B           	pld
+   330 00:0021: 3B           	tsc
+   331 00:0022: 18           	clc
+   332 00:0023: 69 04 00     	adc	#L8+4
+   333 00:0026: 1B           	tcs
+   334 00:0027: 6B           	rtl
+   335                        ;}
+   336                        	.line	55
+   337                        	.endblock	55
+   338             00000000   L8	equ	0
+   339             00000001   L9	equ	1
+   340                        	ends
+   341                        	efunc
+   342                        	.endfunc	55,1,0
+   343                        	.line	55
+   344                        ;
+   345                        ;int dummy3(int* value)
+   346                        ;{
+   347                        	.line	57
+   348                        	.line	58
+   349                        	code
+   350                        	xdef	~~dummy3
+   351                        	func
+   352                        	.function	58
+   353                        ~~dummy3:
+   354                        	longa	on
+   355                        	longi	on
+   356 00:0028: 3B           	tsc
+  Wed Aug 14 2019 13:16                                                Page 8
+
+
+   357 00:0029: 38           	sec
+   358 00:002A: E9 00 00     	sbc	#L12
+   359 00:002D: 1B           	tcs
+   360 00:002E: 0B           	phd
+   361 00:002F: 5B           	tcd
+   362             00000004   value_0	set	4
+   363                        	.block	58
+   364                        ;	*value = FXOS_MOUSE_BYTE_Y_L[0];
+   365                        	.sym	value,4,133,6,32
+   366                        	.line	59
+   367                        ;	
+   368                        ;	return *value;
+   369                        	.line	61
+   370                        L15:
+   371 00:0030: A8           	tay
+   372 00:0031: A5 02        	lda	<L12+2
+   373 00:0033: 85 06        	sta	<L12+2+4
+   374 00:0035: A5 01        	lda	<L12+1
+   375 00:0037: 85 05        	sta	<L12+1+4
+   376 00:0039: 2B           	pld
+   377 00:003A: 3B           	tsc
+   378 00:003B: 18           	clc
+   379 00:003C: 69 04 00     	adc	#L12+4
+   380 00:003F: 1B           	tcs
+   381 00:0040: 98           	tya
+   382 00:0041: 6B           	rtl
+   383                        ;}
+   384                        	.line	62
+   385                        	.endblock	62
+   386             00000000   L12	equ	0
+   387             00000001   L13	equ	1
+   388                        	ends
+   389                        	efunc
+   390                        	.endfunc	62,1,0
+   391                        	.line	62
+   392                        ;
+   393                        ;/*
+   394                        ;void main(void)
+   395                        ;{
+   396                        ;	k_test_bitmap_drawing();
+   397                        ;	//k_test_desktop();
+   398                        ;}
+   399                        ;*/
+   400                        ;
+   401                        ;void main_org(void)
+   402                        ;{
+   403                        	.line	72
+   404                        	.line	73
+   405                        	code
+   406                        	xdef	~~main_org
+   407                        	func
+   408                        	.function	73
+   409                        ~~main_org:
+   410                        	longa	on
+   411                        	longi	on
+   412 00:0042: 3B           	tsc
+   413 00:0043: 38           	sec
+   414 00:0044: E9 1D 00     	sbc	#L16
+  Wed Aug 14 2019 13:16                                                Page 9
+
+
+   415 00:0047: 1B           	tcs
+   416 00:0048: 0B           	phd
+   417 00:0049: 5B           	tcd
+   418                        	.block	73
+   419                        ;	int x;
+   420                        ;	int y;
+   421                        ;	int pos = 0;
+   422                        ;	int i = 0;
+   423                        ;	int k = 0;
+   424                        ;	int fcolor = 6;
+   425                        ;	int cv = 0;
+   426                        ;	int cl = 0;
+   427                        ;	int lv = 0;
+   428                        ;	int lm = 0;
+   429                        ;	int bx = 0;
+   430                        ;	int by = 0;
+   431                        ;	int bw = 0;
+   432                        ;	int bh = 0;
+   433                        ;	char kbchar = 0;
+   434                        ;
+   435                        ;	//k_init_vicky();
+   436                        ;	//k_test_graphics();
+   437                        ;
+   438                        ;	k_query_environment();
+   439             00000000   x_1	set	0
+   440             00000002   y_1	set	2
+   441             00000004   pos_1	set	4
+   442             00000006   i_1	set	6
+   443             00000008   k_1	set	8
+   444             0000000A   fcolor_1	set	10
+   445             0000000C   cv_1	set	12
+   446             0000000E   cl_1	set	14
+   447             00000010   lv_1	set	16
+   448             00000012   lm_1	set	18
+   449             00000014   bx_1	set	20
+   450             00000016   by_1	set	22
+   451             00000018   bw_1	set	24
+   452             0000001A   bh_1	set	26
+   453             0000001C   kbchar_1	set	28
+   454                        	.sym	x,0,5,1,16
+   455                        	.sym	y,2,5,1,16
+   456                        	.sym	pos,4,5,1,16
+   457                        	.sym	i,6,5,1,16
+   458                        	.sym	k,8,5,1,16
+   459                        	.sym	fcolor,10,5,1,16
+   460                        	.sym	cv,12,5,1,16
+   461                        	.sym	cl,14,5,1,16
+   462                        	.sym	lv,16,5,1,16
+   463                        	.sym	lm,18,5,1,16
+   464                        	.sym	bx,20,5,1,16
+   465                        	.sym	by,22,5,1,16
+   466                        	.sym	bw,24,5,1,16
+   467                        	.sym	bh,26,5,1,16
+   468                        	.sym	kbchar,28,14,1,8
+   469                        	.line	93
+   470                        ;	//k_run_loop();
+   471                        ;	/*
+   472                        ;	k_put_char(0,1,'A',5,0);
+  Wed Aug 14 2019 13:16                                                Page 10
+
+
+   473                        ;
+   474                        ;	version_title = "Version 1.0.0\0";
+   475                        ;
+   476                        ;	cv = k_get_cols_visible();
+   477                        ;	cl = k_get_cols_per_line();
+   478                        ;	lv = k_get_lines_visible();
+   479                        ;	lm = k_get_lines_max();
+   480                        ;
+   481                        ;	k_put_char(0,1,'B',5,0);
+   482                        ;	//RTC_HRS[0] = 12;
+   483                        ;	//RTC_MIN[0] = 49;
+   484                        ;	//RTC_SEC[0] = 00;
+   485                        ;
+   486                        ;	pos=25;
+   487                        ;	pos=k_put_string(pos,32,k_itoa(3 & 0xFF,buffer,1
+                    0),15,0);
+   488                        ;	pos=k_put_string(pos,32,":",15,0);
+   489                        ;	pos=k_put_string(pos,32,k_itoa(23 & 0xFF,buffer,
+                    10),15,0);
+   490                        ;	pos=k_put_string(pos,32,":",15,0);
+   491                        ;	pos=k_put_string(pos,32,k_itoa(129  & 0xFF ,buff
+                    er,10),15,0);
+   492                        ;
+   493                        ;	k_put_char(0,1,'C',5,0);
+   494                        ;
+   495                        ;
+   496                        ;	pos=25;
+   497                        ;	pos=k_put_string(pos,33,k_itoa((int)RTC_HRS[0] &
+                     0xFF,buffer,10),15,0);
+   498                        ;	pos=k_put_string(pos,33,":",15,0);
+   499                        ;	pos=k_put_string(pos,33,k_itoa((int)RTC_MIN[0] &
+                     0xFF,buffer,10),15,0);
+   500                        ;	pos=k_put_string(pos,33,":",15,0);
+   501                        ;	pos=k_put_string(pos,33,k_itoa((int)RTC_SEC[0]  
+                    & 0xFF ,buffer,10),15,0);
+   502                        ;	pos=25;
+   503                        ;	pos=k_put_string(pos,34,k_itoa((int)RTC_MONTH[0]
+                     & 0xFF,buffer,16),15,0);
+   504                        ;	pos=k_put_string(pos,34,"/",15,0);
+   505                        ;	pos=k_put_string(pos,34,k_itoa((int)RTC_DAY[0] &
+                     0xFF,buffer,16),15,0);
+   506                        ;	pos=k_put_string(pos,34,"/",15,0);
+   507                        ;	pos=k_put_string(pos,34,k_itoa((int)RTC_YEAR[0] 
+                     & 0xFF ,buffer,16),15,0);
+   508                        ;
+   509                        ;	k_put_char(0,1,'D',5,0);
+   510                        ;
+   511                        ;	pos=25;
+   512                        ;	pos=k_put_string(pos,35,"Foenix C256 Version:",1
+                    5,0);
+   513                        ;	k_get_c256_major_version(buffer);
+   514                        ;	pos=k_put_string(pos,35,buffer,15,0);
+   515                        ;	k_get_c256_minor_version(buffer);
+   516                        ;	pos=k_put_string(pos,35,buffer,15,0);
+   517                        ;	
+   518                        ;	pos=25;
+   519                        ;	pos=k_put_string(pos,37,"FPGA Version:",15,0);
+   520                        ;	k_get_fpga_date_month(buffer);
+  Wed Aug 14 2019 13:16                                                Page 11
+
+
+   521                        ;	pos=k_put_string(pos,37,k_pad_string(strbuf,buff
+                    er,'0',2),15,0);
+   522                        ;	pos=k_put_string(pos,37,"/",15,0);
+   523                        ;	k_get_fpga_date_day(buffer);
+   524                        ;	pos=k_put_string(pos,37,k_pad_string(strbuf,buff
+                    er,'0',2),15,0);
+   525                        ;	pos=k_put_string(pos,37,"/",15,0);
+   526                        ;	k_get_fpga_date_year(buffer);
+   527                        ;	pos=k_put_string(pos,37,k_pad_string(strbuf,buff
+                    er,'0',2),15,0);
+   528                        ;	//k_print("\r");
+   529                        ;
+   530                        ;	k_put_char(0,1,'E',5,0);
+   531                        ;
+   532                        ;	pos = 25;
+   533                        ;	pos=k_put_string(pos,38,"Cols Visible:",15,0);
+   534                        ;	k_itoa(cv,buffer,10);
+   535                        ;	pos=k_put_string(pos,38,buffer,15,0);
+   536                        ;
+   537                        ;	pos = 25;
+   538                        ;	pos=k_put_string(pos,39,"Cols/Line:",15,0);
+   539                        ;	k_itoa(cl,buffer,10);
+   540                        ;	pos=k_put_string(pos,39,buffer,15,0);
+   541                        ;
+   542                        ;	pos = 25;
+   543                        ;	pos=k_put_string(pos,40,"Lines Visible:",15,0);
+   544                        ;	k_itoa(lv,buffer,10);
+   545                        ;	pos=k_put_string(pos,40,buffer,15,0);
+   546                        ;
+   547                        ;	pos = 25;
+   548                        ;	pos=k_put_string(pos,41,"Lines Max:",15,0);
+   549                        ;	k_itoa(lv,buffer,10);
+   550                        ;	pos=k_put_string(pos,41,buffer,15,0);
+   551                        ;
+   552                        ;	k_put_char(0,1,'F',5,0);
+   553                        ;
+   554                        ;	k_put_char(0,0,'X',fcolor,0);
+   555                        ;	k_put_char(0,51,'X',fcolor,0);
+   556                        ;	k_put_char(71,0,'X',fcolor,0);
+   557                        ;	k_put_char(71,51,'X',fcolor,0);
+   558                        ;
+   559                        ;
+   560                        ;	k_put_char(0,1,'G',5,0);
+   561                        ;	*/
+   562                        ;
+   563                        ;	
+   564                        ;	
+   565                        ;
+   566                        ;	/*
+   567                        ;	bx = 15;
+   568                        ;	by = 15;
+   569                        ;	bh = 25;
+   570                        ;	bw = 25;	
+   571                        ;	
+   572                        ;	k_create_window(bx,by,bw,bh,"Title 2");
+   573                        ;	k_put_string(bx+1,by + 3,"Hello World!",15,0);
+   574                        ;
+   575                        ;	k_put_char(0,1,'I',5,0);
+  Wed Aug 14 2019 13:16                                                Page 12
+
+
+   576                        ;
+   577                        ;	bx = 25;
+   578                        ;	by = 25;
+   579                        ;	bh = 25;
+   580                        ;	bw = 25;	
+   581                        ;	
+   582                        ;	k_create_window(bx,by,bw,bh,"Title 3");
+   583                        ;	k_put_string(bx+1,by + 3,"Hello World!",15,0);
+   584                        ;
+   585                        ;	k_put_char(0,1,'J',5,0);
+   586                        ;
+   587                        ;	bx = 35;
+   588                        ;	by = 5;
+   589                        ;	bh = 25;
+   590                        ;	bw = 25;	
+   591                        ;	
+   592                        ;	k_create_window(bx,by,bw,bh,"Title 4");
+   593                        ;	k_put_string(bx+1,by + 3,"Hello World!",15,0);
+   594                        ;
+   595                        ;	pos=bx+1;
+   596                        ;	pos=k_put_string(pos,by + 4,"C256 Version:",15,0
+                    );
+   597                        ;	k_get_c256_major_version(buffer);
+   598                        ;	pos=k_put_string(pos,by + 4,buffer,15,0);
+   599                        ;	k_get_c256_minor_version(buffer);
+   600                        ;	pos=k_put_string(pos,by + 4,buffer,15,0);
+   601                        ;
+   602                        ;
+   603                        ;	bx = 50;
+   604                        ;	by = 15;
+   605                        ;	bh = 25;
+   606                        ;	bw = 25;	
+   607                        ;	
+   608                        ;	k_create_window(bx,by,bw,bh,"Title 5");
+   609                        ;	k_put_string(bx+1,by + 3,"Hello World!",15,0);	
+   610                        ;	*/
+   611                        ;	
+   612                        ;	
+   613                        ;	//k_put_string(bx,by + bh,"Hello World 3!",15,0)
+                    ;
+   614                        ;	/*
+   615                        ;	//k_init_vicky();
+   616                        ;	//k_reboot();
+   617                        ;	
+   618                        ;	//k_init_mouse();
+   619                        ;	k_enable_text_mode();
+   620                        ;	
+   621                        ;	
+   622                        ;	//k_disable_border();
+   623                        ;	//k_set_border_color(0xAA,0xAA,0xAA);
+   624                        ;	//k_enable_border();
+   625                        ;	//k_clear_screen(3);
+   626                        ;	
+   627                        ;	k_print("C256 Version:");
+   628                        ;	k_get_c256_major_version(buffer);
+   629                        ;	k_print(buffer);
+   630                        ;	k_get_c256_minor_version(buffer);
+   631                        ;	k_print(buffer);
+  Wed Aug 14 2019 13:16                                                Page 13
+
+
+   632                        ;	k_print("\r");
+   633                        ;
+   634                        ;	k_print("FPGA Version:");
+   635                        ;	k_get_fpga_date_month(buffer);
+   636                        ;	k_print(buffer);
+   637                        ;	k_print("/");
+   638                        ;	k_get_fpga_date_day(buffer);
+   639                        ;	k_print(buffer);
+   640                        ;	k_print("/");
+   641                        ;	k_get_fpga_date_year(buffer);
+   642                        ;	k_print(buffer);
+   643                        ;	k_print("\r");
+   644                        ;	
+   645                        ;	
+   646                        ;	//k_set_text_gamma(65);
+   647                        ;	k_print(p_message1);
+   648                        ;	//k_set_text_gamma(128);
+   649                        ;	k_print(p_message2);
+   650                        ;	//k_set_text_gamma(255);
+   651                        ;	k_print("Lucky Too?\r\0");
+   652                        ;	
+   653                        ;	//k_set_text_gamma(128);
+   654                        ;	
+   655                        ;	k_itoa(k_get_mouse_pos_X(),buffer,10);
+   656                        ;	k_print(buffer);
+   657                        ;	
+   658                        ;	k_print(":");
+   659                        ;
+   660                        ;	k_itoa(k_get_mouse_pos_Y(),buffer,10);
+   661                        ;	k_print(buffer);
+   662                        ;	k_print("\r");
+   663                        ;	
+   664                        ;
+   665                        ;	for(i = 0;i< 128;i++)
+   666                        ;	{
+   667                        ;		k_put_char(i,10,'=',2,0);
+   668                        ;		k_put_char(i,51,'=',2,0);
+   669                        ;	}
+   670                        ;	
+   671                        ;	k_put_char(0,0,'A',5,0);
+   672                        ;	k_put_char(1,0,'B',5,0);
+   673                        ;	
+   674                        ;	k_put_char(0,1,'C',5,0);
+   675                        ;	k_put_char(2,2,'D',5,0);
+   676                        ;
+   677                        ;	for(i = 0;i< 64;i++)
+   678                        ;	{
+   679                        ;		k_put_char(i,11,i  ,2,0);
+   680                        ;		k_put_char(i,12,i*2,2,0);
+   681                        ;		k_put_char(i,13,i*3,2,0);
+   682                        ;		k_put_char(i,14,i*4,2,0);
+   683                        ;	}
+   684                        ;
+   685                        ;	//k_put_string(25,15,"TESTA\0",2,0);	
+   686                        ;	//k_put_string(25,16,"TESTB\0",2,0);
+   687                        ;	
+   688                        ;	
+   689                        ;	pos = 0;
+  Wed Aug 14 2019 13:16                                                Page 14
+
+
+   690                        ;	for(i=0;i<60;i++)
+   691                        ;	{
+   692                        ;	   k_put_char(0,0,spinner[pos],15,0);		
+   693                        ;	   k_delay(500);
+   694                        ;	   pos++;
+   695                        ;	   if(pos > 3)
+   696                        ;			pos = 0;
+   697                        ;	}	
+   698                        ;	*/
+   699                        ;	
+   700                        ;	//setFColors();
+   701                        ;	//setBColors();
+   702                        ;
+   703                        ;
+   704                        ;	//k_disable_border();
+   705                        ;	//k_set_border_color(0,0,0);
+   706                        ;	//k_enable_border();
+   707                        ;
+   708                        ;	//k_init_graphics();
+   709                        ;	
+   710                        ;	
+   711                        ;	//k_delay(550);
+   712                        ;	//k_test_graphics();
+   713                        ;	
+   714                        ;	/*
+   715                        ;	k_put_string(25,25,"MOUSE_PTR_X_POS_H: 0xAF0703"
+                    ,2,0);	
+   716                        ;	k_put_string(25,26,"MOUSE_PTR_X_POS_L: 0xAF0702"
+                    ,2,0);	
+   717                        ;	k_put_string(25,27,"MOUSE_PTR_Y_POS_H: 0xAF0705"
+                    ,2,0);	
+   718                        ;	k_put_string(25,28,"MOUSE_PTR_Y_POS_L: 0xAF0704"
+                    ,2,0);	
+   719                        ;	*/
+   720                        ;	/*
+   721                        ;	k_put_string(25,25,"MOUSE_POS_X_HI: 0x0000E2",2,
+                    0);	
+   722                        ;	k_put_string(25,26,"MOUSE_POS_X_LO: 0x0000E1",2,
+                    0);	
+   723                        ;	k_put_string(25,27,"MOUSE_POS_Y_HI: 0x0000E4",2,
+                    0);	
+   724                        ;	k_put_string(25,28,"MOUSE_POS_Y_LO: 0x0000E3",2,
+                    0);	
+   725                        ;	*/
+   726                        ;	
+   727                        ;	//k_put_char(0,1,'M',5,0);
+   728                        ;	
+   729                        ;	
+   730                        ;	k_test_mouse();
+   731                        	.line	354
+   732                        ;	//k_test_graphics();
+   733                        ;	//k_delay(5000);
+   734                        ;	//k_test_desktop();
+   735                        ;	//k_test_tasking();
+   736                        ;	
+   737                        ;	pos = 0;
+   738                        	.line	360
+   739                        ;	i = 0;
+  Wed Aug 14 2019 13:16                                                Page 15
+
+
+   740                        	.line	361
+   741                        ;	y = 30;
+   742                        	.line	362
+   743                        ;	while(1)
+   744                        	.line	363
+   745                        L10001:
+   746                        ;	{
+   747                        	.line	364
+   748                        ;		//kbchar = KEY_BUFFER[y - 1];
+   749                        ;		//k_init_mouse();
+   750                        ;		//x = k_get_mouse_pos_X();
+   751                        ;		//y = k_get_mouse_pos_Y();
+   752                        ;
+   753                        ;/*
+   754                        ;		#define MOUSE_POS_X_LO  ((char far*)0x00
+                    00E1)
+   755                        ;		#define MOUSE_POS_X_HI  ((char far*)0x00
+                    00E2)
+   756                        ;		#define MOUSE_POS_Y_LO  ((char far*)0x00
+                    00E3)
+   757                        ;		#define MOUSE_POS_Y_HI  ((char far*)0x00
+                    00E4)
+   758                        ;
+   759                        ;*/
+   760                        ;		
+   761                        ;
+   762                        ;		/*
+   763                        ;		x = 25;
+   764                        ;		x = k_put_string(x,y,k_pad_string(strbuf
+                    ,"XH:",' ',3),2,0);	
+   765                        ;		//memset(buffer,0,16);
+   766                        ;		k_itoa(*(MOUSE_POS_X_HI),buffer,10);
+   767                        ;		x = k_put_string(x,y,k_pad_string(strbuf
+                    ,buffer,' ',4),2,0);	
+   768                        ;		x++;
+   769                        ;		x = k_put_string(x,y,k_pad_string(strbuf
+                    ,"XL:",' ',3),2,0);
+   770                        ;		//memset(buffer,0,16);
+   771                        ;		k_itoa(*(MOUSE_POS_X_LO),buffer,10);
+   772                        ;		x = k_put_string(x,y,k_pad_string(strbuf
+                    ,buffer,' ',4),2,0);	
+   773                        ;		
+   774                        ;		x = 25;
+   775                        ;		x = k_put_string(x,y+1,k_pad_string(strb
+                    uf,"YH:",' ',3),2,0);
+   776                        ;		//memset(buffer,0,16);
+   777                        ;		k_itoa(*(MOUSE_POS_Y_HI),buffer,10);
+   778                        ;		x = k_put_string(x,y+1,k_pad_string(strb
+                    uf,buffer,' ',4),2,0);
+   779                        ;		x++;
+   780                        ;		x = k_put_string(x,y+1,k_pad_string(strb
+                    uf,"YL:",' ',3),2,0);
+   781                        ;		//memset(buffer,0,16);
+   782                        ;		k_itoa(*(MOUSE_POS_Y_LO),buffer,10);
+   783                        ;		x = k_put_string(x,y+1,k_pad_string(strb
+                    uf,buffer,' ',4),2,0);
+   784                        ;	    */
+   785                        ;		
+  Wed Aug 14 2019 13:16                                                Page 16
+
+
+   786                        ;		//k_put_char(0,1,kbchar,5,0);	
+   787                        ;		
+   788                        ;		k_put_char(0,0,spinner[pos],5,0);	
+                    	
+   789                        	.line	405
+   790                        ;		k_delay(500);
+   791                        	.line	406
+   792                        ;		pos++;
+   793                        	.line	407
+   794                        ;		if(pos > 3)
+   795                        	.line	408
+   796                        ;			pos = 0;
+   797                        	.line	409
+   798                        ;		
+   799                        ;		//k_delay(250);
+   800                        ;		
+   801                        ;		//k_put_char(1,1,spinner[pos],15,0);	
+                    			
+   802                        ;		//pos++;
+   803                        ;		//if(pos > 3)
+   804                        ;		//	pos = 0;
+   805                        ;		//k_delay(500);
+   806                        ;	}
+   807                        L10003:
+   808                        	.line	418
+   809 00:004A: 82 FD FF     	brl	L10001
+   810                        ;	return;
+   811                        	.line	419
+   812                        L19:
+   813 00:004D: 2B           	pld
+   814 00:004E: 3B           	tsc
+   815 00:004F: 18           	clc
+   816 00:0050: 69 1D 00     	adc	#L16
+   817 00:0053: 1B           	tcs
+   818 00:0054: 6B           	rtl
+   819                        ;}
+   820                        	.line	420
+   821                        	.endblock	420
+   822             0000001D   L16	equ	29
+   823             00000001   L17	equ	1
+   824                        	ends
+   825                        	efunc
+   826                        	.endfunc	420,1,29
+   827                        	.line	420
+   828                        ;
+   829                        ;
+   830                        ;void k_reboot(void)
+   831                        ;{
+   832                        	.line	423
+   833                        	.line	424
+   834                        	code
+   835                        	xdef	~~k_reboot
+   836                        	func
+   837                        	.function	424
+   838                        ~~k_reboot:
+   839                        	longa	on
+   840                        	longi	on
+   841 00:0055: 3B           	tsc
+  Wed Aug 14 2019 13:16                                                Page 17
+
+
+   842 00:0056: 38           	sec
+   843 00:0057: E9 00 00     	sbc	#L20
+   844 00:005A: 1B           	tcs
+   845 00:005B: 0B           	phd
+   846 00:005C: 5B           	tcd
+   847                        	.block	424
+   848                        ;	#asm
+   849                        	.line	425
+   850                        ;		php
+   851                        ;		phx
+   852                        ;		pha
+   853                        ;		JML $190400
+   854                        ;		pla
+   855                        ;		plx
+   856                        ;		plp
+   857                        ;	#endasm			
+   858                        	asmstart
+   859 00:005D: 08           		php
+   860 00:005E: DA           		phx
+   861 00:005F: 48           		pha
+   862 00:0060: 5C 00 04 19  		JML $190400
+   863 00:0064: 68           		pla
+   864 00:0065: FA           		plx
+   865 00:0066: 28           		plp
+   866                        	asmend
+   867                        ;}
+   868                        	.line	434
+   869                        L23:
+   870 00:0067: 2B           	pld
+   871 00:0068: 3B           	tsc
+   872 00:0069: 18           	clc
+   873 00:006A: 69 00 00     	adc	#L20
+   874 00:006D: 1B           	tcs
+   875 00:006E: 6B           	rtl
+   876                        	.endblock	434
+   877             00000000   L20	equ	0
+   878             00000001   L21	equ	1
+   879                        	ends
+   880                        	efunc
+   881                        	.endfunc	434,1,0
+   882                        	.line	434
+   883                        ;
+   884                        ;void k_restore(void)
+   885                        ;{
+   886                        	.line	436
+   887                        	.line	437
+   888                        	code
+   889                        	xdef	~~k_restore
+   890                        	func
+   891                        	.function	437
+   892                        ~~k_restore:
+   893                        	longa	on
+   894                        	longi	on
+   895 00:006F: 3B           	tsc
+   896 00:0070: 38           	sec
+   897 00:0071: E9 00 00     	sbc	#L24
+   898 00:0074: 1B           	tcs
+   899 00:0075: 0B           	phd
+  Wed Aug 14 2019 13:16                                                Page 18
+
+
+   900 00:0076: 5B           	tcd
+   901                        	.block	437
+   902                        ;	#asm
+   903                        	.line	438
+   904                        ;		php
+   905                        ;		phx
+   906                        ;		pha
+   907                        ;		JML $191264
+   908                        ;		pla
+   909                        ;		plx
+   910                        ;		plp
+   911                        ;	#endasm			
+   912                        	asmstart
+   913 00:0077: 08           		php
+   914 00:0078: DA           		phx
+   915 00:0079: 48           		pha
+   916 00:007A: 5C 64 12 19  		JML $191264
+   917 00:007E: 68           		pla
+   918 00:007F: FA           		plx
+   919 00:0080: 28           		plp
+   920                        	asmend
+   921                        ;}
+   922                        	.line	447
+   923                        L27:
+   924 00:0081: 2B           	pld
+   925 00:0082: 3B           	tsc
+   926 00:0083: 18           	clc
+   927 00:0084: 69 00 00     	adc	#L24
+   928 00:0087: 1B           	tcs
+   929 00:0088: 6B           	rtl
+   930                        	.endblock	447
+   931             00000000   L24	equ	0
+   932             00000001   L25	equ	1
+   933                        	ends
+   934                        	efunc
+   935                        	.endfunc	447,1,0
+   936                        	.line	447
+   937                        ;
+   938                        ;void fxboot(void)
+   939                        ;{
+   940                        	.line	449
+   941                        	.line	450
+   942                        	code
+   943                        	xdef	~~fxboot
+   944                        	func
+   945                        	.function	450
+   946                        ~~fxboot:
+   947                        	longa	on
+   948                        	longi	on
+   949 00:0089: 3B           	tsc
+   950 00:008A: 38           	sec
+   951 00:008B: E9 00 00     	sbc	#L28
+   952 00:008E: 1B           	tcs
+   953 00:008F: 0B           	phd
+   954 00:0090: 5B           	tcd
+   955                        	.block	450
+   956                        ;     #asm
+   957                        	.line	451
+  Wed Aug 14 2019 13:16                                                Page 19
+
+
+   958                        ;		NOP
+   959                        ;		NOP
+   960                        ;		NOP
+   961                        ;		NOP
+   962                        ;		NOP
+   963                        ;		NOP
+   964                        ;		NOP
+   965                        ;		NOP
+   966                        ;		NOP
+   967                        ;		NOP
+   968                        ;		NOP
+   969                        ;		NOP
+   970                        ;		NOP
+   971                        ;		NOP
+   972                        ;		NOP
+   973                        ;		NOP
+   974                        ;		NOP
+   975                        ;		NOP
+   976                        ;	 #endasm
+   977                        	asmstart
+   978 00:0091: EA           		NOP
+   979 00:0092: EA           		NOP
+   980 00:0093: EA           		NOP
+   981 00:0094: EA           		NOP
+   982 00:0095: EA           		NOP
+   983 00:0096: EA           		NOP
+   984 00:0097: EA           		NOP
+   985 00:0098: EA           		NOP
+   986 00:0099: EA           		NOP
+   987 00:009A: EA           		NOP
+   988 00:009B: EA           		NOP
+   989 00:009C: EA           		NOP
+   990 00:009D: EA           		NOP
+   991 00:009E: EA           		NOP
+   992 00:009F: EA           		NOP
+   993 00:00A0: EA           		NOP
+   994 00:00A1: EA           		NOP
+   995 00:00A2: EA           		NOP
+   996                        	asmend
+   997                        ;}
+   998                        	.line	471
+   999                        L31:
+  1000 00:00A3: 2B           	pld
+  1001 00:00A4: 3B           	tsc
+  1002 00:00A5: 18           	clc
+  1003 00:00A6: 69 00 00     	adc	#L28
+  1004 00:00A9: 1B           	tcs
+  1005 00:00AA: 6B           	rtl
+  1006                        	.endblock	471
+  1007             00000000   L28	equ	0
+  1008             00000001   L29	equ	1
+  1009                        	ends
+  1010                        	efunc
+  1011                        	.endfunc	471,1,0
+  1012                        	.line	471
+  1013                        ;
+  1014                        ;
+  1015                        ;void k_test_graphics(void)
+  Wed Aug 14 2019 13:16                                                Page 20
+
+
+  1016                        ;{
+  1017                        	.line	474
+  1018                        	.line	475
+  1019                        	code
+  1020                        	xdef	~~k_test_graphics
+  1021                        	func
+  1022                        	.function	475
+  1023                        ~~k_test_graphics:
+  1024                        	longa	on
+  1025                        	longi	on
+  1026 00:00AB: 3B           	tsc
+  1027 00:00AC: 38           	sec
+  1028 00:00AD: E9 32 00     	sbc	#L32
+  1029 00:00B0: 1B           	tcs
+  1030 00:00B1: 0B           	phd
+  1031 00:00B2: 5B           	tcd
+  1032                        	.block	475
+  1033                        ;	char bg[12] = {0x30,0x40,0x50,0x60,0x70,0x80,0xA
+                    0,0xB0,0xC0,0xD0,0xE0,0xF0};
+  1034                        	data
+  1035                        L35:
+  1036 00:0048: 30 40 50 60  	db	$30,$40,$50,$60,$70,$80,$A0,$B0,$C0,$D0
+       00:004C: 70 80 A0 B0 
+       00:0050: C0 D0 
+  1037 00:0052: E0 F0        	db	$E0,$F0
+  1038 00:0054:              	ends
+  1039                        ;	int delay = 0;
+  1040                        ;	char fcolor = 0x01;
+  1041                        ;	char dcolor = 0x01;
+  1042                        ;	int i = 0;
+  1043                        ;	int offset = 0;
+  1044                        ;	char c = 0;
+  1045                        ;	char color = 0;
+  1046                        ;	int x = 0;
+  1047                        ;	int y = 200;
+  1048                        ;	int index = 0;
+  1049                        ;	int pixelLocation = 0;
+  1050                        ;	long bankAddress = 0L;
+  1051                        ;	//char bf = 0;
+  1052                        ;	//char bc = 0;
+  1053                        ;	//int bx = 0;
+  1054                        ;	//int by = 0;
+  1055                        ;	long fill = 0L;
+  1056                        ;	int mx = 0;
+  1057                        ;	int my = 0;
+  1058                        ;	int zx = 0;
+  1059                        ;	char vfill = 0;
+  1060                        ;	volatile unsigned char * videoBank = NULL;
+  1061                        ;	char bExit = 0;
+  1062                        ;	
+  1063                        ;
+  1064                        ;
+  1065                        ;
+  1066                        ;
+  1067                        ;	VDMA_CONTROL_REG[0] = VDMA_CTRL_ENABLE;
+  1068             00000000   bg_1	set	0
+  1069             0000000C   delay_1	set	12
+  1070             0000000E   fcolor_1	set	14
+  Wed Aug 14 2019 13:16                                                Page 21
+
+
+  1071             0000000F   dcolor_1	set	15
+  1072             00000010   i_1	set	16
+  1073             00000012   offset_1	set	18
+  1074             00000014   c_1	set	20
+  1075             00000015   color_1	set	21
+  1076             00000016   x_1	set	22
+  1077             00000018   y_1	set	24
+  1078             0000001A   index_1	set	26
+  1079             0000001C   pixelLocation_1	set	28
+  1080             0000001E   bankAddress_1	set	30
+  1081             00000022   fill_1	set	34
+  1082             00000026   mx_1	set	38
+  1083             00000028   my_1	set	40
+  1084             0000002A   zx_1	set	42
+  1085             0000002C   vfill_1	set	44
+  1086             0000002D   videoBank_1	set	45
+  1087             00000031   bExit_1	set	49
+  1088                        	.sym	bg,0,110,1,0,12
+  1089                        	.sym	delay,12,5,1,16
+  1090                        	.sym	fcolor,14,14,1,8
+  1091                        	.sym	dcolor,15,14,1,8
+  1092                        	.sym	i,16,5,1,16
+  1093                        	.sym	offset,18,5,1,16
+  1094                        	.sym	c,20,14,1,8
+  1095                        	.sym	color,21,14,1,8
+  1096                        	.sym	x,22,5,1,16
+  1097                        	.sym	y,24,5,1,16
+  1098                        	.sym	index,26,5,1,16
+  1099                        	.sym	pixelLocation,28,5,1,16
+  1100                        	.sym	bankAddress,30,7,1,32
+  1101                        	.sym	fill,34,7,1,32
+  1102                        	.sym	mx,38,5,1,16
+  1103                        	.sym	my,40,5,1,16
+  1104                        	.sym	zx,42,5,1,16
+  1105                        	.sym	vfill,44,14,1,8
+  1106                        	.sym	videoBank,45,142,1,32
+  1107                        	.sym	bExit,49,14,1,8
+  1108                        	.line	505
+  1109                        ;
+  1110                        ;	*BM_START_ADDY_L = 0x00;
+  1111                        	.line	507
+  1112                        ;	*BM_START_ADDY_M = 0x00;
+  1113                        	.line	508
+  1114                        ;	*BM_START_ADDY_H = 0x00;
+  1115                        	.line	509
+  1116                        ;	*((char far*)0xAF1F80) = 0x02;
+  1117                        	.line	510
+  1118                        ;	
+  1119                        ;	*BM_X_SIZE_L = 0x80;
+  1120                        	.line	512
+  1121                        ;	*BM_X_SIZE_H = 0x02;	
+  1122                        	.line	513
+  1123                        ;	*BM_Y_SIZE_L = 0xE0;
+  1124                        	.line	514
+  1125                        ;	*BM_Y_SIZE_H = 0x01;	
+  1126                        	.line	515
+  1127                        ;	
+  1128                        ;	//*((char far*)BM_X_SIZE_L) = 640;
+  Wed Aug 14 2019 13:16                                                Page 22
+
+
+  1129                        ;	//*((char far*)BM_Y_SIZE_L) = 480;
+  1130                        ;
+  1131                        ;	
+  1132                        ;	*FG_CHAR_LUT_PTR    = 0x00;
+  1133                        	.line	521
+  1134                        ;	*BG_CHAR_LUT_PTR    = 0x00;
+  1135                        	.line	522
+  1136                        ;	*BM_CONTROL_REG 	= 0x08;
+  1137                        	.line	523
+  1138                        ;	*MASTER_CTRL_REG_L 	= 0x0C;
+  1139                        	.line	524
+  1140                        ;
+  1141                        ;	k_set_border_color(0xAA,0xAA,0xAA);
+  1142                        	.line	526
+  1143                        ;	
+  1144                        ;	setColors();
+  1145                        	.line	528
+  1146                        ;	
+  1147                        ;	k_disable_border();
+  1148                        	.line	530
+  1149                        ;	
+  1150                        ;	while(!bExit)
+  1151                        	.line	532
+  1152                        L10004:
+  1153                        ;	{
+  1154                        	.line	533
+  1155                        ;		offset = 0;
+  1156                        	.line	534
+  1157                        ;
+  1158                        ;		
+  1159                        ;
+  1160                        ;
+  1161                        ;		//for(fcolor=0x10;fcolor<0xF0;fcolor+=0x
+                    10)		
+  1162                        ;		for(dcolor=1;dcolor<10;dcolor++)	
+                    	
+  1163                        	.line	540
+  1164 00:00B3: 82 06 00     	brl	L10009
+  1165                        L10008:
+  1166                        ;		{
+  1167                        	.line	541
+  1168                        ;			k_fill_bank(0,dcolor + 0);
+  1169                        	.line	542
+  1170                        ;			k_fill_bank(1,dcolor + 1);
+  1171                        	.line	543
+  1172                        ;			k_fill_bank(2,dcolor + 2);
+  1173                        	.line	544
+  1174                        ;			k_fill_bank(3,dcolor + 3);
+  1175                        	.line	545
+  1176                        ;			k_fill_bank(4,dcolor + 4);
+  1177                        	.line	546
+  1178                        ;			k_fill_bank(5,dcolor + 5);
+  1179                        	.line	547
+  1180                        ;			
+  1181                        ;			
+  1182                        ;			//memset((unsigned char far *)BI
+                    TMAP_BANK_0,fcolor + 0,0xffff);
+  1183                        ;			//memset((unsigned char far *)BI
+  Wed Aug 14 2019 13:16                                                Page 23
+
+
+                    TMAP_BANK_1,fcolor + 1,0xffff);
+  1184                        ;			//memset((unsigned char far *)BI
+                    TMAP_BANK_2,fcolor + 2,0xffff);
+  1185                        ;			//memset((unsigned char far *)BI
+                    TMAP_BANK_3,fcolor + 3,0xffff);
+  1186                        ;			//memset((unsigned char far *)BI
+                    TMAP_BANK_4,fcolor + 4,0xffff);
+  1187                        ;			
+  1188                        ;		
+  1189                        ;			//for(i=0x0000;i<0xFFFF;i+=8)
+  1190                        ;			for(fill=0x0000;fill<=0xFFFF;fil
+                    l++)
+  1191                        	.line	558
+  1192                        L10012:
+  1193                        ;			{		
+  1194                        	.line	559
+  1195                        ;				((unsigned char far *)BI
+                    TMAP_BANK_0)[fill] = (char)dcolor + 0;
+  1196                        	.line	560
+  1197                        ;				
+  1198                        ;				((unsigned char far *)BI
+                    TMAP_BANK_1)[fill] = (char)dcolor + 1;
+  1199                        	.line	562
+  1200                        ;				
+  1201                        ;				((unsigned char far *)BI
+                    TMAP_BANK_2)[fill] = (char)dcolor + 2;
+  1202                        	.line	564
+  1203                        ;				
+  1204                        ;				((unsigned char far *)BI
+                    TMAP_BANK_3)[fill] = (char)dcolor + 3;
+  1205                        	.line	566
+  1206                        ;				
+  1207                        ;				((unsigned char far *)BI
+                    TMAP_BANK_4)[fill] = (char)dcolor + 4;
+  1208                        	.line	568
+  1209                        ;				
+  1210                        ;				((unsigned char far *)BI
+                    TMAP_BANK_5)[fill] = (char)dcolor + 5;
+  1211                        	.line	570
+  1212                        ;			}	
+  1213                        	.line	571
+  1214                        L10010:
+  1215                        L10011:
+  1216                        ;
+  1217                        ;			for(fill=0x0000;fill<=0xFFFF;fil
+                    l++)
+  1218                        	.line	573
+  1219                        L10015:
+  1220                        ;			{		
+  1221                        	.line	574
+  1222                        ;				((unsigned char far *)BI
+                    TMAP_BANK_0)[fill] = (char)0;
+  1223                        	.line	575
+  1224                        ;				
+  1225                        ;				((unsigned char far *)BI
+                    TMAP_BANK_1)[fill] = (char)0;
+  1226                        	.line	577
+  1227                        ;				
+  Wed Aug 14 2019 13:16                                                Page 24
+
+
+  1228                        ;				((unsigned char far *)BI
+                    TMAP_BANK_2)[fill] = (char)0;
+  1229                        	.line	579
+  1230                        ;				
+  1231                        ;				((unsigned char far *)BI
+                    TMAP_BANK_3)[fill] = (char)0;
+  1232                        	.line	581
+  1233                        ;				
+  1234                        ;				((unsigned char far *)BI
+                    TMAP_BANK_4)[fill] = (char)0;
+  1235                        	.line	583
+  1236                        ;				
+  1237                        ;				((unsigned char far *)BI
+                    TMAP_BANK_5)[fill] = (char)0;
+  1238                        	.line	585
+  1239                        ;			}	
+  1240                        	.line	586
+  1241                        L10013:
+  1242                        L10014:
+  1243                        ;
+  1244                        ;			
+  1245                        ;			
+  1246                        ;			//k_draw_text("BITMAPPED FONTS!"
+                    ,27,1,fcolor);
+  1247                        ;			
+  1248                        ;			/*
+  1249                        ;			k_put_font('A',28,1,fcolor);
+  1250                        ;			
+  1251                        ;			k_put_font((char)65,29,1,fcolor)
+                    ;
+  1252                        ;			k_put_font('B',30,1,fcolor);
+  1253                        ;			k_put_font((char)66,31,1,fcolor)
+                    ;
+  1254                        ;			k_put_font('a',28,2,fcolor);
+  1255                        ;			k_put_font('b',30,2,fcolor);
+  1256                        ;			*/
+  1257                        ;			
+  1258                        ;
+  1259                        ;			for(fcolor=1;fcolor<11;fcolor++)
+  1260                        	.line	603
+  1261 00:00B6: 82 03 00     	brl	L10019
+  1262                        L10018:
+  1263                        ;			{
+  1264                        	.line	604
+  1265                        ;				/*
+  1266                        ;				memset((unsigned char fa
+                    r *)BITMAP_BANK_0,fcolor + 0,0xffffL);			
+                    	
+  1267                        ;				k_draw_text("CHECK FOR A
+                    RTIFACTS...",1,1,15);
+  1268                        ;				memset((unsigned char fa
+                    r *)BITMAP_BANK_1,fcolor + 1,0xffffL);
+  1269                        ;				//k_draw_text("CHECK FOR
+                     ARTIFACTS...",1,1,15);
+  1270                        ;				memset((unsigned char fa
+                    r *)BITMAP_BANK_2,fcolor + 2,0xffffL);
+  1271                        ;				//k_draw_text("CHECK FOR
+                     ARTIFACTS...",1,1,15);
+  Wed Aug 14 2019 13:16                                                Page 25
+
+
+  1272                        ;				memset((unsigned char fa
+                    r *)BITMAP_BANK_3,fcolor + 3,0xffffL);
+  1273                        ;				//k_draw_text("CHECK FOR
+                     ARTIFACTS...",1,1,15);
+  1274                        ;				memset((unsigned char fa
+                    r *)BITMAP_BANK_4,fcolor + 4,0xffffL);
+  1275                        ;				//k_draw_text("CHECK FOR
+                     ARTIFACTS...",1,1,15);
+  1276                        ;				*/
+  1277                        ;				
+  1278                        ;				
+  1279                        ;				/*
+  1280                        ;				for(mx=0;mx<100;mx++)
+  1281                        ;				{
+  1282                        ;					for(vfill=0;vfil
+                    l<15;vfill++)
+  1283                        ;					{
+  1284                        ;						k_vdma_f
+                    ill((char far *)0x000000,0x00FFFF,vfill);
+  1285                        ;						k_draw_t
+                    ext("VDMA...",1,1,15);
+  1286                        ;					}
+  1287                        ;				}
+  1288                        ;				*/
+  1289                        ;			
+  1290                        ;			/*
+  1291                        ;				k_vdma_fill((char far *)
+                    0x000000,0x00FFFF,fcolor + 0);
+  1292                        ;				k_draw_text("VDMA...",1,
+                    1,15);		
+  1293                        ;				k_vdma_fill((char far *)
+                    0x010000,0x00FFFF,fcolor + 1);
+  1294                        ;				k_draw_text("VDMA    ",1
+                    ,1,15);
+  1295                        ;				k_vdma_fill((char far *)
+                    0x020000,0x00FFFF,fcolor + 2);				
+  1296                        ;				k_draw_text("VDMA...",1,
+                    1,15);
+  1297                        ;				k_vdma_fill((char far *)
+                    0x030000,0x00FFFF,fcolor + 3);
+  1298                        ;				k_draw_text("VDMA...",1,
+                    1,15);
+  1299                        ;				k_vdma_fill((char far *)
+                    0x040000,0x00FFFF,fcolor + 4);
+  1300                        ;				k_draw_text("VDMA...",1,
+                    1,15);
+  1301                        ;				k_vdma_fill((char far *)
+                    0x050000,0x00FFFF,fcolor + 5);
+  1302                        ;	*/
+  1303                        ;	
+  1304                        ;				//k_vdma_fill((char far 
+                    *)0x000000,0x050000,0x02);
+  1305                        ;				//k_draw_text("VDMA FULL
+                    ...",1,1,15);
+  1306                        ;
+  1307                        ;				//k_delay(3000);
+  1308                        ;				
+  1309                        ;				
+  Wed Aug 14 2019 13:16                                                Page 26
+
+
+  1310                        ;				k_fill_bank(0,fcolor + 0
+                    );
+  1311                        	.line	650
+  1312                        ;				k_draw_text("BANK FILLS.
+                    ..",1,1,15);
+  1313                        	.line	651
+  1314                        ;				k_fill_bank(1,fcolor + 1
+                    );
+  1315                        	.line	652
+  1316                        ;				k_fill_bank(2,fcolor + 2
+                    );
+  1317                        	.line	653
+  1318                        ;				k_fill_bank(3,fcolor + 3
+                    );
+  1319                        	.line	654
+  1320                        ;				k_fill_bank(4,fcolor + 4
+                    );
+  1321                        	.line	655
+  1322                        ;				k_fill_bank(5,fcolor + 5
+                    );				
+  1323                        	.line	656
+  1324                        ;				k_delay(500);
+  1325                        	.line	657
+  1326                        ;				
+  1327                        ;				k_fill_bank(0,fcolor + 5
+                    );				
+  1328                        	.line	659
+  1329                        ;				k_draw_text("2D VDMA",1,
+                    1,15);
+  1330                        	.line	660
+  1331                        ;				for(zx=0;zx<10;zx++)
+  1332                        	.line	661
+  1333                        L10022:
+  1334                        ;				{
+  1335                        	.line	662
+  1336                        ;					for(vfill=1;vfil
+                    l<15;vfill++)
+  1337                        	.line	663
+  1338 00:00B9: 82 00 00     	brl	L10026
+  1339                        L10025:
+  1340                        ;					{
+  1341                        	.line	664
+  1342                        ;						//k_vdma
+                    _fill_rect((char far *)0x019060,100,100,vfill);
+  1343                        ;						k_vdma_f
+                    ill_rect(25,25,50,50,vfill);
+  1344                        	.line	666
+  1345                        ;						k_vdma_f
+                    ill_rect(100,100,100,100,vfill);
+  1346                        	.line	667
+  1347                        ;						k_vdma_f
+                    ill_rect(300,50,200,100,vfill);
+  1348                        	.line	668
+  1349                        ;						
+  1350                        ;						k_delay(
+                    100);
+  1351                        	.line	670
+  1352                        ;						//k_draw
+  Wed Aug 14 2019 13:16                                                Page 27
+
+
+                    _text("VDMA...",1,1,15);
+  1353                        ;					}
+  1354                        	.line	672
+  1355                        L10023:
+  1356                        L10026:
+  1357                        L10024:
+  1358                        ;				}
+  1359                        	.line	673
+  1360                        L10020:
+  1361                        L10021:
+  1362                        ;
+  1363                        ;
+  1364                        ;				k_fill_bank(0,fcolor + 5
+                    );				
+  1365                        	.line	676
+  1366                        ;				k_draw_text("SCALED FONT
+                    S...",1,1,15);
+  1367                        	.line	677
+  1368                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,10,10,15,1);
+  1369                        ;				k_draw_char_scaled_point
+                    (0x01,20,20,15,2);
+  1370                        	.line	679
+  1371                        ;				k_draw_char_scaled_point
+                    (0x01,30,30,15,3);
+  1372                        	.line	680
+  1373                        ;				k_draw_char_scaled_point
+                    (0x01,45,45,15,4);
+  1374                        	.line	681
+  1375                        ;				k_draw_char_scaled_point
+                    (0x01,70,70,15,5);
+  1376                        	.line	682
+  1377                        ;				k_draw_char_scaled_point
+                    (0x01,100,100,15,6);
+  1378                        	.line	683
+  1379                        ;				
+  1380                        ;				k_delay(1500);
+  1381                        	.line	685
+  1382                        ;
+  1383                        ;				for(y=0;y<480;y++)
+  1384                        	.line	687
+  1385                        L10029:
+  1386                        ;				{
+  1387                        	.line	688
+  1388                        ;					k_fill_line(0,y,
+                    639,14);
+  1389                        	.line	689
+  1390                        ;					if(y==100)
+  1391                        	.line	690
+  1392                        ;					{
+  1393                        	.line	691
+  1394                        ;						k_draw_t
+                    ext("SCALABLE COLOR ICONS WITH TRANSPARENCY CONTROL...",1,1,
+                    15);
+  1395                        	.line	692
+  1396                        ;						k_put_wi
+                    nicon_point(ICON_DISK,15,20,0,PAINTMODE_DEFAULT);		
+                    				
+  Wed Aug 14 2019 13:16                                                Page 28
+
+
+  1397                        	.line	693
+  1398                        ;						k_put_wi
+                    nicon_point(ICON_TRASH,35,20,1,PAINTMODE_DEFAULT);
+  1399                        	.line	694
+  1400                        ;						k_put_wi
+                    nicon_point(ICON_CABINET,55,20,2,PAINTMODE_DEFAULT);
+  1401                        	.line	695
+  1402                        ;						
+  1403                        ;						k_put_wi
+                    nicon_scaled(ICON_DISK,75,20,0,PAINTMODE_DEFAULT,2);
+  1404                        	.line	697
+  1405                        ;						k_put_wi
+                    nicon_scaled(ICON_TRASH,115,20,0,PAINTMODE_DEFAULT,2);
+  1406                        	.line	698
+  1407                        ;						k_put_wi
+                    nicon_scaled(ICON_CABINET,150,20,0,PAINTMODE_DEFAULT,2);
+  1408                        	.line	699
+  1409                        ;					}
+  1410                        	.line	700
+  1411                        ;				}
+  1412                        L10030:
+  1413                        	.line	701
+  1414                        L10027:
+  1415                        L10028:
+  1416                        ;
+  1417                        ;				k_set_foreground_palette
+                    (0);
+  1418                        	.line	703
+  1419                        ;
+  1420                        ;				k_delay(1500);
+  1421                        	.line	705
+  1422                        ;				
+  1423                        ;				/*
+  1424                        ;				//k_draw_text("SLOW FILL
+                    ...",1,1,15);
+  1425                        ;				for(y=1;y<479;y++)
+  1426                        ;				{
+  1427                        ;					for(x=1;x<638;x+
+                    +)
+  1428                        ;					{
+  1429                        ;						//k_draw
+                    _text("CHECK FOR ARTIFACTS...",x,y,15);
+  1430                        ;						k_draw_p
+                    ixel(x,y,0);	
+  1431                        ;					}
+  1432                        ;					if(y==16)
+  1433                        ;						k_draw_t
+                    ext("SLOW FILL (BLACK)...",1,1,15);
+  1434                        ;				}
+  1435                        ;				*/
+  1436                        ;				for(y=0;y<480;y++)
+  1437                        	.line	720
+  1438                        L10033:
+  1439                        ;				{
+  1440                        	.line	721
+  1441                        ;					k_fill_line(0,y,
+                    639,0);
+  1442                        	.line	722
+  Wed Aug 14 2019 13:16                                                Page 29
+
+
+  1443                        ;					if(y==16)
+  1444                        	.line	723
+  1445                        ;						k_draw_t
+                    ext("QUICK FILL (BLACK)...",1,1,15);
+  1446                        	.line	724
+  1447                        ;				}			
+                    		
+  1448                        L10034:
+  1449                        	.line	725
+  1450                        L10031:
+  1451                        L10032:
+  1452                        ;				k_delay(1500);
+  1453                        	.line	726
+  1454                        ;				//k_draw_text("QUICK FIL
+                    L...",1,1,0);
+  1455                        ;				for(y=0;y<480;y++)
+  1456                        	.line	728
+  1457                        L10037:
+  1458                        ;				{
+  1459                        	.line	729
+  1460                        ;					k_fill_line(0,y,
+                    639,14);
+  1461                        	.line	730
+  1462                        ;					if(y==16)
+  1463                        	.line	731
+  1464                        ;						k_draw_t
+                    ext("QUICK FILL (GRAY)...",1,1,0);
+  1465                        	.line	732
+  1466                        ;				}			
+                    	
+  1467                        L10038:
+  1468                        	.line	733
+  1469                        L10035:
+  1470                        L10036:
+  1471                        ;				k_delay(1500);
+  1472                        	.line	734
+  1473                        ;				k_draw_line(0,52,640,52,
+                    fcolor);
+  1474                        	.line	735
+  1475                        ;				k_draw_line(0,154,640,15
+                    4,fcolor);
+  1476                        	.line	736
+  1477                        ;				k_draw_line(0,256,640,25
+                    6,fcolor);
+  1478                        	.line	737
+  1479                        ;				k_draw_line(0,359,640,35
+                    9,fcolor);
+  1480                        	.line	738
+  1481                        ;				k_draw_line(0,461,640,46
+                    1,fcolor);
+  1482                        	.line	739
+  1483                        ;
+  1484                        ;				k_draw_line(129,0,129,48
+                    0,fcolor);
+  1485                        	.line	741
+  1486                        ;				k_draw_line(384,0,384,48
+                    0,fcolor);
+  1487                        	.line	742
+  Wed Aug 14 2019 13:16                                                Page 30
+
+
+  1488                        ;				k_draw_line(639,0,639,48
+                    0,fcolor);
+  1489                        	.line	743
+  1490                        ;				k_draw_line(254,0,254,48
+                    0,fcolor);
+  1491                        	.line	744
+  1492                        ;				k_draw_line(509,0,509,48
+                    0,fcolor);
+  1493                        	.line	745
+  1494                        ;
+  1495                        ;
+  1496                        ;				/*
+  1497                        ;				k_draw_text("CHECK FOR A
+                    RTIFACTS...",1,1,15);
+  1498                        ;				for(y=1;y<479;y++)
+  1499                        ;				{
+  1500                        ;					for(x=1;x<638;x+
+                    +)
+  1501                        ;					{
+  1502                        ;						//k_draw
+                    _text("CHECK FOR ARTIFACTS...",x,y,15);
+  1503                        ;						k_draw_p
+                    ixel(x,y,15);						
+  1504                        ;					}
+  1505                        ;					if(y==16)
+  1506                        ;						k_draw_t
+                    ext("CHECK FOR ARTIFACTS...",1,1,0);
+  1507                        ;				}
+  1508                        ;				*/
+  1509                        ;				for(index=0;index<100;in
+                    dex+=10)
+  1510                        	.line	761
+  1511                        L10041:
+  1512                        ;				{
+  1513                        	.line	762
+  1514                        ;					x = index;
+  1515                        	.line	763
+  1516                        ;					for(y=0;y<400;y+
+                    +)
+  1517                        	.line	764
+  1518                        L10044:
+  1519                        ;					{
+  1520                        	.line	765
+  1521                        ;						x++;
+  1522                        	.line	766
+  1523                        ;						k_draw_p
+                    ixel(x,y,fcolor);
+  1524                        	.line	767
+  1525                        ;					}
+  1526                        	.line	768
+  1527                        L10042:
+  1528                        L10043:
+  1529                        ;				}
+  1530                        	.line	769
+  1531                        L10039:
+  1532                        L10040:
+  1533                        ;
+  1534                        ;
+  Wed Aug 14 2019 13:16                                                Page 31
+
+
+  1535                        ;				k_render_bitmap_info(fco
+                    lor);
+  1536                        	.line	772
+  1537                        ;				
+  1538                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,10,10,15,1);
+  1539                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,20,20,15,2);
+  1540                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,30,30,15,3);
+  1541                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,45,45,15,4);
+  1542                        ;				//k_draw_char_scaled_poi
+                    nt(0x01,65,65,15,5);
+  1543                        ;				//k_draw_char(0x01,20,20
+                    ,15);
+  1544                        ;				
+  1545                        ;				k_draw_text("BITMAPPED F
+                    ONTS!",26,1,fcolor);
+  1546                        	.line	781
+  1547                        ;				//k_draw_text_scaled("BI
+                    TMAPPED FONTS!",27,1,fcolor,3);
+  1548                        ;
+  1549                        ;				k_draw_fontset();
+  1550                        	.line	784
+  1551                        ;				//k_draw_text("BITMAPPED
+                     FONTS!",28,1,fcolor);
+  1552                        ;				
+  1553                        ;				k_draw_circle(100,100,50
+                    ,fcolor);
+  1554                        	.line	787
+  1555                        ;				k_draw_filled_circle(200
+                    ,200,50,fcolor);
+  1556                        	.line	788
+  1557                        ;				k_draw_filled_circle(250
+                    ,250,50,fcolor);
+  1558                        	.line	789
+  1559                        ;				k_draw_filled_circle(300
+                    ,300,50,fcolor);
+  1560                        	.line	790
+  1561                        ;				
+  1562                        ;				k_draw_line(0,0,640,480,
+                    fcolor);
+  1563                        	.line	792
+  1564                        ;				k_draw_line(0,480,640,0,
+                    fcolor);
+  1565                        	.line	793
+  1566                        ;				
+  1567                        ;				k_delay(2500);
+  1568                        	.line	795
+  1569                        ;				
+  1570                        ;				//k_vdma_fill_rect(0,0,6
+                    40,480,14);
+  1571                        ;				//k_delay(5);
+  1572                        ;				//k_draw_rect_slow(100,1
+                    00,200,200,fcolor);				
+  1573                        ;				//k_draw_filled_rect(101
+                    ,101,98,98,0);
+  Wed Aug 14 2019 13:16                                                Page 32
+
+
+  1574                        ;				
+  1575                        ;				//k_draw_rect_slow(100,1
+                    00,200,110,fcolor);
+  1576                        ;				//k_draw_rect_slow(200,2
+                    00,300,300,fcolor);
+  1577                        ;				
+  1578                        ;				//k_draw_rect_slow(400,3
+                    00,600,400,fcolor);
+  1579                        ;				//k_draw_rect_slow(401,3
+                    01,599,399,fcolor);
+  1580                        ;				//k_draw_filled_rect(401
+                    ,302,196,96,0);
+  1581                        ;				for(y=0;y<480;y++)
+  1582                        	.line	808
+  1583                        L10047:
+  1584                        ;				{
+  1585                        	.line	809
+  1586                        ;					k_fill_line(0,y,
+                    639,14);
+  1587                        	.line	810
+  1588                        ;				}			
+                    	
+  1589                        	.line	811
+  1590                        L10045:
+  1591                        L10046:
+  1592                        ;				
+  1593                        ;				k_vdraw_ui_menu(0,0,640,
+                    "C256 Workbench    Free Memory: 1792K / Video Memory: 4096K"
+                    ,15,3);				
+  1594                        	.line	813
+  1595                        ;
+  1596                        ;				//FX-Basic
+  1597                        ;				k_put_winicon_point(ICON
+                    _DISK,640 - 40,20,0,PAINTMODE_DEFAULT);			
+                    			
+  1598                        	.line	816
+  1599                        ;				k_draw_text_point("FX-BA
+                    SIC",640 - 35 - (8*4),40,0);
+  1600                        	.line	817
+  1601                        ;				
+  1602                        ;				//Projects
+  1603                        ;				k_put_winicon_point(ICON
+                    _CABINET,640 - 40,55,2,PAINTMODE_DEFAULT);
+  1604                        	.line	820
+  1605                        ;				k_draw_text_point("PROJE
+                    CTS",640 - 35 - (8*4),75,0);
+  1606                        	.line	821
+  1607                        ;				
+  1608                        ;				//Shredder
+  1609                        ;				k_put_winicon_point(ICON
+                    _TRASH,640 - 40,450,1,PAINTMODE_DEFAULT);
+  1610                        	.line	824
+  1611                        ;				k_draw_text_point("SHRED
+                    DER",640 - 35 - (8*4),470,0);
+  1612                        	.line	825
+  1613                        ;
+  1614                        ;				
+  1615                        ;				k_vdraw_ui_window(25,25,
+  Wed Aug 14 2019 13:16                                                Page 33
+
+
+                    200,200,"FXBasic 1",15,3);
+  1616                        	.line	828
+  1617                        ;				//k_vdraw_ui_window(80,8
+                    0,200,400,"WINDOW 2",15,3);
+  1618                        ;				//k_vdraw_ui_window(100,
+                    100,200,400,"My Title 1",15,3);
+  1619                        ;				k_vdraw_ui_window(150,20
+                    0,200,400,"FXBasic 2",15,3);
+  1620                        	.line	831
+  1621                        ;				
+  1622                        ;				k_vdraw_ui_window(275,22
+                    0,150,350,"FXBasic 3",15,3);
+  1623                        	.line	833
+  1624                        ;				
+  1625                        ;				//k_draw_ui_window(200,2
+                    00,200,400,"My Title",15,3);
+  1626                        ;				
+  1627                        ;				
+  1628                        ;
+  1629                        ;				//k_draw_lines();
+  1630                        ;			}
+  1631                        	.line	840
+  1632                        L10016:
+  1633                        L10019:
+  1634                        L10017:
+  1635                        ;			//k_set_border_color(bg[offset],
+                    bg[offset],bg[offset]);
+  1636                        ;			
+  1637                        ;			
+  1638                        ;			offset++;
+  1639                        	.line	844
+  1640                        ;			if(offset > 11)
+  1641                        	.line	845
+  1642                        ;				offset = 0;
+  1643                        	.line	846
+  1644                        ;			
+  1645                        ;			//k_disable_border();
+  1646                        ;			
+  1647                        ;		}
+  1648                        L10048:
+  1649                        	.line	850
+  1650                        L10006:
+  1651                        L10009:
+  1652                        L10007:
+  1653                        ;	
+  1654                        ;	
+  1655                        ;		//k_enable_border();
+  1656                        ;		//k_set_border_color(0x0F,0x0F,0x0F);
+  1657                        ;		//k_disable_border();
+  1658                        ;	
+  1659                        ;
+  1660                        ;		//k_delay(2550);
+  1661                        ;	}
+  1662                        	.line	859
+  1663 00:00BC: 82 F4 FF     	brl	L10004
+  1664                        L10005:
+  1665                        ;	
+  1666                        ;	return;
+  Wed Aug 14 2019 13:16                                                Page 34
+
+
+  1667                        	.line	861
+  1668                        L36:
+  1669 00:00BF: 2B           	pld
+  1670 00:00C0: 3B           	tsc
+  1671 00:00C1: 18           	clc
+  1672 00:00C2: 69 32 00     	adc	#L32
+  1673 00:00C5: 1B           	tcs
+  1674 00:00C6: 6B           	rtl
+  1675                        ;}
+  1676                        	.line	862
+  1677                        	.endblock	862
+  1678             00000032   L32	equ	50
+  1679             00000001   L33	equ	1
+  1680                        	ends
+  1681                        	efunc
+  1682                        	.endfunc	862,1,50
+  1683                        	.line	862
+  1684                        	data
+  1685                        L3:
+  1686 00:0054: 42 41 4E 4B  	db	$42,$41,$4E,$4B,$20,$46,$49,$4C,$4C,$53,
+                    $2E,$2E,$2E,$00,$32
+       00:0058: 20 46 49 4C 
+       00:005C: 4C 53 2E 2E 
+       00:0060: 2E 00 32 
+  1687 00:0063: 44 20 56 44  	db	$44,$20,$56,$44,$4D,$41,$00,$53,$43,$41,
+                    $4C,$45,$44,$20,$46
+       00:0067: 4D 41 00 53 
+       00:006B: 43 41 4C 45 
+       00:006F: 44 20 46 
+  1688 00:0072: 4F 4E 54 53  	db	$4F,$4E,$54,$53,$2E,$2E,$2E,$00,$53,$43,
+                    $41,$4C,$41,$42,$4C
+       00:0076: 2E 2E 2E 00 
+       00:007A: 53 43 41 4C 
+       00:007E: 41 42 4C 
+  1689 00:0081: 45 20 43 4F  	db	$45,$20,$43,$4F,$4C,$4F,$52,$20,$49,$43,
+                    $4F,$4E,$53,$20,$57
+       00:0085: 4C 4F 52 20 
+       00:0089: 49 43 4F 4E 
+       00:008D: 53 20 57 
+  1690 00:0090: 49 54 48 20  	db	$49,$54,$48,$20,$54,$52,$41,$4E,$53,$50,
+                    $41,$52,$45,$4E,$43
+       00:0094: 54 52 41 4E 
+       00:0098: 53 50 41 52 
+       00:009C: 45 4E 43 
+  1691 00:009F: 59 20 43 4F  	db	$59,$20,$43,$4F,$4E,$54,$52,$4F,$4C,$2E,
+                    $2E,$2E,$00,$51,$55
+       00:00A3: 4E 54 52 4F 
+       00:00A7: 4C 2E 2E 2E 
+       00:00AB: 00 51 55 
+  1692 00:00AE: 49 43 4B 20  	db	$49,$43,$4B,$20,$46,$49,$4C,$4C,$20,$28,
+                    $42,$4C,$41,$43,$4B
+       00:00B2: 46 49 4C 4C 
+       00:00B6: 20 28 42 4C 
+       00:00BA: 41 43 4B 
+  1693 00:00BD: 29 2E 2E 2E  	db	$29,$2E,$2E,$2E,$00,$51,$55,$49,$43,$4B,
+                    $20,$46,$49,$4C,$4C
+       00:00C1: 00 51 55 49 
+       00:00C5: 43 4B 20 46 
+  Wed Aug 14 2019 13:16                                                Page 35
+
+
+       00:00C9: 49 4C 4C 
+  1694 00:00CC: 20 28 47 52  	db	$20,$28,$47,$52,$41,$59,$29,$2E,$2E,$2E,
+                    $00,$42,$49,$54,$4D
+       00:00D0: 41 59 29 2E 
+       00:00D4: 2E 2E 00 42 
+       00:00D8: 49 54 4D 
+  1695 00:00DB: 41 50 50 45  	db	$41,$50,$50,$45,$44,$20,$46,$4F,$4E,$54,
+                    $53,$21,$00,$43,$32
+       00:00DF: 44 20 46 4F 
+       00:00E3: 4E 54 53 21 
+       00:00E7: 00 43 32 
+  1696 00:00EA: 35 36 20 57  	db	$35,$36,$20,$57,$6F,$72,$6B,$62,$65,$6E,
+                    $63,$68,$20,$20,$20
+       00:00EE: 6F 72 6B 62 
+       00:00F2: 65 6E 63 68 
+       00:00F6: 20 20 20 
+  1697 00:00F9: 20 46 72 65  	db	$20,$46,$72,$65,$65,$20,$4D,$65,$6D,$6F,
+                    $72,$79,$3A,$20,$31
+       00:00FD: 65 20 4D 65 
+       00:0101: 6D 6F 72 79 
+       00:0105: 3A 20 31 
+  1698 00:0108: 37 39 32 4B  	db	$37,$39,$32,$4B,$20,$2F,$20,$56,$69,$64,
+                    $65,$6F,$20,$4D,$65
+       00:010C: 20 2F 20 56 
+       00:0110: 69 64 65 6F 
+       00:0114: 20 4D 65 
+  1699 00:0117: 6D 6F 72 79  	db	$6D,$6F,$72,$79,$3A,$20,$34,$30,$39,$36,
+                    $4B,$00,$46,$58,$2D
+       00:011B: 3A 20 34 30 
+       00:011F: 39 36 4B 00 
+       00:0123: 46 58 2D 
+  1700 00:0126: 42 41 53 49  	db	$42,$41,$53,$49,$43,$00,$50,$52,$4F,$4A,
+                    $45,$43,$54,$53,$00
+       00:012A: 43 00 50 52 
+       00:012E: 4F 4A 45 43 
+       00:0132: 54 53 00 
+  1701 00:0135: 53 48 52 45  	db	$53,$48,$52,$45,$44,$44,$45,$52,$00,$46,
+                    $58,$42,$61,$73,$69
+       00:0139: 44 44 45 52 
+       00:013D: 00 46 58 42 
+       00:0141: 61 73 69 
+  1702 00:0144: 63 20 31 00  	db	$63,$20,$31,$00,$46,$58,$42,$61,$73,$69,
+                    $63,$20,$32,$00,$46
+       00:0148: 46 58 42 61 
+       00:014C: 73 69 63 20 
+       00:0150: 32 00 46 
+  1703 00:0153: 58 42 61 73  	db	$58,$42,$61,$73,$69,$63,$20,$33,$00
+       00:0157: 69 63 20 33 
+       00:015B: 00 
+  1704 00:015C:              	ends
+  1705                        ;
+  1706                        ;
+  1707                        ;
+  1708                        ;void k_test_mouse(void)
+  1709                        ;{
+  1710                        	.line	866
+  1711                        	.line	867
+  1712                        	code
+  Wed Aug 14 2019 13:16                                                Page 36
+
+
+  1713                        	xdef	~~k_test_mouse
+  1714                        	func
+  1715                        	.function	867
+  1716                        ~~k_test_mouse:
+  1717                        	longa	on
+  1718                        	longi	on
+  1719 00:00C7: 3B           	tsc
+  1720 00:00C8: 38           	sec
+  1721 00:00C9: E9 2B 00     	sbc	#L38
+  1722 00:00CC: 1B           	tcs
+  1723 00:00CD: 0B           	phd
+  1724 00:00CE: 5B           	tcd
+  1725                        	.block	867
+  1726                        ;	int mx = -1;
+  1727                        ;	int my = -1;
+  1728                        ;	int mb = -1;
+  1729                        ;	char bExit = 0;
+  1730                        ;	int pos = 0;
+  1731                        ;	int fcolor = 15;
+  1732                        ;	int bcolor = 0;
+  1733                        ;	char far convert[16];
+  1734                        ;	char far *pitoa = "                ";
+  1735                        ;	int mbState = 0;
+  1736                        ;	
+  1737                        ;	int far *pmx = malloc(sizeof(int));
+  1738                        ;	char far *pstr  = (char far*)malloc(32);
+  1739                        ;	//k_put_string(1,25,"MOVE MOUSE,SHOULD BE FINE (
+                    GATHERING POSITION)...",15,0);
+  1740                        ;	k_put_string(1,25,"MOVE MOUSE...",15,0);
+  1741             00000000   mx_1	set	0
+  1742             00000002   my_1	set	2
+  1743             00000004   mb_1	set	4
+  1744             00000006   bExit_1	set	6
+  1745             00000007   pos_1	set	7
+  1746             00000009   fcolor_1	set	9
+  1747             0000000B   bcolor_1	set	11
+  1748             0000000D   convert_1	set	13
+  1749             0000001D   pitoa_1	set	29
+  1750             00000021   mbState_1	set	33
+  1751             00000023   pmx_1	set	35
+  1752             00000027   pstr_1	set	39
+  1753                        	.sym	mx,0,5,1,16
+  1754                        	.sym	my,2,5,1,16
+  1755                        	.sym	mb,4,5,1,16
+  1756                        	.sym	bExit,6,14,1,8
+  1757                        	.sym	pos,7,5,1,16
+  1758                        	.sym	fcolor,9,5,1,16
+  1759                        	.sym	bcolor,11,5,1,16
+  1760                        	.sym	convert,13,110,1,0,16
+  1761                        	.sym	pitoa,29,142,1,32
+  1762                        	.sym	mbState,33,5,1,16
+  1763                        	.sym	pmx,35,133,1,32
+  1764                        	.sym	pstr,39,142,1,32
+  1765                        	.line	882
+  1766                        ;	/*
+  1767                        ;	for(pos=0;pos<30;pos++)
+  1768                        ;	{
+  1769                        ;		mx = k_get_mouse_pos_X();
+  Wed Aug 14 2019 13:16                                                Page 37
+
+
+  1770                        ;		my = k_get_mouse_pos_Y();
+  1771                        ;		mb = k_get_mouse_button();
+  1772                        ;		
+  1773                        ;		
+  1774                        ;		
+  1775                        ;		k_put_string(1,1,"X:   ",15,0);
+  1776                        ;		k_itoa(mx,convert,10);
+  1777                        ;		k_put_string(3,1,convert,15,0);
+  1778                        ;
+  1779                        ;		k_put_string(1,2,"Y:   ",15,0);
+  1780                        ;		k_itoa(my,convert,10);
+  1781                        ;		k_put_string(3,2,convert,15,0);
+  1782                        ;
+  1783                        ;		k_put_string(1,3,"B:   ",15,0);
+  1784                        ;		k_itoa(mb,convert,10);
+  1785                        ;		k_put_string(3,3,convert,15,0);
+  1786                        ;
+  1787                        ;		
+  1788                        ;		
+  1789                        ;		k_delay(1000);
+  1790                        ;	}
+  1791                        ;	//k_delay(9000);
+  1792                        ;
+  1793                        ;	k_put_string(1,26,"SWITCHING TO BITMAP MODE...",
+                    15,0);
+  1794                        ;	k_delay(5000);
+  1795                        ;	*/
+  1796                        ;	memset(convert,0,16);
+  1797                        	.line	913
+  1798                        ;	memset(pstr,0,32);
+  1799                        	.line	914
+  1800                        ;	
+  1801                        ;	pstr[0] = 'X';
+  1802                        	.line	916
+  1803                        ;	pstr[1] = '>';
+  1804                        	.line	917
+  1805                        ;	
+  1806                        ;	k_put_string(1,1,pstr,15,0);
+  1807                        	.line	919
+  1808                        ;	k_put_string(1,2,"Y:",15,0);
+  1809                        	.line	920
+  1810                        ;	k_put_string(1,3,"B:",15,0);
+  1811                        	.line	921
+  1812                        ;	k_put_string(1,4,"K:",15,0);
+  1813                        	.line	922
+  1814                        ;	k_put_string(1,5,"J:",15,0);
+  1815                        	.line	923
+  1816                        ;	
+  1817                        ;	k_put_string(1,6,"M:",15,0);
+  1818                        	.line	925
+  1819                        ;	
+  1820                        ;	mbState = 0;
+  1821                        	.line	927
+  1822                        ;	
+  1823                        ;	while(!bExit)
+  1824                        	.line	929
+  1825                        L10049:
+  1826                        ;	{
+  Wed Aug 14 2019 13:16                                                Page 38
+
+
+  1827                        	.line	930
+  1828                        ;		//for(pos=0;pos<30;pos++)
+  1829                        ;		//if(1)
+  1830                        ;		//{
+  1831                        ;			#asm
+  1832                        	.line	934
+  1833                        ;				WAI
+  1834                        ;			#endasm
+  1835                        	asmstart
+  1836 00:00CF: CB           				WAI
+  1837                        	asmend
+  1838                        ;
+  1839                        ;			k_put_char(3,4,FXOS_KEY_BYTE_0[0
+                    ],15,0);
+  1840                        	.line	938
+  1841                        ;			k_put_char(4,4,FXOS_KEY_BYTE_1[0
+                    ],15,0);
+  1842                        	.line	939
+  1843                        ;			k_put_char(5,4,FXOS_KEY_BYTE_2[0
+                    ],15,0);
+  1844                        	.line	940
+  1845                        ;			
+  1846                        ;			k_put_char(3,6,(FXOS_MOUSE_BYTE_
+                    0[0] & 0x07)+65,15,0);
+  1847                        	.line	942
+  1848                        ;			if((FXOS_MOUSE_BYTE_0[0] & 0x07)
+                     == 1)
+  1849                        	.line	943
+  1850                        ;			{
+  1851                        	.line	944
+  1852                        ;				k_put_char(4,6,FXOS_MOUS
+                    E_BYTE_X_L[0],15,0);
+  1853                        	.line	945
+  1854                        ;				k_put_char(5,6,FXOS_MOUS
+                    E_BYTE_Y_L[0],15,0);
+  1855                        	.line	946
+  1856                        ;				dummy2(pmx);
+  1857                        	.line	947
+  1858                        ;				
+  1859                        ;				
+  1860                        ;				k_put_char(3,1,*pmx,15,0
+                    );								
+  1861                        	.line	950
+  1862                        ;				
+  1863                        ;				//k_put_char(4,1,dummy3(
+                    &my),15,0);
+  1864                        ;				//k_put_char(5,1,dummy3(
+                    &my),15,0);
+  1865                        ;			}
+  1866                        	.line	954
+  1867                        ;			//k_put_char(3,5,JOYSTICK0[0],15
+                    ,0);
+  1868                        ;			//k_put_char(4,5,JOYSTICK1[0],15
+                    ,0);
+  1869                        ;
+  1870                        ;			mb = k_get_mouse_button(0);
+  1871                        L10051:
+  1872                        	.line	958
+  Wed Aug 14 2019 13:16                                                Page 39
+
+
+  1873                        ;			if(mb != 0 && mb!=mbState)
+  1874                        	.line	959
+  1875                        ;			{				
+  1876                        	.line	960
+  1877                        ;				mbState = mb;
+  1878                        	.line	961
+  1879                        ;				
+  1880                        ;				k_put_string(1,1,"X:    
+                     ",15,0);
+  1881                        	.line	963
+  1882                        ;				k_put_string(1,2,"Y:    
+                     ",15,0);
+  1883                        	.line	964
+  1884                        ;				k_put_string(1,3,"B:    
+                     ",15,0);
+  1885                        	.line	965
+  1886                        ;				
+  1887                        ;				if(mb == 2)
+  1888                        	.line	967
+  1889                        ;				{
+  1890                        	.line	968
+  1891                        ;					dummy();
+  1892                        	.line	969
+  1893                        ;					dummy2(&mx);
+  1894                        	.line	970
+  1895                        ;					
+  1896                        ;					k_put_char(3,1,m
+                    x,15,0);
+  1897                        	.line	972
+  1898                        ;					//mx = k_get_mou
+                    se_pos_X(0);
+  1899                        ;					//my = k_get_mou
+                    se_pos_Y(0);
+  1900                        ;				
+  1901                        ;					//memset(convert
+                    ,0,16);
+  1902                        ;					//k_put_string(1
+                    ,3,"B:   ",15,0);
+  1903                        ;					//k_itoa(mb,conv
+                    ert,10);
+  1904                        ;					//k_put_string(3
+                    ,3,convert,15,0);
+  1905                        ;
+  1906                        ;
+  1907                        ;					//memset(convert
+                    ,0,16);
+  1908                        ;					//k_put_string(1
+                    ,1,"X:   ",15,0);
+  1909                        ;					//k_itoa(mx,conv
+                    ert,10);
+  1910                        ;					//k_put_string(3
+                    ,1,convert,15,0);
+  1911                        ;
+  1912                        ;					//memset(convert
+                    ,0,16);
+  1913                        ;					//k_put_string(1
+                    ,2,"Y:   ",15,0);
+  1914                        ;					//k_itoa(my,conv
+  Wed Aug 14 2019 13:16                                                Page 40
+
+
+                    ert,10);
+  1915                        ;					//k_put_string(3
+                    ,2,convert,15,0);
+  1916                        ;				}
+  1917                        	.line	991
+  1918                        ;			}
+  1919                        L10053:
+  1920                        	.line	992
+  1921                        ;			
+  1922                        ;		//}
+  1923                        ;	}
+  1924                        L10052:
+  1925                        	.endblock	995
+  1926                        	.line	995
+  1927 00:00D0: 82 FC FF     	brl	L10049
+  1928                        L10050:
+  1929                        ;	
+  1930                        ;	
+  1931                        ;	VDMA_CONTROL_REG[0] = VDMA_CTRL_ENABLE;
+  1932                        	.line	998
+  1933                        ;
+  1934                        ;	*BM_START_ADDY_L = 0x00;
+  1935                        	.line	1000
+  1936                        ;	*BM_START_ADDY_M = 0x00;
+  1937                        	.line	1001
+  1938                        ;	*BM_START_ADDY_H = 0x00;
+  1939                        	.line	1002
+  1940                        ;	*((char far*)0xAF1F80) = 0x02;
+  1941                        	.line	1003
+  1942                        ;	
+  1943                        ;	*BM_X_SIZE_L = 0x80;
+  1944                        	.line	1005
+  1945                        ;	*BM_X_SIZE_H = 0x02;	
+  1946                        	.line	1006
+  1947                        ;	*BM_Y_SIZE_L = 0xE0;
+  1948                        	.line	1007
+  1949                        ;	*BM_Y_SIZE_H = 0x01;	
+  1950                        	.line	1008
+  1951                        ;	
+  1952                        ;	*FG_CHAR_LUT_PTR    = 0x00;
+  1953                        	.line	1010
+  1954                        ;	*BG_CHAR_LUT_PTR    = 0x00;
+  1955                        	.line	1011
+  1956                        ;	*BM_CONTROL_REG 	= 0x08;
+  1957                        	.line	1012
+  1958                        ;	*MASTER_CTRL_REG_L 	= 0x0C;
+  1959                        	.line	1013
+  1960                        ;
+  1961                        ;	k_set_border_color(0xAA,0xAA,0xAA);
+  1962                        	.line	1015
+  1963                        ;	
+  1964                        ;	setColors();
+  1965                        	.line	1017
+  1966                        ;	
+  1967                        ;	k_disable_border();
+  1968                        	.line	1019
+  1969                        ;
+  1970                        ;	k_vdma_fill_rect(0,0,639,479,bcolor);
+  Wed Aug 14 2019 13:16                                                Page 41
+
+
+  1971                        	.line	1021
+  1972                        ;	
+  1973                        ;	k_put_draw_text(1,45,"MOVE MOUSE, IT BOUNCES ACC
+                    ESSING VICKY....",15,bcolor);
+  1974                        	.line	1023
+  1975                        ;	
+  1976                        ;	while(!bExit)
+  1977                        	.line	1025
+  1978                        L10054:
+  1979                        ;	{
+  1980                        	.line	1026
+  1981                        ;		
+  1982                        ;		if(mx!=-1)
+  1983                        	.line	1028
+  1984                        ;		{
+  1985                        	.line	1029
+  1986                        ;			pos = 2;
+  1987                        	.line	1030
+  1988                        ;			pos=k_put_draw_text(pos,49,"X:",
+                    bcolor,bcolor);
+  1989                        	.line	1031
+  1990                        ;			k_itoa(mx,convert,10);
+  1991                        	.line	1032
+  1992                        ;			pos=k_put_draw_text(pos,49,conve
+                    rt,bcolor,bcolor);
+  1993                        	.line	1033
+  1994                        ;			
+  1995                        ;			pos = 2;
+  1996                        	.line	1035
+  1997                        ;			pos=k_put_draw_text(pos,50,"Y:",
+                    bcolor,bcolor);
+  1998                        	.line	1036
+  1999                        ;			k_itoa(my,convert,10);
+  2000                        	.line	1037
+  2001                        ;			pos=k_put_draw_text(pos,50,conve
+                    rt,bcolor,bcolor);
+  2002                        	.line	1038
+  2003                        ;			
+  2004                        ;			pos = 2;
+  2005                        	.line	1040
+  2006                        ;			pos=k_put_draw_text(pos,51,"LEFT
+                    :",bcolor,bcolor);
+  2007                        	.line	1041
+  2008                        ;			k_itoa((mb & 0x0001) == 0x0001,c
+                    onvert,10);
+  2009                        	.line	1042
+  2010                        ;			pos=k_put_draw_text(pos,51,conve
+                    rt,bcolor,bcolor);	
+  2011                        	.line	1043
+  2012                        ;			
+  2013                        ;			pos = 2;
+  2014                        	.line	1045
+  2015                        ;			pos=k_put_draw_text(pos,52,"MIDD
+                    LE:",bcolor,bcolor);
+  2016                        	.line	1046
+  2017                        ;			k_itoa((mb & 0x0004) == 0x0004,c
+                    onvert,10);
+  2018                        	.line	1047
+  Wed Aug 14 2019 13:16                                                Page 42
+
+
+  2019                        ;			pos=k_put_draw_text(pos,52,conve
+                    rt,bcolor,bcolor);
+  2020                        	.line	1048
+  2021                        ;			
+  2022                        ;			pos = 2;
+  2023                        	.line	1050
+  2024                        ;			pos=k_put_draw_text(pos,53,"RIGH
+                    T:",bcolor,bcolor);
+  2025                        	.line	1051
+  2026                        ;			k_itoa((mb & 0x0002) == 0x0002,c
+                    onvert,10);
+  2027                        	.line	1052
+  2028                        ;			pos=k_put_draw_text(pos,53,conve
+                    rt,bcolor,bcolor);
+  2029                        	.line	1053
+  2030                        ;		}
+  2031                        	.line	1054
+  2032                        ;		
+  2033                        ;		mx = 0;//k_get_mouse_pos_X();
+  2034                        L10056:
+  2035                        	.line	1056
+  2036                        ;		my = 0;//k_get_mouse_pos_Y();
+  2037                        	.line	1057
+  2038                        ;		mb = k_get_mouse_button(0);
+  2039                        	.line	1058
+  2040                        ;
+  2041                        ;		pos = 2;
+  2042                        	.line	1060
+  2043                        ;		pos=k_put_draw_text(pos,49,"X:",fcolor,0
+                    );
+  2044                        	.line	1061
+  2045                        ;		k_itoa(mx,convert,10);
+  2046                        	.line	1062
+  2047                        ;		pos=k_put_draw_text(pos,49,convert,fcolo
+                    r,0);
+  2048                        	.line	1063
+  2049                        ;		
+  2050                        ;		pos = 2;
+  2051                        	.line	1065
+  2052                        ;		pos=k_put_draw_text(pos,50,"Y:",fcolor,0
+                    );
+  2053                        	.line	1066
+  2054                        ;		k_itoa(my,convert,10);
+  2055                        	.line	1067
+  2056                        ;		pos=k_put_draw_text(pos,50,convert,fcolo
+                    r,0);
+  2057                        	.line	1068
+  2058                        ;		
+  2059                        ;		pos = 2;
+  2060                        	.line	1070
+  2061                        ;		pos=k_put_draw_text(pos,51,"LEFT:",fcolo
+                    r,0);
+  2062                        	.line	1071
+  2063                        ;		k_itoa((mb & 0x0001) == 0x0001,convert,1
+                    0);
+  2064                        	.line	1072
+  2065                        ;		pos=k_put_draw_text(pos,51,convert,fcolo
+                    r,0);	
+  Wed Aug 14 2019 13:16                                                Page 43
+
+
+  2066                        	.line	1073
+  2067                        ;		
+  2068                        ;		pos = 2;
+  2069                        	.line	1075
+  2070                        ;		pos=k_put_draw_text(pos,52,"MIDDLE:",fco
+                    lor,0);
+  2071                        	.line	1076
+  2072                        ;		k_itoa((mb & 0x0004) == 0x0004,convert,1
+                    0);
+  2073                        	.line	1077
+  2074                        ;		pos=k_put_draw_text(pos,52,convert,fcolo
+                    r,0);
+  2075                        	.line	1078
+  2076                        ;		
+  2077                        ;		pos = 2;
+  2078                        	.line	1080
+  2079                        ;		pos=k_put_draw_text(pos,53,"RIGHT:",fcol
+                    or,0);
+  2080                        	.line	1081
+  2081                        ;		k_itoa((mb & 0x0002) == 0x0002,convert,1
+                    0);
+  2082                        	.line	1082
+  2083                        ;		pos=k_put_draw_text(pos,53,convert,fcolo
+                    r,0);
+  2084                        	.line	1083
+  2085                        ;		
+  2086                        ;		#asm
+  2087                        	.line	1085
+  2088                        ;			WAI
+  2089                        ;		#endasm
+  2090                        	asmstart
+  2091 00:00D3: CB           			WAI
+  2092                        	asmend
+  2093                        ;		
+  2094                        ;	}
+  2095                        	.line	1089
+  2096 00:00D4: 82 FC FF     	brl	L10054
+  2097                        L10055:
+  2098                        ;	
+  2099                        ;	return;
+  2100                        	.line	1091
+  2101                        L41:
+  2102 00:00D7: 2B           	pld
+  2103 00:00D8: 3B           	tsc
+  2104 00:00D9: 18           	clc
+  2105 00:00DA: 69 2B 00     	adc	#L38
+  2106 00:00DD: 1B           	tcs
+  2107 00:00DE: 6B           	rtl
+  2108                        ;}
+  2109                        	.line	1092
+  2110                        	.endblock	1092
+  2111             0000002B   L38	equ	43
+  2112             00000001   L39	equ	1
+  2113                        	ends
+  2114                        	efunc
+  2115                        	.endfunc	1092,1,43
+  2116                        	.line	1092
+  2117                        	data
+  Wed Aug 14 2019 13:16                                                Page 44
+
+
+  2118                        L37:
+  2119 00:015C: 20 20 20 20  	db	$20,$20,$20,$20,$20,$20,$20,$20,$20,$20,
+                    $20,$20,$20,$20,$20
+       00:0160: 20 20 20 20 
+       00:0164: 20 20 20 20 
+       00:0168: 20 20 20 
+  2120 00:016B: 20 00 4D 4F  	db	$20,$00,$4D,$4F,$56,$45,$20,$4D,$4F,$55,
+                    $53,$45,$2E,$2E,$2E
+       00:016F: 56 45 20 4D 
+       00:0173: 4F 55 53 45 
+       00:0177: 2E 2E 2E 
+  2121 00:017A: 00 59 3A 00  	db	$00,$59,$3A,$00,$42,$3A,$00,$4B,$3A,$00,
+                    $4A,$3A,$00,$4D,$3A
+       00:017E: 42 3A 00 4B 
+       00:0182: 3A 00 4A 3A 
+       00:0186: 00 4D 3A 
+  2122 00:0189: 00 58 3A 20  	db	$00,$58,$3A,$20,$20,$20,$20,$20,$00,$59,
+                    $3A,$20,$20,$20,$20
+       00:018D: 20 20 20 20 
+       00:0191: 00 59 3A 20 
+       00:0195: 20 20 20 
+  2123 00:0198: 20 00 42 3A  	db	$20,$00,$42,$3A,$20,$20,$20,$20,$20,$00,
+                    $4D,$4F,$56,$45,$20
+       00:019C: 20 20 20 20 
+       00:01A0: 20 00 4D 4F 
+       00:01A4: 56 45 20 
+  2124 00:01A7: 4D 4F 55 53  	db	$4D,$4F,$55,$53,$45,$2C,$20,$49,$54,$20,
+                    $42,$4F,$55,$4E,$43
+       00:01AB: 45 2C 20 49 
+       00:01AF: 54 20 42 4F 
+       00:01B3: 55 4E 43 
+  2125 00:01B6: 45 53 20 41  	db	$45,$53,$20,$41,$43,$43,$45,$53,$53,$49,
+                    $4E,$47,$20,$56,$49
+       00:01BA: 43 43 45 53 
+       00:01BE: 53 49 4E 47 
+       00:01C2: 20 56 49 
+  2126 00:01C5: 43 4B 59 2E  	db	$43,$4B,$59,$2E,$2E,$2E,$2E,$00,$58,$3A,
+                    $00,$59,$3A,$00,$4C
+       00:01C9: 2E 2E 2E 00 
+       00:01CD: 58 3A 00 59 
+       00:01D1: 3A 00 4C 
+  2127 00:01D4: 45 46 54 3A  	db	$45,$46,$54,$3A,$00,$4D,$49,$44,$44,$4C,
+                    $45,$3A,$00,$52,$49
+       00:01D8: 00 4D 49 44 
+       00:01DC: 44 4C 45 3A 
+       00:01E0: 00 52 49 
+  2128 00:01E3: 47 48 54 3A  	db	$47,$48,$54,$3A,$00,$58,$3A,$00,$59,$3A,
+                    $00,$4C,$45,$46,$54
+       00:01E7: 00 58 3A 00 
+       00:01EB: 59 3A 00 4C 
+       00:01EF: 45 46 54 
+  2129 00:01F2: 3A 00 4D 49  	db	$3A,$00,$4D,$49,$44,$44,$4C,$45,$3A,$00,
+                    $52,$49,$47,$48,$54
+       00:01F6: 44 44 4C 45 
+       00:01FA: 3A 00 52 49 
+       00:01FE: 47 48 54 
+  2130 00:0201: 3A 00        	db	$3A,$00
+  2131 00:0203:              	ends
+  Wed Aug 14 2019 13:16                                                Page 45
+
+
+  2132                        ;
+  2133                        ;
+  2134                        ;void k_drawPixel(char fcolor,char fcolor2,char fc
+                    olor3)
+  2135                        ;{
+  2136                        	.line	1095
+  2137                        	.line	1096
+  2138                        	code
+  2139                        	xdef	~~k_drawPixel
+  2140                        	func
+  2141                        	.function	1096
+  2142                        ~~k_drawPixel:
+  2143                        	longa	on
+  2144                        	longi	on
+  2145 00:00DF: 3B           	tsc
+  2146 00:00E0: 38           	sec
+  2147 00:00E1: E9 0D 00     	sbc	#L43
+  2148 00:00E4: 1B           	tcs
+  2149 00:00E5: 0B           	phd
+  2150 00:00E6: 5B           	tcd
+  2151             00000004   fcolor_0	set	4
+  2152             00000006   fcolor2_0	set	6
+  2153             00000008   fcolor3_0	set	8
+  2154                        	.block	1096
+  2155                        ;	long vbuffer = 0xB00000;
+  2156                        ;	long ki = 0;
+  2157                        ;	long tt = 0;
+  2158                        ;	char mask = 0x00;
+  2159                        ;	/*
+  2160                        ;	unsigned int pos = 0;
+  2161                        ;	
+  2162                        ;	pos = ((640L * ploty) + plotx);
+  2163                        ;	buffer[pos] = 0x01;
+  2164                        ;	return;
+  2165                        ;	*/
+  2166                        ;
+  2167                        ;}
+  2168             00000000   vbuffer_1	set	0
+  2169             00000004   ki_1	set	4
+  2170             00000008   tt_1	set	8
+  2171             0000000C   mask_1	set	12
+  2172                        	.sym	vbuffer,0,7,1,32
+  2173                        	.sym	ki,4,7,1,32
+  2174                        	.sym	tt,8,7,1,32
+  2175                        	.sym	mask,12,14,1,8
+  2176                        	.sym	fcolor,4,14,6,8
+  2177                        	.sym	fcolor2,6,14,6,8
+  2178                        	.sym	fcolor3,8,14,6,8
+  2179                        	.line	1109
+  2180                        L46:
+  2181 00:00E7: A5 0F        	lda	<L43+2
+  2182 00:00E9: 85 15        	sta	<L43+2+6
+  2183 00:00EB: A5 0E        	lda	<L43+1
+  2184 00:00ED: 85 14        	sta	<L43+1+6
+  2185 00:00EF: 2B           	pld
+  2186 00:00F0: 3B           	tsc
+  2187 00:00F1: 18           	clc
+  2188 00:00F2: 69 13 00     	adc	#L43+6
+  Wed Aug 14 2019 13:16                                                Page 46
+
+
+  2189 00:00F5: 1B           	tcs
+  2190 00:00F6: 6B           	rtl
+  2191                        	.endblock	1109
+  2192             0000000D   L43	equ	13
+  2193             00000001   L44	equ	1
+  2194                        	ends
+  2195                        	efunc
+  2196                        	.endfunc	1109,1,13
+  2197                        	.line	1109
+  2198                        ;
+  2199                        ;
+  2200                        ;
+  2201                        ;void k_delay(int millisecs)
+  2202                        ;{
+  2203                        	.line	1113
+  2204                        	.line	1114
+  2205                        	code
+  2206                        	xdef	~~k_delay
+  2207                        	func
+  2208                        	.function	1114
+  2209                        ~~k_delay:
+  2210                        	longa	on
+  2211                        	longi	on
+  2212 00:00F7: 3B           	tsc
+  2213 00:00F8: 38           	sec
+  2214 00:00F9: E9 04 00     	sbc	#L47
+  2215 00:00FC: 1B           	tcs
+  2216 00:00FD: 0B           	phd
+  2217 00:00FE: 5B           	tcd
+  2218             00000004   millisecs_0	set	4
+  2219                        	.block	1114
+  2220                        ;	int y = 0;
+  2221                        ;	int i = 0;
+  2222                        ;	
+  2223                        ;	for(y=0;y<millisecs;y++)
+  2224             00000000   y_1	set	0
+  2225             00000002   i_1	set	2
+  2226                        	.sym	y,0,5,1,16
+  2227                        	.sym	i,2,5,1,16
+  2228                        	.sym	millisecs,4,5,6,16
+  2229                        	.line	1118
+  2230 00:00FF: 82 01 00     	brl	L10060
+  2231                        L10059:
+  2232                        ;	{
+  2233                        	.line	1119
+  2234                        ;		for(i=0;i<0xFF;i++)
+  2235                        	.line	1120
+  2236                        L10063:
+  2237                        ;		{
+  2238                        	.line	1121
+  2239                        ;			#asm
+  2240                        	.line	1122
+  2241                        ;				NOP
+  2242                        ;			#endasm
+  2243                        	asmstart
+  2244 00:0102: EA           				NOP
+  2245                        	asmend
+  2246                        ;		}
+  Wed Aug 14 2019 13:16                                                Page 47
+
+
+  2247                        	.line	1125
+  2248                        L10061:
+  2249                        L10062:
+  2250                        ;	}
+  2251                        	.line	1126
+  2252                        L10057:
+  2253                        L10060:
+  2254                        L10058:
+  2255                        ;}
+  2256                        	.line	1127
+  2257                        L50:
+  2258 00:0103: A5 06        	lda	<L47+2
+  2259 00:0105: 85 08        	sta	<L47+2+2
+  2260 00:0107: A5 05        	lda	<L47+1
+  2261 00:0109: 85 07        	sta	<L47+1+2
+  2262 00:010B: 2B           	pld
+  2263 00:010C: 3B           	tsc
+  2264 00:010D: 18           	clc
+  2265 00:010E: 69 06 00     	adc	#L47+2
+  2266 00:0111: 1B           	tcs
+  2267 00:0112: 6B           	rtl
+  2268                        	.endblock	1127
+  2269             00000004   L47	equ	4
+  2270             00000001   L48	equ	1
+  2271                        	ends
+  2272                        	efunc
+  2273                        	.endfunc	1127,1,4
+  2274                        	.line	1127
+  2275                        ;
+  2276                        ;void k_set_foreground_palette(char paletteId)
+  2277                        ;{
+  2278                        	.line	1129
+  2279                        	.line	1130
+  2280                        	code
+  2281                        	xdef	~~k_set_foreground_palette
+  2282                        	func
+  2283                        	.function	1130
+  2284                        ~~k_set_foreground_palette:
+  2285                        	longa	on
+  2286                        	longi	on
+  2287 00:0113: 3B           	tsc
+  2288 00:0114: 38           	sec
+  2289 00:0115: E9 00 00     	sbc	#L51
+  2290 00:0118: 1B           	tcs
+  2291 00:0119: 0B           	phd
+  2292 00:011A: 5B           	tcd
+  2293             00000004   paletteId_0	set	4
+  2294                        	.block	1130
+  2295                        ;	FG_CHAR_LUT_PTR[0] = paletteId;
+  2296                        	.sym	paletteId,4,14,6,8
+  2297                        	.line	1131
+  2298                        ;}
+  2299                        	.line	1132
+  2300                        L54:
+  2301 00:011B: A5 02        	lda	<L51+2
+  2302 00:011D: 85 04        	sta	<L51+2+2
+  2303 00:011F: A5 01        	lda	<L51+1
+  2304 00:0121: 85 03        	sta	<L51+1+2
+  Wed Aug 14 2019 13:16                                                Page 48
+
+
+  2305 00:0123: 2B           	pld
+  2306 00:0124: 3B           	tsc
+  2307 00:0125: 18           	clc
+  2308 00:0126: 69 02 00     	adc	#L51+2
+  2309 00:0129: 1B           	tcs
+  2310 00:012A: 6B           	rtl
+  2311                        	.endblock	1132
+  2312             00000000   L51	equ	0
+  2313             00000001   L52	equ	1
+  2314                        	ends
+  2315                        	efunc
+  2316                        	.endfunc	1132,1,0
+  2317                        	.line	1132
+  2318                        ;
+  2319                        ;void k_set_text_gamma(char c)
+  2320                        ;{
+  2321                        	.line	1134
+  2322                        	.line	1135
+  2323                        	code
+  2324                        	xdef	~~k_set_text_gamma
+  2325                        	func
+  2326                        	.function	1135
+  2327                        ~~k_set_text_gamma:
+  2328                        	longa	on
+  2329                        	longi	on
+  2330 00:012B: 3B           	tsc
+  2331 00:012C: 38           	sec
+  2332 00:012D: E9 00 00     	sbc	#L55
+  2333 00:0130: 1B           	tcs
+  2334 00:0131: 0B           	phd
+  2335 00:0132: 5B           	tcd
+  2336             00000004   c_0	set	4
+  2337                        	.block	1135
+  2338                        ;	GAMMA_B_LUT_PTR[0] = c;
+  2339                        	.sym	c,4,14,6,8
+  2340                        	.line	1136
+  2341                        ;	GAMMA_G_LUT_PTR[0] = c;
+  2342                        	.line	1137
+  2343                        ;	GAMMA_R_LUT_PTR[0] = c;
+  2344                        	.line	1138
+  2345                        ;}
+  2346                        	.line	1139
+  2347                        L58:
+  2348 00:0133: A5 02        	lda	<L55+2
+  2349 00:0135: 85 04        	sta	<L55+2+2
+  2350 00:0137: A5 01        	lda	<L55+1
+  2351 00:0139: 85 03        	sta	<L55+1+2
+  2352 00:013B: 2B           	pld
+  2353 00:013C: 3B           	tsc
+  2354 00:013D: 18           	clc
+  2355 00:013E: 69 02 00     	adc	#L55+2
+  2356 00:0141: 1B           	tcs
+  2357 00:0142: 6B           	rtl
+  2358                        	.endblock	1139
+  2359             00000000   L55	equ	0
+  2360             00000001   L56	equ	1
+  2361                        	ends
+  2362                        	efunc
+  Wed Aug 14 2019 13:16                                                Page 49
+
+
+  2363                        	.endfunc	1139,1,0
+  2364                        	.line	1139
+  2365                        ;
+  2366                        ;void k_set_text_color(char c)
+  2367                        ;{
+  2368                        	.line	1141
+  2369                        	.line	1142
+  2370                        	code
+  2371                        	xdef	~~k_set_text_color
+  2372                        	func
+  2373                        	.function	1142
+  2374                        ~~k_set_text_color:
+  2375                        	longa	on
+  2376                        	longi	on
+  2377 00:0143: 3B           	tsc
+  2378 00:0144: 38           	sec
+  2379 00:0145: E9 00 00     	sbc	#L59
+  2380 00:0148: 1B           	tcs
+  2381 00:0149: 0B           	phd
+  2382 00:014A: 5B           	tcd
+  2383             00000004   c_0	set	4
+  2384                        	.block	1142
+  2385                        ;	CURCOLOR_L[0] = c;
+  2386                        	.sym	c,4,14,6,8
+  2387                        	.line	1143
+  2388                        ;	CURCOLOR_H[0] = c;
+  2389                        	.line	1144
+  2390                        ;}
+  2391                        	.line	1145
+  2392                        L62:
+  2393 00:014B: A5 02        	lda	<L59+2
+  2394 00:014D: 85 04        	sta	<L59+2+2
+  2395 00:014F: A5 01        	lda	<L59+1
+  2396 00:0151: 85 03        	sta	<L59+1+2
+  2397 00:0153: 2B           	pld
+  2398 00:0154: 3B           	tsc
+  2399 00:0155: 18           	clc
+  2400 00:0156: 69 02 00     	adc	#L59+2
+  2401 00:0159: 1B           	tcs
+  2402 00:015A: 6B           	rtl
+  2403                        	.endblock	1145
+  2404             00000000   L59	equ	0
+  2405             00000001   L60	equ	1
+  2406                        	ends
+  2407                        	efunc
+  2408                        	.endfunc	1145,1,0
+  2409                        	.line	1145
+  2410                        ;
+  2411                        ;/*
+  2412                        ;=$af0706				MOUSE_PTR_BYTE0 
+                            = $AF0706 ; Byte 0 of Mouse Packet (you must write 3
+                     Bytes)
+  2413                        ;=$af0707				MOUSE_PTR_BYTE1 
+                            = $AF0707 ; Byte 1 of Mouse Packet (if you don't, th
+                    en )
+  2414                        ;=$af0708				MOUSE_PTR_BYTE2 
+                            = $AF0708 ; Byte 2 of Mouse Packet (state Machine wi
+                    ll be jammed in 1 state)
+  Wed Aug 14 2019 13:16                                                Page 50
+
+
+  2415                        ;*/
+  2416                        ;/*
+  2417                        ;void k_key_handler(void)
+  2418                        ;{
+  2419                        ;	g_key_index++;
+  2420                        ;	return;
+  2421                        ;}
+  2422                        ;
+  2423                        ;int k_get_key_handler(void)
+  2424                        ;{
+  2425                        ;	return g_key_index;
+  2426                        ;}
+  2427                        ;
+  2428                        ;
+  2429                        ;char k_get_key_buffer(char position)
+  2430                        ;{
+  2431                        ;	char charcode = (char)0x00;
+  2432                        ;	
+  2433                        ;	charcode = KEY_BUFFER[position]; 
+  2434                        ;
+  2435                        ;	return charcode;
+  2436                        ;}
+  2437                        ;*/
+  2438                        ;int k_get_mouse_button(int ctx)
+  2439                        ;{
+  2440                        	.line	1174
+  2441                        	.line	1175
+  2442                        	code
+  2443                        	xdef	~~k_get_mouse_button
+  2444                        	func
+  2445                        	.function	1175
+  2446                        ~~k_get_mouse_button:
+  2447                        	longa	on
+  2448                        	longi	on
+  2449 00:015B: 3B           	tsc
+  2450 00:015C: 38           	sec
+2451: ***ERROR - Undefined symbol - <L63>
+
+  2451 00:015D: E9 xx xx     	sbc	#L63
+  2452 00:0160: 1B           	tcs
+  2453 00:0161: 0B           	phd
+  2454 00:0162: 5B           	tcd
+  2455             00000004   ctx_0	set	4
+  2456                        	.block	1175
+  2457                        ;	char pos = 0;
+  2458                        ;	//pos = MAKEWORD(((char far)MOUSE_PTR_BYTE0[0]) 
+                    & 0x07,0x00); 
+  2459                        ;	pos = ( (*FXOS_MOUSE_BYTE_0) & 0x07); 
+  2460             00000000   pos_1	set	0
+  2461                        	.sym	pos,0,14,1,8
+  2462                        	.sym	ctx,4,5,6,16
+  2463                        	.line	1178
+
+
+      Lines assembled: 2463
+      Errors: 1

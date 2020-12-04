@@ -3,10 +3,10 @@ R0	equ	1
 R1	equ	5
 R2	equ	9
 R3	equ	13
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.c",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.c",0
 ;
 ;#include "fxstring.h"
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",0
 	.file	"G:\devtools\WDCTools\wdc\Tools\include\stdlib.h",0
 	.file	"G:\devtools\WDCTools\wdc\Tools\include\stddef.h",0
 	.line	88
@@ -24,11 +24,11 @@ R3	equ	13
 	.member	frac,16,16,8,16
 	.eos
 	.line	205
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",5
 	.file	"G:\devtools\WDCTools\wdc\Tools\include\string.h",0
 	.line	134
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.h",6
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxtypes.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
 	.stag	_fx_bytebits,8,4
 	.member	b7,0,14,17,1
 	.member	b6,1,14,17,1
@@ -158,7 +158,7 @@ R3	equ	13
 	.member	fontNodes,328,129,8,32
 	.member	wndProc,360,138,8,32,6
 	.eos
-	.stag	_fx_process,768,20
+	.stag	_fx_process,800,20
 	.member	cbSize,0,5,8,16
 	.member	procId,16,18,8,32
 	.member	parentId,48,18,8,32
@@ -179,6 +179,7 @@ R3	equ	13
 	.member	consoleCtl,672,138,8,32,18
 	.member	desktopCtl,704,138,8,32,19
 	.member	execProc,736,641,8,32
+	.member	startupArgs,768,129,8,32
 	.eos
 	.stag	_fxProcessMessage,112,21
 	.member	src,0,18,8,32
@@ -215,7 +216,26 @@ R3	equ	13
 	.member	lpszMenuName,192,142,8,32
 	.member	lpszClassName,224,142,8,32
 	.eos
-	.stag	_k_WindowStruct,1328,27
+	.stag	_ClickableRect,88,27
+	.member	area,0,10,8,64,25
+	.member	z,64,5,8,16
+	.member	enabled,80,14,8,8
+	.eos
+	.stag	_NCClickableRect,88,28
+	.member	area,0,10,8,64,25
+	.member	msgType,64,16,8,16
+	.member	enabled,80,14,8,8
+	.eos
+	.stag	_DragData,136,29
+	.member	area,0,10,8,64,25
+	.member	xoffset,64,5,8,16
+	.member	yoffset,80,5,8,16
+	.member	msgType,96,16,8,16
+	.member	isDrag,112,14,8,8
+	.member	canDrag,120,14,8,8
+	.member	canDrop,128,14,8,8
+	.eos
+	.stag	_k_WindowStruct,2808,30
 	.member	cbSize,0,16,8,16
 	.member	style,16,18,8,32
 	.member	win_id,48,5,8,16
@@ -225,24 +245,26 @@ R3	equ	13
 	.member	win_height,112,5,8,16
 	.member	wndRect,128,10,8,64,25
 	.member	clientRect,192,10,8,64,25
-	.member	clickable,256,129,8,32
-	.member	win_title,288,110,8,0,32
-	.member	Reserved0,544,16,8,16
-	.member	win_class,560,110,8,0,16
-	.member	win_class_name,688,110,8,0,32
-	.member	Reserved2,944,16,8,16
-	.member	procid,960,18,8,32
-	.member	pWndClass,992,138,8,32,26
-	.member	pParentWindow,1024,129,8,32
-	.member	hMenu,1056,129,8,32
-	.member	pChildWindows,1088,138,8,32,6
-	.member	pChildHitList,1120,138,8,32,6
-	.member	isVisible,1152,14,8,8
-	.member	windowData,1160,129,8,32
-	.member	clientData,1192,1121,8,32,4
-	.member	isClosed,1320,14,8,8
+	.member	nonclientGadgets,256,106,8,0,28,16
+	.member	clickable,1664,129,8,32
+	.member	win_title,1696,110,8,0,32
+	.member	Reserved0,1952,16,8,16
+	.member	win_class,1968,110,8,0,16
+	.member	win_class_name,2096,110,8,0,32
+	.member	nBitmapLayer,2352,16,8,16
+	.member	procid,2368,18,8,32
+	.member	pWndClass,2400,138,8,32,26
+	.member	pParentWindow,2432,129,8,32
+	.member	hMenu,2464,129,8,32
+	.member	pChildWindows,2496,138,8,32,6
+	.member	pChildHitList,2528,138,8,32,6
+	.member	isVisible,2560,14,8,8
+	.member	windowData,2568,129,8,32
+	.member	clientData,2600,1121,8,32,6
+	.member	isClosed,2792,14,8,8
+	.member	isClosing,2800,14,8,8
 	.eos
-	.stag	_k_WindowStructEx,1296,28
+	.stag	_k_WindowStructEx,2704,31
 	.member	cbSize,0,16,8,16
 	.member	style,16,18,8,32
 	.member	win_id,48,5,8,16
@@ -252,31 +274,32 @@ R3	equ	13
 	.member	win_height,112,5,8,16
 	.member	wndRect,128,10,8,64,25
 	.member	clientRect,192,10,8,64,25
-	.member	clickable,256,129,8,32
-	.member	win_title,288,110,8,0,32
-	.member	Reserved0,544,16,8,16
-	.member	win_class,560,110,8,0,16
-	.member	Reserved2,688,16,8,16
-	.member	procid,704,18,8,32
-	.member	pWndClass,736,138,8,32,26
-	.member	pParentWindow,768,129,8,32
-	.member	hMenu,800,129,8,32
-	.member	pChildWindows,832,138,8,32,6
-	.member	pChildHitList,864,138,8,32,6
-	.member	isVisible,896,14,8,8
-	.member	windowData,904,129,8,32
-	.member	clientData,936,1121,8,32,4
-	.member	isClosed,1064,14,8,8
-	.member	hWnd,1072,129,8,32
-	.member	localRect,1104,10,8,64,25
-	.member	globalRect,1168,10,8,64,25
-	.member	clientOffsetRect,1232,10,8,64,25
+	.member	nonclientGadgets,256,106,8,0,28,16
+	.member	clickable,1664,129,8,32
+	.member	win_title,1696,110,8,0,32
+	.member	Reserved0,1952,16,8,16
+	.member	win_class,1968,110,8,0,16
+	.member	nBitmapLayer,2096,16,8,16
+	.member	procid,2112,18,8,32
+	.member	pWndClass,2144,138,8,32,26
+	.member	pParentWindow,2176,129,8,32
+	.member	hMenu,2208,129,8,32
+	.member	pChildWindows,2240,138,8,32,6
+	.member	pChildHitList,2272,138,8,32,6
+	.member	isVisible,2304,14,8,8
+	.member	windowData,2312,129,8,32
+	.member	clientData,2344,1121,8,32,4
+	.member	isClosed,2472,14,8,8
+	.member	hWnd,2480,129,8,32
+	.member	localRect,2512,10,8,64,25
+	.member	globalRect,2576,10,8,64,25
+	.member	clientOffsetRect,2640,10,8,64,25
 	.eos
-	.stag	_FontMetric,32,29
+	.stag	_FontMetric,32,32
 	.member	width,0,5,8,16
 	.member	height,16,5,8,16
 	.eos
-	.stag	_ctl_Textbox,112,30
+	.stag	_ctl_Textbox,112,33
 	.member	win_id,0,5,8,16
 	.member	win_x,16,5,8,16
 	.member	win_y,32,5,8,16
@@ -284,12 +307,7 @@ R3	equ	13
 	.member	win_height,64,5,8,16
 	.member	content,80,1166,8,32
 	.eos
-	.stag	_ClickableRect,88,31
-	.member	area,0,10,8,64,25
-	.member	z,64,5,8,16
-	.member	enabled,80,14,8,8
-	.eos
-	.stag	_MenuStruct,248,32
+	.stag	_MenuStruct,248,34
 	.member	cx,0,5,8,16
 	.member	cy,16,5,8,16
 	.member	width,32,5,8,16
@@ -305,25 +323,26 @@ R3	equ	13
 	.member	pBackground,184,129,8,32
 	.member	hWndOwner,216,129,8,32
 	.eos
-	.stag	fake33_,112,33
+	.stag	fake35_,112,35
 	.member	menuId,0,16,8,16
 	.member	caption,16,142,8,32
 	.member	rect,48,10,8,64,25
 	.eos
-	.stag	fake34_,3376,34
-	.member	pParent,0,138,8,32,27
+	.stag	fake36_,3568,36
+	.member	pParent,0,138,8,32,30
 	.member	rect,32,10,8,64,25
 	.member	captions,96,1134,8,32,24
-	.member	ids,864,112,8,0,24
-	.member	clickable,1248,106,8,0,31,24
-	.member	selected,3360,16,8,16
+	.member	chrome,864,110,8,0,24
+	.member	ids,1056,112,8,0,24
+	.member	clickable,1440,106,8,0,27,24
+	.member	selected,3552,16,8,16
 	.eos
-	.stag	_fx_button_t,80,35
+	.stag	_fx_button_t,80,37
 	.member	pCaption,0,142,8,32
 	.member	data,32,129,8,32
 	.member	captionPixelWidth,64,16,8,16
 	.eos
-	.stag	_fx_scrollbar_t,192,36
+	.stag	_fx_scrollbar_t,192,38
 	.member	min,0,16,8,16
 	.member	max,16,16,8,16
 	.member	increment,32,16,8,16
@@ -333,7 +352,7 @@ R3	equ	13
 	.member	rectThumb,96,10,8,64,25
 	.member	data,160,129,8,32
 	.eos
-	.stag	_fx_listbox_t,240,37
+	.stag	_fx_listbox_t,240,39
 	.member	pos,0,5,8,16
 	.member	selected,16,16,8,16
 	.member	offsetX,32,5,8,16
@@ -348,7 +367,7 @@ R3	equ	13
 	.member	fontSet,176,142,8,32
 	.member	data,208,129,8,32
 	.eos
-	.stag	_fx_textbox_t,144,38
+	.stag	_fx_textbox_t,144,40
 	.member	pos,0,5,8,16
 	.member	selected,16,16,8,16
 	.member	offsetX,32,5,8,16
@@ -358,40 +377,317 @@ R3	equ	13
 	.member	fontSet,80,142,8,32
 	.member	data,112,129,8,32
 	.eos
-	.stag	_fx_menuAnchor_t,144,39
+	.stag	_fx_menuAnchor_t,144,41
 	.member	pCaption,0,142,8,32
 	.member	renderLayoutX,32,16,8,16
 	.member	renderLayoutY,48,16,8,16
 	.member	captionPixelWidth,64,16,8,16
 	.member	data,80,129,8,32
-	.member	droppedWindow,112,138,8,32,27
+	.member	droppedWindow,112,138,8,32,30
 	.eos
-	.stag	_SubMenuStruct,64,40
+	.stag	_SubMenuStruct,64,42
 	.member	caption,0,142,8,32
 	.member	action,32,641,8,32
 	.eos
-	.stag	_SubMenuListStruct,40,41
+	.stag	_SubMenuListStruct,40,43
 	.member	cMenus,0,14,8,8
-	.member	psubmenus,8,9354,8,32,40
+	.member	psubmenus,8,9354,8,32,42
 	.eos
-	.stag	_fx_ComBuffer,2080,42
+	.stag	_fx_ComBuffer,2080,44
 	.member	cbSize,0,16,8,16
 	.member	cbBuffer,16,16,8,16
 	.member	buffer,32,110,8,0,256
 	.eos
-	.line	669
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.h",7
-	.stag	_fx_string,64,43
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",7
+	.stag	_fx_string,64,45
 	.member	size,0,16,8,16
 	.member	pos,16,5,8,16
 	.member	buffer,32,142,8,32
 	.eos
-	.line	69
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.c",2
+	.line	71
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.c",2
+;#include "fxmemorymanager.h"
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxmemorymanager.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",0
+	.file	"G:\devtools\WDCTools\wdc\Tools\include\stdlib.h",0
+	.line	205
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",4
+	.file	"G:\devtools\WDCTools\wdc\Tools\include\string.h",0
+	.line	134
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",5
+	.file	"G:\devtools\WDCTools\wdc\Tools\include\ctype.h",0
+	.line	103
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",8
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstringtable.h",0
+	.line	89
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",9
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxc256fmx.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxc256fmx.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fmx_vicky.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fmx_vicky.h",11
+	.line	72
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxc256fmx.h",6
+	.line	1325
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",13
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxkernel.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",0
+	.line	25
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxkernel.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxnode.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxnode.h",5
+	.line	61
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxkernel.h",6
+	.stag	_fx_zero_page,448,46
+	.member	fxos_mouse_byte_0,0,14,8,8
+	.member	fxos_mouse_byte_1,8,14,8,8
+	.member	fxos_mouse_byte_2,16,14,8,8
+	.member	fxos_mouse_byte_t,24,14,8,8
+	.member	fxos_mouse_byte_x_l,32,14,8,8
+	.member	fxos_mouse_byte_x_h,40,14,8,8
+	.member	fxos_mouse_byte_y_l,48,14,8,8
+	.member	fxos_mouse_byte_y_h,56,14,8,8
+	.member	fxos_key_byte_0,64,14,8,8
+	.member	fxos_key_byte_1,72,14,8,8
+	.member	fxos_key_byte_2,80,14,8,8
+	.member	fxos_mouse_ctl,88,14,8,8
+	.member	fxos_mouse_index,96,14,8,8
+	.member	fxos_mouse_status,104,14,8,8
+	.member	VersionMajor,112,16,8,16
+	.member	VersionMinor,128,16,8,16
+	.member	VersionRelease,144,16,8,16
+	.member	topMemory,160,18,8,32
+	.member	bottomMemory,192,18,8,32
+	.member	availableMemory,224,18,8,32
+	.member	availableMemoryK,256,18,8,32
+	.member	availableHeapMemory,288,18,8,32
+	.member	availableHeapMemoryK,320,18,8,32
+	.member	kernelFunctionCallId,352,16,8,16
+	.member	kernelFunctionCallBank,368,14,8,8
+	.member	kernelFunctionCallReserved,376,14,8,8
+	.member	kernelFunctionCallParameter,384,129,8,32
+	.member	kernelFunctionCallReturn,416,129,8,32
+	.eos
+	.stag	_fx_environment,96,47
+	.member	variables,0,142,8,32
+	.member	reserved1,32,5,8,16
+	.member	reserved2,48,5,8,16
+	.member	reserved3,64,5,8,16
+	.member	reserved4,80,5,8,16
+	.eos
+	.stag	_debug_byte_bits,8,48
+	.member	bit7,0,14,17,1
+	.member	bit6,1,14,17,1
+	.member	bit5,2,14,17,1
+	.member	bit4,3,14,17,1
+	.member	bit3,4,14,17,1
+	.member	bit2,5,14,17,1
+	.member	bit1,6,14,17,1
+	.member	bit0,7,14,17,1
+	.eos
+	.stag	_fx_device_driver,1416,49
+	.member	name,0,110,8,0,64
+	.member	version,512,110,8,0,64
+	.member	hmajor,1024,110,8,0,16
+	.member	hminor,1152,110,8,0,16
+	.member	type,1280,14,8,8
+	.member	f_driver_load,1288,129,8,32
+	.member	f_driver_read,1320,129,8,32
+	.member	f_driver_write,1352,129,8,32
+	.member	f_driver_unload,1384,129,8,32
+	.eos
+	.stag	_fx_block_device_driver,1448,50
+	.member	name,0,110,8,0,64
+	.member	version,512,110,8,0,64
+	.member	hmajor,1024,110,8,0,16
+	.member	hminor,1152,110,8,0,16
+	.member	type,1280,14,8,8
+	.member	f_driver_load,1288,129,8,32
+	.member	f_driver_read,1320,129,8,32
+	.member	f_driver_write,1352,129,8,32
+	.member	f_driver_unload,1384,129,8,32
+	.member	f_driver_command,1416,129,8,32
+	.eos
+	.line	270
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",19
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",0
+	.file	"G:\devtools\WDCTools\wdc\Tools\include\string.h",0
+	.line	134
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",5
+	.file	"G:\devtools\WDCTools\wdc\Tools\include\stdlib.h",0
+	.line	205
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",7
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxc256fmx.h",0
+	.line	1325
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",10
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",0
+	.line	71
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",15
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",0
+	.line	25
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxexec.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxexec.h",5
+	.line	52
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxnode.h",0
+	.line	61
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",7
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",0
+	.line	171
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",8
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",0
+	.line	25
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxmemorymanager.h",0
+	.line	39
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",7
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",0
+	.line	743
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",8
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxgui.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxfont.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxfont.h",6
+	.line	64
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxgui.h",4
+	.stag	_click_detected,64,51
+	.member	window,0,138,8,32,30
+	.member	handler,32,641,8,32
+	.eos
+	.stag	_current_palette_map,400,52
+	.member	CUR_DESKTOP,0,5,8,16
+	.member	CUR_BACKGROUND,16,5,8,16
+	.member	CUR_FONT,32,5,8,16
+	.member	CUR_SELECTED_FONT,48,5,8,16
+	.member	CUR_HIGHLIGHT_COLOR,64,5,8,16
+	.member	CUR_WINDOWFRAME,80,5,8,16
+	.member	CUR_WINDOWBORDER,96,5,8,16
+	.member	CUR_WINDOWSHADOW,112,5,8,16
+	.member	CUR_MENU,128,5,8,16
+	.member	CUR_GADGET,144,5,8,16
+	.member	CUR_COLOR,160,101,8,0,15
+	.eos
+	.line	264
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxwindowmanager.h",9
+	.stag	_childMessage_t,64,53
+	.member	msgType,0,16,8,16
+	.member	msgData,16,129,8,32
+	.member	dataSize,48,16,8,16
+	.eos
+	.line	362
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxeventmanager.h",9
+	.stag	_fx_main_loopvars,16,54
+	.member	dummy,0,5,8,16
+	.eos
+	.stag	_fxMouseMessageData,64,55
+	.member	button1,0,14,8,8
+	.member	button2,8,14,8,8
+	.member	button3,16,14,8,8
+	.member	button4,24,14,8,8
+	.member	x,32,16,8,16
+	.member	y,48,16,8,16
+	.eos
+	.stag	_fx_eventProcess,64,56
+	.member	process,0,138,8,32,20
+	.member	eventProc,32,641,8,32
+	.eos
+	.stag	_mouse_msg_state,184,57
+	.member	lastEvent,0,18,8,32
+	.member	buttonLeftDown,32,14,8,8
+	.member	lastLeftDown,40,18,8,32
+	.member	buttonRightDown,72,14,8,8
+	.member	lastRightDown,80,18,8,32
+	.member	buttonMiddleDown,112,14,8,8
+	.member	lastMiddleDown,120,18,8,32
+	.member	lastX,152,16,8,16
+	.member	lastY,168,16,8,16
+	.eos
+	.line	743
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxconsole.h",16
+	.stag	_fx_spinner_ctx,48,58
+	.member	index,0,5,8,16
+	.member	spinner,16,142,8,32
+	.eos
+	.stag	_fx_console_ctx,1144,59
+	.member	lineBufferIndex,0,5,8,16
+	.member	lineBuffer,16,110,8,0,128
+	.member	isShifted,1040,14,8,8
+	.member	userData,1048,129,8,32
+	.member	screenBuffer,1080,129,8,32
+	.member	Reserved1,1112,129,8,32
+	.eos
+	.stag	_token,64,60
+	.member	type,0,5,8,16
+	.member	depth,16,16,8,16
+	.member	text,32,142,8,32
+	.eos
+	.stag	_command_args,64,61
+	.member	proc,0,656,8,32
+	.member	tokens,32,138,8,32,5
+	.eos
+	.line	171
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",20
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.h",0
+	.line	71
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",21
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxnode.h",0
+	.line	61
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos.h",22
+	.line	25
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxmemorymanager.h",5
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\umm_malloc_cfg.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxos_build_parameters.h",0
+	.line	32
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\umm_malloc_cfg.h",8
+	.stag	UMM_HEAP_INFO_t,256,62
+	.member	totalEntries,0,18,8,32
+	.member	usedEntries,32,18,8,32
+	.member	freeEntries,64,18,8,32
+	.member	totalBlocks,96,18,8,32
+	.member	usedBlocks,128,18,8,32
+	.member	freeBlocks,160,18,8,32
+	.member	maxFreeContiguousBlocks,192,18,8,32
+	.member	blockSize,224,18,8,32
+	.eos
+	.line	199
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxmemorymanager.h",6
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\umm_malloc.h",0
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxtypes.h",0
+	.line	708
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\umm_malloc.h",11
+	.line	24
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxmemorymanager.h",7
+	.stag	_fx_memory_map,2072,63
+	.member	availableMemory,0,18,8,32
+	.member	valid_segments,32,110,8,0,255
+	.eos
+	.line	39
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.c",3
 ;#include <stdlib.h>
 	.file	"G:\devtools\WDCTools\wdc\Tools\include\stdlib.h",0
 	.line	205
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.c",3
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.c",4
 ;
 ;static char bytetohex[] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
 	data
@@ -410,12 +706,12 @@ R3	equ	13
 ;//
 ;char *strupr(char *s)
 ;{
-	.line	11
 	.line	12
+	.line	13
 	code
 	xdef	~~strupr
 	func
-	.function	12
+	.function	13
 ~~strupr:
 	longa	on
 	longi	on
@@ -426,14 +722,14 @@ R3	equ	13
 	phd
 	tcd
 s_0	set	4
-	.block	12
+	.block	13
 ;  char	*p;
 ;
 ;  for (p = s; *p; ++p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	s,4,142,6,32
-	.line	15
+	.line	16
 	lda	<L2+s_0
 	sta	<L3+p_1
 	lda	<L2+s_0+2
@@ -441,7 +737,7 @@ p_1	set	0
 	brl	L10004
 L10003:
 ;    *p = toupper(*p);
-	.line	16
+	.line	17
 	lda	[<L3+p_1]
 	and	#$ff
 	pha
@@ -465,7 +761,7 @@ L6:
 L10002:
 ;
 ;  return(s);
-	.line	18
+	.line	19
 	ldx	<L2+s_0+2
 	lda	<L2+s_0
 L7:
@@ -483,24 +779,24 @@ L7:
 	rtl
 ;
 ;}
-	.line	20
-	.endblock	20
+	.line	21
+	.endblock	21
 L2	equ	4
 L3	equ	1
 	ends
 	efunc
-	.endfunc	20,1,4
-	.line	20
+	.endfunc	21,1,4
+	.line	21
 ;
 ;/* -------------------------------------------------------------------- */
 ;char * strlower(char * s)
 ;{
-	.line	23
 	.line	24
+	.line	25
 	code
 	xdef	~~strlower
 	func
-	.function	24
+	.function	25
 ~~strlower:
 	longa	on
 	longi	on
@@ -511,14 +807,14 @@ L3	equ	1
 	phd
 	tcd
 s_0	set	4
-	.block	24
+	.block	25
 ;  char	*p;
 ;
 ;  for (p = s; *p; ++p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	s,4,142,6,32
-	.line	27
+	.line	28
 	lda	<L8+s_0
 	sta	<L9+p_1
 	lda	<L8+s_0+2
@@ -526,7 +822,7 @@ p_1	set	0
 	brl	L10008
 L10007:
 ;    *p = tolower(*p);
-	.line	28
+	.line	29
 	lda	[<L9+p_1]
 	and	#$ff
 	pha
@@ -550,7 +846,7 @@ L12:
 L10006:
 ;
 ;  return(s);
-	.line	30
+	.line	31
 	ldx	<L8+s_0+2
 	lda	<L8+s_0
 L13:
@@ -568,23 +864,23 @@ L13:
 	rtl
 ;
 ;}
-	.line	32
-	.endblock	32
+	.line	33
+	.endblock	33
 L8	equ	4
 L9	equ	1
 	ends
 	efunc
-	.endfunc	32,1,4
-	.line	32
+	.endfunc	33,1,4
+	.line	33
 ;
 ;char FAR * k_pad_string(char FAR * dest,char FAR * src,char filler,int width)
 ;{
-	.line	34
 	.line	35
+	.line	36
 	code
 	xdef	~~k_pad_string
 	func
-	.function	35
+	.function	36
 ~~k_pad_string:
 	longa	on
 	longi	on
@@ -598,7 +894,7 @@ dest_0	set	4
 src_0	set	8
 filler_0	set	12
 width_0	set	14
-	.block	35
+	.block	36
 ;	int len = 0;
 ;
 ;	memset(dest,0,width + 1);
@@ -609,7 +905,7 @@ len_1	set	0
 	.sym	filler,12,14,6,8
 	.sym	width,14,5,6,16
 	stz	<L15+len_1
-	.line	38
+	.line	39
 	lda	<L14+width_0
 	ina
 	pha
@@ -618,7 +914,7 @@ len_1	set	0
 	pei	<L14+dest_0
 	jsl	~~memset
 ;	memset(dest,filler,width);
-	.line	39
+	.line	40
 	pei	<L14+width_0
 	lda	<L14+filler_0
 	and	#$ff
@@ -628,14 +924,14 @@ len_1	set	0
 	jsl	~~memset
 ;
 ;	len = strlen(src);
-	.line	41
+	.line	42
 	pei	<L14+src_0+2
 	pei	<L14+src_0
 	jsl	~~strlen
 	sta	<L15+len_1
 ;
 ;	if(len > width)
-	.line	43
+	.line	44
 ;		len = width;
 	sec
 	lda	<L14+width_0
@@ -646,13 +942,13 @@ L17:
 	bpl	L18
 	brl	L10009
 L18:
-	.line	44
+	.line	45
 	lda	<L14+width_0
 	sta	<L15+len_1
 ;
 ;	memcpy(&dest[width - len],src,len);
 L10009:
-	.line	46
+	.line	47
 	pei	<L15+len_1
 	pei	<L14+src_0+2
 	pei	<L14+src_0
@@ -679,7 +975,7 @@ L19:
 	jsl	~~memcpy
 ;
 ;	return dest;
-	.line	48
+	.line	49
 	ldx	<L14+dest_0+2
 	lda	<L14+dest_0
 L20:
@@ -696,29 +992,24 @@ L20:
 	tya
 	rtl
 ;}
-	.line	49
-	.endblock	49
+	.line	50
+	.endblock	50
 L14	equ	10
 L15	equ	9
 	ends
 	efunc
-	.endfunc	49,9,10
-	.line	49
-;/*
-; *
-; *
-; *
-; *
-; */
-;PFAR k_inttodec(UINT b,char FAR *bhbuffer)
+	.endfunc	50,9,10
+	.line	50
+;
+;LPSTR k_strcat(LPSTR dest,LPCSTR src)
 ;{
-	.line	56
-	.line	57
+	.line	52
+	.line	53
 	code
-	xdef	~~k_inttodec
+	xdef	~~k_strcat
 	func
-	.function	57
-~~k_inttodec:
+	.function	53
+~~k_strcat:
 	longa	on
 	longi	on
 	tsc
@@ -727,9 +1018,113 @@ L15	equ	9
 	tcs
 	phd
 	tcd
+dest_0	set	4
+src_0	set	8
+	.block	53
+;	return dest;
+	.sym	dest,4,142,6,32
+	.sym	src,8,142,6,32
+	.line	54
+	ldx	<L21+dest_0+2
+	lda	<L21+dest_0
+L24:
+	tay
+	lda	<L21+2
+	sta	<L21+2+8
+	lda	<L21+1
+	sta	<L21+1+8
+	pld
+	tsc
+	clc
+	adc	#L21+8
+	tcs
+	tya
+	rtl
+;}
+	.line	55
+	.endblock	55
+L21	equ	0
+L22	equ	1
+	ends
+	efunc
+	.endfunc	55,1,0
+	.line	55
+;
+;LPSTR k_strcpy(LPSTR dest,LPCSTR src)
+;{
+	.line	57
+	.line	58
+	code
+	xdef	~~k_strcpy
+	func
+	.function	58
+~~k_strcpy:
+	longa	on
+	longi	on
+	tsc
+	sec
+	sbc	#L25
+	tcs
+	phd
+	tcd
+dest_0	set	4
+src_0	set	8
+	.block	58
+;	return dest;
+	.sym	dest,4,142,6,32
+	.sym	src,8,142,6,32
+	.line	59
+	ldx	<L25+dest_0+2
+	lda	<L25+dest_0
+L28:
+	tay
+	lda	<L25+2
+	sta	<L25+2+8
+	lda	<L25+1
+	sta	<L25+1+8
+	pld
+	tsc
+	clc
+	adc	#L25+8
+	tcs
+	tya
+	rtl
+;}
+	.line	60
+	.endblock	60
+L25	equ	0
+L26	equ	1
+	ends
+	efunc
+	.endfunc	60,1,0
+	.line	60
+;
+;/*
+; *
+; *
+; *
+; *
+; */
+;PFAR k_inttodec(UINT b,char FAR *bhbuffer)
+;{
+	.line	68
+	.line	69
+	code
+	xdef	~~k_inttodec
+	func
+	.function	69
+~~k_inttodec:
+	longa	on
+	longi	on
+	tsc
+	sec
+	sbc	#L29
+	tcs
+	phd
+	tcd
 b_0	set	4
 bhbuffer_0	set	6
-	.block	57
+	.block	69
 ;	int tthou = 0;
 ;	int thou  = 0;
 ;	int hund  = 0;
@@ -749,218 +1144,218 @@ ones_1	set	8
 	.sym	ones,8,5,1,16
 	.sym	b,4,16,6,16
 	.sym	bhbuffer,6,142,6,32
-	stz	<L22+tthou_1
-	stz	<L22+thou_1
-	stz	<L22+hund_1
-	stz	<L22+tens_1
-	stz	<L22+ones_1
-	.line	64
+	stz	<L30+tthou_1
+	stz	<L30+thou_1
+	stz	<L30+hund_1
+	stz	<L30+tens_1
+	stz	<L30+ones_1
+	.line	76
 	sep	#$20
 	longa	off
 	lda	#$30
-	sta	[<L21+bhbuffer_0]
+	sta	[<L29+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = '0';
-	.line	65
+	.line	77
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$1
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = '0';
-	.line	66
+	.line	78
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$2
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[3] = '0';
-	.line	67
+	.line	79
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$3
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[4] = '0';
-	.line	68
+	.line	80
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$4
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[5] = 0;
-	.line	69
+	.line	81
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$5
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	tthou = (int)((b / 10000));
-	.line	71
-	lda	<L21+b_0
+	.line	83
+	lda	<L29+b_0
 	ldx	#<$2710
 	xref	~~~udv
 	jsl	~~~udv
-	sta	<L22+tthou_1
+	sta	<L30+tthou_1
 ;	b = (b - 10000*tthou);
-	.line	72
-	lda	<L22+tthou_1
+	.line	84
+	lda	<L30+tthou_1
 	ldx	#<$2710
 	xref	~~~mul
 	jsl	~~~mul
 	sta	<R0
 	sec
-	lda	<L21+b_0
+	lda	<L29+b_0
 	sbc	<R0
-	sta	<L21+b_0
+	sta	<L29+b_0
 ;	thou = (int)((b / 1000));
-	.line	73
-	lda	<L21+b_0
+	.line	85
+	lda	<L29+b_0
 	ldx	#<$3e8
 	xref	~~~udv
 	jsl	~~~udv
-	sta	<L22+thou_1
+	sta	<L30+thou_1
 ;	b = (b - 1000*thou);
-	.line	74
-	lda	<L22+thou_1
+	.line	86
+	lda	<L30+thou_1
 	ldx	#<$3e8
 	xref	~~~mul
 	jsl	~~~mul
 	sta	<R0
 	sec
-	lda	<L21+b_0
+	lda	<L29+b_0
 	sbc	<R0
-	sta	<L21+b_0
+	sta	<L29+b_0
 ;	hund = (int)((b / 100));
-	.line	75
-	lda	<L21+b_0
+	.line	87
+	lda	<L29+b_0
 	ldx	#<$64
 	xref	~~~udv
 	jsl	~~~udv
-	sta	<L22+hund_1
+	sta	<L30+hund_1
 ;	b = (b - 100*hund);
-	.line	76
-	lda	<L22+hund_1
+	.line	88
+	lda	<L30+hund_1
 	ldx	#<$64
 	xref	~~~mul
 	jsl	~~~mul
 	sta	<R0
 	sec
-	lda	<L21+b_0
+	lda	<L29+b_0
 	sbc	<R0
-	sta	<L21+b_0
+	sta	<L29+b_0
 ;	tens = (int)((b / 10));
-	.line	77
-	lda	<L21+b_0
+	.line	89
+	lda	<L29+b_0
 	ldx	#<$a
 	xref	~~~udv
 	jsl	~~~udv
-	sta	<L22+tens_1
+	sta	<L30+tens_1
 ;	b = (b - 10*tens);
-	.line	78
-	lda	<L22+tens_1
+	.line	90
+	lda	<L30+tens_1
 	asl	A
 	asl	A
-	adc	<L22+tens_1
+	adc	<L30+tens_1
 	asl	A
 	sta	<R0
 	sec
-	lda	<L21+b_0
+	lda	<L29+b_0
 	sbc	<R0
-	sta	<L21+b_0
+	sta	<L29+b_0
 ;	ones = (int)b;
-	.line	79
-	lda	<L21+b_0
-	sta	<L22+ones_1
+	.line	91
+	lda	<L29+b_0
+	sta	<L30+ones_1
 ;
 ;	bhbuffer[0] = bytetodec[tthou];
-	.line	81
+	.line	93
 	sep	#$20
 	longa	off
-	ldx	<L22+tthou_1
+	ldx	<L30+tthou_1
 	lda	|~~bytetodec,X
-	sta	[<L21+bhbuffer_0]
+	sta	[<L29+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = bytetodec[thou];
-	.line	82
+	.line	94
 	sep	#$20
 	longa	off
-	ldx	<L22+thou_1
+	ldx	<L30+thou_1
 	lda	|~~bytetodec,X
 	ldy	#$1
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = bytetodec[hund];
-	.line	83
+	.line	95
 	sep	#$20
 	longa	off
-	ldx	<L22+hund_1
+	ldx	<L30+hund_1
 	lda	|~~bytetodec,X
 	ldy	#$2
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[3] = bytetodec[tens];
-	.line	84
+	.line	96
 	sep	#$20
 	longa	off
-	ldx	<L22+tens_1
+	ldx	<L30+tens_1
 	lda	|~~bytetodec,X
 	ldy	#$3
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[4] = bytetodec[ones];
-	.line	85
+	.line	97
 	sep	#$20
 	longa	off
-	ldx	<L22+ones_1
+	ldx	<L30+ones_1
 	lda	|~~bytetodec,X
 	ldy	#$4
-	sta	[<L21+bhbuffer_0],Y
+	sta	[<L29+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	return bhbuffer;
-	.line	87
-	ldx	<L21+bhbuffer_0+2
-	lda	<L21+bhbuffer_0
-L24:
+	.line	99
+	ldx	<L29+bhbuffer_0+2
+	lda	<L29+bhbuffer_0
+L32:
 	tay
-	lda	<L21+2
-	sta	<L21+2+6
-	lda	<L21+1
-	sta	<L21+1+6
+	lda	<L29+2
+	sta	<L29+2+6
+	lda	<L29+1
+	sta	<L29+1+6
 	pld
 	tsc
 	clc
-	adc	#L21+6
+	adc	#L29+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	88
-	.endblock	88
-L21	equ	14
-L22	equ	5
+	.line	100
+	.endblock	100
+L29	equ	14
+L30	equ	5
 	ends
 	efunc
-	.endfunc	88,5,14
-	.line	88
+	.endfunc	100,5,14
+	.line	100
 ;/*
 ; *
 ; *
@@ -969,24 +1364,24 @@ L22	equ	5
 ; */
 ;PFAR k_longtodec(ULONG b,char FAR *bhbuffer)
 ;{
-	.line	95
-	.line	96
+	.line	107
+	.line	108
 	code
 	xdef	~~k_longtodec
 	func
-	.function	96
+	.function	108
 ~~k_longtodec:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L25
+	sbc	#L33
 	tcs
 	phd
 	tcd
 b_0	set	4
 bhbuffer_0	set	8
-	.block	96
+	.block	108
 ;	int bill  = 0;
 ;	int hmill = 0;
 ;	int tmill = 0;
@@ -1022,447 +1417,447 @@ ones_1	set	18
 	.sym	ones,18,5,1,16
 	.sym	b,4,18,6,32
 	.sym	bhbuffer,8,142,6,32
-	stz	<L26+bill_1
-	stz	<L26+hmill_1
-	stz	<L26+tmill_1
-	stz	<L26+mill_1
-	stz	<L26+hthou_1
-	stz	<L26+tthou_1
-	stz	<L26+thou_1
-	stz	<L26+hund_1
-	stz	<L26+tens_1
-	stz	<L26+ones_1
-	.line	109
+	stz	<L34+bill_1
+	stz	<L34+hmill_1
+	stz	<L34+tmill_1
+	stz	<L34+mill_1
+	stz	<L34+hthou_1
+	stz	<L34+tthou_1
+	stz	<L34+thou_1
+	stz	<L34+hund_1
+	stz	<L34+tens_1
+	stz	<L34+ones_1
+	.line	121
 	sep	#$20
 	longa	off
 	lda	#$30
-	sta	[<L25+bhbuffer_0]
+	sta	[<L33+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = '0';
-	.line	110
+	.line	122
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$1
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = '0';
-	.line	111
+	.line	123
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$2
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[3] = '0';
-	.line	112
+	.line	124
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$3
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[4] = '0';
-	.line	113
+	.line	125
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$4
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[5] = '0';
-	.line	114
+	.line	126
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$5
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[6] = '0';
-	.line	115
+	.line	127
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$6
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[7] = '0';
-	.line	116
+	.line	128
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$7
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[8] = '0';
-	.line	117
+	.line	129
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$8
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[9] = '0';
-	.line	118
+	.line	130
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$9
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[10] = 0;
-	.line	119
+	.line	131
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$a
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[11] = 0;
-	.line	120
+	.line	132
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$b
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[12] = 0;
-	.line	121
+	.line	133
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$c
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	bill = (int)((b / 1000000000L));
-	.line	123
-	pea	#^$3b9aca00
-	pea	#<$3b9aca00
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+bill_1
-;	b = (b - 1000000000L*bill);
-	.line	124
-	ldy	#$0
-	lda	<L26+bill_1
-	bpl	L28
-	dey
-L28:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$3b9aca00
-	pea	#<$3b9aca00
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;
-;	hmill = (int)((b / 100000000L));
-	.line	126
-	pea	#^$5f5e100
-	pea	#<$5f5e100
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+hmill_1
-;	b = (b - 100000000L*hmill);
-	.line	127
-	ldy	#$0
-	lda	<L26+hmill_1
-	bpl	L29
-	dey
-L29:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$5f5e100
-	pea	#<$5f5e100
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;
-;	tmill = (int)((b / 10000000L));
-	.line	129
-	pea	#^$989680
-	pea	#<$989680
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+tmill_1
-;	b = (b - 10000000L*tmill);
-	.line	130
-	ldy	#$0
-	lda	<L26+tmill_1
-	bpl	L30
-	dey
-L30:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$989680
-	pea	#<$989680
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;
-;	mill = (int)((b / 1000000L));
-	.line	132
-	pea	#^$f4240
-	pea	#<$f4240
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+mill_1
-;	b = (b - 1000000L*mill);
-	.line	133
-	ldy	#$0
-	lda	<L26+mill_1
-	bpl	L31
-	dey
-L31:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$f4240
-	pea	#<$f4240
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;
-;	hthou = (int)((b / 100000L));
 	.line	135
-	pea	#^$186a0
-	pea	#<$186a0
-	pei	<L25+b_0+2
-	pei	<L25+b_0
+	pea	#^$3b9aca00
+	pea	#<$3b9aca00
+	pei	<L33+b_0+2
+	pei	<L33+b_0
 	xref	~~~ludv
 	jsl	~~~ludv
 	sta	<R0
 	stx	<R0+2
 	lda	<R0
-	sta	<L26+hthou_1
-;	b = (b - 100000L*hthou);
+	sta	<L34+bill_1
+;	b = (b - 1000000000L*bill);
 	.line	136
 	ldy	#$0
-	lda	<L26+hthou_1
-	bpl	L32
-	dey
-L32:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$186a0
-	pea	#<$186a0
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;
-;
-;	tthou = (int)((b / 10000L));
-	.line	139
-	pea	#^$2710
-	pea	#<$2710
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+tthou_1
-;	b = (b - 10000L*tthou);
-	.line	140
-	ldy	#$0
-	lda	<L26+tthou_1
-	bpl	L33
-	dey
-L33:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$2710
-	pea	#<$2710
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;	thou = (int)((b / 1000L));
-	.line	141
-	pea	#^$3e8
-	pea	#<$3e8
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+thou_1
-;	b = (b - 1000L*thou);
-	.line	142
-	ldy	#$0
-	lda	<L26+thou_1
-	bpl	L34
-	dey
-L34:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$3e8
-	pea	#<$3e8
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;	hund = (int)((b / 100L));
-	.line	143
-	pea	#^$64
-	pea	#<$64
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+hund_1
-;	b = (b - 100L*hund);
-	.line	144
-	ldy	#$0
-	lda	<L26+hund_1
-	bpl	L35
-	dey
-L35:
-	sta	<R0
-	sty	<R0+2
-	pea	#^$64
-	pea	#<$64
-	pei	<R0+2
-	pei	<R0
-	xref	~~~lmul
-	jsl	~~~lmul
-	sta	<R0
-	stx	<R0+2
-	sec
-	lda	<L25+b_0
-	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
-	sbc	<R0+2
-	sta	<L25+b_0+2
-;	tens = (int)((b / 10L));
-	.line	145
-	pea	#^$a
-	pea	#<$a
-	pei	<L25+b_0+2
-	pei	<L25+b_0
-	xref	~~~ludv
-	jsl	~~~ludv
-	sta	<R0
-	stx	<R0+2
-	lda	<R0
-	sta	<L26+tens_1
-;	b = (b - 10L*tens);
-	.line	146
-	ldy	#$0
-	lda	<L26+tens_1
+	lda	<L34+bill_1
 	bpl	L36
 	dey
 L36:
 	sta	<R0
 	sty	<R0+2
+	pea	#^$3b9aca00
+	pea	#<$3b9aca00
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;
+;	hmill = (int)((b / 100000000L));
+	.line	138
+	pea	#^$5f5e100
+	pea	#<$5f5e100
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+hmill_1
+;	b = (b - 100000000L*hmill);
+	.line	139
+	ldy	#$0
+	lda	<L34+hmill_1
+	bpl	L37
+	dey
+L37:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$5f5e100
+	pea	#<$5f5e100
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;
+;	tmill = (int)((b / 10000000L));
+	.line	141
+	pea	#^$989680
+	pea	#<$989680
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+tmill_1
+;	b = (b - 10000000L*tmill);
+	.line	142
+	ldy	#$0
+	lda	<L34+tmill_1
+	bpl	L38
+	dey
+L38:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$989680
+	pea	#<$989680
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;
+;	mill = (int)((b / 1000000L));
+	.line	144
+	pea	#^$f4240
+	pea	#<$f4240
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+mill_1
+;	b = (b - 1000000L*mill);
+	.line	145
+	ldy	#$0
+	lda	<L34+mill_1
+	bpl	L39
+	dey
+L39:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$f4240
+	pea	#<$f4240
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;
+;	hthou = (int)((b / 100000L));
+	.line	147
+	pea	#^$186a0
+	pea	#<$186a0
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+hthou_1
+;	b = (b - 100000L*hthou);
+	.line	148
+	ldy	#$0
+	lda	<L34+hthou_1
+	bpl	L40
+	dey
+L40:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$186a0
+	pea	#<$186a0
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;
+;
+;	tthou = (int)((b / 10000L));
+	.line	151
+	pea	#^$2710
+	pea	#<$2710
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+tthou_1
+;	b = (b - 10000L*tthou);
+	.line	152
+	ldy	#$0
+	lda	<L34+tthou_1
+	bpl	L41
+	dey
+L41:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$2710
+	pea	#<$2710
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;	thou = (int)((b / 1000L));
+	.line	153
+	pea	#^$3e8
+	pea	#<$3e8
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+thou_1
+;	b = (b - 1000L*thou);
+	.line	154
+	ldy	#$0
+	lda	<L34+thou_1
+	bpl	L42
+	dey
+L42:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$3e8
+	pea	#<$3e8
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;	hund = (int)((b / 100L));
+	.line	155
+	pea	#^$64
+	pea	#<$64
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+hund_1
+;	b = (b - 100L*hund);
+	.line	156
+	ldy	#$0
+	lda	<L34+hund_1
+	bpl	L43
+	dey
+L43:
+	sta	<R0
+	sty	<R0+2
+	pea	#^$64
+	pea	#<$64
+	pei	<R0+2
+	pei	<R0
+	xref	~~~lmul
+	jsl	~~~lmul
+	sta	<R0
+	stx	<R0+2
+	sec
+	lda	<L33+b_0
+	sbc	<R0
+	sta	<L33+b_0
+	lda	<L33+b_0+2
+	sbc	<R0+2
+	sta	<L33+b_0+2
+;	tens = (int)((b / 10L));
+	.line	157
+	pea	#^$a
+	pea	#<$a
+	pei	<L33+b_0+2
+	pei	<L33+b_0
+	xref	~~~ludv
+	jsl	~~~ludv
+	sta	<R0
+	stx	<R0+2
+	lda	<R0
+	sta	<L34+tens_1
+;	b = (b - 10L*tens);
+	.line	158
+	ldy	#$0
+	lda	<L34+tens_1
+	bpl	L44
+	dey
+L44:
+	sta	<R0
+	sty	<R0+2
 	pea	#^$a
 	pea	#<$a
 	pei	<R0+2
@@ -1472,170 +1867,170 @@ L36:
 	sta	<R0
 	stx	<R0+2
 	sec
-	lda	<L25+b_0
+	lda	<L33+b_0
 	sbc	<R0
-	sta	<L25+b_0
-	lda	<L25+b_0+2
+	sta	<L33+b_0
+	lda	<L33+b_0+2
 	sbc	<R0+2
-	sta	<L25+b_0+2
+	sta	<L33+b_0+2
 ;	ones = (int)b;
-	.line	147
-	lda	<L25+b_0
-	sta	<L26+ones_1
+	.line	159
+	lda	<L33+b_0
+	sta	<L34+ones_1
 ;
 ;	bhbuffer[0] = bytetodec[bill];
-	.line	149
+	.line	161
 	sep	#$20
 	longa	off
-	ldx	<L26+bill_1
+	ldx	<L34+bill_1
 	lda	|~~bytetodec,X
-	sta	[<L25+bhbuffer_0]
+	sta	[<L33+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = bytetodec[hmill];
-	.line	150
+	.line	162
 	sep	#$20
 	longa	off
-	ldx	<L26+hmill_1
+	ldx	<L34+hmill_1
 	lda	|~~bytetodec,X
 	ldy	#$1
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = bytetodec[tmill];
-	.line	151
+	.line	163
 	sep	#$20
 	longa	off
-	ldx	<L26+tmill_1
+	ldx	<L34+tmill_1
 	lda	|~~bytetodec,X
 	ldy	#$2
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[3] = bytetodec[mill];
-	.line	152
+	.line	164
 	sep	#$20
 	longa	off
-	ldx	<L26+mill_1
+	ldx	<L34+mill_1
 	lda	|~~bytetodec,X
 	ldy	#$3
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[4] = bytetodec[hthou];
-	.line	153
+	.line	165
 	sep	#$20
 	longa	off
-	ldx	<L26+hthou_1
+	ldx	<L34+hthou_1
 	lda	|~~bytetodec,X
 	ldy	#$4
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[5] = bytetodec[tthou];
-	.line	154
+	.line	166
 	sep	#$20
 	longa	off
-	ldx	<L26+tthou_1
+	ldx	<L34+tthou_1
 	lda	|~~bytetodec,X
 	ldy	#$5
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[6] = bytetodec[thou];
-	.line	155
+	.line	167
 	sep	#$20
 	longa	off
-	ldx	<L26+thou_1
+	ldx	<L34+thou_1
 	lda	|~~bytetodec,X
 	ldy	#$6
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[7] = bytetodec[hund];
-	.line	156
+	.line	168
 	sep	#$20
 	longa	off
-	ldx	<L26+hund_1
+	ldx	<L34+hund_1
 	lda	|~~bytetodec,X
 	ldy	#$7
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[8] = bytetodec[tens];
-	.line	157
+	.line	169
 	sep	#$20
 	longa	off
-	ldx	<L26+tens_1
+	ldx	<L34+tens_1
 	lda	|~~bytetodec,X
 	ldy	#$8
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[9] = bytetodec[ones];
-	.line	158
+	.line	170
 	sep	#$20
 	longa	off
-	ldx	<L26+ones_1
+	ldx	<L34+ones_1
 	lda	|~~bytetodec,X
 	ldy	#$9
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[10] = 0;
-	.line	159
+	.line	171
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$a
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[11] = 0;
-	.line	160
+	.line	172
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$b
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[12] = 0;
-	.line	161
+	.line	173
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$c
-	sta	[<L25+bhbuffer_0],Y
+	sta	[<L33+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	return bhbuffer;
-	.line	163
-	ldx	<L25+bhbuffer_0+2
-	lda	<L25+bhbuffer_0
-L37:
+	.line	175
+	ldx	<L33+bhbuffer_0+2
+	lda	<L33+bhbuffer_0
+L45:
 	tay
-	lda	<L25+2
-	sta	<L25+2+8
-	lda	<L25+1
-	sta	<L25+1+8
+	lda	<L33+2
+	sta	<L33+2+8
+	lda	<L33+1
+	sta	<L33+1+8
 	pld
 	tsc
 	clc
-	adc	#L25+8
+	adc	#L33+8
 	tcs
 	tya
 	rtl
 ;}
-	.line	164
-	.endblock	164
-L25	equ	24
-L26	equ	5
+	.line	176
+	.endblock	176
+L33	equ	24
+L34	equ	5
 	ends
 	efunc
-	.endfunc	164,5,24
-	.line	164
+	.endfunc	176,5,24
+	.line	176
 ;/*
 ; *
 ; *
@@ -1644,24 +2039,24 @@ L26	equ	5
 ; */
 ;PFAR k_bytetodec(UCHAR b,char FAR *bhbuffer)
 ;{
-	.line	171
-	.line	172
+	.line	183
+	.line	184
 	code
 	xdef	~~k_bytetodec
 	func
-	.function	172
+	.function	184
 ~~k_bytetodec:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L38
+	sbc	#L46
 	tcs
 	phd
 	tcd
 b_0	set	4
 bhbuffer_0	set	6
-	.block	172
+	.block	184
 ;	int hund = 0;
 ;	int tens = 0;
 ;	int ones = 0;
@@ -1675,62 +2070,62 @@ ones_1	set	4
 	.sym	ones,4,5,1,16
 	.sym	b,4,14,6,8
 	.sym	bhbuffer,6,142,6,32
-	stz	<L39+hund_1
-	stz	<L39+tens_1
-	stz	<L39+ones_1
-	.line	177
+	stz	<L47+hund_1
+	stz	<L47+tens_1
+	stz	<L47+ones_1
+	.line	189
 	sep	#$20
 	longa	off
 	lda	#$30
-	sta	[<L38+bhbuffer_0]
+	sta	[<L46+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = '0';
-	.line	178
+	.line	190
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$1
-	sta	[<L38+bhbuffer_0],Y
+	sta	[<L46+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = '0';
-	.line	179
+	.line	191
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$2
-	sta	[<L38+bhbuffer_0],Y
+	sta	[<L46+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[3] = 0;
-	.line	180
+	.line	192
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$3
-	sta	[<L38+bhbuffer_0],Y
+	sta	[<L46+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	hund = (int)((b / 100));
-	.line	182
-	lda	<L38+b_0
+	.line	194
+	lda	<L46+b_0
 	and	#$ff
 	sta	<R0
 	lda	<R0
 	ldx	#<$64
 	xref	~~~div
 	jsl	~~~div
-	sta	<L39+hund_1
+	sta	<L47+hund_1
 ;	b = (b - 100*hund);
-	.line	183
-	lda	<L39+hund_1
+	.line	195
+	lda	<L47+hund_1
 	ldx	#<$64
 	xref	~~~mul
 	jsl	~~~mul
 	sta	<R0
-	lda	<L38+b_0
+	lda	<L46+b_0
 	and	#$ff
 	sta	<R1
 	sec
@@ -1740,28 +2135,28 @@ ones_1	set	4
 	sep	#$20
 	longa	off
 	lda	<R2
-	sta	<L38+b_0
+	sta	<L46+b_0
 	rep	#$20
 	longa	on
 ;	tens = (int)((b / 10));
-	.line	184
-	lda	<L38+b_0
+	.line	196
+	lda	<L46+b_0
 	and	#$ff
 	sta	<R0
 	lda	<R0
 	ldx	#<$a
 	xref	~~~div
 	jsl	~~~div
-	sta	<L39+tens_1
+	sta	<L47+tens_1
 ;	b = (b - 10*tens);
-	.line	185
-	lda	<L39+tens_1
+	.line	197
+	lda	<L47+tens_1
 	asl	A
 	asl	A
-	adc	<L39+tens_1
+	adc	<L47+tens_1
 	asl	A
 	sta	<R0
-	lda	<L38+b_0
+	lda	<L46+b_0
 	and	#$ff
 	sta	<R1
 	sec
@@ -1771,71 +2166,71 @@ ones_1	set	4
 	sep	#$20
 	longa	off
 	lda	<R2
-	sta	<L38+b_0
+	sta	<L46+b_0
 	rep	#$20
 	longa	on
 ;	ones = (int)b;
-	.line	186
-	lda	<L38+b_0
+	.line	198
+	lda	<L46+b_0
 	and	#$ff
-	sta	<L39+ones_1
+	sta	<L47+ones_1
 ;
 ;	bhbuffer[0] = bytetodec[hund];
-	.line	188
+	.line	200
 	sep	#$20
 	longa	off
-	ldx	<L39+hund_1
+	ldx	<L47+hund_1
 	lda	|~~bytetodec,X
-	sta	[<L38+bhbuffer_0]
+	sta	[<L46+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = bytetodec[tens];
-	.line	189
+	.line	201
 	sep	#$20
 	longa	off
-	ldx	<L39+tens_1
+	ldx	<L47+tens_1
 	lda	|~~bytetodec,X
 	ldy	#$1
-	sta	[<L38+bhbuffer_0],Y
+	sta	[<L46+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = bytetodec[ones];
-	.line	190
+	.line	202
 	sep	#$20
 	longa	off
-	ldx	<L39+ones_1
+	ldx	<L47+ones_1
 	lda	|~~bytetodec,X
 	ldy	#$2
-	sta	[<L38+bhbuffer_0],Y
+	sta	[<L46+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	return bhbuffer;
-	.line	192
-	ldx	<L38+bhbuffer_0+2
-	lda	<L38+bhbuffer_0
-L41:
+	.line	204
+	ldx	<L46+bhbuffer_0+2
+	lda	<L46+bhbuffer_0
+L49:
 	tay
-	lda	<L38+2
-	sta	<L38+2+6
-	lda	<L38+1
-	sta	<L38+1+6
+	lda	<L46+2
+	sta	<L46+2+6
+	lda	<L46+1
+	sta	<L46+1+6
 	pld
 	tsc
 	clc
-	adc	#L38+6
+	adc	#L46+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	193
-	.endblock	193
-L38	equ	18
-L39	equ	13
+	.line	205
+	.endblock	205
+L46	equ	18
+L47	equ	13
 	ends
 	efunc
-	.endfunc	193,13,18
-	.line	193
+	.endfunc	205,13,18
+	.line	205
 ;/*
 ; *
 ; *
@@ -1844,57 +2239,57 @@ L39	equ	13
 ; */
 ;PFAR k_bytetohex(UCHAR b,char FAR *bhbuffer)
 ;{
-	.line	200
-	.line	201
+	.line	212
+	.line	213
 	code
 	xdef	~~k_bytetohex
 	func
-	.function	201
+	.function	213
 ~~k_bytetohex:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L42
+	sbc	#L50
 	tcs
 	phd
 	tcd
 b_0	set	4
 bhbuffer_0	set	6
-	.block	201
+	.block	213
 ;	bhbuffer[0] = '0';
 	.sym	b,4,14,6,8
 	.sym	bhbuffer,6,142,6,32
-	.line	202
+	.line	214
 	sep	#$20
 	longa	off
 	lda	#$30
-	sta	[<L42+bhbuffer_0]
+	sta	[<L50+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = '0';
-	.line	203
+	.line	215
 	sep	#$20
 	longa	off
 	lda	#$30
 	ldy	#$1
-	sta	[<L42+bhbuffer_0],Y
+	sta	[<L50+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;	bhbuffer[2] = 0;
-	.line	204
+	.line	216
 	sep	#$20
 	longa	off
 	lda	#$0
 	ldy	#$2
-	sta	[<L42+bhbuffer_0],Y
+	sta	[<L50+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;
 ;	bhbuffer[0] = bytetohex[(unsigned)((b & 0xF0) >> 4)];
-	.line	207
-	lda	<L42+b_0
+	.line	219
+	lda	<L50+b_0
 	and	#<$f0
 	ldx	#<$4
 	xref	~~~asr
@@ -1904,12 +2299,12 @@ bhbuffer_0	set	6
 	longa	off
 	ldx	<R0
 	lda	|~~bytetohex,X
-	sta	[<L42+bhbuffer_0]
+	sta	[<L50+bhbuffer_0]
 	rep	#$20
 	longa	on
 ;	bhbuffer[1] = bytetohex[(unsigned)(b & 0x0F)];
-	.line	208
-	lda	<L42+b_0
+	.line	220
+	lda	<L50+b_0
 	and	#<$f
 	sta	<R0
 	sep	#$20
@@ -1917,36 +2312,36 @@ bhbuffer_0	set	6
 	ldx	<R0
 	lda	|~~bytetohex,X
 	ldy	#$1
-	sta	[<L42+bhbuffer_0],Y
+	sta	[<L50+bhbuffer_0],Y
 	rep	#$20
 	longa	on
 ;
 ;	return bhbuffer;
-	.line	210
-	ldx	<L42+bhbuffer_0+2
-	lda	<L42+bhbuffer_0
-L45:
+	.line	222
+	ldx	<L50+bhbuffer_0+2
+	lda	<L50+bhbuffer_0
+L53:
 	tay
-	lda	<L42+2
-	sta	<L42+2+6
-	lda	<L42+1
-	sta	<L42+1+6
+	lda	<L50+2
+	sta	<L50+2+6
+	lda	<L50+1
+	sta	<L50+1+6
 	pld
 	tsc
 	clc
-	adc	#L42+6
+	adc	#L50+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	211
-	.endblock	211
-L42	equ	4
-L43	equ	5
+	.line	223
+	.endblock	223
+L50	equ	4
+L51	equ	5
 	ends
 	efunc
-	.endfunc	211,5,4
-	.line	211
+	.endfunc	223,5,4
+	.line	223
 ;
 ;/*
 ; *
@@ -1956,97 +2351,97 @@ L43	equ	5
 ; */
 ;PFAR k_strip_padding(PFAR orgText)
 ;{
-	.line	219
-	.line	220
+	.line	231
+	.line	232
 	code
 	xdef	~~k_strip_padding
 	func
-	.function	220
+	.function	232
 ~~k_strip_padding:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L46
+	sbc	#L54
 	tcs
 	phd
 	tcd
 orgText_0	set	4
-	.block	220
+	.block	232
 ;	PFAR p = orgText;
 ;	while(*p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	orgText,4,142,6,32
-	lda	<L46+orgText_0
-	sta	<L47+p_1
-	lda	<L46+orgText_0+2
-	sta	<L47+p_1+2
-	.line	222
+	lda	<L54+orgText_0
+	sta	<L55+p_1
+	lda	<L54+orgText_0+2
+	sta	<L55+p_1+2
+	.line	234
 L10010:
-	lda	[<L47+p_1]
+	lda	[<L55+p_1]
 	and	#$ff
-	bne	L49
+	bne	L57
 	brl	L10011
-L49:
+L57:
 ;	{
-	.line	223
+	.line	235
 ;		if(*p != '0')
-	.line	224
+	.line	236
 ;		{
 	sep	#$20
 	longa	off
-	lda	[<L47+p_1]
+	lda	[<L55+p_1]
 	cmp	#<$30
 	rep	#$20
 	longa	on
-	bne	L50
+	bne	L58
 	brl	L10012
-L50:
-	.line	225
+L58:
+	.line	237
 ;			break;
-	.line	226
+	.line	238
 	brl	L10011
 ;		}
-	.line	227
+	.line	239
 ;		p++;
 L10012:
-	.line	228
-	inc	<L47+p_1
-	bne	L51
-	inc	<L47+p_1+2
-L51:
+	.line	240
+	inc	<L55+p_1
+	bne	L59
+	inc	<L55+p_1+2
+L59:
 ;	}
-	.line	229
+	.line	241
 	brl	L10010
 L10011:
 ;
 ;	return p;
-	.line	231
-	ldx	<L47+p_1+2
-	lda	<L47+p_1
-L52:
+	.line	243
+	ldx	<L55+p_1+2
+	lda	<L55+p_1
+L60:
 	tay
-	lda	<L46+2
-	sta	<L46+2+4
-	lda	<L46+1
-	sta	<L46+1+4
+	lda	<L54+2
+	sta	<L54+2+4
+	lda	<L54+1
+	sta	<L54+1+4
 	pld
 	tsc
 	clc
-	adc	#L46+4
+	adc	#L54+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	232
-	.endblock	232
-L46	equ	4
-L47	equ	1
+	.line	244
+	.endblock	244
+L54	equ	4
+L55	equ	1
 	ends
 	efunc
-	.endfunc	232,1,4
-	.line	232
+	.endfunc	244,1,4
+	.line	244
 ;/*
 ; *
 ; *
@@ -2055,104 +2450,104 @@ L47	equ	1
 ; */
 ;PFAR k_replace_padding(PFAR orgText,CHAR replacement)
 ;{
-	.line	239
-	.line	240
+	.line	251
+	.line	252
 	code
 	xdef	~~k_replace_padding
 	func
-	.function	240
+	.function	252
 ~~k_replace_padding:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L53
+	sbc	#L61
 	tcs
 	phd
 	tcd
 orgText_0	set	4
 replacement_0	set	8
-	.block	240
+	.block	252
 ;	PFAR p = orgText;
 ;	while(*p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	orgText,4,142,6,32
 	.sym	replacement,8,14,6,8
-	lda	<L53+orgText_0
-	sta	<L54+p_1
-	lda	<L53+orgText_0+2
-	sta	<L54+p_1+2
-	.line	242
+	lda	<L61+orgText_0
+	sta	<L62+p_1
+	lda	<L61+orgText_0+2
+	sta	<L62+p_1+2
+	.line	254
 L10013:
-	lda	[<L54+p_1]
+	lda	[<L62+p_1]
 	and	#$ff
-	bne	L56
+	bne	L64
 	brl	L10014
-L56:
+L64:
 ;	{
-	.line	243
+	.line	255
 ;		if(*p == '0')
-	.line	244
+	.line	256
 ;		{
 	sep	#$20
 	longa	off
-	lda	[<L54+p_1]
+	lda	[<L62+p_1]
 	cmp	#<$30
 	rep	#$20
 	longa	on
-	beq	L57
+	beq	L65
 	brl	L10015
-L57:
-	.line	245
+L65:
+	.line	257
 ;			*p = replacement;
-	.line	246
+	.line	258
 	sep	#$20
 	longa	off
-	lda	<L53+replacement_0
-	sta	[<L54+p_1]
+	lda	<L61+replacement_0
+	sta	[<L62+p_1]
 	rep	#$20
 	longa	on
 ;		}
-	.line	247
+	.line	259
 ;		p++;
 L10015:
-	.line	248
-	inc	<L54+p_1
-	bne	L58
-	inc	<L54+p_1+2
-L58:
+	.line	260
+	inc	<L62+p_1
+	bne	L66
+	inc	<L62+p_1+2
+L66:
 ;	}
-	.line	249
+	.line	261
 	brl	L10013
 L10014:
 ;
 ;	return orgText;
-	.line	251
-	ldx	<L53+orgText_0+2
-	lda	<L53+orgText_0
-L59:
+	.line	263
+	ldx	<L61+orgText_0+2
+	lda	<L61+orgText_0
+L67:
 	tay
-	lda	<L53+2
-	sta	<L53+2+6
-	lda	<L53+1
-	sta	<L53+1+6
+	lda	<L61+2
+	sta	<L61+2+6
+	lda	<L61+1
+	sta	<L61+1+6
 	pld
 	tsc
 	clc
-	adc	#L53+6
+	adc	#L61+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	252
-	.endblock	252
-L53	equ	4
-L54	equ	1
+	.line	264
+	.endblock	264
+L61	equ	4
+L62	equ	1
 	ends
 	efunc
-	.endfunc	252,1,4
-	.line	252
+	.endfunc	264,1,4
+	.line	264
 ;
 ;/*
 ; *
@@ -2162,89 +2557,89 @@ L54	equ	1
 ; */
 ;LPCHAR k_to_uppercase(LPCHAR orgText)
 ;{
-	.line	260
-	.line	261
+	.line	272
+	.line	273
 	code
 	xdef	~~k_to_uppercase
 	func
-	.function	261
+	.function	273
 ~~k_to_uppercase:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L60
+	sbc	#L68
 	tcs
 	phd
 	tcd
 orgText_0	set	4
-	.block	261
+	.block	273
 ;	LPCHAR p = orgText;
 ;	while(*p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	orgText,4,142,6,32
-	lda	<L60+orgText_0
-	sta	<L61+p_1
-	lda	<L60+orgText_0+2
-	sta	<L61+p_1+2
-	.line	263
+	lda	<L68+orgText_0
+	sta	<L69+p_1
+	lda	<L68+orgText_0+2
+	sta	<L69+p_1+2
+	.line	275
 L10016:
-	lda	[<L61+p_1]
+	lda	[<L69+p_1]
 	and	#$ff
-	bne	L63
+	bne	L71
 	brl	L10017
-L63:
+L71:
 ;	{
-	.line	264
+	.line	276
 ;		*p = toupper(*p);
-	.line	265
-	lda	[<L61+p_1]
+	.line	277
+	lda	[<L69+p_1]
 	and	#$ff
 	pha
 	jsl	~~toupper
 	sep	#$20
 	longa	off
-	sta	[<L61+p_1]
+	sta	[<L69+p_1]
 	rep	#$20
 	longa	on
 ;		p++;
-	.line	266
-	inc	<L61+p_1
-	bne	L64
-	inc	<L61+p_1+2
-L64:
+	.line	278
+	inc	<L69+p_1
+	bne	L72
+	inc	<L69+p_1+2
+L72:
 ;	}
-	.line	267
+	.line	279
 	brl	L10016
 L10017:
 ;
 ;	return orgText;
-	.line	269
-	ldx	<L60+orgText_0+2
-	lda	<L60+orgText_0
-L65:
+	.line	281
+	ldx	<L68+orgText_0+2
+	lda	<L68+orgText_0
+L73:
 	tay
-	lda	<L60+2
-	sta	<L60+2+4
-	lda	<L60+1
-	sta	<L60+1+4
+	lda	<L68+2
+	sta	<L68+2+4
+	lda	<L68+1
+	sta	<L68+1+4
 	pld
 	tsc
 	clc
-	adc	#L60+4
+	adc	#L68+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	270
-	.endblock	270
-L60	equ	4
-L61	equ	1
+	.line	282
+	.endblock	282
+L68	equ	4
+L69	equ	1
 	ends
 	efunc
-	.endfunc	270,1,4
-	.line	270
+	.endfunc	282,1,4
+	.line	282
 ;
 ;/*
 ; *
@@ -2254,89 +2649,89 @@ L61	equ	1
 ; */
 ;LPCHAR k_to_lowercase(LPCHAR orgText)
 ;{
-	.line	278
-	.line	279
+	.line	290
+	.line	291
 	code
 	xdef	~~k_to_lowercase
 	func
-	.function	279
+	.function	291
 ~~k_to_lowercase:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L66
+	sbc	#L74
 	tcs
 	phd
 	tcd
 orgText_0	set	4
-	.block	279
+	.block	291
 ;	LPCHAR p = orgText;
 ;	while(*p)
 p_1	set	0
 	.sym	p,0,142,1,32
 	.sym	orgText,4,142,6,32
-	lda	<L66+orgText_0
-	sta	<L67+p_1
-	lda	<L66+orgText_0+2
-	sta	<L67+p_1+2
-	.line	281
+	lda	<L74+orgText_0
+	sta	<L75+p_1
+	lda	<L74+orgText_0+2
+	sta	<L75+p_1+2
+	.line	293
 L10018:
-	lda	[<L67+p_1]
+	lda	[<L75+p_1]
 	and	#$ff
-	bne	L69
+	bne	L77
 	brl	L10019
-L69:
+L77:
 ;	{
-	.line	282
+	.line	294
 ;		*p = tolower(*p);
-	.line	283
-	lda	[<L67+p_1]
+	.line	295
+	lda	[<L75+p_1]
 	and	#$ff
 	pha
 	jsl	~~tolower
 	sep	#$20
 	longa	off
-	sta	[<L67+p_1]
+	sta	[<L75+p_1]
 	rep	#$20
 	longa	on
 ;		p++;
-	.line	284
-	inc	<L67+p_1
-	bne	L70
-	inc	<L67+p_1+2
-L70:
+	.line	296
+	inc	<L75+p_1
+	bne	L78
+	inc	<L75+p_1+2
+L78:
 ;	}
-	.line	285
+	.line	297
 	brl	L10018
 L10019:
 ;
 ;	return orgText;
-	.line	287
-	ldx	<L66+orgText_0+2
-	lda	<L66+orgText_0
-L71:
+	.line	299
+	ldx	<L74+orgText_0+2
+	lda	<L74+orgText_0
+L79:
 	tay
-	lda	<L66+2
-	sta	<L66+2+4
-	lda	<L66+1
-	sta	<L66+1+4
+	lda	<L74+2
+	sta	<L74+2+4
+	lda	<L74+1
+	sta	<L74+1+4
 	pld
 	tsc
 	clc
-	adc	#L66+4
+	adc	#L74+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	288
-	.endblock	288
-L66	equ	4
-L67	equ	1
+	.line	300
+	.endblock	300
+L74	equ	4
+L75	equ	1
 	ends
 	efunc
-	.endfunc	288,1,4
-	.line	288
+	.endfunc	300,1,4
+	.line	300
 ;
 ;/*
 ; *
@@ -2346,106 +2741,106 @@ L67	equ	1
 ; */
 ;char FAR* k_itoa(unsigned int value, char FAR*result, int base)
 ;{
-	.line	296
-	.line	297
+	.line	308
+	.line	309
 	code
 	xdef	~~k_itoa
 	func
-	.function	297
+	.function	309
 ~~k_itoa:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L72
+	sbc	#L80
 	tcs
 	phd
 	tcd
 value_0	set	4
 result_0	set	6
 base_0	set	10
-	.block	297
+	.block	309
 ;	result[0] = 0;
 	.sym	value,4,16,6,16
 	.sym	result,6,142,6,32
 	.sym	base,10,5,6,16
-	.line	298
+	.line	310
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L72+result_0]
+	sta	[<L80+result_0]
 	rep	#$20
 	longa	on
 ;
 ;	if(base!=10)
-	.line	300
+	.line	312
 ;		return result;
-	lda	<L72+base_0
+	lda	<L80+base_0
 	cmp	#<$a
-	bne	L75
+	bne	L83
 	brl	L10020
-L75:
-	.line	301
-	ldx	<L72+result_0+2
-	lda	<L72+result_0
-L76:
+L83:
+	.line	313
+	ldx	<L80+result_0+2
+	lda	<L80+result_0
+L84:
 	tay
-	lda	<L72+2
-	sta	<L72+2+8
-	lda	<L72+1
-	sta	<L72+1+8
+	lda	<L80+2
+	sta	<L80+2+8
+	lda	<L80+1
+	sta	<L80+1+8
 	pld
 	tsc
 	clc
-	adc	#L72+8
+	adc	#L80+8
 	tcs
 	tya
 	rtl
 ;
 ;	return k_inttodec(value,result);
 L10020:
-	.line	303
-	pei	<L72+result_0+2
-	pei	<L72+result_0
-	pei	<L72+value_0
+	.line	315
+	pei	<L80+result_0+2
+	pei	<L80+result_0
+	pei	<L80+value_0
 	jsl	~~k_inttodec
 	sta	<R0
 	stx	<R0+2
 	ldx	<R0+2
 	lda	<R0
-	brl	L76
+	brl	L84
 ;}
-	.line	304
-	.endblock	304
-L72	equ	4
-L73	equ	5
+	.line	316
+	.endblock	316
+L80	equ	4
+L81	equ	5
 	ends
 	efunc
-	.endfunc	304,5,4
-	.line	304
+	.endfunc	316,5,4
+	.line	316
 ;//
 ;/// A utility function to reverse a string
 ;//
 ;void k_reverse(char FAR str[], int length)
 ;{
-	.line	308
-	.line	309
+	.line	320
+	.line	321
 	code
 	xdef	~~k_reverse
 	func
-	.function	309
+	.function	321
 ~~k_reverse:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L77
+	sbc	#L85
 	tcs
 	phd
 	tcd
 str_0	set	4
 length_0	set	8
-	.block	309
+	.block	321
 ;	char t = 0;
 ;    long start = 0;
 ;    long end = length -1;
@@ -2461,67 +2856,67 @@ end_1	set	5
 	.sym	length,8,5,6,16
 	sep	#$20
 	longa	off
-	stz	<L78+t_1
+	stz	<L86+t_1
 	rep	#$20
 	longa	on
-	stz	<L78+start_1
-	stz	<L78+start_1+2
+	stz	<L86+start_1
+	stz	<L86+start_1+2
 	clc
 	lda	#$ffff
-	adc	<L77+length_0
+	adc	<L85+length_0
 	sta	<R0
 	ldy	#$0
 	lda	<R0
-	bpl	L80
+	bpl	L88
 	dey
-L80:
-	sta	<L78+end_1
-	sty	<L78+end_1+2
-	.line	314
+L88:
+	sta	<L86+end_1
+	sty	<L86+end_1+2
+	.line	326
 L10021:
 	sec
-	lda	<L78+start_1
-	sbc	<L78+end_1
-	lda	<L78+start_1+2
-	sbc	<L78+end_1+2
-	bvs	L81
+	lda	<L86+start_1
+	sbc	<L86+end_1
+	lda	<L86+start_1+2
+	sbc	<L86+end_1+2
+	bvs	L89
 	eor	#$8000
-L81:
-	bpl	L82
+L89:
+	bpl	L90
 	brl	L10022
-L82:
+L90:
 ;    {
-	.line	315
+	.line	327
 ;		t = *(str+start);
-	.line	316
+	.line	328
 	clc
-	lda	<L77+str_0
-	adc	<L78+start_1
+	lda	<L85+str_0
+	adc	<L86+start_1
 	sta	<R0
-	lda	<L77+str_0+2
-	adc	<L78+start_1+2
+	lda	<L85+str_0+2
+	adc	<L86+start_1+2
 	sta	<R0+2
 	sep	#$20
 	longa	off
 	lda	[<R0]
-	sta	<L78+t_1
+	sta	<L86+t_1
 	rep	#$20
 	longa	on
 ;	    *(str+start) = *(str+end);
-	.line	317
+	.line	329
 	clc
-	lda	<L77+str_0
-	adc	<L78+start_1
+	lda	<L85+str_0
+	adc	<L86+start_1
 	sta	<R0
-	lda	<L77+str_0+2
-	adc	<L78+start_1+2
+	lda	<L85+str_0+2
+	adc	<L86+start_1+2
 	sta	<R0+2
 	clc
-	lda	<L77+str_0
-	adc	<L78+end_1
+	lda	<L85+str_0
+	adc	<L86+end_1
 	sta	<R1
-	lda	<L77+str_0+2
-	adc	<L78+end_1+2
+	lda	<L85+str_0+2
+	adc	<L86+end_1+2
 	sta	<R1+2
 	sep	#$20
 	longa	off
@@ -2530,84 +2925,84 @@ L82:
 	rep	#$20
 	longa	on
 ;		*(str+end) = t;
-	.line	318
+	.line	330
 	clc
-	lda	<L77+str_0
-	adc	<L78+end_1
+	lda	<L85+str_0
+	adc	<L86+end_1
 	sta	<R0
-	lda	<L77+str_0+2
-	adc	<L78+end_1+2
+	lda	<L85+str_0+2
+	adc	<L86+end_1+2
 	sta	<R0+2
 	sep	#$20
 	longa	off
-	lda	<L78+t_1
+	lda	<L86+t_1
 	sta	[<R0]
 	rep	#$20
 	longa	on
 ;
 ;        //swap(*(str+start), *(str+end));
 ;        start++;
-	.line	321
-	inc	<L78+start_1
-	bne	L83
-	inc	<L78+start_1+2
-L83:
+	.line	333
+	inc	<L86+start_1
+	bne	L91
+	inc	<L86+start_1+2
+L91:
 ;        end--;
-	.line	322
-	lda	<L78+end_1
-	bne	L84
-	dec	<L78+end_1+2
-L84:
-	dec	<L78+end_1
+	.line	334
+	lda	<L86+end_1
+	bne	L92
+	dec	<L86+end_1+2
+L92:
+	dec	<L86+end_1
 ;    }
-	.line	323
+	.line	335
 	brl	L10021
 L10022:
 ;}
-	.line	324
-L85:
-	lda	<L77+2
-	sta	<L77+2+6
-	lda	<L77+1
-	sta	<L77+1+6
+	.line	336
+L93:
+	lda	<L85+2
+	sta	<L85+2+6
+	lda	<L85+1
+	sta	<L85+1+6
 	pld
 	tsc
 	clc
-	adc	#L77+6
+	adc	#L85+6
 	tcs
 	rtl
-	.endblock	324
-L77	equ	17
-L78	equ	9
+	.endblock	336
+L85	equ	17
+L86	equ	9
 	ends
 	efunc
-	.endfunc	324,9,17
-	.line	324
+	.endfunc	336,9,17
+	.line	336
 ;
 ;LPCHAR k_string_trim(LPCHAR lpText)
 ;{
-	.line	326
-	.line	327
+	.line	338
+	.line	339
 	code
 	xdef	~~k_string_trim
 	func
-	.function	327
+	.function	339
 ~~k_string_trim:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L86
+	sbc	#L94
 	tcs
 	phd
 	tcd
 lpText_0	set	4
-	.block	327
+	.block	339
 ;	return k_string_rtrim(k_string_ltrim(lpText));
 	.sym	lpText,4,142,6,32
-	.line	328
-	pei	<L86+lpText_0+2
-	pei	<L86+lpText_0
+	.line	340
+	pei	<L94+lpText_0+2
+	pei	<L94+lpText_0
 	jsl	~~k_string_ltrim
 	sta	<R0
 	stx	<R0+2
@@ -2618,48 +3013,48 @@ lpText_0	set	4
 	stx	<R1+2
 	ldx	<R1+2
 	lda	<R1
-L89:
+L97:
 	tay
-	lda	<L86+2
-	sta	<L86+2+4
-	lda	<L86+1
-	sta	<L86+1+4
+	lda	<L94+2
+	sta	<L94+2+4
+	lda	<L94+1
+	sta	<L94+1+4
 	pld
 	tsc
 	clc
-	adc	#L86+4
+	adc	#L94+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	329
-	.endblock	329
-L86	equ	8
-L87	equ	9
+	.line	341
+	.endblock	341
+L94	equ	8
+L95	equ	9
 	ends
 	efunc
-	.endfunc	329,9,8
-	.line	329
+	.endfunc	341,9,8
+	.line	341
 ;
 ;LPCHAR k_string_rtrim(LPCHAR lpText)
 ;{
-	.line	331
-	.line	332
+	.line	343
+	.line	344
 	code
 	xdef	~~k_string_rtrim
 	func
-	.function	332
+	.function	344
 ~~k_string_rtrim:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L90
+	sbc	#L98
 	tcs
 	phd
 	tcd
 lpText_0	set	4
-	.block	332
+	.block	344
 ;	UINT index  = 0;
 ;	UINT length = 0;
 ;	if(lpText)
@@ -2668,130 +3063,130 @@ length_1	set	2
 	.sym	index,0,16,1,16
 	.sym	length,2,16,1,16
 	.sym	lpText,4,142,6,32
-	stz	<L91+index_1
-	stz	<L91+length_1
-	.line	335
+	stz	<L99+index_1
+	stz	<L99+length_1
+	.line	347
 ;	{
-	lda	<L90+lpText_0
-	ora	<L90+lpText_0+2
-	bne	L93
+	lda	<L98+lpText_0
+	ora	<L98+lpText_0+2
+	bne	L101
 	brl	L10023
-L93:
-	.line	336
+L101:
+	.line	348
 ;		length = strlen(lpText) - 1;
-	.line	337
-	pei	<L90+lpText_0+2
-	pei	<L90+lpText_0
+	.line	349
+	pei	<L98+lpText_0+2
+	pei	<L98+lpText_0
 	jsl	~~strlen
 	sta	<R0
 	clc
 	lda	#$ffff
 	adc	<R0
-	sta	<L91+length_1
+	sta	<L99+length_1
 ;		for(index = length;index >= 0;index--)
-	.line	338
-	lda	<L91+length_1
-	sta	<L91+index_1
+	.line	350
+	lda	<L99+length_1
+	sta	<L99+index_1
 	brl	L10027
 L10026:
 ;		{
-	.line	339
+	.line	351
 ;			if(lpText[index] == ' ')
-	.line	340
+	.line	352
 ;			{
 	sep	#$20
 	longa	off
-	ldy	<L91+index_1
-	lda	[<L90+lpText_0],Y
+	ldy	<L99+index_1
+	lda	[<L98+lpText_0],Y
 	cmp	#<$20
 	rep	#$20
 	longa	on
-	beq	L94
+	beq	L102
 	brl	L10028
-L94:
-	.line	341
+L102:
+	.line	353
 ;				lpText[index] = 0;
-	.line	342
+	.line	354
 	sep	#$20
 	longa	off
 	lda	#$0
-	ldy	<L91+index_1
-	sta	[<L90+lpText_0],Y
+	ldy	<L99+index_1
+	sta	[<L98+lpText_0],Y
 	rep	#$20
 	longa	on
 ;			}
-	.line	343
+	.line	355
 ;			else
 	brl	L10029
 L10028:
 ;			{
-	.line	345
+	.line	357
 ;				break;
-	.line	346
+	.line	358
 	brl	L10025
 ;			}
-	.line	347
+	.line	359
 L10029:
 ;		}
-	.line	348
+	.line	360
 L10024:
-	dec	<L91+index_1
+	dec	<L99+index_1
 L10027:
-	lda	<L91+index_1
+	lda	<L99+index_1
 	cmp	#<$0
-	bcc	L95
+	bcc	L103
 	brl	L10026
-L95:
+L103:
 L10025:
 ;	}
-	.line	349
+	.line	361
 ;	return lpText;
 L10023:
-	.line	350
-	ldx	<L90+lpText_0+2
-	lda	<L90+lpText_0
-L96:
+	.line	362
+	ldx	<L98+lpText_0+2
+	lda	<L98+lpText_0
+L104:
 	tay
-	lda	<L90+2
-	sta	<L90+2+4
-	lda	<L90+1
-	sta	<L90+1+4
+	lda	<L98+2
+	sta	<L98+2+4
+	lda	<L98+1
+	sta	<L98+1+4
 	pld
 	tsc
 	clc
-	adc	#L90+4
+	adc	#L98+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	351
-	.endblock	351
-L90	equ	8
-L91	equ	5
+	.line	363
+	.endblock	363
+L98	equ	8
+L99	equ	5
 	ends
 	efunc
-	.endfunc	351,5,8
-	.line	351
+	.endfunc	363,5,8
+	.line	363
 ;
 ;LPCHAR k_string_ltrim(LPCHAR lpText)
 ;{
-	.line	353
-	.line	354
+	.line	365
+	.line	366
 	code
 	xdef	~~k_string_ltrim
 	func
-	.function	354
+	.function	366
 ~~k_string_ltrim:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L97
+	sbc	#L105
 	tcs
 	phd
 	tcd
 lpText_0	set	4
-	.block	354
+	.block	366
 ;	UINT 	index  = 0;
 ;	UINT    c      = 0;
 ;	UINT 	length = 0;
@@ -2806,185 +3201,185 @@ tmp_1	set	6
 	.sym	length,4,16,1,16
 	.sym	tmp,6,142,1,32
 	.sym	lpText,4,142,6,32
-	stz	<L98+index_1
-	stz	<L98+c_1
-	stz	<L98+length_1
-	stz	<L98+tmp_1
-	stz	<L98+tmp_1+2
-	.line	359
+	stz	<L106+index_1
+	stz	<L106+c_1
+	stz	<L106+length_1
+	stz	<L106+tmp_1
+	stz	<L106+tmp_1+2
+	.line	371
 ;	{
-	lda	<L97+lpText_0
-	ora	<L97+lpText_0+2
-	bne	L100
+	lda	<L105+lpText_0
+	ora	<L105+lpText_0+2
+	bne	L108
 	brl	L10030
-L100:
-	.line	360
+L108:
+	.line	372
 ;		length = strlen(lpText);
-	.line	361
-	pei	<L97+lpText_0+2
-	pei	<L97+lpText_0
+	.line	373
+	pei	<L105+lpText_0+2
+	pei	<L105+lpText_0
 	jsl	~~strlen
-	sta	<L98+length_1
-;		tmp = malloc(length+1);
-	.line	362
-	lda	<L98+length_1
+	sta	<L106+length_1
+;		tmp = k_mem_allocate_heap(length+1);
+	.line	374
+	lda	<L106+length_1
 	ina
 	pha
-	jsl	~~malloc
-	sta	<L98+tmp_1
-	stx	<L98+tmp_1+2
+	jsl	~~k_mem_allocate_heap
+	sta	<L106+tmp_1
+	stx	<L106+tmp_1+2
 ;		if(tmp)
-	.line	363
+	.line	375
 ;		{
-	lda	<L98+tmp_1
-	ora	<L98+tmp_1+2
-	bne	L101
+	lda	<L106+tmp_1
+	ora	<L106+tmp_1+2
+	bne	L109
 	brl	L10031
-L101:
-	.line	364
+L109:
+	.line	376
 ;			memset(tmp,0,length+1);
-	.line	365
-	lda	<L98+length_1
+	.line	377
+	lda	<L106+length_1
 	ina
 	pha
 	pea	#<$0
-	pei	<L98+tmp_1+2
-	pei	<L98+tmp_1
+	pei	<L106+tmp_1+2
+	pei	<L106+tmp_1
 	jsl	~~memset
 ;			for(index = 0;index < length;index++)
-	.line	366
-	stz	<L98+index_1
+	.line	378
+	stz	<L106+index_1
 	brl	L10035
 L10034:
 ;			{
-	.line	367
+	.line	379
 ;				if(lpText[index] == ' ' && c == 0)
-	.line	368
+	.line	380
 ;				{
 	sep	#$20
 	longa	off
-	ldy	<L98+index_1
-	lda	[<L97+lpText_0],Y
+	ldy	<L106+index_1
+	lda	[<L105+lpText_0],Y
 	cmp	#<$20
 	rep	#$20
 	longa	on
-	beq	L102
+	beq	L110
 	brl	L10036
-L102:
-	lda	<L98+c_1
-	beq	L103
+L110:
+	lda	<L106+c_1
+	beq	L111
 	brl	L10036
-L103:
-	.line	369
+L111:
+	.line	381
 ;					// skip spaces until we find another char first
 ;				}
-	.line	371
+	.line	383
 ;				else
 	brl	L10037
 L10036:
 ;				{
-	.line	373
+	.line	385
 ;					tmp[c] = lpText[index];
-	.line	374
+	.line	386
 	sep	#$20
 	longa	off
-	ldy	<L98+index_1
-	lda	[<L97+lpText_0],Y
-	ldy	<L98+c_1
-	sta	[<L98+tmp_1],Y
+	ldy	<L106+index_1
+	lda	[<L105+lpText_0],Y
+	ldy	<L106+c_1
+	sta	[<L106+tmp_1],Y
 	rep	#$20
 	longa	on
 ;					c++;
-	.line	375
-	inc	<L98+c_1
+	.line	387
+	inc	<L106+c_1
 ;				}
-	.line	376
+	.line	388
 L10037:
 ;
 ;				if(lpText[0]  == 0)
-	.line	378
+	.line	390
 ;					break;
-	lda	[<L97+lpText_0]
+	lda	[<L105+lpText_0]
 	and	#$ff
-	bne	L104
+	bne	L112
 	brl	L10033
-L104:
+L112:
 ;			}
-	.line	380
+	.line	392
 L10032:
-	inc	<L98+index_1
+	inc	<L106+index_1
 L10035:
-	lda	<L98+index_1
-	cmp	<L98+length_1
-	bcs	L105
+	lda	<L106+index_1
+	cmp	<L106+length_1
+	bcs	L113
 	brl	L10034
-L105:
+L113:
 L10033:
 ;			strcpy(lpText,tmp);
-	.line	381
-	pei	<L98+tmp_1+2
-	pei	<L98+tmp_1
-	pei	<L97+lpText_0+2
-	pei	<L97+lpText_0
+	.line	393
+	pei	<L106+tmp_1+2
+	pei	<L106+tmp_1
+	pei	<L105+lpText_0+2
+	pei	<L105+lpText_0
 	jsl	~~strcpy
-;			free(tmp);
-	.line	382
-	pei	<L98+tmp_1+2
-	pei	<L98+tmp_1
-	jsl	~~free
+;			k_mem_deallocate_heap(tmp);
+	.line	394
+	pei	<L106+tmp_1+2
+	pei	<L106+tmp_1
+	jsl	~~k_mem_deallocate_heap
 ;		}
-	.line	383
+	.line	395
 ;	}
 L10031:
-	.line	384
+	.line	396
 ;	return lpText;
 L10030:
-	.line	385
-	ldx	<L97+lpText_0+2
-	lda	<L97+lpText_0
-L106:
+	.line	397
+	ldx	<L105+lpText_0+2
+	lda	<L105+lpText_0
+L114:
 	tay
-	lda	<L97+2
-	sta	<L97+2+4
-	lda	<L97+1
-	sta	<L97+1+4
+	lda	<L105+2
+	sta	<L105+2+4
+	lda	<L105+1
+	sta	<L105+1+4
 	pld
 	tsc
 	clc
-	adc	#L97+4
+	adc	#L105+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	386
-	.endblock	386
-L97	equ	10
-L98	equ	1
+	.line	398
+	.endblock	398
+L105	equ	10
+L106	equ	1
 	ends
 	efunc
-	.endfunc	386,1,10
-	.line	386
+	.endfunc	398,1,10
+	.line	398
 ;
 ;INT k_string_indexOf(LPCHAR chars,CHAR c)
 ;{
-	.line	388
-	.line	389
+	.line	400
+	.line	401
 	code
 	xdef	~~k_string_indexOf
 	func
-	.function	389
+	.function	401
 ~~k_string_indexOf:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L107
+	sbc	#L115
 	tcs
 	phd
 	tcd
 chars_0	set	4
 c_0	set	8
-	.block	389
+	.block	401
 ;	LPCHAR ptr = chars;
 ;	INT pos = 0;
 ;
@@ -2995,146 +3390,50 @@ pos_1	set	4
 	.sym	pos,4,5,1,16
 	.sym	chars,4,142,6,32
 	.sym	c,8,14,6,8
-	lda	<L107+chars_0
-	sta	<L108+ptr_1
-	lda	<L107+chars_0+2
-	sta	<L108+ptr_1+2
-	stz	<L108+pos_1
-	.line	393
-	lda	<L107+c_0
-	and	#$ff
-	pha
+	lda	<L115+chars_0
+	sta	<L116+ptr_1
+	lda	<L115+chars_0+2
+	sta	<L116+ptr_1+2
+	stz	<L116+pos_1
+	.line	405
+	pei	<L115+c_0
 	pea	#^L1
 	pea	#<L1
 	jsl	~~k_debug_char
 ;
 ;	while(*ptr!=0)
-	.line	395
+	.line	407
 L10038:
-	lda	[<L108+ptr_1]
+	lda	[<L116+ptr_1]
 	and	#$ff
-	bne	L110
+	bne	L118
 	brl	L10039
-L110:
+L118:
 ;	{
-	.line	396
+	.line	408
 ;		if(*ptr == c)
-	.line	397
+	.line	409
 ;		{
 	sep	#$20
 	longa	off
-	lda	[<L108+ptr_1]
-	cmp	<L107+c_0
+	lda	[<L116+ptr_1]
+	cmp	<L115+c_0
 	rep	#$20
 	longa	on
-	beq	L111
+	beq	L119
 	brl	L10040
-L111:
-	.line	398
+L119:
+	.line	410
 ;			k_debug_integer("k_string_indexOf:pos:",pos);
-	.line	399
-	pei	<L108+pos_1
+	.line	411
+	pei	<L116+pos_1
 	pea	#^L1+23
 	pea	#<L1+23
 	jsl	~~k_debug_integer
 ;			return pos;
-	.line	400
-	lda	<L108+pos_1
-L112:
-	tay
-	lda	<L107+2
-	sta	<L107+2+6
-	lda	<L107+1
-	sta	<L107+1+6
-	pld
-	tsc
-	clc
-	adc	#L107+6
-	tcs
-	tya
-	rtl
-;		}
-	.line	401
-;		pos++;
-L10040:
-	.line	402
-	inc	<L108+pos_1
-;		ptr++;
-	.line	403
-	inc	<L108+ptr_1
-	bne	L113
-	inc	<L108+ptr_1+2
-L113:
-;	};
-	.line	404
-	brl	L10038
-L10039:
-	.line	404
-;
-;	return -1;
-	.line	406
-	lda	#$ffff
-	brl	L112
-;}
-	.line	407
-	.endblock	407
-L107	equ	6
-L108	equ	1
-	ends
-	efunc
-	.endfunc	407,1,6
-	.line	407
-	data
-L1:
-	db	$6B,$5F,$73,$74,$72,$69,$6E,$67,$5F,$69,$6E,$64,$65,$78,$4F
-	db	$66,$3A,$63,$68,$61,$72,$3A,$00,$6B,$5F,$73,$74,$72,$69,$6E
-	db	$67,$5F,$69,$6E,$64,$65,$78,$4F,$66,$3A,$70,$6F,$73,$3A,$00
-	ends
-;
-;LPCHAR k_string_toString(CHAR c,LPCHAR toBuffer)
-;{
-	.line	409
-	.line	410
-	code
-	xdef	~~k_string_toString
-	func
-	.function	410
-~~k_string_toString:
-	longa	on
-	longi	on
-	tsc
-	sec
-	sbc	#L115
-	tcs
-	phd
-	tcd
-c_0	set	4
-toBuffer_0	set	6
-	.block	410
-;	toBuffer[0] = c;
-	.sym	c,4,14,6,8
-	.sym	toBuffer,6,142,6,32
-	.line	411
-	sep	#$20
-	longa	off
-	lda	<L115+c_0
-	sta	[<L115+toBuffer_0]
-	rep	#$20
-	longa	on
-;	toBuffer[1] = 0;
 	.line	412
-	sep	#$20
-	longa	off
-	lda	#$0
-	ldy	#$1
-	sta	[<L115+toBuffer_0],Y
-	rep	#$20
-	longa	on
-;	return toBuffer;
-	.line	413
-	ldx	<L115+toBuffer_0+2
-	lda	<L115+toBuffer_0
-L118:
+	lda	<L116+pos_1
+L120:
 	tay
 	lda	<L115+2
 	sta	<L115+2+6
@@ -3147,35 +3446,129 @@ L118:
 	tcs
 	tya
 	rtl
-;}
+;		}
+	.line	413
+;		pos++;
+L10040:
 	.line	414
-	.endblock	414
-L115	equ	0
+	inc	<L116+pos_1
+;		ptr++;
+	.line	415
+	inc	<L116+ptr_1
+	bne	L121
+	inc	<L116+ptr_1+2
+L121:
+;	};
+	.line	416
+	brl	L10038
+L10039:
+	.line	416
+;
+;	return -1;
+	.line	418
+	lda	#$ffff
+	brl	L120
+;}
+	.line	419
+	.endblock	419
+L115	equ	6
 L116	equ	1
 	ends
 	efunc
-	.endfunc	414,1,0
-	.line	414
+	.endfunc	419,1,6
+	.line	419
+	data
+L1:
+	db	$6B,$5F,$73,$74,$72,$69,$6E,$67,$5F,$69,$6E,$64,$65,$78,$4F
+	db	$66,$3A,$63,$68,$61,$72,$3A,$00,$6B,$5F,$73,$74,$72,$69,$6E
+	db	$67,$5F,$69,$6E,$64,$65,$78,$4F,$66,$3A,$70,$6F,$73,$3A,$00
+	ends
+;
+;LPCHAR k_string_toString(CHAR c,LPCHAR toBuffer)
+;{
+	.line	421
+	.line	422
+	code
+	xdef	~~k_string_toString
+	func
+	.function	422
+~~k_string_toString:
+	longa	on
+	longi	on
+	tsc
+	sec
+	sbc	#L123
+	tcs
+	phd
+	tcd
+c_0	set	4
+toBuffer_0	set	6
+	.block	422
+;	toBuffer[0] = c;
+	.sym	c,4,14,6,8
+	.sym	toBuffer,6,142,6,32
+	.line	423
+	sep	#$20
+	longa	off
+	lda	<L123+c_0
+	sta	[<L123+toBuffer_0]
+	rep	#$20
+	longa	on
+;	toBuffer[1] = 0;
+	.line	424
+	sep	#$20
+	longa	off
+	lda	#$0
+	ldy	#$1
+	sta	[<L123+toBuffer_0],Y
+	rep	#$20
+	longa	on
+;	return toBuffer;
+	.line	425
+	ldx	<L123+toBuffer_0+2
+	lda	<L123+toBuffer_0
+L126:
+	tay
+	lda	<L123+2
+	sta	<L123+2+6
+	lda	<L123+1
+	sta	<L123+1+6
+	pld
+	tsc
+	clc
+	adc	#L123+6
+	tcs
+	tya
+	rtl
+;}
+	.line	426
+	.endblock	426
+L123	equ	0
+L124	equ	1
+	ends
+	efunc
+	.endfunc	426,1,0
+	.line	426
 ;
 ;LPCHAR k_string_copy_string(LPCSTR src)
 ;{
-	.line	416
-	.line	417
+	.line	428
+	.line	429
 	code
 	xdef	~~k_string_copy_string
 	func
-	.function	417
+	.function	429
 ~~k_string_copy_string:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L119
+	sbc	#L127
 	tcs
 	phd
 	tcd
 src_0	set	4
-	.block	417
+	.block	429
 ;	UINT size = 0;
 ;	LPCHAR copy = NULL;
 ;	LPCHAR ptr = NULL;
@@ -3190,262 +3583,262 @@ ptr_1	set	6
 	.sym	copy,2,142,1,32
 	.sym	ptr,6,142,1,32
 	.sym	src,4,142,6,32
-	stz	<L120+size_1
-	stz	<L120+copy_1
-	stz	<L120+copy_1+2
-	stz	<L120+ptr_1
-	stz	<L120+ptr_1+2
-	.line	424
+	stz	<L128+size_1
+	stz	<L128+copy_1
+	stz	<L128+copy_1+2
+	stz	<L128+ptr_1
+	stz	<L128+ptr_1+2
+	.line	436
 ;	{
-	lda	<L119+src_0
-	ora	<L119+src_0+2
-	bne	L122
+	lda	<L127+src_0
+	ora	<L127+src_0+2
+	bne	L130
 	brl	L10041
-L122:
-	.line	425
+L130:
+	.line	437
 ;		size = strlen(src);
-	.line	426
-	pei	<L119+src_0+2
-	pei	<L119+src_0
+	.line	438
+	pei	<L127+src_0+2
+	pei	<L127+src_0
 	jsl	~~strlen
-	sta	<L120+size_1
+	sta	<L128+size_1
 ;
 ;		//k_debug_integer("k_string_copy_string:size:",size);
 ;
 ;		if(size > 0)
-	.line	430
+	.line	442
 ;		{
 	lda	#$0
-	cmp	<L120+size_1
-	bcc	L123
+	cmp	<L128+size_1
+	bcc	L131
 	brl	L10042
-L123:
-	.line	431
-;			copy = malloc(size+1);
-	.line	432
-	lda	<L120+size_1
+L131:
+	.line	443
+;			copy = k_mem_allocate_heap(size+1);
+	.line	444
+	lda	<L128+size_1
 	ina
 	pha
-	jsl	~~malloc
-	sta	<L120+copy_1
-	stx	<L120+copy_1+2
+	jsl	~~k_mem_allocate_heap
+	sta	<L128+copy_1
+	stx	<L128+copy_1+2
 ;			//strcpy(copy,src);
 ;			ptr = copy;
-	.line	434
-	lda	<L120+copy_1
-	sta	<L120+ptr_1
-	lda	<L120+copy_1+2
-	sta	<L120+ptr_1+2
+	.line	446
+	lda	<L128+copy_1
+	sta	<L128+ptr_1
+	lda	<L128+copy_1+2
+	sta	<L128+ptr_1+2
 ;			while(*src)
-	.line	435
+	.line	447
 L10043:
-	lda	[<L119+src_0]
+	lda	[<L127+src_0]
 	and	#$ff
-	bne	L124
+	bne	L132
 	brl	L10044
-L124:
+L132:
 ;			{
-	.line	436
+	.line	448
 ;				*ptr = *src;
-	.line	437
+	.line	449
 	sep	#$20
 	longa	off
-	lda	[<L119+src_0]
-	sta	[<L120+ptr_1]
+	lda	[<L127+src_0]
+	sta	[<L128+ptr_1]
 	rep	#$20
 	longa	on
 ;				ptr++;
-	.line	438
-	inc	<L120+ptr_1
-	bne	L125
-	inc	<L120+ptr_1+2
-L125:
+	.line	450
+	inc	<L128+ptr_1
+	bne	L133
+	inc	<L128+ptr_1+2
+L133:
 ;				src++;
-	.line	439
-	inc	<L119+src_0
-	bne	L126
-	inc	<L119+src_0+2
-L126:
+	.line	451
+	inc	<L127+src_0
+	bne	L134
+	inc	<L127+src_0+2
+L134:
 ;			}
-	.line	440
+	.line	452
 	brl	L10043
 L10044:
 ;			*ptr = 0;
-	.line	441
+	.line	453
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L120+ptr_1]
+	sta	[<L128+ptr_1]
 	rep	#$20
 	longa	on
 ;			//k_debug_strings("k_string_copy_string:size:",copy);
 ;		}
-	.line	443
+	.line	455
 ;	}
 L10042:
-	.line	444
+	.line	456
 ;
 ;	//k_debug_strings("k_string_copy_string:",copy);
 ;
 ;	return copy;
 L10041:
-	.line	448
-	ldx	<L120+copy_1+2
-	lda	<L120+copy_1
-L127:
+	.line	460
+	ldx	<L128+copy_1+2
+	lda	<L128+copy_1
+L135:
 	tay
-	lda	<L119+2
-	sta	<L119+2+4
-	lda	<L119+1
-	sta	<L119+1+4
+	lda	<L127+2
+	sta	<L127+2+4
+	lda	<L127+1
+	sta	<L127+1+4
 	pld
 	tsc
 	clc
-	adc	#L119+4
+	adc	#L127+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	449
-	.endblock	449
-L119	equ	10
-L120	equ	1
+	.line	461
+	.endblock	461
+L127	equ	10
+L128	equ	1
 	ends
 	efunc
-	.endfunc	449,1,10
-	.line	449
+	.endfunc	461,1,10
+	.line	461
 ;
 ;PFXSTRING k_fxstring_init(UINT size)
 ;{
-	.line	451
-	.line	452
+	.line	463
+	.line	464
 	code
 	xdef	~~k_fxstring_init
 	func
-	.function	452
+	.function	464
 ~~k_fxstring_init:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L128
+	sbc	#L136
 	tcs
 	phd
 	tcd
 size_0	set	4
-	.block	452
+	.block	464
 ;	PFXSTRING fxstring = NULL;
 ;
 ;	if(size > 0)
 fxstring_1	set	0
-	.sym	fxstring,0,138,1,32,43
+	.sym	fxstring,0,138,1,32,45
 	.sym	size,4,16,6,16
-	stz	<L129+fxstring_1
-	stz	<L129+fxstring_1+2
-	.line	455
+	stz	<L137+fxstring_1
+	stz	<L137+fxstring_1+2
+	.line	467
 ;	{
 	lda	#$0
-	cmp	<L128+size_0
-	bcc	L131
+	cmp	<L136+size_0
+	bcc	L139
 	brl	L10045
-L131:
-	.line	456
+L139:
+	.line	468
 ;		k_debug_integer("k_fxstring_new:",size);
-	.line	457
-	pei	<L128+size_0
-	pea	#^L114
-	pea	#<L114
+	.line	469
+	pei	<L136+size_0
+	pea	#^L122
+	pea	#<L122
 	jsl	~~k_debug_integer
 ;
-;		fxstring = malloc(sizeof(FXSTRING));
-	.line	459
+;		fxstring = k_mem_allocate_heap(sizeof(FXSTRING));
+	.line	471
 	pea	#<$8
-	jsl	~~malloc
-	sta	<L129+fxstring_1
-	stx	<L129+fxstring_1+2
+	jsl	~~k_mem_allocate_heap
+	sta	<L137+fxstring_1
+	stx	<L137+fxstring_1+2
 ;		fxstring->pos = 0;
-	.line	460
+	.line	472
 	lda	#$0
 	ldy	#$2
-	sta	[<L129+fxstring_1],Y
+	sta	[<L137+fxstring_1],Y
 ;		fxstring->size = size;
-	.line	461
-	lda	<L128+size_0
-	sta	[<L129+fxstring_1]
-;		fxstring->buffer = malloc(fxstring->size);
-	.line	462
-	lda	[<L129+fxstring_1]
+	.line	473
+	lda	<L136+size_0
+	sta	[<L137+fxstring_1]
+;		fxstring->buffer = k_mem_allocate_heap(fxstring->size);
+	.line	474
+	lda	[<L137+fxstring_1]
 	pha
-	jsl	~~malloc
+	jsl	~~k_mem_allocate_heap
 	sta	<R0
 	stx	<R0+2
 	lda	<R0
 	ldy	#$4
-	sta	[<L129+fxstring_1],Y
+	sta	[<L137+fxstring_1],Y
 	lda	<R0+2
 	ldy	#$6
-	sta	[<L129+fxstring_1],Y
+	sta	[<L137+fxstring_1],Y
 ;		if(fxstring->buffer)
-	.line	463
+	.line	475
 ;			memset(fxstring->buffer,0,fxstring->size);
 	ldy	#$4
-	lda	[<L129+fxstring_1],Y
+	lda	[<L137+fxstring_1],Y
 	ldy	#$6
-	ora	[<L129+fxstring_1],Y
-	bne	L132
+	ora	[<L137+fxstring_1],Y
+	bne	L140
 	brl	L10046
-L132:
-	.line	464
-	lda	[<L129+fxstring_1]
+L140:
+	.line	476
+	lda	[<L137+fxstring_1]
 	pha
 	pea	#<$0
 	ldy	#$6
-	lda	[<L129+fxstring_1],Y
+	lda	[<L137+fxstring_1],Y
 	pha
 	ldy	#$4
-	lda	[<L129+fxstring_1],Y
+	lda	[<L137+fxstring_1],Y
 	pha
 	jsl	~~memset
 ;
 ;		k_debug_integer("k_fxstring_new:",fxstring->size);
 L10046:
-	.line	466
-	lda	[<L129+fxstring_1]
+	.line	478
+	lda	[<L137+fxstring_1]
 	pha
-	pea	#^L114+16
-	pea	#<L114+16
+	pea	#^L122+16
+	pea	#<L122+16
 	jsl	~~k_debug_integer
 ;	}
-	.line	467
+	.line	479
 ;	return fxstring;
 L10045:
-	.line	468
-	ldx	<L129+fxstring_1+2
-	lda	<L129+fxstring_1
-L133:
+	.line	480
+	ldx	<L137+fxstring_1+2
+	lda	<L137+fxstring_1
+L141:
 	tay
-	lda	<L128+2
-	sta	<L128+2+2
-	lda	<L128+1
-	sta	<L128+1+2
+	lda	<L136+2
+	sta	<L136+2+2
+	lda	<L136+1
+	sta	<L136+1+2
 	pld
 	tsc
 	clc
-	adc	#L128+2
+	adc	#L136+2
 	tcs
 	tya
 	rtl
 ;}
-	.line	469
-	.endblock	469
-L128	equ	8
-L129	equ	5
+	.line	481
+	.endblock	481
+L136	equ	8
+L137	equ	5
 	ends
 	efunc
-	.endfunc	469,5,8
-	.line	469
+	.endfunc	481,5,8
+	.line	481
 	data
-L114:
+L122:
 	db	$6B,$5F,$66,$78,$73,$74,$72,$69,$6E,$67,$5F,$6E,$65,$77,$3A
 	db	$00,$6B,$5F,$66,$78,$73,$74,$72,$69,$6E,$67,$5F,$6E,$65,$77
 	db	$3A,$00
@@ -3454,704 +3847,704 @@ L114:
 ;
 ;PFXSTRING k_fxstring_reinit(PFXSTRING fxstring)
 ;{
-	.line	472
-	.line	473
+	.line	484
+	.line	485
 	code
 	xdef	~~k_fxstring_reinit
 	func
-	.function	473
+	.function	485
 ~~k_fxstring_reinit:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L135
+	sbc	#L143
 	tcs
 	phd
 	tcd
 fxstring_0	set	4
-	.block	473
+	.block	485
 ;	if(fxstring)
-	.sym	fxstring,4,138,6,32,43
-	.line	474
+	.sym	fxstring,4,138,6,32,45
+	.line	486
 ;	{
-	lda	<L135+fxstring_0
-	ora	<L135+fxstring_0+2
-	bne	L138
+	lda	<L143+fxstring_0
+	ora	<L143+fxstring_0+2
+	bne	L146
 	brl	L10047
-L138:
-	.line	475
+L146:
+	.line	487
 ;		fxstring->pos = 0;
-	.line	476
+	.line	488
 	lda	#$0
 	ldy	#$2
-	sta	[<L135+fxstring_0],Y
+	sta	[<L143+fxstring_0],Y
 ;		if(fxstring->buffer)
-	.line	477
+	.line	489
 ;			memset(fxstring->buffer,0,fxstring->size);
 	ldy	#$4
-	lda	[<L135+fxstring_0],Y
+	lda	[<L143+fxstring_0],Y
 	ldy	#$6
-	ora	[<L135+fxstring_0],Y
-	bne	L139
+	ora	[<L143+fxstring_0],Y
+	bne	L147
 	brl	L10048
-L139:
-	.line	478
-	lda	[<L135+fxstring_0]
+L147:
+	.line	490
+	lda	[<L143+fxstring_0]
 	pha
 	pea	#<$0
 	ldy	#$6
-	lda	[<L135+fxstring_0],Y
+	lda	[<L143+fxstring_0],Y
 	pha
 	ldy	#$4
-	lda	[<L135+fxstring_0],Y
+	lda	[<L143+fxstring_0],Y
 	pha
 	jsl	~~memset
 ;	}
 L10048:
-	.line	479
+	.line	491
 ;	return fxstring;
 L10047:
-	.line	480
-	ldx	<L135+fxstring_0+2
-	lda	<L135+fxstring_0
-L140:
+	.line	492
+	ldx	<L143+fxstring_0+2
+	lda	<L143+fxstring_0
+L148:
 	tay
-	lda	<L135+2
-	sta	<L135+2+4
-	lda	<L135+1
-	sta	<L135+1+4
+	lda	<L143+2
+	sta	<L143+2+4
+	lda	<L143+1
+	sta	<L143+1+4
 	pld
 	tsc
 	clc
-	adc	#L135+4
+	adc	#L143+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	481
-	.endblock	481
-L135	equ	0
-L136	equ	1
+	.line	493
+	.endblock	493
+L143	equ	0
+L144	equ	1
 	ends
 	efunc
-	.endfunc	481,1,0
-	.line	481
+	.endfunc	493,1,0
+	.line	493
 ;
 ;
 ;
 ;PFXSTRING k_fxstring_new(LPCHAR initial,UINT size)
 ;{
-	.line	485
-	.line	486
+	.line	497
+	.line	498
 	code
 	xdef	~~k_fxstring_new
 	func
-	.function	486
+	.function	498
 ~~k_fxstring_new:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L141
+	sbc	#L149
 	tcs
 	phd
 	tcd
 initial_0	set	4
 size_0	set	8
-	.block	486
+	.block	498
 ;	PFXSTRING fxstring = k_fxstring_init(size);
 ;
 ;	if(fxstring->buffer == NULL)
 fxstring_1	set	0
-	.sym	fxstring,0,138,1,32,43
+	.sym	fxstring,0,138,1,32,45
 	.sym	initial,4,142,6,32
 	.sym	size,8,16,6,16
-	pei	<L141+size_0
+	pei	<L149+size_0
 	jsl	~~k_fxstring_init
-	sta	<L142+fxstring_1
-	stx	<L142+fxstring_1+2
-	.line	489
+	sta	<L150+fxstring_1
+	stx	<L150+fxstring_1+2
+	.line	501
 ;	{
 	ldy	#$4
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	ldy	#$6
-	ora	[<L142+fxstring_1],Y
-	beq	L144
+	ora	[<L150+fxstring_1],Y
+	beq	L152
 	brl	L10049
-L144:
-	.line	490
-;		fxstring->buffer = malloc(fxstring->size);
-	.line	491
-	lda	[<L142+fxstring_1]
+L152:
+	.line	502
+;		fxstring->buffer = k_mem_allocate_heap(fxstring->size);
+	.line	503
+	lda	[<L150+fxstring_1]
 	pha
-	jsl	~~malloc
+	jsl	~~k_mem_allocate_heap
 	sta	<R0
 	stx	<R0+2
 	lda	<R0
 	ldy	#$4
-	sta	[<L142+fxstring_1],Y
+	sta	[<L150+fxstring_1],Y
 	lda	<R0+2
 	ldy	#$6
-	sta	[<L142+fxstring_1],Y
+	sta	[<L150+fxstring_1],Y
 ;		memset(fxstring->buffer,0,fxstring->size);
-	.line	492
-	lda	[<L142+fxstring_1]
+	.line	504
+	lda	[<L150+fxstring_1]
 	pha
 	pea	#<$0
 	ldy	#$6
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	ldy	#$4
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	jsl	~~memset
 ;	}
-	.line	493
+	.line	505
 ;
 ;	strcpy(fxstring->buffer,initial);
 L10049:
-	.line	495
-	pei	<L141+initial_0+2
-	pei	<L141+initial_0
+	.line	507
+	pei	<L149+initial_0+2
+	pei	<L149+initial_0
 	ldy	#$6
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	ldy	#$4
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	jsl	~~strcpy
 ;	fxstring->pos = strlen(fxstring->buffer);
-	.line	496
+	.line	508
 	ldy	#$6
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	ldy	#$4
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	jsl	~~strlen
 	ldy	#$2
-	sta	[<L142+fxstring_1],Y
+	sta	[<L150+fxstring_1],Y
 ;
 ;	k_debug_message("k_fxstring_new:",fxstring->buffer);
-	.line	498
+	.line	510
 	ldy	#$6
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
 	ldy	#$4
-	lda	[<L142+fxstring_1],Y
+	lda	[<L150+fxstring_1],Y
 	pha
-	pea	#^L134
-	pea	#<L134
+	pea	#^L142
+	pea	#<L142
 	jsl	~~k_debug_message
 ;
 ;	return fxstring;
-	.line	500
-	ldx	<L142+fxstring_1+2
-	lda	<L142+fxstring_1
-L145:
+	.line	512
+	ldx	<L150+fxstring_1+2
+	lda	<L150+fxstring_1
+L153:
 	tay
-	lda	<L141+2
-	sta	<L141+2+6
-	lda	<L141+1
-	sta	<L141+1+6
+	lda	<L149+2
+	sta	<L149+2+6
+	lda	<L149+1
+	sta	<L149+1+6
 	pld
 	tsc
 	clc
-	adc	#L141+6
+	adc	#L149+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	501
-	.endblock	501
-L141	equ	8
-L142	equ	5
+	.line	513
+	.endblock	513
+L149	equ	8
+L150	equ	5
 	ends
 	efunc
-	.endfunc	501,5,8
-	.line	501
+	.endfunc	513,5,8
+	.line	513
 	data
-L134:
+L142:
 	db	$6B,$5F,$66,$78,$73,$74,$72,$69,$6E,$67,$5F,$6E,$65,$77,$3A
 	db	$00
 	ends
 ;
 ;VOID k_fxstring_free(PFXSTRING string)
 ;{
-	.line	503
-	.line	504
+	.line	515
+	.line	516
 	code
 	xdef	~~k_fxstring_free
 	func
-	.function	504
+	.function	516
 ~~k_fxstring_free:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L147
+	sbc	#L155
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	504
+	.block	516
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	505
+	.sym	string,4,138,6,32,45
+	.line	517
 ;	{
-	lda	<L147+string_0
-	ora	<L147+string_0+2
-	bne	L150
+	lda	<L155+string_0
+	ora	<L155+string_0+2
+	bne	L158
 	brl	L10050
-L150:
-	.line	506
+L158:
+	.line	518
 ;		if(string->buffer)
-	.line	507
-;			free(string->buffer);
+	.line	519
+;			k_mem_deallocate_heap(string->buffer);
 	ldy	#$4
-	lda	[<L147+string_0],Y
+	lda	[<L155+string_0],Y
 	ldy	#$6
-	ora	[<L147+string_0],Y
-	bne	L151
+	ora	[<L155+string_0],Y
+	bne	L159
 	brl	L10051
-L151:
-	.line	508
+L159:
+	.line	520
 	ldy	#$6
-	lda	[<L147+string_0],Y
+	lda	[<L155+string_0],Y
 	pha
 	ldy	#$4
-	lda	[<L147+string_0],Y
+	lda	[<L155+string_0],Y
 	pha
-	jsl	~~free
+	jsl	~~k_mem_deallocate_heap
 ;
 ;		string->size = 0;
 L10051:
-	.line	510
+	.line	522
 	lda	#$0
-	sta	[<L147+string_0]
+	sta	[<L155+string_0]
 ;		string->pos  = 0;
-	.line	511
+	.line	523
 	lda	#$0
 	ldy	#$2
-	sta	[<L147+string_0],Y
+	sta	[<L155+string_0],Y
 ;		string->buffer = NULL;
-	.line	512
+	.line	524
 	lda	#$0
 	ldy	#$4
-	sta	[<L147+string_0],Y
+	sta	[<L155+string_0],Y
 	lda	#$0
 	ldy	#$6
-	sta	[<L147+string_0],Y
+	sta	[<L155+string_0],Y
 ;
-;		free(string);
-	.line	514
-	pei	<L147+string_0+2
-	pei	<L147+string_0
-	jsl	~~free
+;		k_mem_deallocate_heap(string);
+	.line	526
+	pei	<L155+string_0+2
+	pei	<L155+string_0
+	jsl	~~k_mem_deallocate_heap
 ;	}
-	.line	515
+	.line	527
 ;	return;
 L10050:
-	.line	516
-L152:
-	lda	<L147+2
-	sta	<L147+2+4
-	lda	<L147+1
-	sta	<L147+1+4
+	.line	528
+L160:
+	lda	<L155+2
+	sta	<L155+2+4
+	lda	<L155+1
+	sta	<L155+1+4
 	pld
 	tsc
 	clc
-	adc	#L147+4
+	adc	#L155+4
 	tcs
 	rtl
 ;}
-	.line	517
-	.endblock	517
-L147	equ	0
-L148	equ	1
+	.line	529
+	.endblock	529
+L155	equ	0
+L156	equ	1
 	ends
 	efunc
-	.endfunc	517,1,0
-	.line	517
+	.endfunc	529,1,0
+	.line	529
 ;
 ;UINT k_fxstring_size(PFXSTRING string)
 ;{
-	.line	519
-	.line	520
+	.line	531
+	.line	532
 	code
 	xdef	~~k_fxstring_size
 	func
-	.function	520
+	.function	532
 ~~k_fxstring_size:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L153
+	sbc	#L161
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	520
+	.block	532
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	521
+	.sym	string,4,138,6,32,45
+	.line	533
 ;	{
-	lda	<L153+string_0
-	ora	<L153+string_0+2
-	bne	L156
+	lda	<L161+string_0
+	ora	<L161+string_0+2
+	bne	L164
 	brl	L10052
-L156:
-	.line	522
+L164:
+	.line	534
 ;		return string->size;
-	.line	523
-	lda	[<L153+string_0]
-L157:
+	.line	535
+	lda	[<L161+string_0]
+L165:
 	tay
-	lda	<L153+2
-	sta	<L153+2+4
-	lda	<L153+1
-	sta	<L153+1+4
+	lda	<L161+2
+	sta	<L161+2+4
+	lda	<L161+1
+	sta	<L161+1+4
 	pld
 	tsc
 	clc
-	adc	#L153+4
+	adc	#L161+4
 	tcs
 	tya
 	rtl
 ;	}
-	.line	524
+	.line	536
 ;	return -1;
 L10052:
-	.line	525
+	.line	537
 	lda	#$ffff
-	brl	L157
+	brl	L165
 ;}
-	.line	526
-	.endblock	526
-L153	equ	0
-L154	equ	1
+	.line	538
+	.endblock	538
+L161	equ	0
+L162	equ	1
 	ends
 	efunc
-	.endfunc	526,1,0
-	.line	526
+	.endfunc	538,1,0
+	.line	538
 ;
 ;UINT k_fxstring_length(PFXSTRING string)
 ;{
-	.line	528
-	.line	529
+	.line	540
+	.line	541
 	code
 	xdef	~~k_fxstring_length
 	func
-	.function	529
+	.function	541
 ~~k_fxstring_length:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L158
+	sbc	#L166
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	529
+	.block	541
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	530
+	.sym	string,4,138,6,32,45
+	.line	542
 ;	{
-	lda	<L158+string_0
-	ora	<L158+string_0+2
-	bne	L161
+	lda	<L166+string_0
+	ora	<L166+string_0+2
+	bne	L169
 	brl	L10053
-L161:
-	.line	531
+L169:
+	.line	543
 ;		return strlen(string->buffer);
-	.line	532
+	.line	544
 	ldy	#$6
-	lda	[<L158+string_0],Y
+	lda	[<L166+string_0],Y
 	pha
 	ldy	#$4
-	lda	[<L158+string_0],Y
+	lda	[<L166+string_0],Y
 	pha
 	jsl	~~strlen
-L162:
+L170:
 	tay
-	lda	<L158+2
-	sta	<L158+2+4
-	lda	<L158+1
-	sta	<L158+1+4
+	lda	<L166+2
+	sta	<L166+2+4
+	lda	<L166+1
+	sta	<L166+1+4
 	pld
 	tsc
 	clc
-	adc	#L158+4
+	adc	#L166+4
 	tcs
 	tya
 	rtl
 ;	}
-	.line	533
+	.line	545
 ;	return -1;
 L10053:
-	.line	534
+	.line	546
 	lda	#$ffff
-	brl	L162
+	brl	L170
 ;}
-	.line	535
-	.endblock	535
-L158	equ	0
-L159	equ	1
+	.line	547
+	.endblock	547
+L166	equ	0
+L167	equ	1
 	ends
 	efunc
-	.endfunc	535,1,0
-	.line	535
+	.endfunc	547,1,0
+	.line	547
 ;
 ;UINT k_fxstring_position(PFXSTRING string)
 ;{
-	.line	537
-	.line	538
+	.line	549
+	.line	550
 	code
 	xdef	~~k_fxstring_position
 	func
-	.function	538
+	.function	550
 ~~k_fxstring_position:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L163
+	sbc	#L171
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	538
+	.block	550
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	539
-;	{
-	lda	<L163+string_0
-	ora	<L163+string_0+2
-	bne	L166
-	brl	L10054
-L166:
-	.line	540
-;		return string->pos;
-	.line	541
-	ldy	#$2
-	lda	[<L163+string_0],Y
-L167:
-	tay
-	lda	<L163+2
-	sta	<L163+2+4
-	lda	<L163+1
-	sta	<L163+1+4
-	pld
-	tsc
-	clc
-	adc	#L163+4
-	tcs
-	tya
-	rtl
-;	}
-	.line	542
-;	return -1;
-L10054:
-	.line	543
-	lda	#$ffff
-	brl	L167
-;}
-	.line	544
-	.endblock	544
-L163	equ	0
-L164	equ	1
-	ends
-	efunc
-	.endfunc	544,1,0
-	.line	544
-;
-;LPCHAR k_fxstring_addchar(PFXSTRING string,CHAR c)
-;{
-	.line	546
-	.line	547
-	code
-	xdef	~~k_fxstring_addchar
-	func
-	.function	547
-~~k_fxstring_addchar:
-	longa	on
-	longi	on
-	tsc
-	sec
-	sbc	#L168
-	tcs
-	phd
-	tcd
-string_0	set	4
-c_0	set	8
-	.block	547
-;	if(string)
-	.sym	string,4,138,6,32,43
-	.sym	c,8,14,6,8
-	.line	548
-;	{
-	lda	<L168+string_0
-	ora	<L168+string_0+2
-	bne	L171
-	brl	L10055
-L171:
-	.line	549
-;		string->buffer[string->pos] = c;
-	.line	550
-	ldy	#$2
-	lda	[<L168+string_0],Y
-	sta	<R0
-	ldy	#$4
-	lda	[<L168+string_0],Y
-	sta	<R1
-	ldy	#$6
-	lda	[<L168+string_0],Y
-	sta	<R1+2
-	sep	#$20
-	longa	off
-	lda	<L168+c_0
-	ldy	<R0
-	sta	[<R1],Y
-	rep	#$20
-	longa	on
-;		string->pos++;
+	.sym	string,4,138,6,32,45
 	.line	551
-	ldy	#$2
-	lda	[<L168+string_0],Y
-	ina
-	ldy	#$2
-	sta	[<L168+string_0],Y
-;		//k_debug_message("k_fxstring_addchar:",string->buffer);
-;		return string->buffer;
+;	{
+	lda	<L171+string_0
+	ora	<L171+string_0+2
+	bne	L174
+	brl	L10054
+L174:
+	.line	552
+;		return string->pos;
 	.line	553
-	ldy	#$6
-	lda	[<L168+string_0],Y
-	tax
-	ldy	#$4
-	lda	[<L168+string_0],Y
-L172:
+	ldy	#$2
+	lda	[<L171+string_0],Y
+L175:
 	tay
-	lda	<L168+2
-	sta	<L168+2+6
-	lda	<L168+1
-	sta	<L168+1+6
+	lda	<L171+2
+	sta	<L171+2+4
+	lda	<L171+1
+	sta	<L171+1+4
 	pld
 	tsc
 	clc
-	adc	#L168+6
+	adc	#L171+4
 	tcs
 	tya
 	rtl
 ;	}
 	.line	554
-;	return NULL;
-L10055:
+;	return -1;
+L10054:
 	.line	555
-	lda	#$0
-	tax
-	lda	#$0
-	brl	L172
+	lda	#$ffff
+	brl	L175
 ;}
 	.line	556
 	.endblock	556
-L168	equ	8
-L169	equ	9
+L171	equ	0
+L172	equ	1
 	ends
 	efunc
-	.endfunc	556,9,8
+	.endfunc	556,1,0
 	.line	556
 ;
-;CHAR k_fxstring_removechar(PFXSTRING string)
+;LPCHAR k_fxstring_addchar(PFXSTRING string,CHAR c)
 ;{
 	.line	558
 	.line	559
 	code
-	xdef	~~k_fxstring_removechar
+	xdef	~~k_fxstring_addchar
 	func
 	.function	559
+~~k_fxstring_addchar:
+	longa	on
+	longi	on
+	tsc
+	sec
+	sbc	#L176
+	tcs
+	phd
+	tcd
+string_0	set	4
+c_0	set	8
+	.block	559
+;	if(string)
+	.sym	string,4,138,6,32,45
+	.sym	c,8,14,6,8
+	.line	560
+;	{
+	lda	<L176+string_0
+	ora	<L176+string_0+2
+	bne	L179
+	brl	L10055
+L179:
+	.line	561
+;		string->buffer[string->pos] = c;
+	.line	562
+	ldy	#$2
+	lda	[<L176+string_0],Y
+	sta	<R0
+	ldy	#$4
+	lda	[<L176+string_0],Y
+	sta	<R1
+	ldy	#$6
+	lda	[<L176+string_0],Y
+	sta	<R1+2
+	sep	#$20
+	longa	off
+	lda	<L176+c_0
+	ldy	<R0
+	sta	[<R1],Y
+	rep	#$20
+	longa	on
+;		string->pos++;
+	.line	563
+	ldy	#$2
+	lda	[<L176+string_0],Y
+	ina
+	ldy	#$2
+	sta	[<L176+string_0],Y
+;		//k_debug_message("k_fxstring_addchar:",string->buffer);
+;		return string->buffer;
+	.line	565
+	ldy	#$6
+	lda	[<L176+string_0],Y
+	tax
+	ldy	#$4
+	lda	[<L176+string_0],Y
+L180:
+	tay
+	lda	<L176+2
+	sta	<L176+2+6
+	lda	<L176+1
+	sta	<L176+1+6
+	pld
+	tsc
+	clc
+	adc	#L176+6
+	tcs
+	tya
+	rtl
+;	}
+	.line	566
+;	return NULL;
+L10055:
+	.line	567
+	lda	#$0
+	tax
+	lda	#$0
+	brl	L180
+;}
+	.line	568
+	.endblock	568
+L176	equ	8
+L177	equ	9
+	ends
+	efunc
+	.endfunc	568,9,8
+	.line	568
+;
+;CHAR k_fxstring_removechar(PFXSTRING string)
+;{
+	.line	570
+	.line	571
+	code
+	xdef	~~k_fxstring_removechar
+	func
+	.function	571
 ~~k_fxstring_removechar:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L173
+	sbc	#L181
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	559
+	.block	571
 ;	CHAR old = 0;
 ;
 ;	if(string)
 old_1	set	0
 	.sym	old,0,14,1,8
-	.sym	string,4,138,6,32,43
+	.sym	string,4,138,6,32,45
 	sep	#$20
 	longa	off
-	stz	<L174+old_1
+	stz	<L182+old_1
 	rep	#$20
 	longa	on
-	.line	562
+	.line	574
 ;	{
-	lda	<L173+string_0
-	ora	<L173+string_0+2
-	bne	L176
+	lda	<L181+string_0
+	ora	<L181+string_0+2
+	bne	L184
 	brl	L10056
-L176:
-	.line	563
+L184:
+	.line	575
 ;		string->pos--;
-	.line	564
+	.line	576
 	clc
 	lda	#$ffff
 	ldy	#$2
-	adc	[<L173+string_0],Y
+	adc	[<L181+string_0],Y
 	ldy	#$2
-	sta	[<L173+string_0],Y
+	sta	[<L181+string_0],Y
 ;		if(string->pos < 0)
-	.line	565
+	.line	577
 ;			string->pos = 0;
 	ldy	#$2
-	lda	[<L173+string_0],Y
-	bmi	L177
+	lda	[<L181+string_0],Y
+	bmi	L185
 	brl	L10057
-L177:
-	.line	566
+L185:
+	.line	578
 	lda	#$0
 	ldy	#$2
-	sta	[<L173+string_0],Y
+	sta	[<L181+string_0],Y
 ;
 ;		old = string->buffer[string->pos];
 L10057:
-	.line	568
+	.line	580
 	ldy	#$2
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R0
 	ldy	#$4
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R1
 	ldy	#$6
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R1+2
 	sep	#$20
 	longa	off
 	ldy	<R0
 	lda	[<R1],Y
-	sta	<L174+old_1
+	sta	<L182+old_1
 	rep	#$20
 	longa	on
 ;		string->buffer[string->pos] = 0;
-	.line	569
+	.line	581
 	ldy	#$2
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R0
 	ldy	#$4
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R1
 	ldy	#$6
-	lda	[<L173+string_0],Y
+	lda	[<L181+string_0],Y
 	sta	<R1+2
 	sep	#$20
 	longa	off
@@ -4161,666 +4554,666 @@ L10057:
 	rep	#$20
 	longa	on
 ;	}
-	.line	570
+	.line	582
 ;	return old;
 L10056:
-	.line	571
-	lda	<L174+old_1
+	.line	583
+	lda	<L182+old_1
 	and	#$ff
-L178:
+L186:
 	tay
-	lda	<L173+2
-	sta	<L173+2+4
-	lda	<L173+1
-	sta	<L173+1+4
+	lda	<L181+2
+	sta	<L181+2+4
+	lda	<L181+1
+	sta	<L181+1+4
 	pld
 	tsc
 	clc
-	adc	#L173+4
+	adc	#L181+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	572
-	.endblock	572
-L173	equ	9
-L174	equ	9
+	.line	584
+	.endblock	584
+L181	equ	9
+L182	equ	9
 	ends
 	efunc
-	.endfunc	572,9,9
-	.line	572
+	.endfunc	584,9,9
+	.line	584
 ;
 ;LPCHAR k_fxstring_add(PFXSTRING string,LPCHAR text)
 ;{
-	.line	574
-	.line	575
+	.line	586
+	.line	587
 	code
 	xdef	~~k_fxstring_add
 	func
-	.function	575
+	.function	587
 ~~k_fxstring_add:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L179
-	tcs
-	phd
-	tcd
-string_0	set	4
-text_0	set	8
-	.block	575
-;	if(string && text)
-	.sym	string,4,138,6,32,43
-	.sym	text,8,142,6,32
-	.line	576
-;	{
-	lda	<L179+string_0
-	ora	<L179+string_0+2
-	bne	L182
-	brl	L10058
-L182:
-	lda	<L179+text_0
-	ora	<L179+text_0+2
-	bne	L183
-	brl	L10058
-L183:
-	.line	577
-;		strcat(string->buffer,text);
-	.line	578
-	pei	<L179+text_0+2
-	pei	<L179+text_0
-	ldy	#$6
-	lda	[<L179+string_0],Y
-	pha
-	ldy	#$4
-	lda	[<L179+string_0],Y
-	pha
-	jsl	~~strcat
-;		string->pos = strlen(string->buffer);
-	.line	579
-	ldy	#$6
-	lda	[<L179+string_0],Y
-	pha
-	ldy	#$4
-	lda	[<L179+string_0],Y
-	pha
-	jsl	~~strlen
-	ldy	#$2
-	sta	[<L179+string_0],Y
-;		//k_debug_integer("k_fxstring_add:",string->pos);
-;		return string->buffer;
-	.line	581
-	ldy	#$6
-	lda	[<L179+string_0],Y
-	tax
-	ldy	#$4
-	lda	[<L179+string_0],Y
-L184:
-	tay
-	lda	<L179+2
-	sta	<L179+2+8
-	lda	<L179+1
-	sta	<L179+1+8
-	pld
-	tsc
-	clc
-	adc	#L179+8
-	tcs
-	tya
-	rtl
-;	}
-	.line	582
-;	return string->buffer;
-L10058:
-	.line	583
-	ldy	#$6
-	lda	[<L179+string_0],Y
-	tax
-	ldy	#$4
-	lda	[<L179+string_0],Y
-	brl	L184
-;}
-	.line	584
-	.endblock	584
-L179	equ	0
-L180	equ	1
-	ends
-	efunc
-	.endfunc	584,1,0
-	.line	584
-;
-;UINT k_fxstring_fxadd(PFXSTRING string,PFXSTRING text)
-;{
-	.line	586
-	.line	587
-	code
-	xdef	~~k_fxstring_fxadd
-	func
-	.function	587
-~~k_fxstring_fxadd:
-	longa	on
-	longi	on
-	tsc
-	sec
-	sbc	#L185
+	sbc	#L187
 	tcs
 	phd
 	tcd
 string_0	set	4
 text_0	set	8
 	.block	587
-;	return  -1;
-	.sym	string,4,138,6,32,43
-	.sym	text,8,138,6,32,43
+;	if(string && text)
+	.sym	string,4,138,6,32,45
+	.sym	text,8,142,6,32
 	.line	588
-	lda	#$ffff
-L188:
+;	{
+	lda	<L187+string_0
+	ora	<L187+string_0+2
+	bne	L190
+	brl	L10058
+L190:
+	lda	<L187+text_0
+	ora	<L187+text_0+2
+	bne	L191
+	brl	L10058
+L191:
+	.line	589
+;		strcat(string->buffer,text);
+	.line	590
+	pei	<L187+text_0+2
+	pei	<L187+text_0
+	ldy	#$6
+	lda	[<L187+string_0],Y
+	pha
+	ldy	#$4
+	lda	[<L187+string_0],Y
+	pha
+	jsl	~~strcat
+;		string->pos = strlen(string->buffer);
+	.line	591
+	ldy	#$6
+	lda	[<L187+string_0],Y
+	pha
+	ldy	#$4
+	lda	[<L187+string_0],Y
+	pha
+	jsl	~~strlen
+	ldy	#$2
+	sta	[<L187+string_0],Y
+;		//k_debug_integer("k_fxstring_add:",string->pos);
+;		return string->buffer;
+	.line	593
+	ldy	#$6
+	lda	[<L187+string_0],Y
+	tax
+	ldy	#$4
+	lda	[<L187+string_0],Y
+L192:
 	tay
-	lda	<L185+2
-	sta	<L185+2+8
-	lda	<L185+1
-	sta	<L185+1+8
+	lda	<L187+2
+	sta	<L187+2+8
+	lda	<L187+1
+	sta	<L187+1+8
 	pld
 	tsc
 	clc
-	adc	#L185+8
+	adc	#L187+8
+	tcs
+	tya
+	rtl
+;	}
+	.line	594
+;	return string->buffer;
+L10058:
+	.line	595
+	ldy	#$6
+	lda	[<L187+string_0],Y
+	tax
+	ldy	#$4
+	lda	[<L187+string_0],Y
+	brl	L192
+;}
+	.line	596
+	.endblock	596
+L187	equ	0
+L188	equ	1
+	ends
+	efunc
+	.endfunc	596,1,0
+	.line	596
+;
+;UINT k_fxstring_fxadd(PFXSTRING string,PFXSTRING text)
+;{
+	.line	598
+	.line	599
+	code
+	xdef	~~k_fxstring_fxadd
+	func
+	.function	599
+~~k_fxstring_fxadd:
+	longa	on
+	longi	on
+	tsc
+	sec
+	sbc	#L193
+	tcs
+	phd
+	tcd
+string_0	set	4
+text_0	set	8
+	.block	599
+;	return  -1;
+	.sym	string,4,138,6,32,45
+	.sym	text,8,138,6,32,45
+	.line	600
+	lda	#$ffff
+L196:
+	tay
+	lda	<L193+2
+	sta	<L193+2+8
+	lda	<L193+1
+	sta	<L193+1+8
+	pld
+	tsc
+	clc
+	adc	#L193+8
 	tcs
 	tya
 	rtl
 ;}
-	.line	589
-	.endblock	589
-L185	equ	0
-L186	equ	1
+	.line	601
+	.endblock	601
+L193	equ	0
+L194	equ	1
 	ends
 	efunc
-	.endfunc	589,1,0
-	.line	589
+	.endfunc	601,1,0
+	.line	601
 ;
 ;LPCHAR k_fxstring_as(PFXSTRING string)
 ;{
-	.line	591
-	.line	592
+	.line	603
+	.line	604
 	code
 	xdef	~~k_fxstring_as
 	func
-	.function	592
+	.function	604
 ~~k_fxstring_as:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L189
+	sbc	#L197
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	592
+	.block	604
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	593
+	.sym	string,4,138,6,32,45
+	.line	605
 ;	{
-	lda	<L189+string_0
-	ora	<L189+string_0+2
-	bne	L192
+	lda	<L197+string_0
+	ora	<L197+string_0+2
+	bne	L200
 	brl	L10059
-L192:
-	.line	594
+L200:
+	.line	606
 ;		return string->buffer;
-	.line	595
+	.line	607
 	ldy	#$6
-	lda	[<L189+string_0],Y
+	lda	[<L197+string_0],Y
 	tax
 	ldy	#$4
-	lda	[<L189+string_0],Y
-L193:
+	lda	[<L197+string_0],Y
+L201:
 	tay
-	lda	<L189+2
-	sta	<L189+2+4
-	lda	<L189+1
-	sta	<L189+1+4
+	lda	<L197+2
+	sta	<L197+2+4
+	lda	<L197+1
+	sta	<L197+1+4
 	pld
 	tsc
 	clc
-	adc	#L189+4
+	adc	#L197+4
 	tcs
 	tya
 	rtl
 ;	}
-	.line	596
+	.line	608
 ;	return NULL;
 L10059:
-	.line	597
+	.line	609
 	lda	#$0
 	tax
 	lda	#$0
-	brl	L193
+	brl	L201
 ;}
-	.line	598
-	.endblock	598
-L189	equ	0
-L190	equ	1
+	.line	610
+	.endblock	610
+L197	equ	0
+L198	equ	1
 	ends
 	efunc
-	.endfunc	598,1,0
-	.line	598
+	.endfunc	610,1,0
+	.line	610
 ;
 ;CHAR k_fxstring_at(PFXSTRING string,UINT index)
 ;{
-	.line	600
-	.line	601
+	.line	612
+	.line	613
 	code
 	xdef	~~k_fxstring_at
 	func
-	.function	601
+	.function	613
 ~~k_fxstring_at:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L194
+	sbc	#L202
 	tcs
 	phd
 	tcd
 string_0	set	4
 index_0	set	8
-	.block	601
+	.block	613
 ;	return 0;
-	.sym	string,4,138,6,32,43
+	.sym	string,4,138,6,32,45
 	.sym	index,8,16,6,16
-	.line	602
+	.line	614
 	lda	#$0
-L197:
+L205:
 	tay
-	lda	<L194+2
-	sta	<L194+2+6
-	lda	<L194+1
-	sta	<L194+1+6
+	lda	<L202+2
+	sta	<L202+2+6
+	lda	<L202+1
+	sta	<L202+1+6
 	pld
 	tsc
 	clc
-	adc	#L194+6
+	adc	#L202+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	603
-	.endblock	603
-L194	equ	0
-L195	equ	1
+	.line	615
+	.endblock	615
+L202	equ	0
+L203	equ	1
 	ends
 	efunc
-	.endfunc	603,1,0
-	.line	603
+	.endfunc	615,1,0
+	.line	615
 ;
 ;BOOL k_fxstring_equals(PFXSTRING string,LPCHAR match)
 ;{
-	.line	605
-	.line	606
+	.line	617
+	.line	618
 	code
 	xdef	~~k_fxstring_equals
 	func
-	.function	606
+	.function	618
 ~~k_fxstring_equals:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L198
+	sbc	#L206
 	tcs
 	phd
 	tcd
 string_0	set	4
 match_0	set	8
-	.block	606
+	.block	618
 ;	BOOL bRet = FALSE;
 ;
 ;	bRet = (strcmp(string->buffer,match) == 0);
 bRet_1	set	0
 	.sym	bRet,0,14,1,8
-	.sym	string,4,138,6,32,43
+	.sym	string,4,138,6,32,45
 	.sym	match,8,142,6,32
 	sep	#$20
 	longa	off
-	stz	<L199+bRet_1
+	stz	<L207+bRet_1
 	rep	#$20
 	longa	on
-	.line	609
+	.line	621
 	stz	<R0
-	pei	<L198+match_0+2
-	pei	<L198+match_0
+	pei	<L206+match_0+2
+	pei	<L206+match_0
 	ldy	#$6
-	lda	[<L198+string_0],Y
+	lda	[<L206+string_0],Y
 	pha
 	ldy	#$4
-	lda	[<L198+string_0],Y
+	lda	[<L206+string_0],Y
 	pha
 	jsl	~~strcmp
 	tax
-	beq	L202
-	brl	L201
-L202:
+	beq	L210
+	brl	L209
+L210:
 	inc	<R0
-L201:
+L209:
 	sep	#$20
 	longa	off
 	lda	<R0
-	sta	<L199+bRet_1
+	sta	<L207+bRet_1
 	rep	#$20
 	longa	on
 ;
 ;	return bRet;
-	.line	611
-	lda	<L199+bRet_1
+	.line	623
+	lda	<L207+bRet_1
 	and	#$ff
-L203:
+L211:
 	tay
-	lda	<L198+2
-	sta	<L198+2+8
-	lda	<L198+1
-	sta	<L198+1+8
+	lda	<L206+2
+	sta	<L206+2+8
+	lda	<L206+1
+	sta	<L206+1+8
 	pld
 	tsc
 	clc
-	adc	#L198+8
+	adc	#L206+8
 	tcs
 	tya
 	rtl
 ;}
-	.line	612
-	.endblock	612
-L198	equ	5
-L199	equ	5
+	.line	624
+	.endblock	624
+L206	equ	5
+L207	equ	5
 	ends
 	efunc
-	.endfunc	612,5,5
-	.line	612
+	.endfunc	624,5,5
+	.line	624
 ;
 ;LPCHAR k_fxstring_copy_string(PFXSTRING string)
 ;{
-	.line	614
-	.line	615
+	.line	626
+	.line	627
 	code
 	xdef	~~k_fxstring_copy_string
 	func
-	.function	615
+	.function	627
 ~~k_fxstring_copy_string:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L204
+	sbc	#L212
 	tcs
 	phd
 	tcd
 string_0	set	4
-	.block	615
+	.block	627
 ;	if(string)
-	.sym	string,4,138,6,32,43
-	.line	616
+	.sym	string,4,138,6,32,45
+	.line	628
 ;	{
-	lda	<L204+string_0
-	ora	<L204+string_0+2
-	bne	L207
+	lda	<L212+string_0
+	ora	<L212+string_0+2
+	bne	L215
 	brl	L10060
-L207:
-	.line	617
+L215:
+	.line	629
 ;		return k_string_copy_string(string->buffer);
-	.line	618
+	.line	630
 	ldy	#$6
-	lda	[<L204+string_0],Y
+	lda	[<L212+string_0],Y
 	pha
 	ldy	#$4
-	lda	[<L204+string_0],Y
+	lda	[<L212+string_0],Y
 	pha
 	jsl	~~k_string_copy_string
 	sta	<R0
 	stx	<R0+2
 	ldx	<R0+2
 	lda	<R0
-L208:
+L216:
 	tay
-	lda	<L204+2
-	sta	<L204+2+4
-	lda	<L204+1
-	sta	<L204+1+4
+	lda	<L212+2
+	sta	<L212+2+4
+	lda	<L212+1
+	sta	<L212+1+4
 	pld
 	tsc
 	clc
-	adc	#L204+4
+	adc	#L212+4
 	tcs
 	tya
 	rtl
 ;	}
-	.line	619
+	.line	631
 ;	return NULL;
 L10060:
-	.line	620
+	.line	632
 	lda	#$0
 	tax
 	lda	#$0
-	brl	L208
+	brl	L216
 ;}
-	.line	621
-	.endblock	621
-L204	equ	4
-L205	equ	5
+	.line	633
+	.endblock	633
+L212	equ	4
+L213	equ	5
 	ends
 	efunc
-	.endfunc	621,5,4
-	.line	621
+	.endfunc	633,5,4
+	.line	633
 ;
 ;PFXSTRING k_fxstring_from_long(ULONG nLong)
 ;{
-	.line	623
-	.line	624
+	.line	635
+	.line	636
 	code
 	xdef	~~k_fxstring_from_long
 	func
-	.function	624
+	.function	636
 ~~k_fxstring_from_long:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L209
+	sbc	#L217
 	tcs
 	phd
 	tcd
 nLong_0	set	4
-	.block	624
+	.block	636
 ;	PFXSTRING newString = NULL;
 ;
 ;	newString = k_fxstring_init(16);
 newString_1	set	0
-	.sym	newString,0,138,1,32,43
+	.sym	newString,0,138,1,32,45
 	.sym	nLong,4,18,6,32
-	stz	<L210+newString_1
-	stz	<L210+newString_1+2
-	.line	627
+	stz	<L218+newString_1
+	stz	<L218+newString_1+2
+	.line	639
 	pea	#<$10
 	jsl	~~k_fxstring_init
-	sta	<L210+newString_1
-	stx	<L210+newString_1+2
+	sta	<L218+newString_1
+	stx	<L218+newString_1+2
 ;	if(newString!=NULL)
-	.line	628
+	.line	640
 ;	{
-	lda	<L210+newString_1
-	ora	<L210+newString_1+2
-	bne	L212
+	lda	<L218+newString_1
+	ora	<L218+newString_1+2
+	bne	L220
 	brl	L10061
-L212:
-	.line	629
+L220:
+	.line	641
 ;		k_longtodec(nLong,newString->buffer);
-	.line	630
+	.line	642
 	ldy	#$6
-	lda	[<L210+newString_1],Y
+	lda	[<L218+newString_1],Y
 	pha
 	ldy	#$4
-	lda	[<L210+newString_1],Y
+	lda	[<L218+newString_1],Y
 	pha
-	pei	<L209+nLong_0+2
-	pei	<L209+nLong_0
+	pei	<L217+nLong_0+2
+	pei	<L217+nLong_0
 	jsl	~~k_longtodec
 ;	}
-	.line	631
+	.line	643
 ;
 ;	return newString;
 L10061:
-	.line	633
-	ldx	<L210+newString_1+2
-	lda	<L210+newString_1
-L213:
+	.line	645
+	ldx	<L218+newString_1+2
+	lda	<L218+newString_1
+L221:
 	tay
-	lda	<L209+2
-	sta	<L209+2+4
-	lda	<L209+1
-	sta	<L209+1+4
+	lda	<L217+2
+	sta	<L217+2+4
+	lda	<L217+1
+	sta	<L217+1+4
 	pld
 	tsc
 	clc
-	adc	#L209+4
+	adc	#L217+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	634
-	.endblock	634
-L209	equ	4
-L210	equ	1
+	.line	646
+	.endblock	646
+L217	equ	4
+L218	equ	1
 	ends
 	efunc
-	.endfunc	634,1,4
-	.line	634
+	.endfunc	646,1,4
+	.line	646
 ;
 ;
 ;LPCHAR k_string_append_integer(LPCHAR baseText,UINT integer)
 ;{
-	.line	637
-	.line	638
+	.line	649
+	.line	650
 	code
 	xdef	~~k_string_append_integer
 	func
-	.function	638
+	.function	650
 ~~k_string_append_integer:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L214
+	sbc	#L222
 	tcs
 	phd
 	tcd
 baseText_0	set	4
 integer_0	set	8
-	.block	638
+	.block	650
 ;	LPCHAR newString = NULL;
 ;	UCHAR buffer[16];
 ;
 ;
-;	newString = malloc(strlen(baseText) + 16 + 1);
+;	newString = k_mem_allocate_heap(strlen(baseText) + 16 + 1);
 newString_1	set	0
 buffer_1	set	4
 	.sym	newString,0,142,1,32
 	.sym	buffer,4,110,1,0,16
 	.sym	baseText,4,142,6,32
 	.sym	integer,8,16,6,16
-	stz	<L215+newString_1
-	stz	<L215+newString_1+2
-	.line	643
-	pei	<L214+baseText_0+2
-	pei	<L214+baseText_0
+	stz	<L223+newString_1
+	stz	<L223+newString_1+2
+	.line	655
+	pei	<L222+baseText_0+2
+	pei	<L222+baseText_0
 	jsl	~~strlen
 	sta	<R0
 	clc
 	lda	#$11
 	adc	<R0
 	pha
-	jsl	~~malloc
-	sta	<L215+newString_1
-	stx	<L215+newString_1+2
+	jsl	~~k_mem_allocate_heap
+	sta	<L223+newString_1
+	stx	<L223+newString_1+2
 ;	newString[0] = 0;
-	.line	644
+	.line	656
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L215+newString_1]
+	sta	[<L223+newString_1]
 	rep	#$20
 	longa	on
 ;	strcat(newString,baseText);
-	.line	645
-	pei	<L214+baseText_0+2
-	pei	<L214+baseText_0
-	pei	<L215+newString_1+2
-	pei	<L215+newString_1
+	.line	657
+	pei	<L222+baseText_0+2
+	pei	<L222+baseText_0
+	pei	<L223+newString_1+2
+	pei	<L223+newString_1
 	jsl	~~strcat
 ;	strcat(newString,k_inttodec(integer,buffer));
-	.line	646
+	.line	658
 	pea	#0
 	clc
 	tdc
-	adc	#<L215+buffer_1
+	adc	#<L223+buffer_1
 	pha
-	pei	<L214+integer_0
+	pei	<L222+integer_0
 	jsl	~~k_inttodec
 	sta	<R0
 	stx	<R0+2
 	phx
 	pha
-	pei	<L215+newString_1+2
-	pei	<L215+newString_1
+	pei	<L223+newString_1+2
+	pei	<L223+newString_1
 	jsl	~~strcat
 ;
 ;	return newString;
-	.line	648
-	ldx	<L215+newString_1+2
-	lda	<L215+newString_1
-L217:
+	.line	660
+	ldx	<L223+newString_1+2
+	lda	<L223+newString_1
+L225:
 	tay
-	lda	<L214+2
-	sta	<L214+2+6
-	lda	<L214+1
-	sta	<L214+1+6
+	lda	<L222+2
+	sta	<L222+2+6
+	lda	<L222+1
+	sta	<L222+1+6
 	pld
 	tsc
 	clc
-	adc	#L214+6
+	adc	#L222+6
 	tcs
 	tya
 	rtl
 ;}
-	.line	649
-	.endblock	649
-L214	equ	24
-L215	equ	5
+	.line	661
+	.endblock	661
+L222	equ	24
+L223	equ	5
 	ends
 	efunc
-	.endfunc	649,5,24
-	.line	649
+	.endfunc	661,5,24
+	.line	661
 ;
 ;
 ;LPCHAR k_string_replace(LPCSTR template, LPCSTR marker, LPCSTR replacement)
 ;{
-	.line	652
-	.line	653
+	.line	664
+	.line	665
 	code
 	xdef	~~k_string_replace
 	func
-	.function	653
+	.function	665
 ~~k_string_replace:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L218
+	sbc	#L226
 	tcs
 	phd
 	tcd
 template_0	set	4
 marker_0	set	8
 replacement_0	set	12
-	.block	653
+	.block	665
 ;	LPCHAR buffer = NULL;
 ;	LPCHAR tc     = NULL;
 ;	LPCHAR p 	  = NULL;
@@ -4828,7 +5221,7 @@ replacement_0	set	12
 ;	UINT   mlen = 0;
 ;	UINT   rlen = 0;
 ;
-;	if(template && marker && replacement)
+;	k_debug_strings("k_string_replace:template:",(LPSTR)template);
 buffer_1	set	0
 tc_1	set	4
 p_1	set	8
@@ -4842,263 +5235,303 @@ rlen_1	set	14
 	.sym	template,4,142,6,32
 	.sym	marker,8,142,6,32
 	.sym	replacement,12,142,6,32
-	stz	<L219+buffer_1
-	stz	<L219+buffer_1+2
-	stz	<L219+tc_1
-	stz	<L219+tc_1+2
-	stz	<L219+p_1
-	stz	<L219+p_1+2
-	stz	<L219+mlen_1
-	stz	<L219+rlen_1
-	.line	661
-;	{
-	lda	<L218+template_0
-	ora	<L218+template_0+2
-	bne	L221
-	brl	L10062
-L221:
-	lda	<L218+marker_0
-	ora	<L218+marker_0+2
-	bne	L222
-	brl	L10062
-L222:
-	lda	<L218+replacement_0
-	ora	<L218+replacement_0+2
-	bne	L223
-	brl	L10062
-L223:
-	.line	662
-;		tc = k_string_copy_string(template);
-	.line	663
-	pei	<L218+template_0+2
-	pei	<L218+template_0
-	jsl	~~k_string_copy_string
-	sta	<L219+tc_1
-	stx	<L219+tc_1+2
-;		if(tc)
-	.line	664
-;		{
-	lda	<L219+tc_1
-	ora	<L219+tc_1+2
-	bne	L224
-	brl	L10063
-L224:
-	.line	665
-;			mlen = strlen(marker);
-	.line	666
-	pei	<L218+marker_0+2
-	pei	<L218+marker_0
-	jsl	~~strlen
-	sta	<L219+mlen_1
-;			rlen = strlen(replacement);
-	.line	667
-	pei	<L218+replacement_0+2
-	pei	<L218+replacement_0
-	jsl	~~strlen
-	sta	<L219+rlen_1
-;			if(mlen && rlen)
-	.line	668
-;			{
-	lda	<L219+mlen_1
-	bne	L225
-	brl	L10064
-L225:
-	lda	<L219+rlen_1
-	bne	L226
-	brl	L10064
-L226:
-	.line	669
-;				buffer = malloc(256);
-	.line	670
-	pea	#<$100
-	jsl	~~malloc
-	sta	<L219+buffer_1
-	stx	<L219+buffer_1+2
-;				if(buffer)
-	.line	671
-;				{
-	lda	<L219+buffer_1
-	ora	<L219+buffer_1+2
-	bne	L227
-	brl	L10065
-L227:
-	.line	672
-;					memset(buffer,0,256);
+	stz	<L227+buffer_1
+	stz	<L227+buffer_1+2
+	stz	<L227+tc_1
+	stz	<L227+tc_1+2
+	stz	<L227+p_1
+	stz	<L227+p_1+2
+	stz	<L227+mlen_1
+	stz	<L227+rlen_1
 	.line	673
+	pei	<L226+template_0+2
+	pei	<L226+template_0
+	pea	#^L154
+	pea	#<L154
+	jsl	~~k_debug_strings
+;	k_debug_strings("k_string_replace:marker:",(LPSTR)marker);
+	.line	674
+	pei	<L226+marker_0+2
+	pei	<L226+marker_0
+	pea	#^L154+27
+	pea	#<L154+27
+	jsl	~~k_debug_strings
+;	k_debug_strings("k_string_replace:replacement:",(LPSTR)replacement);
+	.line	675
+	pei	<L226+replacement_0+2
+	pei	<L226+replacement_0
+	pea	#^L154+52
+	pea	#<L154+52
+	jsl	~~k_debug_strings
+;
+;	if(template && marker && replacement)
+	.line	677
+;	{
+	lda	<L226+template_0
+	ora	<L226+template_0+2
+	bne	L229
+	brl	L10062
+L229:
+	lda	<L226+marker_0
+	ora	<L226+marker_0+2
+	bne	L230
+	brl	L10062
+L230:
+	lda	<L226+replacement_0
+	ora	<L226+replacement_0+2
+	bne	L231
+	brl	L10062
+L231:
+	.line	678
+;		tc = k_string_copy_string(template);
+	.line	679
+	pei	<L226+template_0+2
+	pei	<L226+template_0
+	jsl	~~k_string_copy_string
+	sta	<L227+tc_1
+	stx	<L227+tc_1+2
+;		if(tc)
+	.line	680
+;		{
+	lda	<L227+tc_1
+	ora	<L227+tc_1+2
+	bne	L232
+	brl	L10063
+L232:
+	.line	681
+;			mlen = strlen(marker);
+	.line	682
+	pei	<L226+marker_0+2
+	pei	<L226+marker_0
+	jsl	~~strlen
+	sta	<L227+mlen_1
+;			rlen = strlen(replacement);
+	.line	683
+	pei	<L226+replacement_0+2
+	pei	<L226+replacement_0
+	jsl	~~strlen
+	sta	<L227+rlen_1
+;			if(mlen && rlen)
+	.line	684
+;			{
+	lda	<L227+mlen_1
+	bne	L233
+	brl	L10064
+L233:
+	lda	<L227+rlen_1
+	bne	L234
+	brl	L10064
+L234:
+	.line	685
+;				buffer = k_mem_allocate_heap(256);
+	.line	686
+	pea	#<$100
+	jsl	~~k_mem_allocate_heap
+	sta	<L227+buffer_1
+	stx	<L227+buffer_1+2
+;				if(buffer)
+	.line	687
+;				{
+	lda	<L227+buffer_1
+	ora	<L227+buffer_1+2
+	bne	L235
+	brl	L10065
+L235:
+	.line	688
+;					memset(buffer,0,256);
+	.line	689
 	pea	#<$100
 	pea	#<$0
-	pei	<L219+buffer_1+2
-	pei	<L219+buffer_1
+	pei	<L227+buffer_1+2
+	pei	<L227+buffer_1
 	jsl	~~memset
 ;					p = strstr(tc,marker);
-	.line	674
-	pei	<L218+marker_0+2
-	pei	<L218+marker_0
-	pei	<L219+tc_1+2
-	pei	<L219+tc_1
+	.line	690
+	pei	<L226+marker_0+2
+	pei	<L226+marker_0
+	pei	<L227+tc_1+2
+	pei	<L227+tc_1
 	jsl	~~strstr
-	sta	<L219+p_1
-	stx	<L219+p_1+2
+	sta	<L227+p_1
+	stx	<L227+p_1+2
 ;					while(p)
-	.line	675
+	.line	691
 L10066:
-	lda	<L219+p_1
-	ora	<L219+p_1+2
-	bne	L228
+	lda	<L227+p_1
+	ora	<L227+p_1+2
+	bne	L236
 	brl	L10067
-L228:
+L236:
 ;					{
-	.line	676
+	.line	692
 ;						p[0] = 0;
-	.line	677
+	.line	693
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L219+p_1]
+	sta	[<L227+p_1]
 	rep	#$20
 	longa	on
 ;						strcat(buffer,tc);
-	.line	678
-	pei	<L219+tc_1+2
-	pei	<L219+tc_1
-	pei	<L219+buffer_1+2
-	pei	<L219+buffer_1
+	.line	694
+	pei	<L227+tc_1+2
+	pei	<L227+tc_1
+	pei	<L227+buffer_1+2
+	pei	<L227+buffer_1
 	jsl	~~strcat
 ;						strcat(buffer,replacement);
-	.line	679
-	pei	<L218+replacement_0+2
-	pei	<L218+replacement_0
-	pei	<L219+buffer_1+2
-	pei	<L219+buffer_1
+	.line	695
+	pei	<L226+replacement_0+2
+	pei	<L226+replacement_0
+	pei	<L227+buffer_1+2
+	pei	<L227+buffer_1
 	jsl	~~strcat
 ;						p+=mlen;
-	.line	680
-	lda	<L219+mlen_1
+	.line	696
+	lda	<L227+mlen_1
 	sta	<R0
 	stz	<R0+2
 	clc
-	lda	<L219+p_1
+	lda	<L227+p_1
 	adc	<R0
-	sta	<L219+p_1
-	lda	<L219+p_1+2
+	sta	<L227+p_1
+	lda	<L227+p_1+2
 	adc	<R0+2
-	sta	<L219+p_1+2
+	sta	<L227+p_1+2
 ;						tc = p;
-	.line	681
-	lda	<L219+p_1
-	sta	<L219+tc_1
-	lda	<L219+p_1+2
-	sta	<L219+tc_1+2
+	.line	697
+	lda	<L227+p_1
+	sta	<L227+tc_1
+	lda	<L227+p_1+2
+	sta	<L227+tc_1+2
 ;						p = strstr(tc,marker);
-	.line	682
-	pei	<L218+marker_0+2
-	pei	<L218+marker_0
-	pei	<L219+tc_1+2
-	pei	<L219+tc_1
+	.line	698
+	pei	<L226+marker_0+2
+	pei	<L226+marker_0
+	pei	<L227+tc_1+2
+	pei	<L227+tc_1
 	jsl	~~strstr
-	sta	<L219+p_1
-	stx	<L219+p_1+2
+	sta	<L227+p_1
+	stx	<L227+p_1+2
 ;
 ;						//k_debug_string(tc);
 ;						//k_debug_crlf();
 ;						//k_debug_string(buffer);
 ;						//k_debug_crlf();
 ;					}
-	.line	688
+	.line	704
 	brl	L10066
 L10067:
 ;					strcat(buffer,tc);
-	.line	689
-	pei	<L219+tc_1+2
-	pei	<L219+tc_1
-	pei	<L219+buffer_1+2
-	pei	<L219+buffer_1
+	.line	705
+	pei	<L227+tc_1+2
+	pei	<L227+tc_1
+	pei	<L227+buffer_1+2
+	pei	<L227+buffer_1
 	jsl	~~strcat
 ;				}
-	.line	690
+	.line	706
 ;			}
 L10065:
-	.line	691
-;			free(tc);
+	.line	707
+;			k_mem_deallocate_heap(tc);
 L10064:
-	.line	692
-	pei	<L219+tc_1+2
-	pei	<L219+tc_1
-	jsl	~~free
+	.line	708
+	pei	<L227+tc_1+2
+	pei	<L227+tc_1
+	jsl	~~k_mem_deallocate_heap
 ;		}
-	.line	693
+	.line	709
 ;	}
 L10063:
-	.line	694
+	.line	710
 ;
+;	k_debug_strings("k_string_replace:buffer:",buffer);
+L10062:
+	.line	712
+	pei	<L227+buffer_1+2
+	pei	<L227+buffer_1
+	pea	#^L154+82
+	pea	#<L154+82
+	jsl	~~k_debug_strings
 ;
 ;	return buffer;
-L10062:
-	.line	697
-	ldx	<L219+buffer_1+2
-	lda	<L219+buffer_1
-L229:
+	.line	714
+	ldx	<L227+buffer_1+2
+	lda	<L227+buffer_1
+L237:
 	tay
-	lda	<L218+2
-	sta	<L218+2+12
-	lda	<L218+1
-	sta	<L218+1+12
+	lda	<L226+2
+	sta	<L226+2+12
+	lda	<L226+1
+	sta	<L226+1+12
 	pld
 	tsc
 	clc
-	adc	#L218+12
+	adc	#L226+12
 	tcs
 	tya
 	rtl
 ;}
-	.line	698
-	.endblock	698
-L218	equ	20
-L219	equ	5
+	.line	715
+	.endblock	715
+L226	equ	20
+L227	equ	5
 	ends
 	efunc
-	.endfunc	698,5,20
-	.line	698
+	.endfunc	715,5,20
+	.line	715
+	data
+L154:
+	db	$6B,$5F,$73,$74,$72,$69,$6E,$67,$5F,$72,$65,$70,$6C,$61,$63
+	db	$65,$3A,$74,$65,$6D,$70,$6C,$61,$74,$65,$3A,$00,$6B,$5F,$73
+	db	$74,$72,$69,$6E,$67,$5F,$72,$65,$70,$6C,$61,$63,$65,$3A,$6D
+	db	$61,$72,$6B,$65,$72,$3A,$00,$6B,$5F,$73,$74,$72,$69,$6E,$67
+	db	$5F,$72,$65,$70,$6C,$61,$63,$65,$3A,$72,$65,$70,$6C,$61,$63
+	db	$65,$6D,$65,$6E,$74,$3A,$00,$6B,$5F,$73,$74,$72,$69,$6E,$67
+	db	$5F,$72,$65,$70,$6C,$61,$63,$65,$3A,$62,$75,$66,$66,$65,$72
+	db	$3A,$00
+	ends
 ;
 ;LPCSTR k_get_date_string(LPCHAR buffer)
 ;{
-	.line	700
-	.line	701
+	.line	717
+	.line	718
 	code
 	xdef	~~k_get_date_string
 	func
-	.function	701
+	.function	718
 ~~k_get_date_string:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L230
+	sbc	#L239
 	tcs
 	phd
 	tcd
 buffer_0	set	4
-	.block	701
+	.block	718
 ;	UCHAR tmp[16];
 ;
 ;	buffer[0] = 0;
 tmp_1	set	0
 	.sym	tmp,0,110,1,0,16
 	.sym	buffer,4,142,6,32
-	.line	704
+	.line	721
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L230+buffer_0]
+	sta	[<L239+buffer_0]
 	rep	#$20
 	longa	on
 ;
 ;	strcat(buffer,k_strip_padding(k_inttodec(k_get_rtc_month(),tmp)));
-	.line	706
+	.line	723
 	pea	#0
 	clc
 	tdc
-	adc	#<L231+tmp_1
+	adc	#<L240+tmp_1
 	pha
 	jsl	~~k_get_rtc_month
 	pha
@@ -5112,22 +5545,22 @@ tmp_1	set	0
 	stx	<R1+2
 	phx
 	pha
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;	strcat(buffer,"/");
-	.line	707
-	pea	#^L146
-	pea	#<L146
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	.line	724
+	pea	#^L238
+	pea	#<L238
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;	strcat(buffer,k_strip_padding(k_inttodec(k_get_rtc_day(),tmp)));
-	.line	708
+	.line	725
 	pea	#0
 	clc
 	tdc
-	adc	#<L231+tmp_1
+	adc	#<L240+tmp_1
 	pha
 	jsl	~~k_get_rtc_day
 	pha
@@ -5141,22 +5574,22 @@ tmp_1	set	0
 	stx	<R1+2
 	phx
 	pha
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;	strcat(buffer,"/");
-	.line	709
-	pea	#^L146+2
-	pea	#<L146+2
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	.line	726
+	pea	#^L238+2
+	pea	#<L238+2
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;	strcat(buffer,k_strip_padding(k_inttodec(k_get_rtc_century(),tmp)));
-	.line	710
+	.line	727
 	pea	#0
 	clc
 	tdc
-	adc	#<L231+tmp_1
+	adc	#<L240+tmp_1
 	pha
 	jsl	~~k_get_rtc_century
 	pha
@@ -5170,15 +5603,15 @@ tmp_1	set	0
 	stx	<R1+2
 	phx
 	pha
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;	strcat(buffer,k_strip_padding(k_inttodec(k_get_rtc_year(),tmp)));
-	.line	711
+	.line	728
 	pea	#0
 	clc
 	tdc
-	adc	#<L231+tmp_1
+	adc	#<L240+tmp_1
 	pha
 	jsl	~~k_get_rtc_year
 	pha
@@ -5192,61 +5625,61 @@ tmp_1	set	0
 	stx	<R1+2
 	phx
 	pha
-	pei	<L230+buffer_0+2
-	pei	<L230+buffer_0
+	pei	<L239+buffer_0+2
+	pei	<L239+buffer_0
 	jsl	~~strcat
 ;
 ;
 ;	return buffer;
-	.line	714
-	ldx	<L230+buffer_0+2
-	lda	<L230+buffer_0
-L233:
+	.line	731
+	ldx	<L239+buffer_0+2
+	lda	<L239+buffer_0
+L242:
 	tay
-	lda	<L230+2
-	sta	<L230+2+4
-	lda	<L230+1
-	sta	<L230+1+4
+	lda	<L239+2
+	sta	<L239+2+4
+	lda	<L239+1
+	sta	<L239+1+4
 	pld
 	tsc
 	clc
-	adc	#L230+4
+	adc	#L239+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	715
-	.endblock	715
-L230	equ	24
-L231	equ	9
+	.line	732
+	.endblock	732
+L239	equ	24
+L240	equ	9
 	ends
 	efunc
-	.endfunc	715,9,24
-	.line	715
+	.endfunc	732,9,24
+	.line	732
 	data
-L146:
+L238:
 	db	$2F,$00,$2F,$00
 	ends
 ;
 ;LPCSTR k_get_localtime_string(LPCHAR buffer)
 ;{
-	.line	717
-	.line	718
+	.line	734
+	.line	735
 	code
 	xdef	~~k_get_localtime_string
 	func
-	.function	718
+	.function	735
 ~~k_get_localtime_string:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L235
+	sbc	#L244
 	tcs
 	phd
 	tcd
 buffer_0	set	4
-	.block	718
+	.block	735
 ;	UCHAR tmp[16];
 ;	UCHAR digits[16];
 ;
@@ -5256,23 +5689,23 @@ digits_1	set	16
 	.sym	tmp,0,110,1,0,16
 	.sym	digits,16,110,1,0,16
 	.sym	buffer,4,142,6,32
-	.line	722
+	.line	739
 	sep	#$20
 	longa	off
 	lda	#$0
-	sta	[<L235+buffer_0]
+	sta	[<L244+buffer_0]
 	rep	#$20
 	longa	on
 ;
 ;
 ;	k_pad_string(digits,k_strip_padding(k_inttodec(k_get_rtc_hour(),tmp)),'0',2);
-	.line	725
+	.line	742
 	pea	#<$2
 	pea	#<$30
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+tmp_1
+	adc	#<L245+tmp_1
 	pha
 	jsl	~~k_get_rtc_hour
 	pha
@@ -5289,36 +5722,36 @@ digits_1	set	16
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
 	jsl	~~k_pad_string
 ;	strcat(buffer, digits );
-	.line	726
+	.line	743
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
-	pei	<L235+buffer_0+2
-	pei	<L235+buffer_0
+	pei	<L244+buffer_0+2
+	pei	<L244+buffer_0
 	jsl	~~strcat
 ;
 ;	strcat(buffer,":");
-	.line	728
-	pea	#^L234
-	pea	#<L234
-	pei	<L235+buffer_0+2
-	pei	<L235+buffer_0
+	.line	745
+	pea	#^L243
+	pea	#<L243
+	pei	<L244+buffer_0+2
+	pei	<L244+buffer_0
 	jsl	~~strcat
 ;
 ;	k_pad_string(digits,k_strip_padding(k_inttodec(k_get_rtc_minute(),tmp)),'0',2);
-	.line	730
+	.line	747
 	pea	#<$2
 	pea	#<$30
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+tmp_1
+	adc	#<L245+tmp_1
 	pha
 	jsl	~~k_get_rtc_minute
 	pha
@@ -5335,36 +5768,36 @@ digits_1	set	16
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
 	jsl	~~k_pad_string
 ;	strcat(buffer, digits );
-	.line	731
+	.line	748
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
-	pei	<L235+buffer_0+2
-	pei	<L235+buffer_0
+	pei	<L244+buffer_0+2
+	pei	<L244+buffer_0
 	jsl	~~strcat
 ;
 ;	strcat(buffer,":");
-	.line	733
-	pea	#^L234+2
-	pea	#<L234+2
-	pei	<L235+buffer_0+2
-	pei	<L235+buffer_0
+	.line	750
+	pea	#^L243+2
+	pea	#<L243+2
+	pei	<L244+buffer_0+2
+	pei	<L244+buffer_0
 	jsl	~~strcat
 ;
 ;	k_pad_string(digits,k_strip_padding(k_inttodec(k_get_rtc_second(),tmp)),'0',2);
-	.line	735
+	.line	752
 	pea	#<$2
 	pea	#<$30
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+tmp_1
+	adc	#<L245+tmp_1
 	pha
 	jsl	~~k_get_rtc_second
 	pha
@@ -5381,73 +5814,73 @@ digits_1	set	16
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
 	jsl	~~k_pad_string
 ;	strcat(buffer,digits);
-	.line	736
+	.line	753
 	pea	#0
 	clc
 	tdc
-	adc	#<L236+digits_1
+	adc	#<L245+digits_1
 	pha
-	pei	<L235+buffer_0+2
-	pei	<L235+buffer_0
+	pei	<L244+buffer_0+2
+	pei	<L244+buffer_0
 	jsl	~~strcat
 ;
 ;
 ;	return buffer;
-	.line	739
-	ldx	<L235+buffer_0+2
-	lda	<L235+buffer_0
-L238:
+	.line	756
+	ldx	<L244+buffer_0+2
+	lda	<L244+buffer_0
+L247:
 	tay
-	lda	<L235+2
-	sta	<L235+2+4
-	lda	<L235+1
-	sta	<L235+1+4
+	lda	<L244+2
+	sta	<L244+2+4
+	lda	<L244+1
+	sta	<L244+1+4
 	pld
 	tsc
 	clc
-	adc	#L235+4
+	adc	#L244+4
 	tcs
 	tya
 	rtl
 ;}
-	.line	740
-	.endblock	740
-L235	equ	40
-L236	equ	9
+	.line	757
+	.endblock	757
+L244	equ	40
+L245	equ	9
 	ends
 	efunc
-	.endfunc	740,9,40
-	.line	740
+	.endfunc	757,9,40
+	.line	757
 	data
-L234:
+L243:
 	db	$3A,$00,$3A,$00
 	ends
 ;
 ;LPSTR k_wcstombs(LPWCSTR wcsBuffer,LPSTR mbsBuffer,UINT charCount)
 ;{
-	.line	742
-	.line	743
+	.line	759
+	.line	760
 	code
 	xdef	~~k_wcstombs
 	func
-	.function	743
+	.function	760
 ~~k_wcstombs:
 	longa	on
 	longi	on
 	tsc
 	sec
-	sbc	#L240
+	sbc	#L249
 	tcs
 	phd
 	tcd
 wcsBuffer_0	set	4
 mbsBuffer_0	set	8
 charCount_0	set	12
-	.block	743
+	.block	760
 ;	INT c = 0;
 ;	INT mc = 0;
 ;
@@ -5459,91 +5892,94 @@ mc_1	set	2
 	.sym	wcsBuffer,4,142,6,32
 	.sym	mbsBuffer,8,142,6,32
 	.sym	charCount,12,16,6,16
-	stz	<L241+c_1
-	stz	<L241+mc_1
-	.line	747
-	lda	<L240+charCount_0
+	stz	<L250+c_1
+	stz	<L250+mc_1
+	.line	764
+	lda	<L249+charCount_0
 	ina
 	pha
 	pea	#<$0
-	pei	<L240+mbsBuffer_0+2
-	pei	<L240+mbsBuffer_0
+	pei	<L249+mbsBuffer_0+2
+	pei	<L249+mbsBuffer_0
 	jsl	~~memset
 ;	for(c=0;c<(2*charCount);c+=2)
-	.line	748
-	stz	<L241+c_1
+	.line	765
+	stz	<L250+c_1
 	brl	L10071
 L10070:
 ;	{
-	.line	749
+	.line	766
 ;		mbsBuffer[mc++] = wcsBuffer[c];
-	.line	750
+	.line	767
 	sep	#$20
 	longa	off
-	ldy	<L241+c_1
-	lda	[<L240+wcsBuffer_0],Y
-	ldy	<L241+mc_1
-	sta	[<L240+mbsBuffer_0],Y
+	ldy	<L250+c_1
+	lda	[<L249+wcsBuffer_0],Y
+	ldy	<L250+mc_1
+	sta	[<L249+mbsBuffer_0],Y
 	rep	#$20
 	longa	on
-	inc	<L241+mc_1
+	inc	<L250+mc_1
 ;	}
-	.line	751
+	.line	768
 L10068:
-	inc	<L241+c_1
-	inc	<L241+c_1
+	inc	<L250+c_1
+	inc	<L250+c_1
 L10071:
-	lda	<L240+charCount_0
+	lda	<L249+charCount_0
 	asl	A
 	sta	<R0
-	lda	<L241+c_1
+	lda	<L250+c_1
 	cmp	<R0
-	bcs	L243
+	bcs	L252
 	brl	L10070
-L243:
+L252:
 L10069:
 ;
 ;	return mbsBuffer;
-	.line	753
-	ldx	<L240+mbsBuffer_0+2
-	lda	<L240+mbsBuffer_0
-L244:
+	.line	770
+	ldx	<L249+mbsBuffer_0+2
+	lda	<L249+mbsBuffer_0
+L253:
 	tay
-	lda	<L240+2
-	sta	<L240+2+10
-	lda	<L240+1
-	sta	<L240+1+10
+	lda	<L249+2
+	sta	<L249+2+10
+	lda	<L249+1
+	sta	<L249+1+10
 	pld
 	tsc
 	clc
-	adc	#L240+10
+	adc	#L249+10
 	tcs
 	tya
 	rtl
 ;}
-	.line	754
-	.endblock	754
-L240	equ	8
-L241	equ	5
+	.line	771
+	.endblock	771
+L249	equ	8
+L250	equ	5
 	ends
 	efunc
-	.endfunc	754,5,8
-	.line	754
+	.endfunc	771,5,8
+	.line	771
 ;
-	.line	754
-	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\BaseKit\src\fxstring.c",742
+	.line	771
+	.file	"G:\devprojects\c256Foenix\fxos\FXOSWorkspace\FXOSv1\src\fxstring.c",759
+	xref	~~k_mem_deallocate_heap
+	xref	~~k_mem_allocate_heap
+	xref	~~k_get_rtc_century
+	xref	~~k_get_rtc_year
+	xref	~~k_get_rtc_day
+	xref	~~k_get_rtc_month
 	xref	~~k_get_rtc_second
 	xref	~~k_get_rtc_minute
 	xref	~~k_get_rtc_hour
-	xref	~~k_get_rtc_year
-	xref	~~k_get_rtc_century
-	xref	~~k_get_rtc_day
-	xref	~~k_get_rtc_month
+	xref	~~k_debug_strings
 	xref	~~k_debug_message
 	xref	~~k_debug_integer
 	xref	~~k_debug_char
-	xref	~~tolower
 	xref	~~toupper
+	xref	~~tolower
 	xref	~~strstr
 	xref	~~strlen
 	xref	~~strcpy
@@ -5551,22 +5987,74 @@ L241	equ	5
 	xref	~~strcat
 	xref	~~memset
 	xref	~~memcpy
-	xref	~~malloc
-	xref	~~free
-	.sym	~~k_get_rtc_second,~~k_get_rtc_second,69,18,0
-	.sym	~~k_get_rtc_minute,~~k_get_rtc_minute,69,18,0
-	.sym	~~k_get_rtc_hour,~~k_get_rtc_hour,69,18,0
-	.sym	~~k_get_rtc_year,~~k_get_rtc_year,69,18,0
-	.sym	~~k_get_rtc_century,~~k_get_rtc_century,69,18,0
-	.sym	~~k_get_rtc_day,~~k_get_rtc_day,69,18,0
-	.sym	~~k_get_rtc_month,~~k_get_rtc_month,69,18,0
-	.sym	~~k_debug_message,~~k_debug_message,69,18,0
-	.sym	~~k_debug_integer,~~k_debug_integer,69,18,0
-	.sym	~~k_debug_char,~~k_debug_char,69,18,0
-	.sym	~~tolower,~~tolower,69,18,0
-	.sym	~~toupper,~~toupper,69,18,0
 	.sym	~~bytetodec,~~bytetodec,110,3,0,10
 	.sym	~~bytetohex,~~bytetohex,110,3,0,16
+	.sym	~~k_mem_deallocate_heap,~~k_mem_deallocate_heap,65,18,0
+	.sym	~~k_mem_allocate_heap,~~k_mem_allocate_heap,1089,18,32
+	.sym	MemoryCallback,0,641,14,32
+	.sym	PFXMEMORYMAP,0,138,14,32,63
+	.sym	FXMEMORYMAP,0,10,14,2072,63
+	.sym	UMM_HEAP_INFO,0,10,14,256,62
+	.sym	PCOMMANDARGS,0,138,14,32,61
+	.sym	COMMANDARGS,0,10,14,64,61
+	.sym	PTOKENIZESTATE,0,133,14,32
+	.sym	TOKENIZESTATE,0,5,14,16
+	.sym	PTOKEN,0,138,14,32,60
+	.sym	TOKEN,0,10,14,64,60
+	.sym	PTOKENTYPE,0,133,14,32
+	.sym	TOKENTYPE,0,5,14,16
+	.sym	FXCommandHandler,0,656,14,32
+	.sym	PCONSOLECTX,0,138,14,32,59
+	.sym	CONSOLECTX,0,10,14,1144,59
+	.sym	PSPINNERCTX,0,138,14,32,58
+	.sym	SPINNERCTX,0,10,14,48,58
+	.sym	PMOUSE_MSG_STATE,0,138,14,32,57
+	.sym	MOUSE_MSG_STATE,0,10,14,184,57
+	.sym	PFXEVENTPROCESS,0,138,14,32,56
+	.sym	FXEVENTPROCESS,0,10,14,64,56
+	.sym	FXEventProc,0,641,14,32
+	.sym	PMOUSEMSGDATA,0,138,14,32,55
+	.sym	MOUSEMSGDATA,0,10,14,64,55
+	.sym	MSGIRQ,0,5,14,16
+	.sym	MAINLOOPARGS,0,10,14,16,54
+	.sym	PEACHCHILD_MSG,0,138,14,32,53
+	.sym	EACHCHILD_MSG,0,10,14,64,53
+	.sym	PCUR_PALETTE_MAP,0,138,14,32,52
+	.sym	CUR_PALETTE_MAP,0,10,14,400,52
+	.sym	PCLICKDETECTED,0,138,14,32,51
+	.sym	CLICKDETECTED,0,10,14,64,51
+	.sym	OBJECTCLICKED,0,641,14,32
+	.sym	DEVICEDRIVER_COMMAND,0,656,14,32
+	.sym	DEVICEDRIVER_UNLOAD,0,654,14,32
+	.sym	DEVICEDRIVER_WRITE,0,656,14,32
+	.sym	DEVICEDRIVER_READ,0,656,14,32
+	.sym	DEVICEDRIVER_LOAD,0,654,14,32
+	.sym	PFX_BLOCK_DEVICE_DRIVER,0,138,14,32,50
+	.sym	FX_BLOCK_DEVICE_DRIVER,0,10,14,1448,50
+	.sym	PFX_DEVICE_DRIVER,0,138,14,32,49
+	.sym	FX_DEVICE_DRIVER,0,10,14,1416,49
+	.sym	~~k_get_rtc_century,~~k_get_rtc_century,80,18,0
+	.sym	~~k_get_rtc_year,~~k_get_rtc_year,80,18,0
+	.sym	~~k_get_rtc_day,~~k_get_rtc_day,80,18,0
+	.sym	~~k_get_rtc_month,~~k_get_rtc_month,80,18,0
+	.sym	~~k_get_rtc_second,~~k_get_rtc_second,80,18,0
+	.sym	~~k_get_rtc_minute,~~k_get_rtc_minute,80,18,0
+	.sym	~~k_get_rtc_hour,~~k_get_rtc_hour,80,18,0
+	.sym	~~k_debug_strings,~~k_debug_strings,65,18,0
+	.sym	~~k_debug_message,~~k_debug_message,65,18,0
+	.sym	~~k_debug_integer,~~k_debug_integer,65,18,0
+	.sym	~~k_debug_char,~~k_debug_char,65,18,0
+	.sym	PDEBUGBYTEBITS,0,138,14,32,48
+	.sym	DEBUGBYTEBITS,0,10,14,8,48
+	.sym	PFXENVIRONMENT,0,138,14,32,47
+	.sym	FXENVIRONMENT,0,10,14,96,47
+	.sym	PFXZERPOPAGE,0,138,14,32,46
+	.sym	FXZERPOPAGE,0,10,14,448,46
+	.sym	KERNELTRAPCALL,0,641,14,32
+	.sym	FOREACHNODEUNTIL,0,654,14,32
+	.sym	FOREACHNODE,0,641,14,32
+	.sym	~~toupper,~~toupper,69,18,0
+	.sym	~~tolower,~~tolower,69,18,0
 	.sym	~~k_get_localtime_string,~~k_get_localtime_string,1102,2,32
 	.sym	~~k_get_date_string,~~k_get_date_string,1102,2,32
 	.sym	~~k_to_lowercase,~~k_to_lowercase,1102,2,32
@@ -5578,6 +6066,8 @@ L241	equ	5
 	.sym	~~k_string_trim,~~k_string_trim,1102,2,32
 	.sym	~~k_string_ltrim,~~k_string_ltrim,1102,2,32
 	.sym	~~k_string_rtrim,~~k_string_rtrim,1102,2,32
+	.sym	~~k_strcpy,~~k_strcpy,1102,2,32
+	.sym	~~k_strcat,~~k_strcat,1102,2,32
 	.sym	~~strlower,~~strlower,1102,2,32
 	.sym	~~k_reverse,~~k_reverse,65,2,0
 	.sym	~~k_pad_string,~~k_pad_string,1102,2,32
@@ -5591,7 +6081,7 @@ L241	equ	5
 	.sym	~~k_strip_padding,~~k_strip_padding,1102,2,32
 	.sym	~~k_wcstombs,~~k_wcstombs,1102,2,32
 	.sym	~~k_fxstring_equals,~~k_fxstring_equals,78,2,0
-	.sym	~~k_fxstring_from_long,~~k_fxstring_from_long,1098,2,32,43
+	.sym	~~k_fxstring_from_long,~~k_fxstring_from_long,1098,2,32,45
 	.sym	~~k_fxstring_copy_string,~~k_fxstring_copy_string,1102,2,32
 	.sym	~~k_fxstring_at,~~k_fxstring_at,78,2,0
 	.sym	~~k_fxstring_as,~~k_fxstring_as,1102,2,32
@@ -5603,52 +6093,54 @@ L241	equ	5
 	.sym	~~k_fxstring_size,~~k_fxstring_size,80,2,0
 	.sym	~~k_fxstring_length,~~k_fxstring_length,80,2,0
 	.sym	~~k_fxstring_free,~~k_fxstring_free,65,2,0
-	.sym	~~k_fxstring_reinit,~~k_fxstring_reinit,1098,2,32,43
-	.sym	~~k_fxstring_new,~~k_fxstring_new,1098,2,32,43
-	.sym	~~k_fxstring_init,~~k_fxstring_init,1098,2,32,43
-	.sym	PFXSTRING,0,138,14,32,43
-	.sym	FXSTRING,0,10,14,64,43
-	.sym	PFXCOMBUFFER,0,138,14,32,42
-	.sym	FXCOMBUFFER,0,10,14,2080,42
-	.sym	PSUBMENULIST,0,138,14,32,41
-	.sym	SUBMENULIST,0,10,14,40,41
+	.sym	~~k_fxstring_reinit,~~k_fxstring_reinit,1098,2,32,45
+	.sym	~~k_fxstring_new,~~k_fxstring_new,1098,2,32,45
+	.sym	~~k_fxstring_init,~~k_fxstring_init,1098,2,32,45
+	.sym	PFXSTRING,0,138,14,32,45
+	.sym	FXSTRING,0,10,14,64,45
+	.sym	PFXCOMBUFFER,0,138,14,32,44
+	.sym	FXCOMBUFFER,0,10,14,2080,44
+	.sym	PSUBMENULIST,0,138,14,32,43
+	.sym	SUBMENULIST,0,10,14,40,43
 	.sym	HSUBMENU,0,7,14,32
-	.sym	PSUBMENU,0,138,14,32,40
-	.sym	SUBMENU,0,10,14,64,40
+	.sym	PSUBMENU,0,138,14,32,42
+	.sym	SUBMENU,0,10,14,64,42
 	.sym	MenuAction,0,641,14,32
-	.sym	PMENUANCHOR,0,138,14,32,39
-	.sym	MENUANCHOR,0,10,14,144,39
-	.sym	PTEXTBOX,0,138,14,32,38
-	.sym	TEXTBOX,0,10,14,144,38
-	.sym	PLISTBOX,0,138,14,32,37
-	.sym	LISTBOX,0,10,14,240,37
-	.sym	PSCROLLBAR,0,138,14,32,36
-	.sym	SCROLLBAR,0,10,14,192,36
-	.sym	PBUTTON,0,138,14,32,35
-	.sym	BUTTON,0,10,14,80,35
-	.sym	PMENUDROPDOWNDATA,0,138,14,32,34
-	.sym	MENUDROPDOWNDATA,0,10,14,3376,34
-	.sym	PMENUTAG,0,138,14,32,33
-	.sym	MENUTAG,0,10,14,112,33
-	.sym	PMENU,0,138,14,32,32
-	.sym	MENU,0,10,14,248,32
+	.sym	PMENUANCHOR,0,138,14,32,41
+	.sym	MENUANCHOR,0,10,14,144,41
+	.sym	PTEXTBOX,0,138,14,32,40
+	.sym	TEXTBOX,0,10,14,144,40
+	.sym	PLISTBOX,0,138,14,32,39
+	.sym	LISTBOX,0,10,14,240,39
+	.sym	PSCROLLBAR,0,138,14,32,38
+	.sym	SCROLLBAR,0,10,14,192,38
+	.sym	PBUTTON,0,138,14,32,37
+	.sym	BUTTON,0,10,14,80,37
+	.sym	PMENUDROPDOWNDATA,0,138,14,32,36
+	.sym	MENUDROPDOWNDATA,0,10,14,3568,36
+	.sym	PMENUTAG,0,138,14,32,35
+	.sym	MENUTAG,0,10,14,112,35
+	.sym	PMENU,0,138,14,32,34
+	.sym	MENU,0,10,14,248,34
 	.sym	HMENURESOURCE,0,129,14,32
-	.sym	HCLICKABLE,0,7,14,32
-	.sym	PCLICKABLE,0,138,14,32,31
-	.sym	CLICKABLE,0,10,14,88,31
 	.sym	HTEXTBOX,0,7,14,32
-	.sym	PTEXTBOXX,0,138,14,32,30
-	.sym	TEXTBOXX,0,10,14,112,30
-	.sym	FONTMETRIC,0,10,14,32,29
+	.sym	PTEXTBOXX,0,138,14,32,33
+	.sym	TEXTBOXX,0,10,14,112,33
+	.sym	FONTMETRIC,0,10,14,32,32
 	.sym	TITLE,0,142,14,32
 	.sym	PHANDLE,0,1153,14,32
 	.sym	HANDLE,0,129,14,32
-	.sym	PWINDOWEX,0,138,14,32,28
-	.sym	WINDOWEX,0,10,14,1296,28
-	.sym	WindowEx,0,10,14,1296,28
-	.sym	PWINDOW,0,138,14,32,27
-	.sym	WINDOW,0,10,14,1328,27
-	.sym	Window,0,10,14,1328,27
+	.sym	PWINDOWEX,0,138,14,32,31
+	.sym	WINDOWEX,0,10,14,2704,31
+	.sym	PWINDOW,0,138,14,32,30
+	.sym	WINDOW,0,10,14,2808,30
+	.sym	PDRAGDATA,0,138,14,32,29
+	.sym	DRAGDATA,0,10,14,136,29
+	.sym	PNCCLICKABLE,0,138,14,32,28
+	.sym	NCCLICKABLE,0,10,14,88,28
+	.sym	HCLICKABLE,0,7,14,32
+	.sym	PCLICKABLE,0,138,14,32,27
+	.sym	CLICKABLE,0,10,14,88,27
 	.sym	PWNDCLASS,0,138,14,32,26
 	.sym	WNDCLASS,0,10,14,256,26
 	.sym	HBRUSH,0,129,14,32
@@ -5667,7 +6159,7 @@ L241	equ	5
 	.sym	PFXPROCESSMESSAGE,0,138,14,32,21
 	.sym	FXPROCESSMESSAGE,0,10,14,112,21
 	.sym	PFXPROCESS,0,138,14,32,20
-	.sym	FXPROCESS,0,10,14,768,20
+	.sym	FXPROCESS,0,10,14,800,20
 	.sym	PDESKTOP_CONTROL,0,138,14,32,19
 	.sym	DESKTOP_CONTROL,0,10,14,392,19
 	.sym	PCONSOLE_CONTROL,0,138,14,32,18
@@ -5723,6 +6215,7 @@ L241	equ	5
 	.sym	HCOLOR,0,129,14,32
 	.sym	HFONT,0,129,14,32
 	.sym	HDC,0,129,14,32
+	.sym	HPOINTER,0,129,14,32
 	.sym	uint32_t,0,18,14,32
 	.sym	uint8_t,0,14,14,8
 	.sym	PFAR,0,142,14,32
@@ -5733,16 +6226,18 @@ L241	equ	5
 	.sym	LPLONG,0,135,14,32
 	.sym	LONG,0,7,14,32
 	.sym	PUINT,0,144,14,32
+	.sym	USHORT,0,16,14,16
 	.sym	UINT,0,16,14,16
 	.sym	INT,0,5,14,16
 	.sym	WORD,0,5,14,16
+	.sym	PBYTE,0,142,14,32
+	.sym	BYTE,0,14,14,8
 	.sym	UCHAR,0,14,14,8
 	.sym	LPWCSTR,0,142,14,32
 	.sym	LPCSTR,0,142,14,32
 	.sym	LPSTR,0,142,14,32
 	.sym	LPCHAR,0,142,14,32
 	.sym	CHAR,0,14,14,8
-	.sym	BYTE,0,14,14,8
 	.sym	LPVOID,0,129,14,32
 	.sym	VOID,0,1,14,32
 	.sym	~~strupr,~~strupr,1102,2,32
@@ -5754,8 +6249,6 @@ L241	equ	5
 	.sym	~~memset,~~memset,1089,18,32
 	.sym	~~memcpy,~~memcpy,1089,18,32
 	.sym	Boolean_T,0,5,14,16
-	.sym	~~malloc,~~malloc,1089,18,32
-	.sym	~~free,~~free,65,18,0
 	.sym	ldiv_t,0,10,14,64,2
 	.sym	div_t,0,10,14,32,1
 	.sym	wctype_t,0,16,14,16

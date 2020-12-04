@@ -1,0 +1,17 @@
+Section CODE:
+	00001000 _BEG_CODE
+	00001000 _~DllMain
+	0000101d _~DoSomething
+	0000103f _~InitFXTools
+	00001058 _~__kernel_call
+	000010af _~GetDirectory
+	000010f1 _~DebugOut
+	00001115 _END_CODE
+
+Section DATA:
+	00001115 _BEG_DATA
+	000011e9 _~_k_keyCodesExtSet
+	00001190 _~_k_keyCodesShiftSet
+	00001137 _~_k_keyCodesSet
+	000011ea _END_DATA
+

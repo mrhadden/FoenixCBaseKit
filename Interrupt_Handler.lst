@@ -1,0 +1,1351 @@
+  Thu Dec  3 2020 22:25                                                Page 1
+
+
+                     ***************************************
+                     **      WDC 65C816 Macro Assembler   **
+                     **                                   **
+                     **     Version 3.49.1- Feb  6 2006    **
+                     ***************************************
+
+     1                        
+     2                        
+     3                        
+     4                        
+     5                        
+     6                        	module IRQHandler
+     7                        	xdef ~~IRQHandler
+     8                        	
+     9                        	INCLUDE 	macros_inc.asm
+    10                        	INCLUDE 	io_def.asm
+    11                        	INCLUDE 	ch376s_inc.asm
+    12                        	INCLUDE 	interrupt_def.asm
+    13                        	INCLUDE 	keyboard_def.asm
+    14                        	INCLUDE 	page_00_inc.asm
+    15                        	INCLUDE 	vicky_def.asm
+    16                        
+    17                        ;MASK_INT07_SDCARD	EQU 	$FF7F
+    18             00AFA000   CS_TEXT_MEM_PTR_0         EQU $AFA000
+    19             00AFA001   CS_TEXT_MEM_PTR_1         EQU $AFA001
+    20             00AFA002   CS_TEXT_MEM_PTR_2         EQU $AFA002
+    21             00AFA003   CS_TEXT_MEM_PTR_3         EQU $AFA003
+    22             00AFA004   CS_TEXT_MEM_PTR_4         EQU $AFA004
+    23             00AFA005   CS_TEXT_MEM_PTR_5         EQU $AFA005
+    24             00AFA006   CS_TEXT_MEM_PTR_6         EQU $AFA006
+    25             00AFA007   CS_TEXT_MEM_PTR_7         EQU $AFA007
+    26             00AFA008   CS_TEXT_MEM_PTR_8         EQU $AFA008
+    27                        
+    28             00AFA080   MS_TEXT_MEM_PTR_0         EQU $AFA080
+    29             00AFA081   MS_TEXT_MEM_PTR_1         EQU $AFA081
+    30             00AFA082   MS_TEXT_MEM_PTR_2         EQU $AFA082
+    31                        
+    32                        
+    33             00001500   FXOS_MOUSE_BYTE_0		  EQU $001500
+    34             00001501   FXOS_MOUSE_BYTE_1		  EQU $001501
+    35             00001502   FXOS_MOUSE_BYTE_2		  EQU $001502
+    36             00001503   FXOS_MOUSE_BYTE_T		  EQU $001503
+    37             00001504   FXOS_MOUSE_BYTE_X_L		  EQU $001504
+    38             00001505   FXOS_MOUSE_BYTE_X_H		  EQU $001505
+    39             00001506   FXOS_MOUSE_BYTE_Y_L		  EQU $001506
+    40             00001507   FXOS_MOUSE_BYTE_Y_H		  EQU $001507
+    41                        
+    42                        
+    43             00001508   FXOS_KEY_BYTE_0		  	  EQU $001508
+    44             00001509   FXOS_KEY_BYTE_1		      EQU $001509
+    45             0000150A   FXOS_KEY_BYTE_2		      EQU $00150A
+    46                        
+    47             0000150B   FXOS_MOUSE_CTL			  EQU $00150B
+    48             0000150C   FXOS_MOUSE_INDEX   		  EQU $00150C
+    49             0000150D   FXOS_MOUSE_STATUS		  EQU $00150D
+    50                        
+    51                        ~~IRQHandler:
+    52                        ;/////////////////////////////////////////////////
+  Thu Dec  3 2020 22:25                                                Page 2
+
+
+                    ///////////////////////////
+    53                        ;/////////////////////////////////////////////////
+                    ///////////////////////////
+    54                        ; Interrupt Handler
+    55                        ;/////////////////////////////////////////////////
+                    ///////////////////////////
+    56                        ;/////////////////////////////////////////////////
+                    ///////////////////////////
+    57                        ;/////////////////////////////////////////////////
+                    ///////////////////////////
+    58                        
+    59                        				setas			
+                    	
++   59 00:0000: E2 20                        SEP #$20        ; set A short 
++   59                                        LONGA OFF
+    60                        				;LDA #'I'
+    61                        				;JSL IPUTC
+    62 00:0002: A9 42        				LDA #'B'
+    63 00:0004: 8F 00 A0 AF  				STA >$AFA000
+    64                        				
+    65                        				
+    66                        				;LDX #<>irq_Msg
+    67                                        ;JSL IPRINT       ; print the Init
+    68                                        setas 				
+                    	; Set 8bits
++   68 00:0008: E2 20                        SEP #$20        ; set A short 
++   68                                        LONGA OFF
+    69                                        ; Go Service the Start of Frame In
+                    terrupt Interrupt
+    70                                        ; IRQ0
+    71                                        ; Start of Frame Interrupt
+    72                        				;JSR SOF_I+NTERRUPT
+    73                        				;LDA >INT_PENDING_REG0
+    74                        				;STA	>CS_TEXT_MEM_PTR
+                    _0
+    75                        				;LDA >INT_PENDING_REG1
+    76                        				;STA	>CS_TEXT_MEM_PTR
+                    _1
+    77                        				;LDA >INT_PENDING_REG2
+    78                        				;STA	>CS_TEXT_MEM_PTR
+                    _2
+    79                        
+    80 00:000A: A9 43        				LDA #'C'
+    81 00:000C: 8F 00 A0 AF  				STA >$AFA000
+    82                        				
+    83                        				
+    84                        				;LDA >INT_POL_REG0	
+                    	
+    85                        				;STA	>CS_TEXT_MEM_PTR
+                    _3				
+    86                        				;LDA >INT_POL_REG1	
+    87                        				;STA	>CS_TEXT_MEM_PTR
+                    _4
+    88                        				;LDA >INT_POL_REG2
+    89                        				;STA	>CS_TEXT_MEM_PTR
+                    _5
+    90                        
+    91                        
+  Thu Dec  3 2020 22:25                                                Page 3
+
+
+    92                        				;LDA >INT_EDGE_REG0
+    93                        				;STA	>CS_TEXT_MEM_PTR
+                    _6
+    94                        				;LDA >INT_EDGE_REG1	
+    95                        				;STA	>CS_TEXT_MEM_PTR
+                    _7
+    96                        				;LDA >INT_EDGE_REG2
+    97                        				;STA	>CS_TEXT_MEM_PTR
+                    _8
+    98                        
+    99                        
+   100                        				
+   101 00:0010: AF 40 01 00  				LDA >INT_PENDING_REG0
+   102 00:0014: C9 00                        CMP #$00
+   103 00:0016: D0 1A                        BNE SERVICE_NEXT_IRQ0
+   104                        
+   105 00:0018: A9 44        				LDA #'D'
+   106 00:001A: 8F 00 A0 AF  				STA >$AFA000
+   107                        
+   108                                        ;LDA >INT_PENDING_REG0
+   109                                        ;AND #FNX0_INT00_SOF
+   110                                        ;CMP #FNX0_INT00_SOF
+   111                                        ;BNE SERVICE_NEXT_IRQ6
+   112                        				;BNE SERVICE_NEXT_IRQ0
+   113                                        ;STA >INT_PENDING_REG0
+   114                                        ; Start of Frame Interrupt
+   115                                        ;JSR SOF_INTERRUPT
+   116                                        ;BRA EXIT_IRQ_HANDLE
+   117                        
+   118                                        ;IRQ1 - Not Implemented Yet
+   119                                        ;IRQ6
+   120                        
+   121                                        setas
++  121 00:001E: E2 20                        SEP #$20        ; set A short 
++  121                                        LONGA OFF
+   122                                        ;BRL SERVICE_PENDING_REG1
+   123                        
+   124 00:0020: AF 41 01 00  				LDA >INT_PENDING_REG1
+   125 00:0024: C9 00                        CMP #$00
+   126 00:0026: 82 AD 00                     BRL SERVICE_PENDING_REG1
+   127                        
+   128 00:0029: AF 42 01 00  				LDA >INT_PENDING_REG2
+   129 00:002D: C9 00                        CMP #$00
+   130 00:002F: 82 21 01                     BRL SERVICE_PENDING_REG2
+   131                        
+   132                        
+   133                        
+   134                        ;CHECK_PENDING_REG1
+   135                        ;                setas
+   136                        ;                LDA >INT_PENDING_REG1
+   137                        ;                CMP #$00
+   138                        ;                BEQ PENDING_REG1_EXIT ;BEQ EXIT_I
+                    RQ_HANDLE;
+   139                        ;				jmp SERVICE_NEXT_IRQ8
+   140                        ;PENDING_REG1_EXIT
+   141                        ;				jmp EXIT_IRQ_HANDLE
+   142                        SERVICE_NEXT_IRQ0 ;SOF
+   143                        
+  Thu Dec  3 2020 22:25                                                Page 4
+
+
+   144 00:0032: A9 45        				LDA #'E'
+   145 00:0034: 8F 00 A0 AF  				STA >$AFA000
+   146                        				
+   147                        
+   148                        				setas
++  148 00:0038: E2 20                        SEP #$20        ; set A short 
++  148                                        LONGA OFF
+   149 00:003A: AF 40 01 00                  LDA >INT_PENDING_REG0
+   150 00:003E: 29 01                        AND #FNX0_INT00_SOF
+   151 00:0040: C9 01                        CMP #FNX0_INT00_SOF
+   152 00:0042: D0 0F                        BNE SERVICE_NEXT_IRQ1
+   153 00:0044: 8F 40 01 00                  STA >INT_PENDING_REG0
+   154                                        ; Timer 0
+   155 00:0048: 20 xx xx                     JSR SOF_INTERRUPT
+   156                        ;                BRA EXIT_IRQ_HANDLE
+   157                                        ;IRQ7
+   158                                        setas
++  158 00:004B: E2 20                        SEP #$20        ; set A short 
++  158                                        LONGA OFF
+   159                        				
+   160 00:004D: A9 46        				LDA #'F'
+   161 00:004F: 8F 00 A0 AF  				STA >$AFA000		
+                    		
+   162                        				
+   163                        SERVICE_NEXT_IRQ1 ;SOL
+   164 00:0053: AF 40 01 00                  LDA >INT_PENDING_REG0
+   165 00:0057: 29 02                        AND #FNX0_INT01_SOL
+   166 00:0059: C9 02                        CMP #FNX0_INT01_SOL
+   167 00:005B: D0 09                        BNE SERVICE_NEXT_IRQ2
+   168 00:005D: 8F 40 01 00                  STA >INT_PENDING_REG0
+   169                                        ; Timer 0
+   170 00:0061: 20 xx xx                     JSR SOL_INTERRUPT
+   171                        ;                BRA EXIT_IRQ_HANDLE
+   172                                        ;IRQ7
+   173                                        setas
++  173 00:0064: E2 20                        SEP #$20        ; set A short 
++  173                                        LONGA OFF
+   174                        				
+   175                        SERVICE_NEXT_IRQ2 ;Timer 0
+   176 00:0066: AF 40 01 00                  LDA >INT_PENDING_REG0
+   177 00:006A: 29 04                        AND #FNX0_INT02_TMR0
+   178 00:006C: C9 04                        CMP #FNX0_INT02_TMR0
+   179 00:006E: D0 09                        BNE SERVICE_NEXT_IRQ3
+   180 00:0070: 8F 40 01 00                  STA >INT_PENDING_REG0
+   181                                        ; Timer 0
+   182 00:0074: 20 xx xx                     JSR TIMER0_INTERRUPT
+   183                        ;                BRA EXIT_IRQ_HANDLE
+   184                                        ;IRQ7
+   185                                        setas
++  185 00:0077: E2 20                        SEP #$20        ; set A short 
++  185                                        LONGA OFF
+   186                        SERVICE_NEXT_IRQ3 ;Timer 1
+   187 00:0079: AF 40 01 00                  LDA >INT_PENDING_REG0
+   188 00:007D: 29 08                        AND #FNX0_INT03_TMR1
+   189 00:007F: C9 08                        CMP #FNX0_INT03_TMR1
+   190 00:0081: D0 09                        BNE SERVICE_NEXT_IRQ4
+   191 00:0083: 8F 40 01 00                  STA >INT_PENDING_REG0
+   192                                        ; Time 1
+  Thu Dec  3 2020 22:25                                                Page 5
+
+
+   193 00:0087: 20 xx xx                     JSR TIMER1_INTERRUPT
+   194                        ;                BRA EXIT_IRQ_HANDLE
+   195                                        ;IRQ7
+   196                                        setas
++  196 00:008A: E2 20                        SEP #$20        ; set A short 
++  196                                        LONGA OFF
+   197                        SERVICE_NEXT_IRQ4 ;Timer 2
+   198 00:008C: AF 40 01 00                  LDA >INT_PENDING_REG0
+   199 00:0090: 29 10                        AND #FNX0_INT04_TMR2
+   200 00:0092: C9 10                        CMP #FNX0_INT04_TMR2
+   201 00:0094: D0 09                        BNE SERVICE_NEXT_IRQ5
+   202 00:0096: 8F 40 01 00                  STA >INT_PENDING_REG0
+   203                                        ; Time 2
+   204 00:009A: 20 xx xx                     JSR TIMER2_INTERRUPT
+   205                        ;                BRA EXIT_IRQ_HANDLE
+   206                                        ;IRQ7
+   207                                        setas
++  207 00:009D: E2 20                        SEP #$20        ; set A short 
++  207                                        LONGA OFF
+   208                        SERVICE_NEXT_IRQ5 ;Real-Time Clock Interrupt
+   209 00:009F: AF 40 01 00                  LDA >INT_PENDING_REG0
+   210 00:00A3: 29 20                        AND #FNX0_INT05_RTC
+   211 00:00A5: C9 20                        CMP #FNX0_INT05_RTC
+   212 00:00A7: D0 09                        BNE SERVICE_NEXT_IRQ6
+   213 00:00A9: 8F 40 01 00                  STA >INT_PENDING_REG0
+   214                                        ; Floppy Disk Controller
+   215 00:00AD: 20 xx xx                     JSR RTC_INTERRUPT
+   216                        ;                BRA EXIT_IRQ_HANDLE
+   217                                        ;IRQ7
+   218                                        setas
++  218 00:00B0: E2 20                        SEP #$20        ; set A short 
++  218                                        LONGA OFF
+   219                        SERVICE_NEXT_IRQ6 ; FDC Interrupt
+   220 00:00B2: AF 40 01 00                  LDA >INT_PENDING_REG0
+   221 00:00B6: 29 40                        AND #FNX0_INT06_FDC
+   222 00:00B8: C9 40                        CMP #FNX0_INT06_FDC
+   223 00:00BA: D0 09                        BNE SERVICE_NEXT_IRQ7
+   224 00:00BC: 8F 40 01 00                  STA >INT_PENDING_REG0
+   225                                        ; Floppy Disk Controller
+   226 00:00C0: 20 xx xx                     JSR FDC_INTERRUPT
+   227                        ;                BRA EXIT_IRQ_HANDLE
+   228                                        ;IRQ7
+   229                                        setas
++  229 00:00C3: E2 20                        SEP #$20        ; set A short 
++  229                                        LONGA OFF
+   230                        
+   231                        SERVICE_NEXT_IRQ7 ; Mouse IRQ
+   232 00:00C5: AF 40 01 00                  LDA >INT_PENDING_REG0
+   233 00:00C9: 29 80                        AND #FNX0_INT07_MOUSE
+   234 00:00CB: C9 80                        CMP #FNX0_INT07_MOUSE
+   235 00:00CD: D0 07                        BNE SERVICE_PENDING_REG1
+   236 00:00CF: 8F 40 01 00                  STA >INT_PENDING_REG0
+   237                                        ; Mouse Interrupt
+   238 00:00D3: 20 xx xx                     JSR MOUSE_INTERRUPT
+   239                        ;
+   240                        ; Second Block of 8 Interrupts
+   241                        ;                ;IRQ8
+   242                        SERVICE_PENDING_REG1				
+  Thu Dec  3 2020 22:25                                                Page 6
+
+
+   243                        
+   244 00:00D6: A9 4D        				LDA #'M'
+   245 00:00D8: 8F 00 A0 AF  				STA >$AFA000		
+                    		
+   246                        
+   247                                        setas
++  247 00:00DC: E2 20                        SEP #$20        ; set A short 
++  247                                        LONGA OFF
+   248 00:00DE: AF 41 01 00                  LDA >INT_PENDING_REG1
+   249 00:00E2: C9 00                        CMP #$00
+   250 00:00E4: D0 03                        BNE SERVICE_NEXT_IRQ8 ;BEQ EXIT_IRQ
+                    _HANDLE
+   251 00:00E6: 82 6A 00     				BRL EXIT_IRQ_HANDLE
+   252                        
+   253                        SERVICE_NEXT_IRQ8 ; Keyboard Interrupt
+   254                                        setas
++  254 00:00E9: E2 20                        SEP #$20        ; set A short 
++  254                                        LONGA OFF
+   255                        
+   256 00:00EB: A9 4E        				LDA #'N'
+   257 00:00ED: 8F 00 A0 AF  				STA >$AFA000		
+                    		
+   258                        
+   259 00:00F1: AF 41 01 00  				LDA >INT_PENDING_REG1
+   260 00:00F5: 29 01                        AND #FNX1_INT00_KBD
+   261 00:00F7: C9 01                        CMP #FNX1_INT00_KBD
+   262 00:00F9: D0 08                        BNE SERVICE_NEXT_IRQ11
+   263 00:00FB: 8F 41 01 00                  STA >INT_PENDING_REG1
+   264                                        ; Keyboard Interrupt
+   265 00:00FF: 20 xx xx                     JSR KEYBOARD_INTERRUPT
+   266                                        ;BRL EXIT_IRQ_HANDLE
+   267                                        ;IRQ9 - Not Implemented Yet
+   268                                        ;IRQ10 - Not Implemented Yet
+   269                                        ;IRQ11
+   270 00:0102: 6B                          RTL
+   271                        SERVICE_NEXT_IRQ11
+   272                        				setas
++  272 00:0103: E2 20                        SEP #$20        ; set A short 
++  272                                        LONGA OFF
+   273 00:0105: AF 41 01 00                  LDA >INT_PENDING_REG1
+   274 00:0109: 29 08                        AND #FNX1_INT03_COM2
+   275 00:010B: C9 08                        CMP #FNX1_INT03_COM2
+   276 00:010D: D0 09                        BNE SERVICE_NEXT_IRQ12
+   277 00:010F: 8F 41 01 00                  STA >INT_PENDING_REG1
+   278                                        ; Serial Port Com2 Interrupt
+   279 00:0113: 20 xx xx                     JSR COM2_INTERRUPT
+   280                                        ;BRA EXIT_IRQ_HANDLE
+   281                                        ;IRQ12
+   282                                        setas
++  282 00:0116: E2 20                        SEP #$20        ; set A short 
++  282                                        LONGA OFF
+   283                        SERVICE_NEXT_IRQ12
+   284                        				setas
++  284 00:0118: E2 20                        SEP #$20        ; set A short 
++  284                                        LONGA OFF
+   285 00:011A: AF 41 01 00                  LDA >INT_PENDING_REG1
+   286 00:011E: 29 10                        AND #FNX1_INT04_COM1
+   287 00:0120: C9 10                        CMP #FNX1_INT04_COM1
+  Thu Dec  3 2020 22:25                                                Page 7
+
+
+   288 00:0122: D0 09                        BNE SERVICE_NEXT_IRQ13
+   289 00:0124: 8F 41 01 00                  STA >INT_PENDING_REG1
+   290                                        ; Serial Port Com1 Interrupt
+   291 00:0128: 20 xx xx                     JSR COM1_INTERRUPT
+   292                                        ;BRA EXIT_IRQ_HANDLE
+   293                                        ;IRQ13
+   294                                        setas
++  294 00:012B: E2 20                        SEP #$20        ; set A short 
++  294                                        LONGA OFF
+   295                        SERVICE_NEXT_IRQ13
+   296                        				setas
++  296 00:012D: E2 20                        SEP #$20        ; set A short 
++  296                                        LONGA OFF
+   297 00:012F: AF 41 01 00                  LDA >INT_PENDING_REG1
+   298 00:0133: 29 20                        AND #FNX1_INT05_MPU401
+   299 00:0135: C9 20                        CMP #FNX1_INT05_MPU401
+   300 00:0137: D0 09                        BNE SERVICE_NEXT_IRQ14
+   301 00:0139: 8F 41 01 00                  STA >INT_PENDING_REG1
+   302                                        ; Serial Port Com1 Interrupt
+   303 00:013D: 20 xx xx                     JSR MPU401_INTERRUPT
+   304                                        ;BRA EXIT_IRQ_HANDLE
+   305                                        ;IRQ14
+   306                                        setas
++  306 00:0140: E2 20                        SEP #$20        ; set A short 
++  306                                        LONGA OFF
+   307                        SERVICE_NEXT_IRQ14
+   308 00:0142: AF 41 01 00                  LDA >INT_PENDING_REG1
+   309 00:0146: 29 40                        AND #FNX1_INT06_LPT
+   310 00:0148: C9 40                        CMP #FNX1_INT06_LPT
+   311 00:014A: D0 07                        BNE SERVICE_PENDING_REG2
+   312 00:014C: 8F 41 01 00                  STA >INT_PENDING_REG1
+   313                                        ; Serial Port Com1 Interrupt
+   314 00:0150: 20 xx xx                     JSR LPT1_INTERRUPT
+   315                        ;SERVICE_NEXT_IRQ15
+   316                        ;                LDA >INT_PENDING_REG1
+   317                        ;                AND #FNX1_INT07_SDCARD
+   318                        ;                CMP #FNX1_INT07_SDCARD
+   319                        ;                BNE SERVICE_NEXT_IRQ15_2
+   320                        ;                STA >INT_PENDING_REG1
+   321                        ;
+   322                        ;				JSR SDCARD_INTERRUPT
+   323                        
+   324                        
+   325                        SERVICE_PENDING_REG2
+   326                        
+   327                        
+   328                        ;SERVICE_NEXT_IRQ15_2
+   329                        ;                LDA >INT_PENDING_REG2
+   330                        ;                AND #FNX2_INT07_SDCARD
+   331                        ;                CMP #FNX2_INT07_SDCARD
+   332                        ;                BNE EXIT_IRQ_HANDLE
+   333                        ;                STA >INT_PENDING_REG2
+   334                        ;				 JSR SDCARD_INS_INTERRUP
+                    T
+   335                        
+   336                        
+   337                        
+   338                        EXIT_IRQ_HANDLE
+  Thu Dec  3 2020 22:25                                                Page 8
+
+
+   339                                        ; Exit Interrupt Handler
+   340                        
+   341                        				setas
++  341 00:0153: E2 20                        SEP #$20        ; set A short 
++  341                                        LONGA OFF
+   342                        				;LDA >INT_POL_REG0	
+                    						
+   343                        				;LDA #' '
+   344                        				;STA	>CS_TEXT_MEM_PTR
+                    _3
+   345                        				;;LDA >INT_POL_REG1	
+   346                        				;LDA #' '
+   347                        				;STA	>CS_TEXT_MEM_PTR
+                    _4
+   348                        				;;LDA >INT_POL_REG2
+   349                        				;LDA #' '
+   350                        				;STA	>CS_TEXT_MEM_PTR
+                    _5
+   351                        
+   352                        				;LDA #$00
+   353                        				;STA >INT_PENDING_REG0
+   354                        
+   355                                        setaxl
++  355 00:0155: C2 30                        REP #$30        ; set A&X long 
++  355                                        LONGA ON
++  355                                        LONGI ON
+   356 00:0157: 6B                           RTL
+   357                        ;/////////////////////////////////////////////////
+                    ///////
+   358                        ;
+   359                        ;
+   360                        ;/////////////////////////////////////////////////
+                    //////
+   361                        KEYBOARD_INTERRUPT
+   362 00:0158: A2 00 00                     ldx #$0000
+   363                                        setxs
++  363 00:015B: E2 10                        SEP #$10        ; set X short 
++  363                                        LONGI OFF
+   364                                        setas
++  364 00:015D: E2 20                        SEP #$20        ; set A short 
++  364                                        LONGA OFF
+   365                                        ; Clear the Pending Flag
+   366 00:015F: AF 41 01 00                  LDA >INT_PENDING_REG1
+   367 00:0163: 29 01                        AND #FNX1_INT00_KBD
+   368 00:0165: 8F 41 01 00                  STA >INT_PENDING_REG1
+   369                        
+   370                        
+   371                        IRQ_HANDLER_FETCH
+   372 00:0169: AD 60 10                     LDA KBD_INPT_BUF        ; Get Scan 
+                    Code from KeyBoard
+   373 00:016C: 8D 88 0F                     STA KEYBOARD_SC_TMP     ; Save Code
+                     Immediately
+   374 00:016F: 8F 08 15 00  				STA >FXOS_KEY_BYTE_0
+   375                                        ; Check for Shift Press or Unpress
+                    ed
+   376 00:0173: C9 2A                        CMP #$2A                ; Left Shif
+                    t Pressed
+   377 00:0175: D0 03                        BNE NOT_KB_SET_SHIFT
+  Thu Dec  3 2020 22:25                                                Page 9
+
+
+   378 00:0177: 82 74 00                     BRL KB_SET_SHIFT
+   379                        NOT_KB_SET_SHIFT
+   380 00:017A: C9 AA                        CMP #$AA                ; Left Shif
+                    t Unpressed
+   381 00:017C: D0 03                        BNE NOT_KB_CLR_SHIFT
+   382 00:017E: 82 78 00                     BRL KB_CLR_SHIFT
+   383                        NOT_KB_CLR_SHIFT
+   384                                        ; Check for CTRL Press or Unpresse
+                    d
+   385 00:0181: C9 1D                        CMP #$1D                ; Left CTRL
+                     pressed
+   386 00:0183: D0 03                        BNE NOT_KB_SET_CTRL
+   387 00:0185: 82 7C 00                     BRL KB_SET_CTRL
+   388                        NOT_KB_SET_CTRL
+   389 00:0188: C9 9D                        CMP #$9D                ; Left CTRL
+                     Unpressed
+   390 00:018A: D0 03                        BNE NOT_KB_CLR_CTRL
+   391 00:018C: 82 80 00                     BRL KB_CLR_CTRL
+   392                        
+   393                        NOT_KB_CLR_CTRL
+   394 00:018F: C9 38                        CMP #$38                ; Left ALT 
+                    Pressed
+   395 00:0191: D0 03                        BNE NOT_KB_SET_ALT
+   396 00:0193: 82 84 00                     BRL KB_SET_ALT
+   397                        NOT_KB_SET_ALT
+   398 00:0196: C9 B8                        CMP #$B8                ; Left ALT 
+                    Unpressed
+   399 00:0198: D0 03                        BNE KB_UNPRESSED
+   400 00:019A: 82 88 00                     BRL KB_CLR_ALT
+   401                        
+   402                        
+   403 00:019D: 29 80        KB_UNPRESSED    AND #$80                ; See if th
+                    e Scan Code is press or Depressed
+   404 00:019F: C9 80                        CMP #$80                ; Depress S
+                    tatus - We will not do anything at this point
+   405 00:01A1: D0 06                        BNE KB_NORM_SC
+   406 00:01A3: 6D 09 15     				ADC FXOS_KEY_BYTE_1
+   407 00:01A6: 82 84 00                     BRL KB_CHECK_B_DONE
+   408                        
+   409 00:01A9: AD 88 0F     KB_NORM_SC      LDA KEYBOARD_SC_TMP       ;
+   410 00:01AC: AA                           TAX
+   411 00:01AD: AD 87 0F                     LDA KEYBOARD_SC_FLG     ; Check to 
+                    See if the SHIFT Key is being Pushed
+   412 00:01B0: 29 10                        AND #$10
+   413 00:01B2: C9 10                        CMP #$10
+   414 00:01B4: F0 19                        BEQ SHIFT_KEY_ON
+   415                        
+   416 00:01B6: AD 87 0F                     LDA KEYBOARD_SC_FLG     ; Check to 
+                    See if the CTRL Key is being Pushed
+   417 00:01B9: 29 20                        AND #$20
+   418 00:01BB: C9 20                        CMP #$20
+   419 00:01BD: F0 17                        BEQ CTRL_KEY_ON
+   420                        
+   421 00:01BF: AD 87 0F                     LDA KEYBOARD_SC_FLG     ; Check to 
+                    See if the ALT Key is being Pushed
+   422 00:01C2: 29 40                        AND #$40
+   423 00:01C4: C9 40                        CMP #$40
+   424 00:01C6: F0 15                        BEQ ALT_KEY_ON
+  Thu Dec  3 2020 22:25                                                Page 10
+
+
+   425                                        ; Pick and Choose the Right Bank o
+                    f Character depending if the Shift/Ctrl/Alt or none are chos
+                    en
+   426 00:01C8: BF xx xx xx                  LDA >ScanCode_Press_Set1, x
+   427 00:01CC: 82 12 00                     BRL KB_WR_2_SCREEN
+   428 00:01CF: BF xx xx xx  SHIFT_KEY_ON    LDA >ScanCode_Shift_Set1, x
+   429                        				;ADC FXOS_KEY_BYTE_2
+   430 00:01D3: 82 0B 00                     BRL KB_WR_2_SCREEN
+   431 00:01D6: BF xx xx xx  CTRL_KEY_ON     LDA >ScanCode_Ctrl_Set1, x
+   432                        				;ADC FXOS_KEY_BYTE_2
+   433 00:01DA: 82 04 00                     BRL KB_WR_2_SCREEN
+   434 00:01DD: BF xx xx xx  ALT_KEY_ON      LDA >ScanCode_Alt_Set1, x
+   435                        				;ADC FXOS_KEY_BYTE_2
+   436                                        ; Write Character to Screen (Later
+                     in the buffer)
+   437                        KB_WR_2_SCREEN
+   438 00:01E1: 48                           PHA
+   439                                        setxl				
++  439 00:01E2: C2 10                        REP #$10        ; set X long 
++  439                                        LONGI ON
+   440                        				;JSL SAVECHAR2CMDLINE	
+                    			
+   441                        				setas			
+                    	
++  441 00:01E4: E2 20                        SEP #$20        ; set A short 
++  441                                        LONGA OFF
+   442 00:01E6: 68                           PLA	
+   443 00:01E7: 8F 0A 15 00  				STA >FXOS_KEY_BYTE_2	
+                    			
+   444                                        ;JSL PUTC
+   445 00:01EB: 4C xx xx                     JMP KB_CHECK_B_DONE
+   446                        
+   447 00:01EE: AD 87 0F     KB_SET_SHIFT    LDA KEYBOARD_SC_FLG
+   448 00:01F1: 09 10                        ORA #$10
+   449 00:01F3: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   450 00:01F6: 4C xx xx                     JMP KB_CHECK_B_DONE
+   451                        
+   452 00:01F9: AD 87 0F     KB_CLR_SHIFT    LDA KEYBOARD_SC_FLG
+   453 00:01FC: 29 EF                        AND #$EF
+   454 00:01FE: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   455 00:0201: 4C xx xx                     JMP KB_CHECK_B_DONE
+   456                        
+   457 00:0204: AD 87 0F     KB_SET_CTRL    LDA KEYBOARD_SC_FLG
+   458 00:0207: 09 20                        ORA #$20
+   459 00:0209: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   460 00:020C: 4C xx xx                     JMP KB_CHECK_B_DONE
+   461                        
+   462 00:020F: AD 87 0F     KB_CLR_CTRL    LDA KEYBOARD_SC_FLG
+   463 00:0212: 29 DF                        AND #$DF
+   464 00:0214: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   465 00:0217: 4C xx xx                     JMP KB_CHECK_B_DONE
+   466                        
+   467 00:021A: AD 87 0F     KB_SET_ALT      LDA KEYBOARD_SC_FLG
+   468 00:021D: 09 40                        ORA #$40
+   469 00:021F: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   470 00:0222: 4C xx xx                     JMP KB_CHECK_B_DONE
+   471                        
+   472 00:0225: AD 87 0F     KB_CLR_ALT     LDA KEYBOARD_SC_FLG
+  Thu Dec  3 2020 22:25                                                Page 11
+
+
+   473 00:0228: 29 BF                        AND #$BF
+   474 00:022A: 8D 87 0F                     STA KEYBOARD_SC_FLG
+   475                        
+   476                        KB_CHECK_B_DONE setas
++  476 00:022D: E2 20                        SEP #$20        ; set A short 
++  476                                        LONGA OFF
+   477 00:022F: AD 64 10                     LDA STATUS_PORT
+   478 00:0232: 29 01                        AND #OUT_BUF_FULL ; Test bit $01 (i
+                    f 1, Full)
+   479 00:0234: C9 01                        CMP #OUT_BUF_FULL ; if Still Byte i
+                    n the Buffer, fetch it out
+   480 00:0236: D0 03                        BNE KB_DONE
+   481 00:0238: 4C xx xx                     JMP IRQ_HANDLER_FETCH
+   482                        
+   483                        KB_DONE
+   484                                        setaxl
++  484 00:023B: C2 30                        REP #$30        ; set A&X long 
++  484                                        LONGA ON
++  484                                        LONGI ON
+   485 00:023D: 60           				RTS
+   486                        				
+   487                        				
+   488                        ;
+   489                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   490                        ; ///
+   491                        ; /// Start of Frame Interrupt
+   492                        ; /// 60Hz, 16ms Cyclical Interrupt
+   493                        ; ///
+   494                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   495                        SOL_INTERRUPT
+   496                                        setas
++  496 00:023E: E2 20                        SEP #$20        ; set A short 
++  496                                        LONGA OFF
+   497 00:0240: AF 40 01 00                  LDA >INT_PENDING_REG0
+   498 00:0244: 29 02                        AND #FNX0_INT01_SOL
+   499 00:0246: 8F 40 01 00                  STA >INT_PENDING_REG0
+   500                        				
+   501                        				setas
++  501 00:024A: E2 20                        SEP #$20        ; set A short 
++  501                                        LONGA OFF
+   502                        				
+   503                        				;PHX
+   504                        				;PHA
+   505                        				;LDA #'1'
+   506                        				;JSL IPUTC
+   507                        				;PLA
+   508                        				;PLX
+   509                        				
+   510 00:024C: 60                           RTS
+   511                        				
+   512                        ;
+   513                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   514                        ; ///
+   515                        ; /// Start of Frame Interrupt
+   516                        ; /// 60Hz, 16ms Cyclical Interrupt
+  Thu Dec  3 2020 22:25                                                Page 12
+
+
+   517                        ; ///
+   518                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   519                        SOF_INTERRUPT
+   520                                        setas
++  520 00:024D: E2 20                        SEP #$20        ; set A short 
++  520                                        LONGA OFF
+   521 00:024F: AF 40 01 00                  LDA >INT_PENDING_REG0
+   522 00:0253: 29 01                        AND #FNX0_INT00_SOF
+   523 00:0255: 8F 40 01 00                  STA >INT_PENDING_REG0
+   524                        				
+   525                        				setas
++  525 00:0259: E2 20                        SEP #$20        ; set A short 
++  525                                        LONGA OFF
+   526                        
+   527                        				;PHX
+   528                        				;PHA
+   529                        				;LDA #'S'
+   530                        				;JSL IPUTC
+   531                        				;PLA
+   532                        				;PLX
+   533                        
+   534 00:025B: 0B           				PHD		
+   535                        				;JSL >FXSCHEDULER
+   536 00:025C: 2B           				PLD
+   537                        				
+   538                        				;PHX
+   539                        				;PHA
+   540                        				;LDA #'E'
+   541                        				;JSL IPUTC
+   542                        				;PLA
+   543                        				;PLX
+   544                        
+   545                        				
+   546 00:025D: 60                           RTS
+   547                        ;
+   548                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   549                        ; ///
+   550                        ; /// Mouse Interrupt
+   551                        ; /// Desc: Basically Assigning the 3Bytes Packet 
+                    to Vickys Registers
+   552                        ; ///       Vicky does the rest
+   553                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   554                        MOUSE_INTERRUPT setas
++  554 00:025E: E2 20                        SEP #$20        ; set A short 
++  554                                        LONGA OFF
+   555                                        setas
++  555 00:0260: E2 20                        SEP #$20        ; set A short 
++  555                                        LONGA OFF
+   556                        
+   557 00:0262: AF 0B 15 00  				LDA >FXOS_MOUSE_CTL
+   558 00:0266: C9 FF        				CMP #$FF
+   559 00:0268: F0 49        				BEQ FXOS_SKIP_UPDATE_2
+   560                        
+   561                        				
+   562 00:026A: AF 40 01 00                  LDA >INT_PENDING_REG0
+  Thu Dec  3 2020 22:25                                                Page 13
+
+
+   563 00:026E: 29 80                        AND #FNX0_INT07_MOUSE
+   564 00:0270: 8F 40 01 00                  STA >INT_PENDING_REG0
+   565 00:0274: AD 60 10                     LDA KBD_INPT_BUF
+   566                        				
+   567 00:0277: A2 00 00                     LDX #$0000
+   568                                        setxs
++  568 00:027A: E2 10                        SEP #$10        ; set X short 
++  568                                        LONGI OFF
+   569 00:027C: AE E0 00                     LDX MOUSE_PTR
+   570                        				
+   571 00:027F: 9F 00 15 00  				STA >FXOS_MOUSE_BYTE_0, 
+                    X
+   572 00:0283: 9F 06 07 AF  				STA >MOUSE_PTR_BYTE0, X
+   573                        				
+   574                        				;LDA >FXOS_MOUSE_CTL
+   575                        				;CMP #$FF
+   576                        				;BEQ FXOS_SKIP_UPDATE
+   577                        
+   578                                        
+   579                        
+   580                        FXOS_SKIP_UPDATE_1
+   581                        
+   582 00:0287: E8                           INX
+   583 00:0288: E0 03                        CPX #$03
+   584 00:028A: D0 24                        BNE EXIT_FOR_NEXT_VALUE
+   585                                        ; Create Absolute Count from Relat
+                    ive Input
+   586                        
+   587                        				;LDA >FXOS_MOUSE_CTL
+   588                        				;CMP #$FF
+   589                        				;BEQ EXIT_FOR_NEXT_VALUE
+   590                        
+   591                        				
+   592 00:028C: AF 02 07 AF                  LDA >MOUSE_PTR_X_POS_L
+   593                                        ;STA MOUSE_POS_X_LO
+   594 00:0290: 8F 04 15 00  				STA >FXOS_MOUSE_BYTE_X_L
+   595                                        
+   596 00:0294: AF 03 07 AF  				LDA >MOUSE_PTR_X_POS_H	
+                    			
+   597                                        ;STA MOUSE_POS_X_HI
+   598 00:0298: 8F 05 15 00  				STA >FXOS_MOUSE_BYTE_X_H
+   599                        
+   600 00:029C: AF 04 07 AF                  LDA >MOUSE_PTR_Y_POS_L
+   601                                        ;STA MOUSE_POS_Y_LO
+   602 00:02A0: 8F 06 15 00  				STA >FXOS_MOUSE_BYTE_Y_L
+   603                                        
+   604 00:02A4: AF 05 07 AF  				LDA >MOUSE_PTR_Y_POS_H
+   605                                        ;STA MOUSE_POS_Y_HI
+   606 00:02A8: 8F 07 15 00  				STA >FXOS_MOUSE_BYTE_Y_H
+   607                        
+   608                        
+   609                        
+   610                                        setas
++  610 00:02AC: E2 20                        SEP #$20        ; set A short 
++  610                                        LONGA OFF
+   611 00:02AE: A2 00                        LDX #$00
+   612                        EXIT_FOR_NEXT_VALUE
+   613 00:02B0: 8E E0 00                     STX MOUSE_PTR
+  Thu Dec  3 2020 22:25                                                Page 14
+
+
+   614                        
+   615                        FXOS_SKIP_UPDATE_2
+   616                                        setxl
++  616 00:02B3: C2 10                        REP #$10        ; set X long 
++  616                                        LONGI ON
+   617 00:02B5: 60                           RTS
+   618                        
+   619                        
+   620                        
+   621                        
+   622                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   623                        ; ///
+   624                        ; /// Timer 0
+   625                        ; /// Desc: Interrupt for Real Time Clock
+   626                        ; ///
+   627                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   628                        TIMER0_INTERRUPT    setas
++  628 00:02B6: E2 20                        SEP #$20        ; set A short 
++  628                                        LONGA OFF
+   629 00:02B8: AF 40 01 00                  LDA >INT_PENDING_REG0
+   630 00:02BC: 29 04                        AND #FNX0_INT02_TMR0
+   631 00:02BE: 8F 40 01 00                  STA >INT_PENDING_REG0
+   632                        ;; PUT YOUR CODE HERE
+   633                        				setas
++  633 00:02C2: E2 20                        SEP #$20        ; set A short 
++  633                                        LONGA OFF
+   634                        				;PHX
+   635                        				;PHA
+   636                        				;LDA #'2'
+   637                        				;JSL IPUTC
+   638                        				;PLX
+   639                        				;PLA
+   640                        
+   641 00:02C4: 60                           RTS
+   642                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   643                        ; ///
+   644                        ; /// Timer 1
+   645                        ; /// Desc: Interrupt for Real Time Clock
+   646                        ; ///
+   647                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   648                        TIMER1_INTERRUPT    setas
++  648 00:02C5: E2 20                        SEP #$20        ; set A short 
++  648                                        LONGA OFF
+   649 00:02C7: AF 40 01 00                  LDA >INT_PENDING_REG0
+   650 00:02CB: 29 08                        AND #FNX0_INT03_TMR1
+   651 00:02CD: 8F 40 01 00                  STA >INT_PENDING_REG0
+   652                        ;; PUT YOUR CODE HERE
+   653                        				setas
++  653 00:02D1: E2 20                        SEP #$20        ; set A short 
++  653                                        LONGA OFF
+   654                        				;PHX
+   655                        				;PHA
+   656                        				;LDA #'3'
+   657                        				;JSL IPUTC
+  Thu Dec  3 2020 22:25                                                Page 15
+
+
+   658                        				;PLX
+   659                        				;PLA
+   660                        
+   661 00:02D3: 60                           RTS
+   662                        				
+   663                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   664                        ; ///
+   665                        ; /// Timer 0
+   666                        ; /// Desc: Interrupt for Real Time Clock
+   667                        ; ///
+   668                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   669                        TIMER2_INTERRUPT    setas
++  669 00:02D4: E2 20                        SEP #$20        ; set A short 
++  669                                        LONGA OFF
+   670 00:02D6: AF 40 01 00                  LDA >INT_PENDING_REG0
+   671 00:02DA: 29 10                        AND #FNX0_INT04_TMR2
+   672 00:02DC: 8F 40 01 00                  STA >INT_PENDING_REG0
+   673                        ;; PUT YOUR CODE HERE
+   674                        				setas
++  674 00:02E0: E2 20                        SEP #$20        ; set A short 
++  674                                        LONGA OFF
+   675                        				;PHX
+   676                        				;PHA
+   677                        				;LDA #'4'
+   678                        				;JSL IPUTC
+   679                        				;PLX
+   680                        				;PLA
+   681                        
+   682 00:02E2: 60                           RTS				
+   683                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   684                        ; ///
+   685                        ; /// RTC
+   686                        ; /// Desc: Interrupt for Real Time Clock
+   687                        ; ///
+   688                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   689                        RTC_INTERRUPT   setas
++  689 00:02E3: E2 20                        SEP #$20        ; set A short 
++  689                                        LONGA OFF
+   690 00:02E5: AF 40 01 00                  LDA >INT_PENDING_REG0
+   691 00:02E9: 29 20                        AND #FNX0_INT05_RTC
+   692 00:02EB: 8F 40 01 00                  STA >INT_PENDING_REG0
+   693                        ;; PUT YOUR CODE HERE
+   694                        
+   695                        				;PHX
+   696                        				;PHA
+   697                        				;LDA #'5'
+   698                        				;JSL IPUTC
+   699                        				;PLX
+   700                        				;PLA
+   701                        
+   702                        
+   703 00:02EF: 60                           RTS
+   704                        ;
+   705                        ;
+  Thu Dec  3 2020 22:25                                                Page 16
+
+
+   706                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   707                        ; ///
+   708                        ; /// Floppy Controller
+   709                        ; /// Desc: Interrupt for Data Rx/Tx or Process Co
+                    mmencement or Termination
+   710                        ; ///
+   711                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   712                        FDC_INTERRUPT   setas
++  712 00:02F0: E2 20                        SEP #$20        ; set A short 
++  712                                        LONGA OFF
+   713 00:02F2: AF 40 01 00                  LDA >INT_PENDING_REG0
+   714 00:02F6: 29 40                        AND #FNX0_INT06_FDC
+   715 00:02F8: 8F 40 01 00                  STA >INT_PENDING_REG0
+   716                        ;; PUT YOUR CODE HERE
+   717                        				;PHX
+   718                        				;PHA
+   719                        				;LDA #'6'
+   720                        				;JSL IPUTC
+   721                        				;PLX
+   722                        				;PLA
+   723                        
+   724                        
+   725 00:02FC: 60                           RTS
+   726                        ;
+   727                        ;
+   728                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   729                        ; ///
+   730                        ; /// Serial Port COM2
+   731                        ; /// Desc: Interrupt for Data Rx/Tx or Process Co
+                    mmencement or Termination
+   732                        ; ///
+   733                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   734                        COM2_INTERRUPT  setas
++  734 00:02FD: E2 20                        SEP #$20        ; set A short 
++  734                                        LONGA OFF
+   735 00:02FF: AF 41 01 00                  LDA >INT_PENDING_REG1
+   736 00:0303: 29 08                        AND #FNX1_INT03_COM2
+   737 00:0305: 8F 41 01 00                  STA >INT_PENDING_REG1
+   738                        ;; PUT YOUR CODE HERE
+   739                        				;PHX
+   740                        				;PHA
+   741                        				;LDA #'7'
+   742                        				;JSL IPUTC
+   743                        				;PLX
+   744                        				;PLA
+   745                        
+   746 00:0309: 60                           RTS
+   747                        ;
+   748                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   749                        ; ///
+   750                        ; /// Serial Port COM1
+   751                        ; /// Desc: Interrupt for Data Rx/Tx or Process Co
+                    mmencement or Termination
+  Thu Dec  3 2020 22:25                                                Page 17
+
+
+   752                        ; ///
+   753                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   754                        COM1_INTERRUPT  setas
++  754 00:030A: E2 20                        SEP #$20        ; set A short 
++  754                                        LONGA OFF
+   755 00:030C: AF 41 01 00                  LDA >INT_PENDING_REG1
+   756 00:0310: 29 10                        AND #FNX1_INT04_COM1
+   757 00:0312: 8F 41 01 00                  STA >INT_PENDING_REG1
+   758                        ;; PUT YOUR CODE HERE
+   759                        				;PHA
+   760                        				;LDA #'8'
+   761                        				;JSL IPUTC
+   762                        				;PLX
+   763                        				;PLA
+   764                        
+   765 00:0316: 60                           RTS
+   766                        ;
+   767                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   768                        ; ///
+   769                        ; /// MPU-401 (MIDI)
+   770                        ; /// Desc: Interrupt for Data Rx/Tx
+   771                        ; ///
+   772                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   773                        MPU401_INTERRUPT  setas
++  773 00:0317: E2 20                        SEP #$20        ; set A short 
++  773                                        LONGA OFF
+   774 00:0319: AF 41 01 00                  LDA >INT_PENDING_REG1
+   775 00:031D: 29 20                        AND #FNX1_INT05_MPU401
+   776 00:031F: 8F 41 01 00                  STA >INT_PENDING_REG1
+   777                        ;; PUT YOUR CODE HERE
+   778                        				;PHX
+   779                        				;PHA
+   780                        				;LDA #'9'
+   781                        				;JSL IPUTC
+   782                        				;PLX
+   783                        				;PLA
+   784                        
+   785 00:0323: 60                           RTS
+   786                        ;
+   787                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   788                        ; ///
+   789                        ; /// Parallel Port LPT1
+   790                        ; /// Desc: Interrupt for Data Rx/Tx or Process Co
+                    mmencement or Termination
+   791                        ; ///
+   792                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   793                        LPT1_INTERRUPT  setas
++  793 00:0324: E2 20                        SEP #$20        ; set A short 
++  793                                        LONGA OFF
+   794 00:0326: AF 41 01 00                  LDA >INT_PENDING_REG1
+   795 00:032A: 29 40                        AND #FNX1_INT06_LPT
+   796 00:032C: 8F 41 01 00                  STA >INT_PENDING_REG1
+   797                        ;; PUT YOUR CODE HERE
+  Thu Dec  3 2020 22:25                                                Page 18
+
+
+   798 00:0330: 60                           RTS
+   799                        
+   800                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   801                        ; ///
+   802                        ; /// Parallel Port LPT1
+   803                        ; /// Desc: Interrupt for Data Rx/Tx or Process Co
+                    mmencement or Termination
+   804                        ; ///
+   805                        ; ////////////////////////////////////////////////
+                    ///////////////////
+   806                        SDCARD_INTERRUPT  setas
++  806 00:0331: E2 20                        SEP #$20        ; set A short 
++  806                                        LONGA OFF
+   807 00:0333: AF 41 01 00                  LDA >INT_PENDING_REG1
+   808 00:0337: 29 80                        AND #FNX1_INT07_SDCARD
+   809 00:0339: 8F 41 01 00                  STA >INT_PENDING_REG1
+   810                        
+   811                        				;PHX
+   812                        				;PHA
+   813                        				;LDA #'S'
+   814                        				;JSL IPUTC
+   815                        				;PLX
+   816                        				;PLA
+   817                        
+   818                        
+   819 00:033D: 60                           RTS
+   820                        
+   821                        SDCARD_INS_INTERRUPT  setas
++  821 00:033E: E2 20                        SEP #$20        ; set A short 
++  821                                        LONGA OFF
+   822 00:0340: AF 42 01 00                  LDA >INT_PENDING_REG2
+   823 00:0344: 29 80                        AND #FNX1_INT07_SDCARD
+   824 00:0346: 8F 42 01 00                  STA >INT_PENDING_REG2
+   825                        
+   826                        				;PHX
+   827                        				;PHA
+   828                        				;LDA #'S'
+   829                        				;JSL IPUTC
+   830                        				;PLX
+   831                        				;PLA
+   832                        
+   833                        
+   834 00:034A: 60                           RTS
+   835                        
+   836 00:034B: 00 1B 31 32  ScanCode_Press_Set1   BYTE $00, $1B, $31, $32, $33,
+                     $34, $35, $36, $37, $38, $39, $30, $2D, $3D, $08, $09    ; 
+                    $00
+       00:034F: 33 34 35 36 
+       00:0353: 37 38 39 30 
+       00:0357: 2D 3D 08 09 
+   837 00:035B: 71 77 65 72                        BYTE $71, $77, $65, $72, $74,
+                     $79, $75, $69, $6F, $70, $5B, $5D, $0D, $00, $61, $73    ; 
+                    $10
+       00:035F: 74 79 75 69 
+       00:0363: 6F 70 5B 5D 
+       00:0367: 0D 00 61 73 
+   838 00:036B: 64 66 67 68                        BYTE $64, $66, $67, $68, $6A,
+  Thu Dec  3 2020 22:25                                                Page 19
+
+
+                     $6B, $6C, $3B, $27, $60, $00, $5C, $7A, $78, $63, $76    ; 
+                    $20
+       00:036F: 6A 6B 6C 3B 
+       00:0373: 27 60 00 5C 
+       00:0377: 7A 78 63 76 
+   839 00:037B: 62 6E 6D 2C                        BYTE $62, $6E, $6D, $2C, $2E,
+                     $2F, $00, $2A, $00, $20, $00, $00, $00, $00, $00, $00    ; 
+                    $30
+       00:037F: 2E 2F 00 2A 
+       00:0383: 00 20 00 00 
+       00:0387: 00 00 00 00 
+   840 00:038B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $40
+       00:038F: 00 00 00 00 
+       00:0393: 00 00 00 00 
+       00:0397: 00 00 00 00 
+   841 00:039B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $50
+       00:039F: 00 00 00 00 
+       00:03A3: 00 00 00 00 
+       00:03A7: 00 00 00 00 
+   842 00:03AB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $60
+       00:03AF: 00 00 00 00 
+       00:03B3: 00 00 00 00 
+       00:03B7: 00 00 00 00 
+   843 00:03BB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $70
+       00:03BF: 00 00 00 00 
+       00:03C3: 00 00 00 00 
+       00:03C7: 00 00 00 00 
+   844                        
+   845 00:03CB: 00 00 21 40  ScanCode_Shift_Set1   BYTE $00, $00, $21, $40, $23,
+                     $24, $25, $5E, $26, $2A, $28, $29, $5F, $2B, $08, $09    ; 
+                    $00
+       00:03CF: 23 24 25 5E 
+       00:03D3: 26 2A 28 29 
+       00:03D7: 5F 2B 08 09 
+   846 00:03DB: 51 57 45 52                        BYTE $51, $57, $45, $52, $54,
+                     $59, $55, $49, $4F, $50, $7B, $7D, $0D, $00, $41, $53    ; 
+                    $10
+       00:03DF: 54 59 55 49 
+       00:03E3: 4F 50 7B 7D 
+       00:03E7: 0D 00 41 53 
+   847 00:03EB: 44 46 47 48                        BYTE $44, $46, $47, $48, $4A,
+                     $4B, $4C, $3A, $22, $7E, $00, $5C, $5A, $58, $43, $56    ; 
+                    $20
+       00:03EF: 4A 4B 4C 3A 
+       00:03F3: 22 7E 00 5C 
+       00:03F7: 5A 58 43 56 
+   848 00:03FB: 42 4E 4D 3C                        BYTE $42, $4E, $4D, $3C, $3E,
+                     $3F, $00, $2A, $00, $20, $00, $00, $00, $00, $00, $00    ; 
+                    $30
+       00:03FF: 3E 3F 00 2A 
+  Thu Dec  3 2020 22:25                                                Page 20
+
+
+       00:0403: 00 20 00 00 
+       00:0407: 00 00 00 00 
+   849 00:040B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $40
+       00:040F: 00 00 00 00 
+       00:0413: 00 00 00 00 
+       00:0417: 00 00 00 00 
+   850 00:041B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $50
+       00:041F: 00 00 00 00 
+       00:0423: 00 00 00 00 
+       00:0427: 00 00 00 00 
+   851 00:042B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $60
+       00:042F: 00 00 00 00 
+       00:0433: 00 00 00 00 
+       00:0437: 00 00 00 00 
+   852 00:043B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $70
+       00:043F: 00 00 00 00 
+       00:0443: 00 00 00 00 
+       00:0447: 00 00 00 00 
+   853                        
+   854 00:044B: 00 1B 31 32  ScanCode_Ctrl_Set1    BYTE $00, $1B, $31, $32, $33,
+                     $34, $35, $36, $37, $38, $39, $30, $2D, $3D, $08, $09    ; 
+                    $00
+       00:044F: 33 34 35 36 
+       00:0453: 37 38 39 30 
+       00:0457: 2D 3D 08 09 
+   855 00:045B: 71 77 65 72                        BYTE $71, $77, $65, $72, $74,
+                     $79, $75, $69, $6F, $70, $5B, $5D, $0D, $00, $61, $73    ; 
+                    $10
+       00:045F: 74 79 75 69 
+       00:0463: 6F 70 5B 5D 
+       00:0467: 0D 00 61 73 
+   856 00:046B: 64 66 67 68                        BYTE $64, $66, $67, $68, $6A,
+                     $6B, $6C, $3B, $27, $60, $00, $5C, $7A, $78, $63, $76    ; 
+                    $20
+       00:046F: 6A 6B 6C 3B 
+       00:0473: 27 60 00 5C 
+       00:0477: 7A 78 63 76 
+   857 00:047B: 62 6E 6D 2C                        BYTE $62, $6E, $6D, $2C, $2E,
+                     $2F, $00, $2A, $00, $20, $00, $00, $00, $00, $00, $00    ; 
+                    $30
+       00:047F: 2E 2F 00 2A 
+       00:0483: 00 20 00 00 
+       00:0487: 00 00 00 00 
+   858 00:048B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $40
+       00:048F: 00 00 00 00 
+       00:0493: 00 00 00 00 
+       00:0497: 00 00 00 00 
+   859 00:049B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+  Thu Dec  3 2020 22:25                                                Page 21
+
+
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $50
+       00:049F: 00 00 00 00 
+       00:04A3: 00 00 00 00 
+       00:04A7: 00 00 00 00 
+   860 00:04AB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $60
+       00:04AF: 00 00 00 00 
+       00:04B3: 00 00 00 00 
+       00:04B7: 00 00 00 00 
+   861 00:04BB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $70
+       00:04BF: 00 00 00 00 
+       00:04C3: 00 00 00 00 
+       00:04C7: 00 00 00 00 
+   862                        
+   863 00:04CB: 00 1B 31 32  ScanCode_Alt_Set1     BYTE $00, $1B, $31, $32, $33,
+                     $34, $35, $36, $37, $38, $39, $30, $2D, $3D, $08, $09    ; 
+                    $00
+       00:04CF: 33 34 35 36 
+       00:04D3: 37 38 39 30 
+       00:04D7: 2D 3D 08 09 
+   864 00:04DB: 71 77 65 72                        BYTE $71, $77, $65, $72, $74,
+                     $79, $75, $69, $6F, $70, $5B, $5D, $0D, $00, $61, $73    ; 
+                    $10
+       00:04DF: 74 79 75 69 
+       00:04E3: 6F 70 5B 5D 
+       00:04E7: 0D 00 61 73 
+   865 00:04EB: 64 66 67 68                        BYTE $64, $66, $67, $68, $6A,
+                     $6B, $6C, $3B, $27, $60, $00, $5C, $7A, $78, $63, $76    ; 
+                    $20
+       00:04EF: 6A 6B 6C 3B 
+       00:04F3: 27 60 00 5C 
+       00:04F7: 7A 78 63 76 
+   866 00:04FB: 62 6E 6D 2C                        BYTE $62, $6E, $6D, $2C, $2E,
+                     $2F, $00, $2A, $00, $20, $00, $00, $00, $00, $00, $00    ; 
+                    $30
+       00:04FF: 2E 2F 00 2A 
+       00:0503: 00 20 00 00 
+       00:0507: 00 00 00 00 
+   867 00:050B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $40
+       00:050F: 00 00 00 00 
+       00:0513: 00 00 00 00 
+       00:0517: 00 00 00 00 
+   868 00:051B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $50
+       00:051F: 00 00 00 00 
+       00:0523: 00 00 00 00 
+       00:0527: 00 00 00 00 
+   869 00:052B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $60
+       00:052F: 00 00 00 00 
+  Thu Dec  3 2020 22:25                                                Page 22
+
+
+       00:0533: 00 00 00 00 
+       00:0537: 00 00 00 00 
+   870 00:053B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $70
+       00:053F: 00 00 00 00 
+       00:0543: 00 00 00 00 
+       00:0547: 00 00 00 00 
+   871                        
+   872 00:054B: 00 1B 31 32  ScanCode_NumLock_Set1 BYTE $00, $1B, $31, $32, $33,
+                     $34, $35, $36, $37, $38, $39, $30, $2D, $3D, $08, $09    ; 
+                    $00
+       00:054F: 33 34 35 36 
+       00:0553: 37 38 39 30 
+       00:0557: 2D 3D 08 09 
+   873 00:055B: 71 77 65 72                        BYTE $71, $77, $65, $72, $74,
+                     $79, $75, $69, $6F, $70, $5B, $5D, $0D, $00, $61, $73    ; 
+                    $10
+       00:055F: 74 79 75 69 
+       00:0563: 6F 70 5B 5D 
+       00:0567: 0D 00 61 73 
+   874 00:056B: 64 66 67 68                        BYTE $64, $66, $67, $68, $6A,
+                     $6B, $6C, $3B, $27, $60, $00, $5C, $7A, $78, $63, $76    ; 
+                    $20
+       00:056F: 6A 6B 6C 3B 
+       00:0573: 27 60 00 5C 
+       00:0577: 7A 78 63 76 
+   875 00:057B: 62 6E 6D 2C                        BYTE $62, $6E, $6D, $2C, $2E,
+                     $2F, $00, $2A, $00, $20, $00, $00, $00, $00, $00, $00    ; 
+                    $30
+       00:057F: 2E 2F 00 2A 
+       00:0583: 00 20 00 00 
+       00:0587: 00 00 00 00 
+   876 00:058B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $40
+       00:058F: 00 00 00 00 
+       00:0593: 00 00 00 00 
+       00:0597: 00 00 00 00 
+   877 00:059B: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $50
+       00:059F: 00 00 00 00 
+       00:05A3: 00 00 00 00 
+       00:05A7: 00 00 00 00 
+   878 00:05AB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $60
+       00:05AF: 00 00 00 00 
+       00:05B3: 00 00 00 00 
+       00:05B7: 00 00 00 00 
+   879 00:05BB: 00 00 00 00                        BYTE $00, $00, $00, $00, $00,
+                     $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00    ; 
+                    $70
+       00:05BF: 00 00 00 00 
+       00:05C3: 00 00 00 00 
+       00:05C7: 00 00 00 00 
+   880                        
+  Thu Dec  3 2020 22:25                                                Page 23
+
+
+   881                        
+   882                        	endmod
+
+
+      Lines assembled: 1882
+      Errors: 0

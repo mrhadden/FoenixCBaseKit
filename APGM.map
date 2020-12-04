@@ -1,0 +1,23 @@
+Section CODE:
+	00000000 _BEG_CODE
+	00000000 ~~DllMain
+	00000052 ~~DoSomething
+	00000079 ~~InitFXTools
+	00000092 ~~__kernel_call
+	0000010b ~~GetDirectory
+	00000152 ~~DebugOut
+	0000017b ~~user_debug_string_com1
+	000001ca ~~~lcal
+	000001d2 _END_CODE
+
+Section DATA:
+	000001d2 _BEG_DATA
+	000001de ~~lpstrDllMainMessage
+	000001da ~~pfnDebugOut
+	000001d6 ~~pfnDoSomething
+	000001d2 ~~pfnDllMain
+	000002b9 ~~_k_keyCodesExtSet
+	00000260 ~~_k_keyCodesShiftSet
+	00000207 ~~_k_keyCodesSet
+	000002e7 _END_DATA
+
